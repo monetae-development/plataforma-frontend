@@ -1,0 +1,53 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #mntMemberDataComplementForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="mntMemberDataComplement.id">{{l("EditMntMemberDataComplement")}}</span>
+                        <span *ngIf="!mntMemberDataComplement.id">{{l("CreateNewMntMemberDataComplement")}}</span>
+                    </h4>                    
+                    
+                <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                     <span aria-hidden="true">&times;</span>
+                </button>
+             
+                    
+                </div>
+                <div class="modal-body">
+                 
+
+
+
+								<br/><div class="m-checkbox-list">
+									<label for="MntMemberDataComplement_Enable" class="kt-checkbox">
+										<input id="MntMemberDataComplement_Enable" #MntMemberDataComplement_Enable="ngModel" type="checkbox" name="Enable" [(ngModel)]="mntMemberDataComplement.enable"> 
+										{{l("Enable")}}
+										<span></span>
+									</label>
+									<validation-messages [formCtrl]="MntMemberDataComplement_Enable"></validation-messages>
+								</div>
+								
+					
+								<br/><div class="m-checkbox-list">
+									<label for="MntMemberDataComplement_Force" class="kt-checkbox">
+										<input id="MntMemberDataComplement_Force" #MntMemberDataComplement_Force="ngModel" type="checkbox" name="Force" [(ngModel)]="mntMemberDataComplement.force"> 
+										{{l("Force")}}
+										<span></span>
+									</label>
+									<validation-messages [formCtrl]="MntMemberDataComplement_Force"></validation-messages>
+								</div>
+								
+					
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!mntMemberDataComplementForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

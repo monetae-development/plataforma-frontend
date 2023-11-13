@@ -1,0 +1,156 @@
+<div class="kt-portlet__body">
+    <div class="row g-3">
+        <div class="col-md-8 align-items-stretch">
+            <div class="card card-height-100">
+                <div class="card-header border-bottom-dashed">
+                    <h6 class="card-title mb-0">{{ l('MarketsOverview') }}</h6>
+                    <!--end row-->
+                </div>
+                <!--<Primeng-Datatable-Start>-->
+                <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                    <p-table
+                        #dataTable
+                        (onLazyLoad)="getAllOtc($event)"
+                        [value]="primengTableHelper.records"
+                        rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                        [paginator]="false"
+                        [lazy]="true"
+                        [scrollable]="true"
+                        ScrollWidth="100%"
+                        selectionMode="single"
+                        [(selection)]="selectedCurrency"
+                        (onRowSelect)="onRowSelect($event)"
+                        (onRowUnselect)="onResetCurrency($event)"
+                        dataKey="id"
+                        [responsive]="primengTableHelper.isResponsive"
+                        [resizableColumns]="primengTableHelper.resizableColumns"
+                    >
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width: 100px">
+                                    {{ l('Name') }}
+                                </th>
+                                <th style="width: 100px">
+                                    {{ l('PurchasePrice') }}
+                                </th>
+                                <th style="width: 50px">
+                                    {{ l('Change24h') }}
+                                </th>
+                                <th style="width: 100px">
+                                    {{ l('SalePrice') }}
+                                </th>
+                                <th style="width: 100px">
+                                    {{ l('Actions') }}
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-record="$implicit" let-i="rowIndex">
+                            <tr [pSelectableRow]="record.otcCoin">
+                                <td style="width: 100px">
+                                    <div class="d-flex flex-row flex-nowrap">
+                                        <div class="">
+                                            <img
+                                                src="/assets/crypto-icons/{{ record.otcCoin.key | lowercase }}.png"
+                                                class="crypto-icon-table"
+                                                alt="{{ record.otcCoin.key }}"
+                                            />
+                                        </div>
+                                        <div class="ms-3">
+                                            {{ record.otcCoin.name }}
+                                        </div>
+                                        <div class="badge text-bg-secondary ms-1">
+                                            {{ record.otcCoin.key }}
+                                        </div>
+                                        <div class="flex-grow-1"></div>
+                                        <div class="">
+                                            <i
+                                                *ngIf="record.otcCoin.behavior == getBehavior().Up"
+                                                class="flaticon2-arrow-up text-success fs-3"
+                                            ></i>
+                                            <i
+                                                *ngIf="record.otcCoin.behavior == getBehavior().Down"
+                                                class="flaticon2-arrow-down text-danger fs-3"
+                                            ></i>
+                                            <i
+                                                *ngIf="
+                                                    record.otcCoin.behavior == getBehavior().Unkown ||
+                                                    record.otcCoin.behavior == getBehavior().Unchanged
+                                                "
+                                                class="flaticon2-line fs-3"
+                                            ></i>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td
+                                    style="width: 100px"
+                                    [class.text-success]="record.otcCoin.behavior == getBehavior().Up"
+                                    [class.text-danger]="record.otcCoin.behavior == getBehavior().Down"
+                                >
+                                    {{ record.otcCoin.salePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}
+                                </td>
+                                <td
+                                    style="width: 50px"
+                                    [class.text-success]="record.otcCoin.change24h > 0"
+                                    [class.text-danger]="record.otcCoin.change24h < 0"
+                                >
+                                    <i
+                                        class="la la-line-chart fs-2x"
+                                        [class.text-success]="record.otcCoin.change24h > 0"
+                                        [class.text-danger]="record.otcCoin.change24h < 0"
+                                        [class.rotate-180]="record.otcCoin.change24h < 0"
+                                    ></i>
+                                    {{ record.otcCoin.change24h }}%
+                                </td>
+                                <td style="width: 100px">
+                                    {{ record.otcCoin.purchasePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-light" (click)="onSelectRow(record.otcCoin)">
+                                        {{
+                                            selectedCurrency.key == record.otcCoin.key
+                                                ? l('UnselectCurrency')
+                                                : l('SelectCurrency')
+                                        }}
+                                    </button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                        {{ l('NoData') }}
+                    </div>
+                </div>
+                <!--<Primeng-Datatable-End>-->
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-md-4 d-flex align-items-stretch">
+            <div class="card card-height-100 p-5 w-100">
+                <!--Purchase Tab-->
+                <p-tabView (onChange)="onChangeTab($event)">
+                    <p-tabPanel header="{{ l('Purchase') }}">
+                        <otc-crypto-purchase
+                            #cryptoPurchase
+                            [currencies]="currencies"
+                            (onChange)="onChangeRequest($event)"
+                            (onSave)="reloadRequests()"
+                        ></otc-crypto-purchase>
+                    </p-tabPanel>
+
+                    <!--Sale Tab-->
+                    <p-tabPanel header="{{ l('Sale') }}">
+                        <otc-crypto-sale
+                            #cryptoSale
+                            [currencies]="currencies"
+                            (onChange)="onChangeRequest($event)"
+                            (onSave)="reloadRequests()"
+                        ></otc-crypto-sale>
+                    </p-tabPanel>
+                </p-tabView>
+            </div>
+        </div>
+    </div>
+    <div class="mt-4">
+        <otc-requests-crypto #cryptoRequests></otc-requests-crypto>
+    </div>
+</div>

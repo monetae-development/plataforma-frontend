@@ -1,0 +1,61 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #catProfessionForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="catProfession.id">{{l("EditCatProfession")}}</span>
+                        <span *ngIf="!catProfession.id">{{l("CreateNewCatProfession")}}</span>
+                    </h4>                    
+                    
+                <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                     <span aria-hidden="true">&times;</span>
+                </button>
+             
+                    
+                </div>
+                <div class="modal-body">
+                 
+
+
+
+								<div class="form-group">
+									<label for="CatProfession_Title">{{l("Title")}} *</label>
+									<input type="text" #CatProfession_Title="ngModel" id="CatProfession_Title" class="form-control" [(ngModel)]="catProfession.title" name="Title"   minlength="1"  maxlength="100"  required/>
+								    <validation-messages [formCtrl]="CatProfession_Title"></validation-messages>
+								</div>
+					
+								<div class="form-group">
+									<label for="CatProfession_Risk">{{l("Risk")}}</label>
+									<input type="number" #CatProfession_Risk="ngModel" id="CatProfession_Risk" class="form-control" [(ngModel)]="catProfession.risk" name="Risk"  min="0"  max="10"  />
+									<validation-messages [formCtrl]="CatProfession_Risk"></validation-messages>
+								</div>
+					
+								<div class="form-group">
+									<label for="CatProfession_Order">{{l("Order")}}</label>
+									<input type="number" #CatProfession_Order="ngModel" id="CatProfession_Order" class="form-control" [(ngModel)]="catProfession.order" name="Order"  min="1"  max="100"  />
+									<validation-messages [formCtrl]="CatProfession_Order"></validation-messages>
+								</div>
+					
+								<br/><div class="m-checkbox-list">
+									<label for="CatProfession_Publish" class="kt-checkbox">
+										<input id="CatProfession_Publish" #CatProfession_Publish="ngModel" type="checkbox" name="Publish" [(ngModel)]="catProfession.publish"> 
+										{{l("Publish")}}
+										<span></span>
+									</label>
+									<validation-messages [formCtrl]="CatProfession_Publish"></validation-messages>
+								</div>
+								
+					
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!catProfessionForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

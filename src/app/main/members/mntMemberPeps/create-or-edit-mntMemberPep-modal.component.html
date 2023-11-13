@@ -1,0 +1,77 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #mntMemberPepForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="mntMemberPep.id">{{l("EditMntMemberPep")}}</span>
+                        <span *ngIf="!mntMemberPep.id">{{l("CreateNewMntMemberPep")}}</span>
+                    </h4>                    
+                    
+                <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                     <span aria-hidden="true">&times;</span>
+                </button>
+             
+                    
+                </div>
+                <div class="modal-body">
+                 
+
+					<div class="form-group m-form__group">
+                        <label for="MntMemberComments">{{l("MntMember")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="MntMemberComments" name="mntMemberComments" [(ngModel)]="mntMemberComments" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectMntMemberModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setMntMemberIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="mntMemberPep.mntMemberId" [(ngModel)]="mntMemberPep.mntMemberId" type="text" required hidden>
+		                
+
+
+								<br/><div class="m-checkbox-list">
+									<label for="MntMemberPep_Answer1" class="kt-checkbox">
+										<input id="MntMemberPep_Answer1" #MntMemberPep_Answer1="ngModel" type="checkbox" name="Answer1" [(ngModel)]="mntMemberPep.answer1"> 
+										{{l("Answer1")}}
+										<span></span>
+									</label>
+									<validation-messages [formCtrl]="MntMemberPep_Answer1"></validation-messages>
+								</div>
+								
+					
+								<br/><div class="m-checkbox-list">
+									<label for="MntMemberPep_Answer2" class="kt-checkbox">
+										<input id="MntMemberPep_Answer2" #MntMemberPep_Answer2="ngModel" type="checkbox" name="Answer2" [(ngModel)]="mntMemberPep.answer2"> 
+										{{l("Answer2")}}
+										<span></span>
+									</label>
+									<validation-messages [formCtrl]="MntMemberPep_Answer2"></validation-messages>
+								</div>
+								
+					
+								<br/><div class="m-checkbox-list">
+									<label for="MntMemberPep_Answer3" class="kt-checkbox">
+										<input id="MntMemberPep_Answer3" #MntMemberPep_Answer3="ngModel" type="checkbox" name="Answer3" [(ngModel)]="mntMemberPep.answer3"> 
+										{{l("Answer3")}}
+										<span></span>
+									</label>
+									<validation-messages [formCtrl]="MntMemberPep_Answer3"></validation-messages>
+								</div>
+								
+					
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!mntMemberPepForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<mntMemberPepMntMemberLookupTableModal #mntMemberPepMntMemberLookupTableModal (modalSave)="getNewMntMemberId()"></mntMemberPepMntMemberLookupTableModal>
+		 
+</div>

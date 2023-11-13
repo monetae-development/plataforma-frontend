@@ -1,0 +1,99 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #mntEconomicInfoForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="mntEconomicInfo.id">{{l("EditMntEconomicInfo")}}</span>
+                        <span *ngIf="!mntEconomicInfo.id">{{l("CreateNewMntEconomicInfo")}}</span>
+                    </h4>                    
+                    
+                <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                     <span aria-hidden="true">&times;</span>
+                </button>
+             
+                    
+                </div>
+                <div class="modal-body">
+                 
+
+					<div class="form-group m-form__group">
+                        <label for="CatProfessionTitle">{{l("CatProfession")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="CatProfessionTitle" name="catProfessionTitle" [(ngModel)]="catProfessionTitle" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectCatProfessionModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setCatProfessionIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="mntEconomicInfo.catProfessionId" [(ngModel)]="mntEconomicInfo.catProfessionId" type="text" required hidden>
+		                
+					<div class="form-group m-form__group">
+                        <label for="CatSourceFoundsTitle">{{l("CatSourceFounds")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="CatSourceFoundsTitle" name="catSourceFoundsTitle" [(ngModel)]="catSourceFoundsTitle" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectCatSourceFoundsModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setCatSourceFoundsIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="mntEconomicInfo.catSourceFoundsId" [(ngModel)]="mntEconomicInfo.catSourceFoundsId" type="text" required hidden>
+		                
+					<div class="form-group m-form__group">
+                        <label for="MntMemberComments">{{l("MntMember")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="MntMemberComments" name="mntMemberComments" [(ngModel)]="mntMemberComments" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectMntMemberModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setMntMemberIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="mntEconomicInfo.mntMemberId" [(ngModel)]="mntEconomicInfo.mntMemberId" type="text" required hidden>
+		                
+
+
+								<div class="form-group">
+									<label for="MntEconomicInfo_Income">{{l("Income")}}</label>
+									<input type="number" #MntEconomicInfo_Income="ngModel" id="MntEconomicInfo_Income" class="form-control" [(ngModel)]="mntEconomicInfo.income" name="Income"  min="1"  max="900000000"  />
+									<validation-messages [formCtrl]="MntEconomicInfo_Income"></validation-messages>
+								</div>
+					
+								<div class="form-group">
+									<label for="MntEconomicInfo_ExpectedTransactions">{{l("ExpectedTransactions")}}</label>
+									<input type="number" #MntEconomicInfo_ExpectedTransactions="ngModel" id="MntEconomicInfo_ExpectedTransactions" class="form-control" [(ngModel)]="mntEconomicInfo.expectedTransactions" name="ExpectedTransactions"  min="1"  max="9000000"  />
+									<validation-messages [formCtrl]="MntEconomicInfo_ExpectedTransactions"></validation-messages>
+								</div>
+					
+								<div class="form-group">
+									<label for="MntEconomicInfo_ProofIncome">{{l("ProofIncome")}}</label>
+									<input type="text" #MntEconomicInfo_ProofIncome="ngModel" id="MntEconomicInfo_ProofIncome" class="form-control" [(ngModel)]="mntEconomicInfo.proofIncome" name="ProofIncome"   minlength="1"  maxlength="255" />
+								    <validation-messages [formCtrl]="MntEconomicInfo_ProofIncome"></validation-messages>
+								</div>
+					
+								<div class="form-group">
+									<label for="MntEconomicInfo_TaxReturn">{{l("TaxReturn")}}</label>
+									<input type="text" #MntEconomicInfo_TaxReturn="ngModel" id="MntEconomicInfo_TaxReturn" class="form-control" [(ngModel)]="mntEconomicInfo.taxReturn" name="TaxReturn"   minlength="1"  maxlength="255" />
+								    <validation-messages [formCtrl]="MntEconomicInfo_TaxReturn"></validation-messages>
+								</div>
+					
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!mntEconomicInfoForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<mntEconomicInfoCatProfessionLookupTableModal #mntEconomicInfoCatProfessionLookupTableModal (modalSave)="getNewCatProfessionId()"></mntEconomicInfoCatProfessionLookupTableModal>
+		 <mntEconomicInfoCatSourceFoundsLookupTableModal #mntEconomicInfoCatSourceFoundsLookupTableModal (modalSave)="getNewCatSourceFoundsId()"></mntEconomicInfoCatSourceFoundsLookupTableModal>
+		 <mntEconomicInfoMntMemberLookupTableModal #mntEconomicInfoMntMemberLookupTableModal (modalSave)="getNewMntMemberId()"></mntEconomicInfoMntMemberLookupTableModal>
+		 
+</div>

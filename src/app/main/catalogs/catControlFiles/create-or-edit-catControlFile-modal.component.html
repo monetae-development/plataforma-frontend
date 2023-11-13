@@ -1,0 +1,97 @@
+﻿<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #catControlFileForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="catControlFile.id">{{ l('EditCatControlFile') }}</span>
+                        <span *ngIf="!catControlFile.id">{{ l('CreateNewCatControlFile') }}</span>
+                    </h4>
+
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <br />
+                    <div class="m-checkbox-list">
+                        <label for="CatControlFile_Enable" class="kt-checkbox">
+                            <input
+                                id="CatControlFile_Enable"
+                                #CatControlFile_Enable="ngModel"
+                                type="checkbox"
+                                name="Enable"
+                                [(ngModel)]="catControlFile.enable"
+                            />
+                            {{ l('Enable') }}
+                            <span></span>
+                        </label>
+                        <validation-messages [formCtrl]="CatControlFile_Enable"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CatControlFile_Client">{{ l('Client') }}</label>
+                        <select
+                            class="form-select"
+                            #CatControlFile_Client="ngModel"
+                            name="Client"
+                            id="CatControlFile_Client"
+                            [(ngModel)]="catControlFile.client"
+                        >
+                            <option value="0">{{ l('Company') }}</option>
+
+                            <option value="1">{{ l('Person') }}</option>
+                        </select>
+                        <validation-messages [formCtrl]="CatControlFile_Client"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CatControlFile_File">{{ l('File') }}</label>
+                        <select
+                            class="form-select"
+                            #CatControlFile_File="ngModel"
+                            name="File"
+                            id="CatControlFile_File"
+                            [(ngModel)]="catControlFile.file"
+                        >
+                            <option value="0">{{ l('AddressProof') }}</option>
+
+                            <option value="1">{{ l('IdentityFront') }}</option>
+
+                            <option value="2">{{ l('IdentityBack') }}</option>
+
+                            <option value="3">{{ l('IncomeProof') }}</option>
+
+                            <option value="4">{{ l('TaxReturn') }}</option>
+                        </select>
+                        <validation-messages [formCtrl]="CatControlFile_File"></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">
+                        {{ l('Cancel') }}
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary blue"
+                        [disabled]="!catControlFileForm.form.valid"
+                        [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"
+                    >
+                        <i class="fa fa-save"></i>
+                        <span>{{ l('Save') }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

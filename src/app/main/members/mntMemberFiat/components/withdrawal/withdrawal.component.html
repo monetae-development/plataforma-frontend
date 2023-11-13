@@ -1,0 +1,143 @@
+<div
+    bsModal
+    #memberFiatWithdrawalModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="memberFiatWithdrawalModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form
+                *ngIf="active"
+                #mntMemberFiatWithdrawalForm="ngForm"
+                novalidate
+                (ngSubmit)="save()"
+                autocomplete="off"
+            >
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{ l('MakeWithdrawal') }}</span>
+                    </h4>
+
+                    <button class="btn btn-secondary rounded-circle btn-sm close" (click)="close()">
+                        <i class="fa fa-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group mb-5">
+                        <label class="mb-3">{{ l('BankAccountDestinyAsk') }} *</label>
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="pt-3 text-danger" *ngIf="loadBankAccountsComplete && !hasBankAccounts">
+                                    <strong>{{ l('AlertAtenttion') }}!</strong>
+                                    {{ l('BankAccountNotFoundForWhitdrawal') }}
+                                </div>
+                                <p-dropdown
+                                    #MntMemberFiatWithdrawal_BankAccount="ngModel"
+                                    id="MntMemberFiatWithdrawal_BankAccount"
+                                    name="MntMemberFiatWithdrawal_BankAccount"
+                                    [hidden]="loadBankAccountsComplete && !hasBankAccounts"
+                                    [disabled]="!hasBankAccounts"
+                                    [options]="memberBankAccounts"
+                                    [(ngModel)]="fiatWithdrawal.mntMemberBankAccountId"
+                                    placeholder="{{ l('SelectTreeDots') }}"
+                                    (onChange)="onChangeMemberAccount($event)"
+                                    required
+                                >
+                                    <ng-template let-account pTemplate="selectedItem">
+                                        <div
+                                            class="flex align-items-center gap-2"
+                                            *ngIf="fiatWithdrawal.mntMemberBankAccountId"
+                                        >
+                                            <div class="d-flex align-items-center">
+                                                <div class="ms-2">
+                                                    {{ account.label }}
+                                                    <span class="badge text-bg-secondary">
+                                                        {{ account.subtitle }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template let-account pTemplate="item">
+                                        <div class="d-flex align-items-center">
+                                            <div class="ms-2">
+                                                {{ account.label }}
+                                                <span class="badge text-bg-secondary" *ngIf="account.subtitle">
+                                                    {{ account.subtitle }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </p-dropdown>
+                                <validation-messages
+                                    [formCtrl]="MntMemberFiatWithdrawal_BankAccount"
+                                    [hidden]="loadBankAccountsComplete && !hasBankAccounts"
+                                ></validation-messages>
+                            </div>
+
+                            <div class="col-4">
+                                <button type="button" class="btn btn-primary blue" (click)="createMemberBankAccount()">
+                                    {{ l('AddAccountBank') }}
+                                    <i class="fa fa-plus-circle fs-3"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-5">
+                        <label class="mb-3">{{ l('AmountWithdrawalAsk') }} *</label>
+                        <div class="input-group">
+                            <label class="input-group-text" id="inputGroup-sizing-default">USD $</label>
+                            <p-inputNumber
+                                #MntMemberFiatWithdrawal_Amount="ngModel"
+                                inputId="MntMemberFiatWithdrawal_Amount"
+                                name="MntMemberFiatWithdrawal_Amount"
+                                class="form-control"
+                                [(ngModel)]="fiatWithdrawal.amount"
+                                [disabled]="saving"
+                                mode="decimal"
+                                locale="en-US"
+                                [minFractionDigits]="0"
+                                [maxFractionDigits]="2"
+                                required
+                            ></p-inputNumber>
+                        </div>
+                        <validation-messages [formCtrl]="MntMemberFiatWithdrawal_Amount"></validation-messages>
+                    </div>
+
+                    <div class="row p-2 mt-4">
+                        <div class="col-sm-8 offset-sm-2">
+                            <button
+                                type="submit"
+                                class="btn btn-primary w-100"
+                                [disabled]="!mntMemberFiatWithdrawalForm.form.valid"
+                                [buttonBusy]="saving"
+                                [busyText]="l('SavingWithThreeDot')"
+                            >
+                                <span>{{ l('FiatWithdrawalSave') }}</span>
+                            </button>
+                            <div class="mt-2 text-center">
+                                {{ l('FiatWithdrawalDisclaimer') }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-secondary" (click)="close()">
+                        {{ l('Cancel') }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<createOrEditMntMemberBankAccountModal
+    #createOrEditMntMemberBankAccountModal
+    (modalSave)="refreshBankAccounts()"
+></createOrEditMntMemberBankAccountModal>

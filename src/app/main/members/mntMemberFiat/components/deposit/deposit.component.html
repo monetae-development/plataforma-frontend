@@ -1,0 +1,243 @@
+<div
+    bsModal
+    #memberFiatDepositModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="memberFiatDepositModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #mntMemberFiatDepositForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{ l('MakeDeposit') }}</span>
+                    </h4>
+
+                    <button class="btn btn-secondary rounded-circle btn-sm close" (click)="close()">
+                        <i class="fa fa-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group mb-5">
+                        <label class="mb-3">{{ l('BankAccountOriginAsk') }} *</label>
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="pt-3 text-danger" *ngIf="loadBankAccountsComplete && !hasBankAccounts">
+                                    <strong>{{ l('AlertAtenttion') }}!</strong>
+                                    {{ l('BankAccountNotFoundForDeposit') }}
+                                </div>
+                                <p-dropdown
+                                    #MntMemberFiatDeposit_BankAccount="ngModel"
+                                    id="MntMemberFiatDeposit_BankAccount"
+                                    name="MntMemberFiatDeposit_BankAccount"
+                                    [hidden]="loadBankAccountsComplete && !hasBankAccounts"
+                                    [disabled]="!hasBankAccounts"
+                                    [options]="memberBankAccounts"
+                                    [(ngModel)]="fiatDeposit.mntMemberBankAccountId"
+                                    placeholder="{{ l('SelectTreeDots') }}"
+                                    (onChange)="onChangeMemberAccount($event)"
+                                    required
+                                >
+                                    <ng-template let-account pTemplate="selectedItem">
+                                        <div
+                                            class="flex align-items-center gap-2"
+                                            *ngIf="fiatDeposit.mntMemberBankAccountId"
+                                        >
+                                            <div class="d-flex align-items-center">
+                                                <div class="ms-2">
+                                                    {{ account.label }}
+                                                    <span class="badge text-bg-secondary">
+                                                        {{ account.subtitle }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template let-account pTemplate="item">
+                                        <div class="d-flex align-items-center">
+                                            <div class="ms-2">
+                                                {{ account.label }}
+                                                <span class="badge text-bg-secondary" *ngIf="account.subtitle">
+                                                    {{ account.subtitle }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </p-dropdown>
+                                <validation-messages
+                                    [formCtrl]="MntMemberFiatDeposit_BankAccount"
+                                    [hidden]="loadBankAccountsComplete && !hasBankAccounts"
+                                ></validation-messages>
+                            </div>
+
+                            <div class="col-4">
+                                <button type="button" class="btn btn-primary blue" (click)="createMemberBankAccount()">
+                                    {{ l('AddAccountBank') }}
+                                    <i class="fa fa-plus-circle fs-3"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-5">
+                        <label class="mb-3">{{ l('AmountDepositAsk') }} *</label>
+                        <div class="input-group">
+                            <label class="input-group-text" id="inputGroup-sizing-default">USD $</label>
+                            <p-inputNumber
+                                #MntMemberFiatDeposit_Amount="ngModel"
+                                inputId="MntMemberFiatDeposit_Amount"
+                                name="MntMemberFiatDeposit_Amount"
+                                class="form-control"
+                                [(ngModel)]="fiatDeposit.amount"
+                                [disabled]="saving"
+                                mode="decimal"
+                                locale="en-US"
+                                [minFractionDigits]="0"
+                                [maxFractionDigits]="2"
+                                required
+                            ></p-inputNumber>
+                        </div>
+                        <validation-messages [formCtrl]="MntMemberFiatDeposit_Amount"></validation-messages>
+                    </div>
+
+                    <div class="form-group mb-5">
+                        <label for="MntMemberFiatDeposit_Reference" class="mb-3">
+                            {{ l('ReferenceDepositAsk') }} *
+                        </label>
+                        <input
+                            type="text"
+                            #MntMemberFiatDeposit_Reference="ngModel"
+                            id="MntMemberFiatDeposit_Reference"
+                            class="form-control"
+                            [(ngModel)]="fiatDeposit.reference"
+                            name="MntMemberFiatDeposit_Reference"
+                            minlength="6"
+                            maxlength="20"
+                            required
+                        />
+                        <validation-messages [formCtrl]="MntMemberFiatDeposit_Reference"></validation-messages>
+                    </div>
+
+                    <div
+                        class="border border-secondary col-md-8 offset-md-2"
+                        *ngIf="mntMemberFiatDepositForm.form.valid"
+                    >
+                        <div class="row bg-secondary p-2">
+                            <div class="d-flex flex-row mb-2">
+                                <h5 class="card-title px-3 pt-2">
+                                    {{ l('FiatDepositResumeTitle') }}
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="d-flex flex-row card-text pt-2">
+                                <div class="px-2">
+                                    <strong>
+                                        {{ l('FromBankAccount') }}
+                                    </strong>
+                                </div>
+                                <div>
+                                    {{
+                                        l(
+                                            'FromYouAccountAndCurrency',
+                                            memberBankAccount.catAccountTypeTitle,
+                                            memberBankAccount.catCurrencySymbol
+                                        )
+                                    }}
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row card-text pt-2">
+                                <div class="px-2">
+                                    <strong>{{ l('AccountNumber') }}:</strong>
+                                </div>
+                                <div>{{ memberBankAccount.mntMemberBankAccount.account }}</div>
+                            </div>
+                            <div class="d-flex flex-row card-text pt-2">
+                                <div class="px-2">
+                                    <strong>{{ l('Name') }}:</strong>
+                                </div>
+                                <div>{{ memberBankAccount.mntMemberBankAccount.holder }}</div>
+                            </div>
+                            <div
+                                class="d-flex flex-row card-text pt-2"
+                                *ngIf="memberBankAccount.mntMemberBankAccount.swift"
+                            >
+                                <div class="px-2">
+                                    <strong>{{ l('SwiftAccount') }}:</strong>
+                                </div>
+                                <div>{{ memberBankAccount.mntMemberBankAccount.swift }}</div>
+                            </div>
+                            <div class="d-flex flex-row card-text pt-2">
+                                <div class="px-2">
+                                    <strong>{{ l('ReferenceNumber') }}:</strong>
+                                </div>
+                                <div>{{ fiatDeposit.reference }}</div>
+                            </div>
+                            <div class="d-flex flex-row card-text pt-2">
+                                <div class="px-2">
+                                    <strong>{{ l('Amount') }}:</strong>
+                                </div>
+                                <div>{{ fiatDeposit.amount | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }} USD</div>
+                            </div>
+                            <hr class="mt-6" />
+                            <div class="d-flex flex-row card-text pt-2">
+                                <div class="px-2">
+                                    <strong>Hacia</strong>
+                                </div>
+                                <div>nuestra cuenta principal USD</div>
+                            </div>
+                            <div class="d-flex flex-row card-text pt-2">
+                                <div class="px-2">
+                                    <strong>{{ l('AccountNumber') }}:</strong>
+                                </div>
+                                <div>123456789</div>
+                            </div>
+                            <div class="d-flex flex-row card-text pt-2">
+                                <div class="px-2">
+                                    <strong>{{ l('Name') }}:</strong>
+                                </div>
+                                <div>Fintech Americas S.A. DE C.V</div>
+                            </div>
+                            <div class="d-flex flex-row card-text pt-2">
+                                <div class="px-2">
+                                    <strong>{{ l('SwiftAccount') }}:</strong>
+                                </div>
+                                <div>CITIUS33XXX</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row p-2 mt-4">
+                        <div class="col-sm-8 offset-sm-2">
+                            <button
+                                type="submit"
+                                class="btn btn-primary w-100"
+                                [disabled]="!mntMemberFiatDepositForm.form.valid"
+                                [buttonBusy]="saving"
+                                [busyText]="l('SavingWithThreeDot')"
+                            >
+                                <span>{{ l('FiatDepositSave') }}</span>
+                            </button>
+                            <div class="mt-2 text-center">
+                                {{ l('FiatDepositDisclaimer') }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-secondary" (click)="close()">
+                        {{ l('Cancel') }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<createOrEditMntMemberBankAccountModal
+    #createOrEditMntMemberBankAccountModal
+    (modalSave)="refreshBankAccounts()"
+></createOrEditMntMemberBankAccountModal>

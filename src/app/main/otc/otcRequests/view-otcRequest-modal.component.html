@@ -1,0 +1,139 @@
+﻿<div
+    bsModal
+    #viewRequestModal="bs-modal"
+    class="modal fade modal-lg"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="viewRequestModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header mb-5">
+                <div class="modal-title">
+                    <h3 class="mb-3">
+                        <span>{{ (record.otcRequest.type == 1) ? l('RequestCryptoPurchase') : l('RequestCryptoSale')}}</span>
+                    </h3>
+                    <h4 class="text-danger">{{ l('Folio') }} : {{ record.otcRequest.folio }}</h4>
+                    <h4 class="text-gray-600 fs-7 fw-light mt-2">{{ record.otcRequest.creationTime | luxonFormat : 'dd/MM/yyyy HH:mm:ss' }}</h4>
+                </div>
+
+                <button class="btn btn-secondary rounded-circle btn-sm close" (click)="close()">
+                    <i class="fa fa-close"></i>
+                </button>
+            </div>
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__body">
+                    <div class="row px-10">
+                        <div class="border border-secondary align-self-start mb-2 col-md-5">
+                            <div class="row bg-secondary p-2">
+                                <div class="d-flex flex-row mb-2">
+                                    <h5 class="card-title px-3 pt-2">
+                                        {{ l('RequestTitle') }}
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row p-5">
+                                <div class="d-flex flex-row">
+                                    <div class="">
+                                        <img
+                                            *ngIf="record.otcRequest.otcCoinFk.key != undefined"
+                                            src="/assets/crypto-icons/{{ record.otcRequest.otcCoinFk.key.toLowerCase() }}.png"
+                                            style="width: 28px"
+                                        />
+                                    </div>
+                                    <div class="ml-2">
+                                        <h5 class="card-title px-3 pt-2">
+                                            {{ record.otcRequest.otcCoinFk.name }}
+                                            <span class="badge text-bg-secondary">
+                                                {{ record.otcRequest.otcCoinFk.key }}
+                                            </span>
+                                        </h5>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex flex-row card-text pt-2">
+                                    <div class="px-2">
+                                        <strong>{{ l('Price') }}:</strong>
+                                    </div>
+                                    <div>
+                                        {{ record.otcRequest.price | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}
+                                        USD
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-row card-text pt-2">
+                                    <div class="px-2">
+                                        <strong>{{ l('Amount') }}:</strong>
+                                    </div>
+                                    <div>
+                                        {{ record.otcRequest.amount | number : '1.0-6' : 'en' }}
+                                        {{ record.otcRequest.otcCoinFk.key }}
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-row card-text pt-2">
+                                    <div class="px-2">
+                                        <strong>{{ l('Cost') }}:</strong>
+                                    </div>
+                                    <div>
+                                        {{ record.otcRequest.cost | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}
+                                        USD
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-row card-text pt-2">
+                                    <div class="px-2">
+                                        <strong>{{ l('Status') }}:</strong>
+                                    </div>
+                                    <div>
+                                        <span class="badge text-bg-secondary">
+                                            {{ l(requestStatus[record.otcRequest.status]) }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border border-secondary col-md-6 offset-md-1">
+                            <div class="row bg-secondary p-2">
+                                <div class="d-flex flex-row mb-2">
+                                    <h5 class="card-title px-3 pt-2">
+                                        {{ l('CostumerData') }}
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row p-5">
+                                <div class="d-flex flex-row card-text pt-2">
+                                    <div class="px-2">
+                                        <strong>{{ l('UserName') }}:</strong>
+                                    </div>
+                                    <div>{{record.otcRequest.userFk.userName}} </div>
+                                </div>
+                                <div class="d-flex flex-row card-text pt-2">
+                                    <div class="px-2">
+                                        <strong>{{ l('Name') }}:</strong>
+                                    </div>
+                                    <div>{{record.otcRequest.userFk.name}} {{record.otcRequest.userFk.surname}}</div>
+                                </div>
+                                <div class="d-flex flex-row card-text pt-2">
+                                    <div class="px-2">
+                                        <strong>{{ l('Email') }}:</strong>
+                                    </div>
+                                    <div>{{record.otcRequest.userFk.emailAddress}}</div>
+                                </div>
+                                <div class="d-flex flex-row card-text pt-2" *ngIf="record.otcRequest.mntMemberBankAccountId != undefined">
+                                    <div class="px-2">
+                                        <strong>{{ l('AccountNo') }}:</strong>
+                                    </div>
+                                    <div>{{record.otcRequest.mntMemberBankAccountFk.account}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer mt-5">
+                <button type="button" class="btn btn-primary blue" (click)="close()">{{ l('Close') }}</button>
+            </div>
+        </div>
+    </div>
+</div>

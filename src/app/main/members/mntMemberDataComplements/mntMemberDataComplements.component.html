@@ -1,0 +1,983 @@
+﻿<div [@routerTransition]>
+    <div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="kt-subheader kt-grid__item mt-10 mb-10">
+            <div [class]="containerClass">
+                <div class="kt-subheader__main">
+                    <h3 class="kt-subheader__title">
+                        <span>{{ l('MntMemberDataComplements') }}</span>
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="row">
+                <div class="col-sm-12 col-md-10 offset-md-1">
+                    <div
+                        *ngIf="!isMemberComplemented && checkSessionAndComplemented"
+                        class="alert alert-info w-100"
+                        role="alert"
+                    >
+                        <span class="fw-bold">{{ 'InstruccionsTitle' | localize }}:</span>
+                        <br />
+                        <br />
+                        <span>{{ 'InstruccionsMemberDataComplements' | localize }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div
+                    class="col-sm-10 offset-sm-1 bg-dark-secondary text-light p-10 border border-primary border-2 rounded rounded-3"
+                >
+                    <div *ngIf="isMemberComplemented && checkSessionAndComplemented" class="mt-20 mb-20">
+                        <h3 class="text-primary text-center mb-5">
+                            {{ 'ThankYou' | localize }}
+                            <br />
+                            <br />
+                            {{ 'ComplementedDataCompletedTitle' | localize }}!
+                        </h3>
+                        <div class="alert alert-info">
+                            {{ 'ComplementedDataCompletedMessage' | localize }}
+                        </div>
+                    </div>
+
+                    <div *ngIf="!completed && !isMemberComplemented && checkSessionAndComplemented">
+                        <form class="" [formGroup]="personalDataForm">
+                            <h3 class="text-primary mb-5">{{ 'PersonalDataTitle' | localize }}</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>{{ 'FirstName' | localize }} *</label>
+                                    <div class="formgroup-control mb-5">
+                                        <input
+                                            type="text"
+                                            #memberName
+                                            formControlName="memberName"
+                                            [(ngModel)]="user.name"
+                                            placeholder="{{ 'FirstName' | localize }}"
+                                            class="form-control"
+                                            minlength="3"
+                                            maxlength="64"
+                                            pattern="^(?!\s)(.*\S)?(?<!\s)$"
+                                        />
+                                        <div class="spin-validation">
+                                            <spinSuccess
+                                                *ngIf="
+                                                    personalDataForm.controls['memberName'].valid &&
+                                                    personalDataForm.controls['memberName'].dirty
+                                                "
+                                            ></spinSuccess>
+                                            <spinError
+                                                *ngIf="
+                                                    !personalDataForm.controls['memberName'].valid &&
+                                                    personalDataForm.controls['memberName'].dirty
+                                                "
+                                            ></spinError>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label>{{ 'Surname' | localize }} *</label>
+                                    <div class="formgroup-control mb-5">
+                                        <input
+                                            type="text"
+                                            #memberSurname
+                                            formControlName="memberSurname"
+                                            [(ngModel)]="user.surname"
+                                            placeholder="{{ 'Surname' | localize }}"
+                                            class="form-control"
+                                            minlength="3"
+                                            maxlength="64"
+                                            pattern="^(?!\s)(.*\S)?(?<!\s)$"
+                                        />
+                                        <div class="spin-validation">
+                                            <spinSuccess
+                                                *ngIf="
+                                                    personalDataForm.controls['memberSurname'].valid &&
+                                                    personalDataForm.controls['memberSurname'].dirty
+                                                "
+                                            ></spinSuccess>
+                                            <spinError
+                                                *ngIf="
+                                                    !personalDataForm.controls['memberSurname'].valid &&
+                                                    personalDataForm.controls['memberSurname'].dirty
+                                                "
+                                            ></spinError>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <label>{{ 'PhoneNumber' | localize }} *</label>
+                                    <div class="formgroup-control mb-5">
+                                        <input
+                                            type="text"
+                                            #memberPhone
+                                            formControlName="memberPhone"
+                                            [(ngModel)]="user.phoneNumber"
+                                            placeholder="+1929552746"
+                                            class="form-control"
+                                            maxlength="32"
+                                            mask="(+00)0*"
+                                        />
+                                        <div class="spin-validation">
+                                            <spinSuccess
+                                                *ngIf="
+                                                    personalDataForm.controls['memberPhone'].valid &&
+                                                    personalDataForm.controls['memberPhone'].dirty
+                                                "
+                                            ></spinSuccess>
+                                            <spinError
+                                                *ngIf="
+                                                    !personalDataForm.controls['memberPhone'].valid &&
+                                                    personalDataForm.controls['memberPhone'].dirty
+                                                "
+                                            ></spinError>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-7">
+                                    <label>{{ l('CatNationality') }} *</label>
+                                    <div class="formgroup-control mb-5">
+                                        <p-dropdown
+                                            #memberNationality
+                                            formControlName="memberNationality"
+                                            [(ngModel)]="memberPersonalData.catNationalityId"
+                                            [disabled]="true"
+                                            [options]="personalDataNationalities"
+                                            placeholder="{{ 'Loading' | localize }}"
+                                            [showClear]="true"
+                                            [filter]="true"
+                                        ></p-dropdown>
+                                        <div class="spin-validation">
+                                            <spinSuccess
+                                                *ngIf="
+                                                    personalDataForm.controls['memberNationality'].valid &&
+                                                    personalDataForm.controls['memberNationality'].dirty
+                                                "
+                                            ></spinSuccess>
+                                            <spinError
+                                                *ngIf="
+                                                    !personalDataForm.controls['memberNationality'].valid &&
+                                                    personalDataForm.controls['memberNationality'].dirty
+                                                "
+                                            ></spinError>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <label>Fecha de nacimiento *</label>
+                                    <div class="formgroup-control mb-5">
+                                        <p-calendar
+                                            #memberDayOfBirth
+                                            formControlName="memberDayOfBirth"
+                                            placeholder="05/11/1955"
+                                            [(ngModel)]="memberPersonalData.dayOfBirth"
+                                            dateFormat="dd/mm/yy"
+                                            [showIcon]="true"
+                                            required
+                                        ></p-calendar>
+                                        <div class="spin-validation">
+                                            <spinSuccess
+                                                *ngIf="
+                                                    personalDataForm.controls['memberDayOfBirth'].valid &&
+                                                    personalDataForm.controls['memberDayOfBirth'].dirty
+                                                "
+                                            ></spinSuccess>
+                                            <spinError
+                                                *ngIf="
+                                                    !personalDataForm.controls['memberDayOfBirth'].valid &&
+                                                    personalDataForm.controls['memberDayOfBirth'].dirty
+                                                "
+                                            ></spinError>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form class="mt-8" [formGroup]="addressForm">
+                            <h3 class="text-primary mb-5">{{ 'AddressTitle' | localize }}</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>{{ 'Street' | localize }} *</label>
+                                    <div class="formgroup-control mb-5">
+                                        <input
+                                            type="text"
+                                            #addressStreet
+                                            formControlName="addressStreet"
+                                            [(ngModel)]="memberAddress.street"
+                                            placeholder="{{ 'Street' | localize }}"
+                                            class="form-control"
+                                            maxlength="32"
+                                            pattern="^(?!\s)(.*\S)?(?<!\s)$"
+                                        />
+                                        <div class="spin-validation">
+                                            <spinSuccess
+                                                *ngIf="
+                                                    addressForm.controls['addressStreet'].valid &&
+                                                    addressForm.controls['addressStreet'].dirty
+                                                "
+                                            ></spinSuccess>
+                                            <spinError
+                                                *ngIf="
+                                                    !addressForm.controls['addressStreet'].valid &&
+                                                    addressForm.controls['addressStreet'].dirty
+                                                "
+                                            ></spinError>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>{{ 'ExteriorNo' | localize }} *</label>
+                                    <div class="formgroup-control mb-5">
+                                        <input
+                                            type="text"
+                                            #addressExteriorNo
+                                            formControlName="addressExteriorNo"
+                                            [(ngModel)]="memberAddress.exteriorNo"
+                                            placeholder="{{ 'ExteriorNo' | localize }}"
+                                            class="form-control"
+                                            maxlength="10"
+                                            mask="0*"
+                                            pattern="^(?!\s)(.*\S)?(?<!\s)$"
+                                        />
+                                        <div class="spin-validation">
+                                            <spinSuccess
+                                                *ngIf="
+                                                    addressForm.controls['addressExteriorNo'].valid &&
+                                                    addressForm.controls['addressExteriorNo'].dirty
+                                                "
+                                            ></spinSuccess>
+                                            <spinError
+                                                *ngIf="
+                                                    !addressForm.controls['addressExteriorNo'].valid &&
+                                                    addressForm.controls['addressExteriorNo'].dirty
+                                                "
+                                            ></spinError>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label>{{ 'InteriorNo' | localize }}</label>
+                                    <div class="formgroup-control mb-5">
+                                        <input
+                                            type="text"
+                                            #addressInteriorNo
+                                            name="addressInteriorNo"
+                                            [(ngModel)]="memberAddress.interiorNo"
+                                            [ngModelOptions]="{ standalone: true }"
+                                            placeholder="{{ 'InteriorNo' | localize }}"
+                                            class="form-control"
+                                            maxlength="10"
+                                            mask="0*"
+                                            pattern="^(?!\s)(.*\S)?(?<!\s)$"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>{{ 'ZipCode' | localize }} *</label>
+                                    <div class="formgroup-control mb-5">
+                                        <input
+                                            type="text"
+                                            #addressZipCode
+                                            formControlName="addressZipCode"
+                                            [(ngModel)]="memberAddress.zipCode"
+                                            placeholder="{{ 'ZipCode' | localize }}"
+                                            class="form-control"
+                                            maxlength="32"
+                                            mask="0*"
+                                            pattern="^(?!\s)(.*\S)?(?<!\s)$"
+                                        />
+                                        <div class="spin-validation">
+                                            <spinSuccess
+                                                *ngIf="
+                                                    addressForm.controls['addressZipCode'].valid &&
+                                                    addressForm.controls['addressZipCode'].dirty
+                                                "
+                                            ></spinSuccess>
+                                            <spinError
+                                                *ngIf="
+                                                    !addressForm.controls['addressZipCode'].valid &&
+                                                    addressForm.controls['addressZipCode'].dirty
+                                                "
+                                            ></spinError>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <label>{{ l('CatCountry') }} *</label>
+                                    <div class="formgroup-control mb-5">
+                                        <p-dropdown
+                                            #addressCountry
+                                            formControlName="addressCountry"
+                                            [(ngModel)]="memberAddressCountryId"
+                                            [disabled]="true"
+                                            [options]="addressCountries"
+                                            placeholder="{{ 'Loading' | localize }}"
+                                            [showClear]="true"
+                                            [filter]="true"
+                                            (onChange)="onAddressChangeCountry()"
+                                        ></p-dropdown>
+                                        <div class="spin-validation">
+                                            <spinSuccess
+                                                *ngIf="
+                                                    addressForm.controls['addressCountry'].valid &&
+                                                    addressForm.controls['addressCountry'].dirty
+                                                "
+                                            ></spinSuccess>
+                                            <spinError
+                                                *ngIf="
+                                                    !addressForm.controls['addressCountry'].valid &&
+                                                    addressForm.controls['addressCountry'].dirty
+                                                "
+                                            ></spinError>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>{{ l('CatState') }} *</label>
+                                    <div class="formgroup-control mb-5">
+                                        <p-dropdown
+                                            #addressState
+                                            formControlName="addressState"
+                                            [(ngModel)]="memberAddress.catStateId"
+                                            [options]="addressStates"
+                                            placeholder="{{ 'SelectAnItemDropdown' | localize }}"
+                                            [showClear]="true"
+                                            [filter]="true"
+                                            [disabled]="true"
+                                            emptyMessage="{{ 'PrimeNGEmptyMessage' | localize }}"
+                                        ></p-dropdown>
+                                        <div class="spin-validation">
+                                            <spinSuccess
+                                                *ngIf="
+                                                    addressForm.controls['addressState'].valid &&
+                                                    addressForm.controls['addressState'].dirty
+                                                "
+                                            ></spinSuccess>
+                                            <spinError
+                                                *ngIf="
+                                                    !addressForm.controls['addressState'].valid &&
+                                                    addressForm.controls['addressState'].dirty
+                                                "
+                                            ></spinError>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>{{ 'City' | localize }} *</label>
+                                    <div class="formgroup-control mb-5">
+                                        <input
+                                            type="text"
+                                            #addressCity
+                                            formControlName="addressCity"
+                                            [(ngModel)]="memberAddress.city"
+                                            placeholder="{{ 'City' | localize }}"
+                                            class="form-control"
+                                            maxlength="32"
+                                            pattern="^(?!\s)(.*\S)?(?<!\s)$"
+                                        />
+                                        <div class="spin-validation">
+                                            <spinSuccess
+                                                *ngIf="
+                                                    addressForm.controls['addressCity'].valid &&
+                                                    addressForm.controls['addressCity'].dirty
+                                                "
+                                            ></spinSuccess>
+                                            <spinError
+                                                *ngIf="
+                                                    !addressForm.controls['addressCity'].valid &&
+                                                    addressForm.controls['addressCity'].dirty
+                                                "
+                                            ></spinError>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="addressProof">
+                                        {{ 'AddressProof' | localize }} *
+                                        <span class="details">{{ 'AddressProofDetails' | localize }}</span>
+                                        <br />
+                                    </label>
+                                    <p-fileUpload
+                                        [auto]="true"
+                                        id="addressProof"
+                                        name="addressProof"
+                                        accept="image/*,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-fontobject,application/pdf"
+                                        maxFileSize="10000000"
+                                        fileLimit="1"
+                                        [url]="uploadUrl"
+                                        (onUpload)="onUpload($event, uploadedAddressProof)"
+                                        (onBeforeSend)="onBeforeSend($event)"
+                                        chooseLabel="{{ 'PrimeNGChoose' | localize }}"
+                                    >
+                                        <ng-template pTemplate="content">
+                                            <ul *ngIf="uploadedAddressProof.length">
+                                                <li *ngFor="let file of uploadedAddressProof">
+                                                    {{ file.name }} - {{ file.size }} bytes
+                                                    <span class="alert alert-sucess">
+                                                        {{ 'PrimeNGUploaderSuccessFileUpoload' | localize }}
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </ng-template>
+                                    </p-fileUpload>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form class="mt-8" [formGroup]="identityForm">
+                            <h3 class="text-primary mb-5">{{ 'IdentityPersonalTitle' | localize }}</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>{{ l('CatIdentityType') }} *</label>
+                                    <div class="formgroup-control mb-5">
+                                        <p-dropdown
+                                            #identityType
+                                            formControlName="identityType"
+                                            [(ngModel)]="memberIdentity.catIdentityTypeId"
+                                            [disabled]="true"
+                                            [options]="identityTypes"
+                                            placeholder="{{ 'Loading' | localize }}"
+                                            [showClear]="true"
+                                            [filter]="true"
+                                        ></p-dropdown>
+                                        <div class="spin-validation">
+                                            <spinSuccess
+                                                *ngIf="
+                                                    identityForm.controls['identityType'].valid &&
+                                                    identityForm.controls['identityType'].dirty
+                                                "
+                                            ></spinSuccess>
+                                            <spinError
+                                                *ngIf="
+                                                    !identityForm.controls['identityType'].valid &&
+                                                    identityForm.controls['identityType'].dirty
+                                                "
+                                            ></spinError>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>{{ 'IdentityId' | localize }} *</label>
+                                    <div class="formgroup-control mb-5">
+                                        <input
+                                            type="text"
+                                            #identityId
+                                            formControlName="identityId"
+                                            [(ngModel)]="memberIdentity.identityId"
+                                            placeholder="{{ 'IdentityId' | localize }}"
+                                            class="form-control"
+                                            maxlength="32"
+                                            pattern="^(?!\s)(.*\S)?(?<!\s)$"
+                                        />
+                                        <div class="spin-validation">
+                                            <spinSuccess
+                                                *ngIf="
+                                                    identityForm.controls['identityId'].valid &&
+                                                    identityForm.controls['identityId'].dirty
+                                                "
+                                            ></spinSuccess>
+                                            <spinError
+                                                *ngIf="
+                                                    !identityForm.controls['identityId'].valid &&
+                                                    identityForm.controls['identityId'].dirty
+                                                "
+                                            ></spinError>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>{{ 'ExpirationDate' | localize }} *</label>
+                                    <div class="formgroup-control mb-5">
+                                        <p-calendar
+                                            #identityExpiration
+                                            formControlName="identityExpiration"
+                                            placeholder="08/06/2029"
+                                            [(ngModel)]="memberIdentity.expiration"
+                                            dateFormat="dd/mm/yy"
+                                            [showIcon]="true"
+                                            required
+                                        ></p-calendar>
+                                        <div class="spin-validation">
+                                            <spinSuccess
+                                                *ngIf="
+                                                    identityForm.controls['identityExpiration'].valid &&
+                                                    identityForm.controls['identityExpiration'].dirty
+                                                "
+                                            ></spinSuccess>
+                                            <spinError
+                                                *ngIf="
+                                                    !identityForm.controls['identityExpiration'].valid &&
+                                                    identityForm.controls['identityExpiration'].dirty
+                                                "
+                                            ></spinError>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="identityFrontPicture">{{ 'IdentityFrontPicture' | localize }}</label>
+                                    <p-fileUpload
+                                        [auto]="true"
+                                        id="identityFrontPicture"
+                                        name="identityFrontPicture"
+                                        accept="image/*"
+                                        maxFileSize="10000000"
+                                        fileLimit="1"
+                                        [url]="uploadUrl"
+                                        (onUpload)="onUpload($event, uploadedFront)"
+                                        (onBeforeSend)="onBeforeSend($event)"
+                                        chooseLabel="{{ 'PrimeNGChoose' | localize }}"
+                                    >
+                                        <ng-template pTemplate="content">
+                                            <ul *ngIf="uploadedFront.length">
+                                                <li *ngFor="let file of uploadedFront">
+                                                    {{ file.name }} - {{ file.size }} bytes
+                                                    <span class="alert alert-sucess">
+                                                        {{ 'PrimeNGUploaderSuccessFileUpoload' | localize }}
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </ng-template>
+                                    </p-fileUpload>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="identityBackPicture">{{ 'IdentityBackPicture' | localize }}</label>
+                                    <p-fileUpload
+                                        [auto]="true"
+                                        fileLimit="1"
+                                        id="identityBackPicture"
+                                        name="identityBackPicture"
+                                        accept="image/*"
+                                        maxFileSize="10000000"
+                                        [url]="uploadUrl"
+                                        (onUpload)="onUpload($event, uploadedBack)"
+                                        (onBeforeSend)="onBeforeSend($event)"
+                                        chooseLabel="{{ 'PrimeNGChoose' | localize }}"
+                                    >
+                                        <ng-template pTemplate="content">
+                                            <ul *ngIf="uploadedBack.length">
+                                                <li *ngFor="let file of uploadedBack">
+                                                    {{ file.name }} - {{ file.size }} bytes
+                                                    <span class="alert alert-sucess">
+                                                        {{ 'PrimeNGUploaderSuccessFileUpoload' | localize }}
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </ng-template>
+                                    </p-fileUpload>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form class="mt-8" [formGroup]="economicInfoForm">
+                            <h3 class="text-primary mb-5">{{ 'EconomicInfoTitle' | localize }}</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>{{ l('CatProfession') }} *</label>
+                                    <div class="formgroup-control mb-5">
+                                        <p-dropdown
+                                            #economicInfoProfession
+                                            formControlName="economicInfoProfession"
+                                            [(ngModel)]="memberEconomicInfo.catProfessionId"
+                                            [disabled]="true"
+                                            [options]="economicInfoProfessions"
+                                            placeholder="{{ 'Loading' | localize }}"
+                                            [showClear]="true"
+                                            [filter]="true"
+                                        ></p-dropdown>
+                                        <div class="spin-validation">
+                                            <spinSuccess
+                                                *ngIf="
+                                                    economicInfoForm.controls['economicInfoProfession'].valid &&
+                                                    economicInfoForm.controls['economicInfoProfession'].dirty
+                                                "
+                                            ></spinSuccess>
+                                            <spinError
+                                                *ngIf="
+                                                    !economicInfoForm.controls['economicInfoProfession'].valid &&
+                                                    economicInfoForm.controls['economicInfoProfession'].dirty
+                                                "
+                                            ></spinError>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>{{ 'MonthlyIncome' | localize }} *</label>
+                                    <div class="formgroup-control mb-5">
+                                        <input
+                                            type="text"
+                                            #economicInfoIncome
+                                            formControlName="economicInfoIncome"
+                                            [(ngModel)]="memberEconomicInfo.income"
+                                            placeholder="{{ 'MonthlyIncome' | localize }}"
+                                            class="form-control"
+                                            prefix="$"
+                                            mask="separator"
+                                            thousandSeparator=","
+                                            [validation]="true"
+                                            minlength="2"
+                                            maxlength="32"
+                                        />
+                                        <div class="spin-validation">
+                                            <spinSuccess
+                                                *ngIf="
+                                                    economicInfoForm.controls['economicInfoIncome'].valid &&
+                                                    economicInfoForm.controls['economicInfoIncome'].dirty
+                                                "
+                                            ></spinSuccess>
+                                            <spinError
+                                                *ngIf="
+                                                    !economicInfoForm.controls['economicInfoIncome'].valid &&
+                                                    economicInfoForm.controls['economicInfoIncome'].dirty
+                                                "
+                                            ></spinError>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>{{ l('CatSourceFoundses') }} *</label>
+                                    <div class="formgroup-control mb-5">
+                                        <p-dropdown
+                                            #economicInfoSourceFounds
+                                            formControlName="economicInfoSourceFounds"
+                                            [(ngModel)]="memberEconomicInfo.catSourceFoundsId"
+                                            [disabled]="true"
+                                            [options]="economicInfoSourceFoundses"
+                                            placeholder="{{ 'Loading' | localize }}"
+                                            [showClear]="true"
+                                            [filter]="true"
+                                        ></p-dropdown>
+                                        <div class="spin-validation">
+                                            <spinSuccess
+                                                *ngIf="
+                                                    economicInfoForm.controls['economicInfoSourceFounds'].valid &&
+                                                    economicInfoForm.controls['economicInfoSourceFounds'].dirty
+                                                "
+                                            ></spinSuccess>
+                                            <spinError
+                                                *ngIf="
+                                                    !economicInfoForm.controls['economicInfoSourceFounds'].valid &&
+                                                    economicInfoForm.controls['economicInfoSourceFounds'].dirty
+                                                "
+                                            ></spinError>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>
+                                        {{ 'MonthlyExpectedTransactions' | localize }} ({{ 'Aprox' | localize }})*
+                                    </label>
+                                    <div class="formgroup-control mb-5">
+                                        <input
+                                            type="text"
+                                            #economicInfoExpectedTransactions
+                                            formControlName="economicInfoExpectedTransactions"
+                                            [(ngModel)]="memberEconomicInfo.expectedTransactions"
+                                            placeholder="{{ 'MonthlyExpectedTransactions' | localize }}"
+                                            class="form-control"
+                                            mask="0*"
+                                            maxlength="32"
+                                        />
+                                        <div class="spin-validation">
+                                            <spinSuccess
+                                                *ngIf="
+                                                    economicInfoForm.controls['economicInfoExpectedTransactions']
+                                                        .valid &&
+                                                    economicInfoForm.controls['economicInfoExpectedTransactions'].dirty
+                                                "
+                                            ></spinSuccess>
+                                            <spinError
+                                                *ngIf="
+                                                    !economicInfoForm.controls['economicInfoExpectedTransactions']
+                                                        .valid &&
+                                                    economicInfoForm.controls['economicInfoExpectedTransactions'].dirty
+                                                "
+                                            ></spinError>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="economicInfoProofIncome">
+                                        {{ 'ProofIncome' | localize }} *
+                                        <span class="details">{{ 'ProofIncomeDetails' | localize }}</span>
+                                        <br />
+                                    </label>
+                                    <p-fileUpload
+                                        [auto]="true"
+                                        id="economicInfoProofIncome"
+                                        name="economicInfoProofIncome"
+                                        accept="image/*,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-fontobject,application/pdf"
+                                        maxFileSize="10000000"
+                                        fileLimit="1"
+                                        [url]="uploadUrl"
+                                        (onUpload)="onUpload($event, uploadedProofIncome)"
+                                        (onBeforeSend)="onBeforeSend($event)"
+                                        chooseLabel="{{ 'PrimeNGChoose' | localize }}"
+                                    >
+                                        <ng-template pTemplate="content">
+                                            <ul *ngIf="uploadedProofIncome.length">
+                                                <li *ngFor="let file of uploadedProofIncome">
+                                                    {{ file.name }} - {{ file.size }} bytes
+                                                    <span class="alert alert-sucess">
+                                                        {{ 'PrimeNGUploaderSuccessFileUpoload' | localize }}
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </ng-template>
+                                    </p-fileUpload>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="economicInfoTaxReturn">
+                                        {{ 'TaxReturn' | localize }}
+                                        <span class="details">{{ 'TaxReturnDetails' | localize }}</span>
+                                    </label>
+                                    <p-fileUpload
+                                        [auto]="true"
+                                        fileLimit="1"
+                                        id="economicInfoTaxReturn"
+                                        name="economicInfoTaxReturn"
+                                        accept="image/*,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-fontobject,application/pdf"
+                                        maxFileSize="10000000"
+                                        [url]="uploadUrl"
+                                        (onUpload)="onUpload($event, uploadedTaxReturn)"
+                                        (onBeforeSend)="onBeforeSend($event)"
+                                        chooseLabel="{{ 'PrimeNGChoose' | localize }}"
+                                    >
+                                        <ng-template pTemplate="content">
+                                            <ul *ngIf="uploadedTaxReturn.length">
+                                                <li *ngFor="let file of uploadedTaxReturn">
+                                                    {{ file.name }} - {{ file.size }} bytes
+                                                    <span class="alert alert-sucess">
+                                                        {{ 'PrimeNGUploaderSuccessFileUpoload' | localize }}
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </ng-template>
+                                    </p-fileUpload>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form class="mt-8" [formGroup]="pepForm">
+                            <h3 class="text-primary mb-5">{{ 'PepTitle' | localize }}</h3>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-10 offset-md-1">
+                                    <div class="alert alert-info w-100" role="alert">
+                                        <span class="fw-bold">{{ 'PepTitle' | localize }}:</span>
+                                        <span>{{ 'PepNotice' | localize }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div>{{ 'IsPepAnswer' | localize }}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <p-radioButton
+                                        #pep
+                                        formControlName="pep"
+                                        [value]="true"
+                                        label="{{ 'OptionYes' | localize }}"
+                                        [(ngModel)]="isPep"
+                                        (onClick)="disableControlsPep()"
+                                    ></p-radioButton>
+                                </div>
+                                <div class="col-2">
+                                    <p-radioButton
+                                        #pep
+                                        formControlName="pep"
+                                        [value]="false"
+                                        label="{{ 'OptionNo' | localize }}"
+                                        [(ngModel)]="isPep"
+                                        (onClick)="disableControlsPep()"
+                                    ></p-radioButton>
+                                </div>
+                                <div class="col-2 pt-10">
+                                    <div class="spin-validation">
+                                        <spinSuccess
+                                            *ngIf="pepForm.controls['pep'].valid && pepForm.controls['pep'].dirty"
+                                        ></spinSuccess>
+                                        <spinError
+                                            *ngIf="!pepForm.controls['pep'].valid && pepForm.controls['pep'].dirty"
+                                        ></spinError>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="isPep == true" class="row">
+                                <div class="row mb-5">
+                                    <div class="col-md-8">{{ 'PepAnswer1' | localize }}</div>
+                                    <div class="col-md-4">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <p-radioButton
+                                                    #pepAnswer1
+                                                    formControlName="pepAnswer1"
+                                                    [value]="true"
+                                                    label="{{ 'OptionYes' | localize }}"
+                                                    [(ngModel)]="memberPep.answer1"
+                                                ></p-radioButton>
+                                            </div>
+                                            <div class="col-3">
+                                                <p-radioButton
+                                                    #pepAnswer1
+                                                    formControlName="pepAnswer1"
+                                                    [value]="false"
+                                                    label="{{ 'OptionNo' | localize }}"
+                                                    [(ngModel)]="memberPep.answer1"
+                                                ></p-radioButton>
+                                            </div>
+                                            <div class="col-2 pt-10">
+                                                <div class="spin-validation">
+                                                    <spinSuccess
+                                                        *ngIf="
+                                                            pepForm.controls['pepAnswer1'].valid &&
+                                                            pepForm.controls['pepAnswer1'].dirty
+                                                        "
+                                                    ></spinSuccess>
+                                                    <spinError
+                                                        *ngIf="
+                                                            !pepForm.controls['pepAnswer1'].valid &&
+                                                            pepForm.controls['pepAnswer1'].dirty
+                                                        "
+                                                    ></spinError>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-5">
+                                    <div class="col-md-8">{{ 'PepAnswer2' | localize }}</div>
+                                    <div class="col-md-4">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <p-radioButton
+                                                    #pepAnswer2
+                                                    formControlName="pepAnswer2"
+                                                    [value]="true"
+                                                    label="{{ 'OptionYes' | localize }}"
+                                                    [(ngModel)]="memberPep.answer2"
+                                                ></p-radioButton>
+                                            </div>
+                                            <div class="col-3">
+                                                <p-radioButton
+                                                    #pepAnswer2
+                                                    formControlName="pepAnswer2"
+                                                    [value]="false"
+                                                    label="{{ 'OptionNo' | localize }}"
+                                                    [(ngModel)]="memberPep.answer2"
+                                                ></p-radioButton>
+                                            </div>
+                                            <div class="col-2 pt-10">
+                                                <div class="spin-validation">
+                                                    <spinSuccess
+                                                        *ngIf="
+                                                            pepForm.controls['pepAnswer2'].valid &&
+                                                            pepForm.controls['pepAnswer2'].dirty
+                                                        "
+                                                    ></spinSuccess>
+                                                    <spinError
+                                                        *ngIf="
+                                                            !pepForm.controls['pepAnswer2'].valid &&
+                                                            pepForm.controls['pepAnswer2'].dirty
+                                                        "
+                                                    ></spinError>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-5">
+                                    <div class="col-md-8">{{ 'PepAnswer3' | localize }}</div>
+                                    <div class="col-md-4">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <p-radioButton
+                                                    #pepAnswer3
+                                                    formControlName="pepAnswer3"
+                                                    [value]="true"
+                                                    label="{{ 'OptionYes' | localize }}"
+                                                    [(ngModel)]="memberPep.answer3"
+                                                ></p-radioButton>
+                                            </div>
+                                            <div class="col-3">
+                                                <p-radioButton
+                                                    #pepAnswer3
+                                                    formControlName="pepAnswer3"
+                                                    [value]="false"
+                                                    label="{{ 'OptionNo' | localize }}"
+                                                    [(ngModel)]="memberPep.answer3"
+                                                ></p-radioButton>
+                                            </div>
+                                            <div class="col-2 pt-10">
+                                                <div class="spin-validation">
+                                                    <spinSuccess
+                                                        *ngIf="
+                                                            pepForm.controls['pepAnswer3'].valid &&
+                                                            pepForm.controls['pepAnswer3'].dirty
+                                                        "
+                                                    ></spinSuccess>
+                                                    <spinError
+                                                        *ngIf="
+                                                            !pepForm.controls['pepAnswer3'].valid &&
+                                                            pepForm.controls['pepAnswer3'].dirty
+                                                        "
+                                                    ></spinError>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="row">
+                            <div class="col-sm-6 offset-sm-3">
+                                <button
+                                    class="btn btn-primary w-100"
+                                    (click)="onSave()"
+                                    [buttonBusy]="saving"
+                                    [busyText]="l('SavingWithThreeDot')"
+                                >
+                                    {{ 'Save' | localize }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

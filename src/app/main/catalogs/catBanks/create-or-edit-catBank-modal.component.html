@@ -1,0 +1,63 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #catBankForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="catBank.id">{{l("EditCatBank")}}</span>
+                        <span *ngIf="!catBank.id">{{l("CreateNewCatBank")}}</span>
+                    </h4>                    
+                    
+                <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                     <span aria-hidden="true">&times;</span>
+                </button>
+             
+                    
+                </div>
+                <div class="modal-body">
+                 
+
+					<div class="form-group m-form__group">
+                        <label for="CatCountryTitle">{{l("CatCountry")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="CatCountryTitle" name="catCountryTitle" [(ngModel)]="catCountryTitle" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectCatCountryModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setCatCountryIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="catBank.catCountryId" [(ngModel)]="catBank.catCountryId" type="text" required hidden>
+		                
+
+
+								<div class="form-group">
+									<label for="CatBank_Title">{{l("Title")}} *</label>
+									<input type="text" #CatBank_Title="ngModel" id="CatBank_Title" class="form-control" [(ngModel)]="catBank.title" name="Title"   minlength="1"  maxlength="100"  required/>
+								    <validation-messages [formCtrl]="CatBank_Title"></validation-messages>
+								</div>
+					
+								<br/><div class="m-checkbox-list">
+									<label for="CatBank_Publish" class="kt-checkbox">
+										<input id="CatBank_Publish" #CatBank_Publish="ngModel" type="checkbox" name="Publish" [(ngModel)]="catBank.publish"> 
+										{{l("Publish")}}
+										<span></span>
+									</label>
+									<validation-messages [formCtrl]="CatBank_Publish"></validation-messages>
+								</div>
+								
+					
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!catBankForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<catBankCatCountryLookupTableModal #catBankCatCountryLookupTableModal (modalSave)="getNewCatCountryId()"></catBankCatCountryLookupTableModal>
+		 
+</div>

@@ -1,0 +1,49 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #catNationalityForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="catNationality.id">{{l("EditCatNationality")}}</span>
+                        <span *ngIf="!catNationality.id">{{l("CreateNewCatNationality")}}</span>
+                    </h4>                    
+                    
+                <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                     <span aria-hidden="true">&times;</span>
+                </button>
+             
+                    
+                </div>
+                <div class="modal-body">
+                 
+
+
+
+								<div class="form-group">
+									<label for="CatNationality_Title">{{l("Title")}} *</label>
+									<input type="text" #CatNationality_Title="ngModel" id="CatNationality_Title" class="form-control" [(ngModel)]="catNationality.title" name="Title"   minlength="1"  maxlength="100"  required/>
+								    <validation-messages [formCtrl]="CatNationality_Title"></validation-messages>
+								</div>
+					
+								<br/><div class="m-checkbox-list">
+									<label for="CatNationality_Publish" class="kt-checkbox">
+										<input id="CatNationality_Publish" #CatNationality_Publish="ngModel" type="checkbox" name="Publish" [(ngModel)]="catNationality.publish"> 
+										{{l("Publish")}}
+										<span></span>
+									</label>
+									<validation-messages [formCtrl]="CatNationality_Publish"></validation-messages>
+								</div>
+								
+					
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!catNationalityForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

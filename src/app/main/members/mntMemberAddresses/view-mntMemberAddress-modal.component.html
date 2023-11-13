@@ -1,0 +1,61 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Details")}}</span>
+                </h4>               
+                
+                <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                     <span aria-hidden="true">&times;</span>
+                </button>
+             
+                
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Street")}} :</h6>
+                        {{ item.mntMemberAddress.street }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ExteriorNo")}} :</h6>
+                        {{ item.mntMemberAddress.exteriorNo }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("InteriorNo")}} :</h6>
+                        {{ item.mntMemberAddress.interiorNo }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("ZipCode")}} :</h6>
+                        {{ item.mntMemberAddress.zipCode }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("City")}} :</h6>
+                        {{ item.mntMemberAddress.city }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{l("Proof")}} :</h6>
+                        {{ item.mntMemberAddress.proof }}
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <h6>({{l("MntMember")}}) {{l("Comments")}} :</h6>
+                        {{item.mntMemberComments}}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>({{l("CatState")}}) {{l("Title")}} :</h6>
+                        {{item.catStateTitle}}
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+
+</div>

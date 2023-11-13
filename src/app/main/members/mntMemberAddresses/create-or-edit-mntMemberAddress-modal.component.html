@@ -1,0 +1,97 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #mntMemberAddressForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="mntMemberAddress.id">{{l("EditMntMemberAddress")}}</span>
+                        <span *ngIf="!mntMemberAddress.id">{{l("CreateNewMntMemberAddress")}}</span>
+                    </h4>                    
+                    
+                <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                     <span aria-hidden="true">&times;</span>
+                </button>
+             
+                    
+                </div>
+                <div class="modal-body">
+                 
+
+					<div class="form-group m-form__group">
+                        <label for="MntMemberComments">{{l("MntMember")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="MntMemberComments" name="mntMemberComments" [(ngModel)]="mntMemberComments" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectMntMemberModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setMntMemberIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="mntMemberAddress.mntMemberId" [(ngModel)]="mntMemberAddress.mntMemberId" type="text"  hidden>
+		                
+					<div class="form-group m-form__group">
+                        <label for="CatStateTitle">{{l("CatState")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="CatStateTitle" name="catStateTitle" [(ngModel)]="catStateTitle" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectCatStateModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setCatStateIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="mntMemberAddress.catStateId" [(ngModel)]="mntMemberAddress.catStateId" type="text" required hidden>
+		                
+
+
+								<div class="form-group">
+									<label for="MntMemberAddress_Street">{{l("Street")}} *</label>
+									<input type="text" #MntMemberAddress_Street="ngModel" id="MntMemberAddress_Street" class="form-control" [(ngModel)]="mntMemberAddress.street" name="Street"   minlength="1"  maxlength="100"  required/>
+								    <validation-messages [formCtrl]="MntMemberAddress_Street"></validation-messages>
+								</div>
+					
+								<div class="form-group">
+									<label for="MntMemberAddress_ExteriorNo">{{l("ExteriorNo")}} *</label>
+									<input type="text" #MntMemberAddress_ExteriorNo="ngModel" id="MntMemberAddress_ExteriorNo" class="form-control" [(ngModel)]="mntMemberAddress.exteriorNo" name="ExteriorNo"   minlength="1"  maxlength="10"  required/>
+								    <validation-messages [formCtrl]="MntMemberAddress_ExteriorNo"></validation-messages>
+								</div>
+					
+								<div class="form-group">
+									<label for="MntMemberAddress_InteriorNo">{{l("InteriorNo")}}</label>
+									<input type="text" #MntMemberAddress_InteriorNo="ngModel" id="MntMemberAddress_InteriorNo" class="form-control" [(ngModel)]="mntMemberAddress.interiorNo" name="InteriorNo"   minlength="1"  maxlength="10" />
+								    <validation-messages [formCtrl]="MntMemberAddress_InteriorNo"></validation-messages>
+								</div>
+					
+								<div class="form-group">
+									<label for="MntMemberAddress_ZipCode">{{l("ZipCode")}}</label>
+									<input type="text" #MntMemberAddress_ZipCode="ngModel" id="MntMemberAddress_ZipCode" class="form-control" [(ngModel)]="mntMemberAddress.zipCode" name="ZipCode"   minlength="1"  maxlength="20" />
+								    <validation-messages [formCtrl]="MntMemberAddress_ZipCode"></validation-messages>
+								</div>
+					
+								<div class="form-group">
+									<label for="MntMemberAddress_City">{{l("City")}} *</label>
+									<input type="text" #MntMemberAddress_City="ngModel" id="MntMemberAddress_City" class="form-control" [(ngModel)]="mntMemberAddress.city" name="City"   minlength="1"  maxlength="100"  required/>
+								    <validation-messages [formCtrl]="MntMemberAddress_City"></validation-messages>
+								</div>
+					
+								<div class="form-group">
+									<label for="MntMemberAddress_Proof">{{l("Proof")}}</label>
+									<input type="text" #MntMemberAddress_Proof="ngModel" id="MntMemberAddress_Proof" class="form-control" [(ngModel)]="mntMemberAddress.proof" name="Proof"   minlength="1"  maxlength="255" />
+								    <validation-messages [formCtrl]="MntMemberAddress_Proof"></validation-messages>
+								</div>
+					
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!mntMemberAddressForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<mntMemberAddressMntMemberLookupTableModal #mntMemberAddressMntMemberLookupTableModal (modalSave)="getNewMntMemberId()"></mntMemberAddressMntMemberLookupTableModal>
+		 <mntMemberAddressCatStateLookupTableModal #mntMemberAddressCatStateLookupTableModal (modalSave)="getNewCatStateId()"></mntMemberAddressCatStateLookupTableModal>
+		 
+</div>

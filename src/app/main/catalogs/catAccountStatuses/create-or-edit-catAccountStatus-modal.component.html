@@ -1,0 +1,49 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #catAccountStatusForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="catAccountStatus.id">{{l("EditCatAccountStatus")}}</span>
+                        <span *ngIf="!catAccountStatus.id">{{l("CreateNewCatAccountStatus")}}</span>
+                    </h4>                    
+                    
+                <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                     <span aria-hidden="true">&times;</span>
+                </button>
+             
+                    
+                </div>
+                <div class="modal-body">
+                 
+
+
+
+								<div class="form-group">
+									<label for="CatAccountStatus_Title">{{l("Title")}} *</label>
+									<input type="text" #CatAccountStatus_Title="ngModel" id="CatAccountStatus_Title" class="form-control" [(ngModel)]="catAccountStatus.title" name="Title"   minlength="1"  maxlength="50"  required/>
+								    <validation-messages [formCtrl]="CatAccountStatus_Title"></validation-messages>
+								</div>
+					
+								<br/><div class="m-checkbox-list">
+									<label for="CatAccountStatus_Publish" class="kt-checkbox">
+										<input id="CatAccountStatus_Publish" #CatAccountStatus_Publish="ngModel" type="checkbox" name="Publish" [(ngModel)]="catAccountStatus.publish"> 
+										{{l("Publish")}}
+										<span></span>
+									</label>
+									<validation-messages [formCtrl]="CatAccountStatus_Publish"></validation-messages>
+								</div>
+								
+					
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!catAccountStatusForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

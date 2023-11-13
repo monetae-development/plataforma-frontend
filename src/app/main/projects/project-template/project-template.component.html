@@ -1,0 +1,149 @@
+<div>
+    <div class="container-fluid">
+        <div class="row p-0">
+            <div class="col-12 p-0">
+                <div class="card justify-content-between p-3 mb-8">
+                    <div class="d-flex flex-row">
+                        <div class="d-flex">
+                            <h4>
+                                Proyectos /
+                                <small class="text-body-secondary">Proyecto El Salvador</small>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <div class="row g-3">
+                    <div class="col-md-12 align-items-stretch">
+                        <div class="card card-height-100 p-5">
+                            <div class="row mb-3">
+                                <div class="col-md-4"><h1>Token ESA1</h1></div>
+                                <div class="col-md-8 d-flex flex-row-reverse">
+                                    <div
+                                        class="d-flex d-block justify-content-center justify-content-md-end d-sm-flex d-sm-block d-grid gap-2"
+                                    >
+                                        <button
+                                            class="btn btn-primary"
+                                            type="button"
+                                            (click)="createMemberFiatDeposit()"
+                                        >
+                                            <i class="fa fa-coins fs-4"></i>
+                                            {{ l('MakeDeposit') }}
+                                        </button>
+                                        <button class="btn btn-primary" type="button">
+                                            <i class="fas fa-money-bill-wave-alt fs-3"></i>
+                                            {{ l('Send') }}
+                                        </button>
+                                        <button class="btn btn-primary" type="button">
+                                            <i class="fas fa-hand-holding-usd fs-3"></i>
+                                            {{ l('Receive') }}
+                                        </button>
+                                        <button
+                                            class="btn btn-primary"
+                                            type="button"
+                                            (click)="createMemberFiatWhitdrawal()"
+                                        >
+                                            <i class="far fa-credit-card fs-3"></i>
+                                            {{ l('MakeWithdrawal') }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-5">
+                                <div class="col-md-6">
+                                    <div><img src="/assets/projects/01/01.jpg" alt="" class="w-100" /></div>
+                                    <div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <h1>Proyecto El Salvador</h1>
+                                    <div class="py-8">
+                                        <p>
+                                            Proyecto de crowdfunding inmobiliario "El Salvador" tiene como objetivo
+                                            revolucionar el mercado de bienes raíces al proporcionar una oportunidad
+                                            única para inversores y compradores de viviendas interesados en adquirir
+                                            propiedades en una comunidad residencial sostenible y moderna.
+                                        </p>
+                                        <p>
+                                            Representa una combinación única de sostenibilidad ambiental, ubicación
+                                            estratégica, oportunidades de inversión y calidad de vida. Este proyecto
+                                            tiene como objetivo redefinir el estándar de la vida moderna en El Salvador
+                                            y brindar un espacio donde las personas puedan vivir de manera sostenible y
+                                            en comunidad.
+                                        </p>
+                                    </div>
+                                    <div class="d-flex flex-row">
+                                        <div class="me-4"><i class="fab fa-facebook socialmedia-projects"></i></div>
+                                        <div class="me-4"><i class="fab fa-twitter socialmedia-projects"></i></div>
+                                        <div class="me-4"><i class="fas fa-envelope socialmedia-projects"></i></div>
+                                        <div class="me-4"><i class="fas fa-share-alt socialmedia-projects"></i></div>
+                                    </div>
+                                    <div class="mt-10">
+                                        <h2>$8,500,000.00 USD</h2>
+                                    </div>
+                                    <div>
+                                        <div
+                                            class="progress"
+                                            role="progressbar"
+                                            aria-valuenow="85"
+                                            aria-valuemin="0"
+                                            aria-valuemax="100"
+                                        >
+                                            <div class="progress-bar bg-secondary" style="width: 85%"></div>
+                                        </div>
+                                        <div
+                                            class="mt-2 d-flex justify-content-between d-block d-sm-flex d-sm-block d-grid gap-2 py-2"
+                                        >
+                                            <div><h4>Meta: $10,000,000 USD</h4></div>
+                                            <div><h4>Retorno: 18%</h4></div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-row mt-6">
+                                        <div class="me-5">
+                                            <h1>20</h1>
+                                            <h4 style="font-size: 16px">Días restantes</h4>
+                                        </div>
+                                        <div class="me-5">
+                                            <h1>223</h1>
+                                            <h4 style="font-size: 16px">Inversionistas</h4>
+                                        </div>
+                                        <div class="d-flex flex-row mt-2">
+                                            <div class="mx-5">
+                                                <a
+                                                    href="https://sepolia.etherscan.io/address/0xA4Bf7B720693d1612a767bcaA487a1F9319FB803"
+                                                    target="_blank"
+                                                    class="btn-outline btn-outline-dark"
+                                                >
+                                                    Ver Contrato
+                                                </a>
+                                            </div>
+                                            <div>
+                                                <button class="btn btn-primary" (click)="showInvestModal()">
+                                                    Invertir
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <member-fiat-deposit #createMntMemberFiatDepositModal></member-fiat-deposit>
+        <member-fiat-withdrawal #createMntMemberFiatWithdrawalModal></member-fiat-withdrawal>
+        <projects-invest-modal #projectsInvestModal></projects-invest-modal>
+    </div>
+</div>

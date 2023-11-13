@@ -1,0 +1,61 @@
+﻿<div class="flex-root container-fluid" style="background-size: cover; background-position: center; background-image: url(/assets/metronic/assets/media/svg/illustrations/{{
+                backgroundImageName
+            }}.jpg)">
+    <div class="container h-100">
+        <div class="row">
+            <div class="rounded rounded-4 col-xs-10 col-md-8 col-lg-8 col-xl-6 col-xxl-6 mx-auto login-form"
+                style="margin-top:{{windowCenter}}px">
+                <div class="d-flex flex-center flex-column flex-column-fluid p-10"
+                    [class.pb-lg-10]="!isSelectEditionPage()" [class.pb-0]="isSelectEditionPage()">
+                    <!--begin::Logo-->
+                    <a (click)="goToHome()" href="" class="d-flex justify-content-center"
+                        [class.mb-0]="!isSelectEditionPage()">
+                        <img *ngIf="!appSession.tenant || !appSession.tenant.HasLogo()" [src]="defaultLogo" alt="logo"
+                            class="h-100px" [class.mb-20]="isSelectEditionPage()" />
+                        <img *ngIf="appSession.tenant && appSession.tenant.HasLogo()" [src]="
+                                        remoteServiceBaseUrl +
+                                        '/TenantCustomization/GetTenantLogo?skin=' +
+                                        getLogoSkin() +
+                                        '&tenantId=' +
+                                        appSession.tenant.id
+                                    " alt="logo" class="h-40px" />
+                    </a>
+                    <!--end::Logo-->
+                    <!--begin::Wrapper-->
+                    <div *ngIf="isSelectEditionPage()" class="container-xxl mx-auto">
+                        <div *ngIf="showTenantChange()" class="tenant-change-box mb-5 tenant-change-box">
+                            <tenant-change></tenant-change>
+                        </div>
+                        <!--begin::Form-->
+                        <router-outlet></router-outlet>
+                        <!--end::Form-->
+                    </div>
+                    <div *ngIf="!isSelectEditionPage()"
+                        class="w-lg-500px w-100 rounded shadow-sm px-10 px-lg-15 pb-0 mx-auto">
+                        <div *ngIf="showTenantChange()" class="tenant-change-box mb-5 tenant-change-box">
+                            <tenant-change></tenant-change>
+                        </div>
+                        <!--begin::Form-->
+                        <router-outlet></router-outlet>
+                        <!--end::Form-->
+                    </div>
+                    <!--end::Wrapper-->
+
+                    <!--begin::Footer-->
+                    <div class="d-flex flex-center flex-column-auto p-0" [class.pt-0]="isSelectEditionPage()">
+                        <!--begin::Links-->
+                        <div class="d-flex align-items-center fw-bold fs-6">
+                            <language-switch class="mx-auto"></language-switch>
+                        </div>
+                        <!--end::Links-->
+                    </div>
+                    <!--end::Footer-->
+                </div>
+                <!--end::Content-->
+            </div>
+        </div>
+
+    </div>
+
+    <!--end::Authentication - Sign-in-->
+</div>

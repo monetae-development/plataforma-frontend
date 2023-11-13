@@ -1,0 +1,159 @@
+﻿<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #mntMemberBankAccountForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="mntMemberBankAccount.id">{{ l('EditBankAccount') }}</span>
+                        <span *ngIf="!mntMemberBankAccount.id">{{ l('CreateNewBankAccount') }}</span>
+                    </h4>
+
+                    <button class="btn btn-secondary rounded-circle btn-sm close" (click)="close()">
+                        <i class="fa fa-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group mb-5">
+                        <label for="MntMemberBankAccount_Holder">{{ l('Holder') }} *</label>
+                        <input
+                            type="text"
+                            #MntMemberBankAccount_Holder="ngModel"
+                            id="MntMemberBankAccount_Holder"
+                            class="form-control"
+                            [(ngModel)]="mntMemberBankAccount.holder"
+                            name="Holder"
+                            minlength="1"
+                            maxlength="255"
+                            required
+                        />
+                        <validation-messages [formCtrl]="MntMemberBankAccount_Holder"></validation-messages>
+                    </div>
+
+                    <div class="form-group mb-5">
+                        <label class="mb-3">{{ l('Country') }} *</label>
+                        <p-dropdown
+                            #country="ngModel"
+                            id="country"
+                            name="country"
+                            [disabled]="!active"
+                            [options]="countries"
+                            [(ngModel)]="selectedCountry"
+                            placeholder="{{ l('SelectTreeDots') }}"
+                            [showClear]="true"
+                            [filter]="true"
+                            (onChange)="onChangeCountry($event)"
+                            required
+                        ></p-dropdown>
+                        <validation-messages [formCtrl]="country"></validation-messages>
+                    </div>
+
+                    <div class="form-group mb-5">
+                        <label class="mb-3">{{ l('Bank') }} *</label>
+                        <p-dropdown
+                            #bank="ngModel"
+                            id="bank"
+                            name="bank"
+                            [disabled]="!(selectedCountry && banks != undefined)"
+                            [options]="banks"
+                            [(ngModel)]="mntMemberBankAccount.catBankId"
+                            placeholder="{{ l('SelectTreeDots') }}"
+                            [showClear]="true"
+                            [filter]="true"
+                            required
+                        ></p-dropdown>
+                        <validation-messages [formCtrl]="bank"></validation-messages>
+                    </div>
+
+                    <div class="form-group mb-5">
+                        <label class="mb-3">{{ l('AccountType') }} *</label>
+                        <p-dropdown
+                            #accountType="ngModel"
+                            id="accountType"
+                            name="accountType"
+                            [disabled]="!accountTypes"
+                            [options]="accountTypes"
+                            [(ngModel)]="mntMemberBankAccount.catAccountTypeId"
+                            placeholder="{{ l('SelectTreeDots') }}"
+                            [showClear]="true"
+                            [filter]="true"
+                            required
+                        ></p-dropdown>
+                        <validation-messages [formCtrl]="accountType"></validation-messages>
+                    </div>
+
+                    <div class="form-group mb-5">
+                        <label for="MntMemberBankAccount_Account">{{ l('AccountNumber') }} *</label>
+                        <input
+                            type="text"
+                            #MntMemberBankAccount_Account="ngModel"
+                            id="MntMemberBankAccount_Account"
+                            class="form-control"
+                            [(ngModel)]="mntMemberBankAccount.account"
+                            name="Account"
+                            minlength="6"
+                            maxlength="20"
+                            required
+                        />
+                        <validation-messages [formCtrl]="MntMemberBankAccount_Account"></validation-messages>
+                    </div>
+
+                    <div class="form-group mb-5">
+                        <label class="mb-3">{{ l('Currency') }} *</label>
+                        <p-dropdown
+                            #currency="ngModel"
+                            id="currency"
+                            name="currency"
+                            [disabled]="!currencies"
+                            [options]="currencies"
+                            [(ngModel)]="mntMemberBankAccount.catCurrencyId"
+                            placeholder="{{ l('SelectTreeDots') }}"
+                            [showClear]="true"
+                            [filter]="true"
+                            required
+                        ></p-dropdown>
+                        <validation-messages [formCtrl]="currency"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="MntMemberBankAccount_Swift">{{ l('Swift') }} ({{ l('Optional') }})</label>
+                        <input
+                            type="text"
+                            #MntMemberBankAccount_Swift="ngModel"
+                            id="MntMemberBankAccount_Swift"
+                            class="form-control"
+                            [(ngModel)]="mntMemberBankAccount.swift"
+                            name="Swift"
+                            minlength="8"
+                            maxlength="11"
+                        />
+                        <validation-messages [formCtrl]="MntMemberBankAccount_Swift"></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">
+                        {{ l('Cancel') }}
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary blue"
+                        [disabled]="!mntMemberBankAccountForm.form.valid"
+                        [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"
+                    >
+                        <i class="fa fa-save"></i>
+                        <span>{{ l('Save') }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

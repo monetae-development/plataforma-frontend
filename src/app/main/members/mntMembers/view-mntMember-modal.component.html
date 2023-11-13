@@ -1,0 +1,178 @@
+﻿<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{ l('DetailsRegistry') }}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-5">
+                    <div class="col-10">
+                        <h5>
+                            {{ l('User') }}:
+                            <span class="text-danger">{{ item.userName }} {{ item.userSurname }}</span>
+                        </h5>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{ l('Email') }} :</h6>
+                        {{ item.userEmail }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l('PhoneNumber') }} :</h6>
+                        {{ item.userPhoneNumber }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l('DayOfBirth') }} :</h6>
+                        {{ item.mntMember.dayOfBirth | luxonFormat : 'dd/MM/yyyy' }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l('CatNationality') }} :</h6>
+                        {{ item.catNationalityTitle }}
+                    </div>
+                </div>
+
+                <div class="row mb-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>{{ l('AddressTitle') }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <h6>{{ l('Street') }} :</h6>
+                                    {{ address.street }}
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <h6>{{ l('ExteriorNo') }} :</h6>
+                                    {{ address.exteriorNo }}
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <h6>{{ l('InteriorNo') }} :</h6>
+                                    {{ address.interiorNo }}
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <h6>{{ l('Zipcode') }} :</h6>
+                                    {{ address.zipCode }}
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <h6>{{ l('CatCountry') }} :</h6>
+                                    {{ address.catCountryTitle }}
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <h6>{{ l('CatState') }} :</h6>
+                                    {{ address.catStateTitle }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>{{ l('IdentityPersonalTitle') }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <h6>{{ l('CatIdentityType') }} :</h6>
+                                    {{ identity.catIdentityTypeTitle }}
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <h6>{{ l('IdentityId') }} :</h6>
+                                    {{ identity.identityId }}
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <h6>{{ l('Expiration') }} :</h6>
+                                    {{ identity.expiration | luxonFormat : 'dd/MM/yyyy' }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>{{ l('EconomicInfoTitle') }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <h6>{{ l('CatProfession') }} :</h6>
+                                    {{ economic.catProfessionTitle }}
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <h6>{{ l('MonthlyIncome') }} :</h6>
+                                    {{ economic.income }}
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <h6>{{ l('CatSourceFoundses') }} :</h6>
+                                    {{ economic.catSourceFoundsTitle }}
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <h6>{{ 'MonthlyExpectedTransactions' | localize }} :</h6>
+                                    {{ economic.expectedTransactions }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>{{ l('PepTitle') }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div *ngIf="pep.mntMemberId == undefined" class="row" class="row">
+                                <div class="col-sm-12 col-md-10 offset-md-1">
+                                    <div class="alert alert-warning w-100" role="alert">
+                                        <span class="fw-bold">{{ 'AlertinfoTitle' | localize }}:</span>
+                                        {{ 'NotPep' | localize }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="pep.mntMemberId != undefined" class="row">
+                                <div class="col-6 mb-3">
+                                    {{ l('PepAnswer1') }}
+                                    <h6>{{ pep.answer1 ? ('OptionYes' | localize) : ('OptionNo' | localize) }}</h6>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    {{ l('PepAnswer2') }}
+                                    <h6>{{ pep.answer2 ? ('OptionYes' | localize) : ('OptionNo' | localize) }}</h6>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    {{ l('PepAnswer3') }}
+                                    <h6>{{ pep.answer3 ? ('OptionYes' | localize) : ('OptionNo' | localize) }}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">
+                    {{ l('Close') }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

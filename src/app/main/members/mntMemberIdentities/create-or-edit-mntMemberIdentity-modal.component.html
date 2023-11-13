@@ -1,0 +1,202 @@
+﻿<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #mntMemberIdentityForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="mntMemberIdentity.id">{{ l('EditMntMemberIdentity') }}</span>
+                        <span *ngIf="!mntMemberIdentity.id">{{ l('CreateNewMntMemberIdentity') }}</span>
+                    </h4>
+
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group m-form__group">
+                        <label for="CatIdentityTypeTitle">{{ l('CatIdentityType') }}</label>
+                        <div class="input-group">
+                            <input
+                                class="form-control"
+                                id="CatIdentityTypeTitle"
+                                name="catIdentityTypeTitle"
+                                [(ngModel)]="catIdentityTypeTitle"
+                                type="text"
+                                disabled
+                            />
+                            <div class="input-group-append">
+                                <button
+                                    class="btn btn-primary blue"
+                                    (click)="openSelectCatIdentityTypeModal()"
+                                    type="button"
+                                >
+                                    <i class="fa fa-search"></i>
+                                    {{ l('Pick') }}
+                                </button>
+                            </div>
+                            <div class="input-group-prepend">
+                                <button
+                                    class="btn btn-danger btn-icon"
+                                    type="button"
+                                    (click)="setCatIdentityTypeIdNull()"
+                                >
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <input
+                        class="form-control"
+                        name="mntMemberIdentity.catIdentityTypeId"
+                        [(ngModel)]="mntMemberIdentity.catIdentityTypeId"
+                        type="text"
+                        required
+                        hidden
+                    />
+
+                    <div class="form-group m-form__group">
+                        <label for="MntMemberComments">{{ l('MntMember') }}</label>
+                        <div class="input-group">
+                            <input
+                                class="form-control"
+                                id="MntMemberComments"
+                                name="mntMemberComments"
+                                [(ngModel)]="mntMemberComments"
+                                type="text"
+                                disabled
+                            />
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectMntMemberModal()" type="button">
+                                    <i class="fa fa-search"></i>
+                                    {{ l('Pick') }}
+                                </button>
+                            </div>
+                            <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setMntMemberIdNull()">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <input
+                        class="form-control"
+                        name="mntMemberIdentity.mntMemberId"
+                        [(ngModel)]="mntMemberIdentity.mntMemberId"
+                        type="text"
+                        required
+                        hidden
+                    />
+
+                    <div class="form-group">
+                        <label for="MntMemberIdentity_IdentityId">{{ l('IdentityId') }} *</label>
+                        <input
+                            type="text"
+                            #MntMemberIdentity_IdentityId="ngModel"
+                            id="MntMemberIdentity_IdentityId"
+                            class="form-control"
+                            [(ngModel)]="mntMemberIdentity.identityId"
+                            name="IdentityId"
+                            minlength="1"
+                            maxlength="255"
+                            required
+                        />
+                        <validation-messages [formCtrl]="MntMemberIdentity_IdentityId"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="MntMemberIdentity_Expiration">{{ l('Expiration') }}</label>
+                        <input
+                            required
+                            class="form-control m-input"
+                            #MntMemberIdentity_Expiration
+                            type="datetime"
+                            bsDatepicker
+                            datePickerLuxonModifier
+                            [(date)]="mntMemberIdentity.expiration"
+                            id="MntMemberIdentity_Expiration"
+                            name="MntMemberIdentity_Expiration"
+                        />
+                        <validation-messages [formCtrl]="MntMemberIdentity_Expiration"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="MntMemberIdentity_FrontPicture">{{ l('FrontPicture') }}</label>
+                        <input
+                            type="text"
+                            #MntMemberIdentity_FrontPicture="ngModel"
+                            id="MntMemberIdentity_FrontPicture"
+                            class="form-control"
+                            [(ngModel)]="mntMemberIdentity.frontPicture"
+                            name="FrontPicture"
+                            minlength="1"
+                            maxlength="255"
+                        />
+                        <validation-messages [formCtrl]="MntMemberIdentity_FrontPicture"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="MntMemberIdentity_BackPicture">{{ l('BackPicture') }}</label>
+                        <input
+                            type="text"
+                            #MntMemberIdentity_BackPicture="ngModel"
+                            id="MntMemberIdentity_BackPicture"
+                            class="form-control"
+                            [(ngModel)]="mntMemberIdentity.backPicture"
+                            name="BackPicture"
+                            minlength="1"
+                            maxlength="255"
+                        />
+                        <validation-messages [formCtrl]="MntMemberIdentity_BackPicture"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="MntMemberIdentity_Selfie">{{ l('Selfie') }}</label>
+                        <input
+                            type="text"
+                            #MntMemberIdentity_Selfie="ngModel"
+                            id="MntMemberIdentity_Selfie"
+                            class="form-control"
+                            [(ngModel)]="mntMemberIdentity.selfie"
+                            name="Selfie"
+                            minlength="1"
+                            maxlength="255"
+                        />
+                        <validation-messages [formCtrl]="MntMemberIdentity_Selfie"></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">
+                        {{ l('Cancel') }}
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary blue"
+                        [disabled]="!mntMemberIdentityForm.form.valid"
+                        [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"
+                    >
+                        <i class="fa fa-save"></i>
+                        <span>{{ l('Save') }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <mntMemberIdentityCatIdentityTypeLookupTableModal
+        #mntMemberIdentityCatIdentityTypeLookupTableModal
+        (modalSave)="getNewCatIdentityTypeId()"
+    ></mntMemberIdentityCatIdentityTypeLookupTableModal>
+    <mntMemberIdentityMntMemberLookupTableModal
+        #mntMemberIdentityMntMemberLookupTableModal
+        (modalSave)="getNewMntMemberId()"
+    ></mntMemberIdentityMntMemberLookupTableModal>
+</div>

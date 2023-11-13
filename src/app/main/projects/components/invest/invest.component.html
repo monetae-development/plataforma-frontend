@@ -1,0 +1,120 @@
+<div
+    bsModal
+    #projectsInvestModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="projectsInvestModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form #projectsInvestForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">Invertir</h4>
+
+                    <button class="btn btn-secondary rounded-circle btn-sm close" (click)="close()">
+                        <i class="fa fa-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-10 offset-md-1">
+                            <div class="form-group mb-10">
+                                <div class="input-group">
+                                    <label class="input-group-text" id="inputGroup-sizing-default">
+                                        {{ l('Amount') }}
+                                    </label>
+
+                                    <p-inputNumber
+                                        #amount="ngModel"
+                                        inputId="amount"
+                                        name="amount"
+                                        class="form-control"
+                                        [(ngModel)]="dto.amount"
+                                        mode="decimal"
+                                        locale="en-US"
+                                        [minFractionDigits]="0"
+                                        [maxFractionDigits]="2"
+                                        tooltipPosition="top"
+                                        showDelay="500"
+                                        readonly
+                                        required
+                                    ></p-inputNumber>
+                                    <span class="input-group-text">Máx.</span>
+                                </div>
+                                <validation-messages [formCtrl]="amount"></validation-messages>
+                            </div>
+
+                            <div class="form-group mb-10">
+                                <div class="d-flex flex-row">
+                                    <div class="mx-2">
+                                        <button class="btn-outline btn-outline-dark btn-sm">$1.000</button>
+                                    </div>
+                                    <div class="mx-2">
+                                        <button class="btn-outline btn-outline-dark btn-sm">$5.000</button>
+                                    </div>
+                                    <div class="mx-2">
+                                        <button class="btn-outline btn-outline-dark btn-sm">$10.000</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-5 mb-5">
+                                <label class="mb-3">Método de pago *</label>
+                                <p-dropdown
+                                    #Currency="ngModel"
+                                    id="Currency"
+                                    name="Currency"
+                                    [options]="currencies"
+                                    [(ngModel)]="selectedCurrency"
+                                    placeholder="{{ l('SelectTreeDots') }}"
+                                    [showClear]="true"
+                                    required
+                                ></p-dropdown>
+                                <validation-messages [formCtrl]="Currency"></validation-messages>
+                            </div>
+
+                            <div class="col-md-6 offset-md-3">
+                                <div class="d-flex justify-content-between">
+                                    <div><h6>IVA</h6></div>
+                                    <div>$0</div>
+                                </div>
+                                <div class="d-flex justify-content-between mt-4">
+                                    <div><h6>Comisión 1%</h6></div>
+                                    <div>{{ fee }}</div>
+                                </div>
+                                <hr />
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h6>Monto total {{ selectedCurrency }}</h6>
+                                    </div>
+                                    <div>{{ dto.totalAmount }}</div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div><h6>Tokens ESA1</h6></div>
+                                    <div>{{ dto.tokens }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row p-2 mt-4">
+                        <div class="col-sm-6 offset-sm-3">
+                            <button
+                                type="submit"
+                                class="btn btn-primary w-100"
+                                [disabled]="!projectsInvestForm.form.valid"
+                                [buttonBusy]="saving"
+                                [busyText]="l('SavingWithThreeDot')"
+                            >
+                                <span>Invertir</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

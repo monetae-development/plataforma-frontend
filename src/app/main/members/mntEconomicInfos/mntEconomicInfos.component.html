@@ -1,0 +1,244 @@
+﻿<div [@routerTransition]>
+  <div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+  
+  
+                <div class="kt-subheader kt-grid__item">
+                  <div [class]="containerClass">
+                    <div class="kt-subheader__main">
+                        <h3 class="kt-subheader__title">
+                            <span>{{l("MntEconomicInfos")}}</span>
+                        </h3>
+                        <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                        <span class="kt-subheader__desc">
+                            {{l("MntEconomicInfosHeaderInfo")}}
+                        </span>
+                    </div>
+                    <div class="kt-subheader__toolbar">
+                        <div class="kt-subheader__wrapper">
+            				<button (click)="exportToExcel()" class="btn btn-outline btn-outline-success btn-active-light-success me-1"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
+                <button *ngIf="isGranted('Pages.MntEconomicInfos.Create')" (click)="createMntEconomicInfo()" 
+            			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewMntEconomicInfo")}}</button>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+            
+    
+    <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                
+                <div class="form-group m-form__group align-items-center">
+                    <div class="input-group">
+                    <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                        <span class="input-group-btn">
+                            <button (click)="getMntEconomicInfos()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                        </span>
+                    </div>
+                </div>
+        	
+                                
+                            </div>
+                        </div>
+						 <div class="row" [hidden]="!advancedFiltersAreShown">
+						 	<div class="col-md-12">
+						         <div class="kt-separator kt-separator--border-dashed"></div>
+						     </div>
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinIncomeFilter">{{l("MinMax")}} {{l("Income")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinIncomeFilter" [(ngModel)]="minIncomeFilter" placeholder="{{l('MinValue')}}" name="minIncomeFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxIncomeFilter" placeholder="{{l('MaxValue')}}" name="maxIncomeFilter" />
+									</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+									<label for="MinExpectedTransactionsFilter">{{l("MinMax")}} {{l("ExpectedTransactions")}}</label>
+									<div class="input-group">
+                                        <input type="number" class="form-control" id="MinExpectedTransactionsFilter" [(ngModel)]="minExpectedTransactionsFilter" placeholder="{{l('MinValue')}}" name="minExpectedTransactionsFilter" />
+                                        <input type="number" class="form-control" [(ngModel)]="maxExpectedTransactionsFilter" placeholder="{{l('MaxValue')}}" name="maxExpectedTransactionsFilter" />
+									</div>
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="ProofIncomeFilter">{{l("ProofIncome")}}</label>
+									<input type="text" class="form-control" id="ProofIncomeFilter" name="proofIncomeFilter" [(ngModel)]="proofIncomeFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="TaxReturnFilter">{{l("TaxReturn")}}</label>
+									<input type="text" class="form-control" id="TaxReturnFilter" name="taxReturnFilter" [(ngModel)]="taxReturnFilter">
+								</div>
+                            </div>
+
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="CatProfessionTitleFilter">({{l("CatProfession")}}) {{l("Title")}}</label>
+									<input type="text" class="form-control" id="CatProfessionTitleFilter" name="catProfessionTitleFilter" [(ngModel)]="catProfessionTitleFilter">
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="CatSourceFoundsTitleFilter">({{l("CatSourceFounds")}}) {{l("Title")}}</label>
+									<input type="text" class="form-control" id="CatSourceFoundsTitleFilter" name="catSourceFoundsTitleFilter" [(ngModel)]="catSourceFoundsTitleFilter">
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="MntMemberCommentsFilter">({{l("MntMember")}}) {{l("Comments")}}</label>
+									<input type="text" class="form-control" id="MntMemberCommentsFilter" name="mntMemberCommentsFilter" [(ngModel)]="mntMemberCommentsFilter">
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="row my-4">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12"
+                         [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                                     (onLazyLoad)="getMntEconomicInfos($event)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="true"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper.isResponsive"
+                                     [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px" [hidden]="!isGrantedAny('Pages.MntEconomicInfos.Edit', 'Pages.MntEconomicInfos.Delete')">{{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="catProfessionFk.title">
+                                        {{l('Title')}}
+                                        <p-sortIcon field="catProfessionTitle"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="catSourceFoundsFk.title">
+                                        {{l('Title')}}
+                                        <p-sortIcon field="catSourceFoundsTitle"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="mntMemberFk.comments">
+                                        {{l('Comments')}}
+                                        <p-sortIcon field="mntMemberComments"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="income">
+                                        {{l('Income')}}
+                                        <p-sortIcon field="mntEconomicInfo.income"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="expectedTransactions">
+                                        {{l('ExpectedTransactions')}}
+                                        <p-sortIcon field="mntEconomicInfo.expectedTransactions"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="proofIncome">
+                                        {{l('ProofIncome')}}
+                                        <p-sortIcon field="mntEconomicInfo.proofIncome"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="taxReturn">
+                                        {{l('TaxReturn')}}
+                                        <p-sortIcon field="mntEconomicInfo.taxReturn"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>                           
+							<ng-template pTemplate="body" let-record="$implicit" let-i="rowIndex">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('Pages.MntEconomicInfos.Edit', 'Pages.MntEconomicInfos.Delete')">
+                                       <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                            </button>
+												<ul class="dropdown-menu"  *dropdownMenu>
+												<li>
+													<a href="javascript:;" 
+														(click)="viewMntEconomicInfoModal.show(record)">{{l('View')}}</a>
+												</li>
+												<li>
+                                                <a href="javascript:;" *ngIf="permission.isGranted('Pages.MntEconomicInfos.Edit')" 
+														(click)="createOrEditMntEconomicInfoModal.show(record.mntEconomicInfo.id)">{{l('Edit')}}</a>												
+                                                </li>
+												<li>
+											        <a  href="javascript:;" *ngIf="permission.isGranted('Pages.MntEconomicInfos.Delete')"
+														(click)="deleteMntEconomicInfo(record.mntEconomicInfo)">{{l('Delete')}}</a>
+												</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Title')}}</span>
+												{{record.catProfessionTitle}}
+											</td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Title')}}</span>
+												{{record.catSourceFoundsTitle}}
+											</td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Comments')}}</span>
+												{{record.mntMemberComments}}
+											</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('Income')}}</span>
+											{{record.mntEconomicInfo.income}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('ExpectedTransactions')}}</span>
+											{{record.mntEconomicInfo.expectedTransactions}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('ProofIncome')}}</span>
+											{{record.mntEconomicInfo.proofIncome}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('TaxReturn')}}</span>
+											{{record.mntEconomicInfo.taxReturn}}
+										</td>
+
+                                </tr>
+                               
+                            </ng-template>
+                        </p-table>
+						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                         #paginator
+                                         (onPageChange)="getMntEconomicInfos($event)"
+                                         [totalRecords]="primengTableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                         [showCurrentPageReport]="true"
+                                         [currentPageReportTemplate]="'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount"    
+                            >
+                            </p-paginator>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <createOrEditMntEconomicInfoModal #createOrEditMntEconomicInfoModal (modalSave)="getMntEconomicInfos()"></createOrEditMntEconomicInfoModal>    
+    <viewMntEconomicInfoModal #viewMntEconomicInfoModal></viewMntEconomicInfoModal>
+    
+  </div>
+</div>

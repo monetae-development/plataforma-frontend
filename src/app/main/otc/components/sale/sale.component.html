@@ -1,0 +1,233 @@
+<div class="mt-5">
+    <div class="mb-5">
+        <span class="text">
+            {{ l('PurchaseInstructions') }}
+        </span>
+    </div>
+    <form class="text-soft" #otcRequestSaleForm="ngForm" novalidate (ngSubmit)="saleProcess()" autocomplete="off">
+        <div class="mt-5 mb-5">
+            <label class="mb-3">{{ l('CryptoCurrency') }}</label>
+            <p-dropdown
+                #cryptoCurrency="ngModel"
+                id="cryptoCurrency"
+                name="cryptoCurrency"
+                [disabled]="!started || processing"
+                [options]="currencies"
+                [(ngModel)]="otcRequestDto.otcCoinId"
+                placeholder="{{ l('SelectTreeDots') }}"
+                [showClear]="true"
+                [filter]="true"
+                (onChange)="onChangeCurrency($event)"
+                (onClear)="onReset()"
+                required
+            >
+                <ng-template pTemplate="selectedItem">
+                    <div class="d-flex align-items-center" *ngIf="otcRequestDto.otcCoinId">
+                        <div>
+                            <img
+                                src="/assets/crypto-icons/{{
+                                    cryptoKeys[otcRequestDto.otcCoinId - 1].key.toLowerCase()
+                                }}.png"
+                                style="width: 28px"
+                            />
+                        </div>
+
+                        <div class="ms-2">
+                            {{ cryptoKeys[otcRequestDto.otcCoinId - 1].name }}
+                            <span class="badge text-bg-secondary">
+                                {{ cryptoKeys[otcRequestDto.otcCoinId - 1].key }}
+                            </span>
+                        </div>
+                    </div>
+                </ng-template>
+
+                <ng-template let-coin pTemplate="item">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <img
+                                src="/assets/crypto-icons/{{ cryptoKeys[coin.value - 1].key.toLowerCase() }}.png"
+                                style="width: 28px"
+                            />
+                        </div>
+
+                        <div class="ms-2">
+                            {{ cryptoKeys[coin.value - 1].name }}
+                            <span class="badge text-bg-secondary">
+                                {{ cryptoKeys[coin.value - 1].key }}
+                            </span>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+            <validation-messages [formCtrl]="cryptoCurrency"></validation-messages>
+        </div>
+
+        <div class="text-center mb-5" *ngIf="selectedCurrency.key != undefined">
+            <span class="badge text-bg-warning">
+                {{ l('Price') }} {{ selectedCurrency.key }}:
+                {{ selectedCurrency.purchasePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}
+            </span>
+        </div>
+
+        <div class="form-group mb-10">
+            <div class="input-group">
+                <label class="input-group-text" id="inputGroup-sizing-default">
+                    {{ l('Amount') }}
+                </label>
+
+                <p-inputNumber
+                    #amount="ngModel"
+                    inputId="amount"
+                    name="amount"
+                    class="form-control"
+                    [(ngModel)]="otcRequestDto.amount"
+                    [disabled]="selectedCurrency.salePrice == undefined || processing"
+                    mode="decimal"
+                    locale="en-US"
+                    [minFractionDigits]="0"
+                    [maxFractionDigits]="5"
+                    (onInput)="amountOnChange($event)"
+                    pTooltip="{{
+                        selectedCurrency.salePrice == undefined
+                            ? l('AmountPurchaseInstructions')
+                            : l('AmountPurchaseInstructionsShort', selectedCurrency.key)
+                    }}"
+                    tooltipPosition="top"
+                    showDelay="500"
+                    required
+                ></p-inputNumber>
+                <span class="input-group-text" *ngIf="selectedCurrency.key != undefined">
+                    {{ selectedCurrency.key }}
+                </span>
+            </div>
+            <validation-messages [formCtrl]="amount"></validation-messages>
+        </div>
+
+        <div class="form-group mb-10">
+            <div class="input-group">
+                <label class="input-group-text">{{ l('Cost') }} $</label>
+
+                <p-inputNumber
+                    #cost="ngModel"
+                    inputId="cost"
+                    name="cost"
+                    class="form-control"
+                    [(ngModel)]="otcRequestDto.cost"
+                    [disabled]="selectedCurrency.salePrice == undefined || processing"
+                    mode="decimal"
+                    locale="en-US"
+                    [minFractionDigits]="2"
+                    (onInput)="costOnChange($event)"
+                    pTooltip="{{
+                        selectedCurrency.salePrice == undefined
+                            ? l('CostPurchaseInstructions')
+                            : l('CostPurchaseInstructionsShort', selectedCurrency.key)
+                    }}"
+                    tooltipPosition="top"
+                    showDelay="500"
+                    required
+                ></p-inputNumber>
+
+                <span class="input-group-text">USD</span>
+            </div>
+            <validation-messages [formCtrl]="cost"></validation-messages>
+        </div>
+
+        <div class="row row-cols-auto justify-content-md-center" *ngIf="refreshing">
+            <div class="col">
+                <div class="spinner-border text-secondary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+            <div class="col">
+                <span class="float-start">{{ l('Refreshing') }}. . .</span>
+            </div>
+        </div>
+
+        <div class="mt-5 mb-5" *ngIf="!hasBankAccount() && !refreshing">
+            <div *ngIf="isGranted('Pages.MntMemberBankAccounts.Create')">
+                <span class="mb-2">{{ l('CreateAccountBankDesc') }}</span>
+                <button
+                    type="button"
+                    class="btn btn-primary w-100 mt-2"
+                    [disabled]="selectedCurrency.salePrice == undefined"
+                    (click)="createMemberBankAccount()"
+                >
+                    <span>{{ l('CreateAccountBank') }}</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="mt-5 mb-5" *ngIf="hasBankAccount()">
+            <label class="mb-3">{{ l('DepositBankAccount') }}</label>
+            <div class="row">
+                <div class="col-10">
+                    <p-dropdown
+                        #bankAccount="ngModel"
+                        id="bankAccount"
+                        name="bankAccount"
+                        [disabled]="!otcRequestDto.otcCoinId || processing"
+                        [options]="bankAccounts"
+                        [(ngModel)]="otcRequestDto.mntMemberBankAccountId"
+                        placeholder="{{ l('SelectTreeDots') }}"
+                        required
+                    >
+                        <ng-template let-account pTemplate="selectedItem">
+                            <div class="flex align-items-center gap-2" *ngIf="otcRequestDto.mntMemberBankAccountId">
+                                <div class="d-flex align-items-center">
+                                    <div class="ms-2">
+                                        {{ account.label }}
+                                        <span class="badge text-bg-secondary">
+                                            {{ account.subtitle }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template let-account pTemplate="item">
+                            <div class="d-flex align-items-center">
+                                <div class="ms-2">
+                                    {{ account.label }}
+                                    <span class="badge text-bg-secondary" *ngIf="account.subtitle">
+                                        {{ account.subtitle }}
+                                    </span>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+                <div class="col-2 pt-1">
+                    <button
+                        type="button"
+                        class="btn btn-primary rounded-circle btn-sm p-0"
+                        style="width: 38px; height: 38px"
+                        [disabled]="!otcRequestDto.otcCoinId || processing"
+                        (click)="createMemberBankAccount()"
+                        pTooltip="{{ l('AddAccountBank') }}"
+                        tooltipPosition="top"
+                    >
+                        <i class="fa fa-plus p-0"></i>
+                    </button>
+                </div>
+            </div>
+            <validation-messages [formCtrl]="bankAccount"></validation-messages>
+        </div>
+
+        <div class="mt-5">
+            <button
+                type="submit"
+                class="btn btn-primary w-100"
+                [disabled]="!otcRequestSaleForm.form.valid"
+                [buttonBusy]="processing"
+                [busyText]="l('SaleProcesing')"
+            >
+                <span>{{ l('SaleContinue') }}</span>
+            </button>
+        </div>
+    </form>
+</div>
+<createOrEditMntMemberBankAccountModal
+    #createOrEditMntMemberBankAccountModal
+    (modalSave)="refreshBankAccounts()"
+></createOrEditMntMemberBankAccountModal>

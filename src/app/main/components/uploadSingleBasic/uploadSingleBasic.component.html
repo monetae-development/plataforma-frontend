@@ -1,0 +1,15 @@
+<div class="form-group">
+    <p-fileUpload
+        mode="advanced"
+        [showUploadButton]="false"
+        [showCancelButton]="false"
+        [customUpload]="true"
+        [auto]="true"
+        fileLimit="1"
+        [accept]="fileMimeTypes"
+        [maxFileSize]="maxFileSizeUpload"
+        chooseLabel="{{ 'PrimeNGChoose' | localize }}"
+        (onSelect)="addFile($event)"
+        required
+    ></p-fileUpload>
+</div>

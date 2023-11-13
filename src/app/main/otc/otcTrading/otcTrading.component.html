@@ -1,0 +1,26 @@
+<div [@routerTransition]>
+    <div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div class="container-fluid">
+            <div class="row p-0">
+                <div class="col-12 p-0">
+                    <div class="card justify-content-between p-3 mb-8">
+                        <div class="d-flex flex-row">
+                            <div class="d-flex">
+                                <h4>
+                                    {{ l('OTCCoins') }}
+                                    <small class="text-body-secondary">{{ l('OTCCoinsHeaderInfo') }}</small>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="kt-portlet kt-portlet--mobile">
+                <otc-wrapper></otc-wrapper>
+            </div>
+        </div>
+    </div>
+</div>

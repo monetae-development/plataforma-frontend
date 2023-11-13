@@ -1,0 +1,61 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #catStatusForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="catStatus.id">{{l("EditCatStatus")}}</span>
+                        <span *ngIf="!catStatus.id">{{l("CreateNewCatStatus")}}</span>
+                    </h4>                    
+                    
+                <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                     <span aria-hidden="true">&times;</span>
+                </button>
+             
+                    
+                </div>
+                <div class="modal-body">
+                 
+
+
+
+								<div class="form-group">
+									<label for="CatStatus_Title">{{l("Title")}} *</label>
+									<input type="text" #CatStatus_Title="ngModel" id="CatStatus_Title" class="form-control" [(ngModel)]="catStatus.title" name="Title"   minlength="1"  maxlength="50"  required/>
+								    <validation-messages [formCtrl]="CatStatus_Title"></validation-messages>
+								</div>
+					
+								<div class="form-group">
+									<label for="CatStatus_Status">{{l("Status")}}</label>
+									<select class="form-select" #CatStatus_Status="ngModel" name="Status" id="CatStatus_Status" [(ngModel)]="catStatus.status" >
+									<option value="0">{{l('System')}}</option>
+
+									<option value="1">{{l('General')}}</option>
+
+
+									</select>
+									<validation-messages [formCtrl]="CatStatus_Status"></validation-messages>
+								</div>
+					
+								<br/><div class="m-checkbox-list">
+									<label for="CatStatus_Publish" class="kt-checkbox">
+										<input id="CatStatus_Publish" #CatStatus_Publish="ngModel" type="checkbox" name="Publish" [(ngModel)]="catStatus.publish"> 
+										{{l("Publish")}}
+										<span></span>
+									</label>
+									<validation-messages [formCtrl]="CatStatus_Publish"></validation-messages>
+								</div>
+								
+					
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!catStatusForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

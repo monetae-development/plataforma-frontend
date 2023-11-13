@@ -1,0 +1,167 @@
+﻿<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #dcSendGridWebHookForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="dcSendGridWebHook.id">{{ l('EditDcSendGridWebHook') }}</span>
+                        <span *ngIf="!dcSendGridWebHook.id">{{ l('CreateNewDcSendGridWebHook') }}</span>
+                    </h4>
+
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="DcSendGridWebHook_Email">{{ l('Email') }} *</label>
+                        <input
+                            type="text"
+                            #DcSendGridWebHook_Email="ngModel"
+                            id="DcSendGridWebHook_Email"
+                            class="form-control"
+                            [(ngModel)]="dcSendGridWebHook.email"
+                            name="Email"
+                            minlength="1"
+                            maxlength="255"
+                            required
+                        />
+                        <validation-messages [formCtrl]="DcSendGridWebHook_Email"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DcSendGridWebHook_Event">{{ l('Event') }}</label>
+                        <select
+                            class="form-select"
+                            #DcSendGridWebHook_Event="ngModel"
+                            name="Event"
+                            id="DcSendGridWebHook_Event"
+                            [(ngModel)]="dcSendGridWebHook.event"
+                        >
+                            <option value="0">{{ l('unknown') }}</option>
+
+                            <option value="1">{{ l('open') }}</option>
+
+                            <option value="2">{{ l('click') }}</option>
+                        </select>
+                        <validation-messages [formCtrl]="DcSendGridWebHook_Event"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DcSendGridWebHook_TimeEvent">{{ l('TimeEvent') }}</label>
+                        <input
+                            class="form-control m-input"
+                            #DcSendGridWebHook_TimeEvent
+                            type="datetime"
+                            bsDatepicker
+                            datePickerLuxonModifier
+                            [(date)]="dcSendGridWebHook.timeEvent"
+                            id="DcSendGridWebHook_TimeEvent"
+                            name="DcSendGridWebHook_TimeEvent"
+                        />
+                        <validation-messages [formCtrl]="DcSendGridWebHook_TimeEvent"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DcSendGridWebHook_MessageId">{{ l('MessageId') }}</label>
+                        <input
+                            type="text"
+                            #DcSendGridWebHook_MessageId="ngModel"
+                            id="DcSendGridWebHook_MessageId"
+                            class="form-control"
+                            [(ngModel)]="dcSendGridWebHook.messageId"
+                            name="MessageId"
+                            minlength="1"
+                            maxlength="255"
+                        />
+                        <validation-messages [formCtrl]="DcSendGridWebHook_MessageId"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DcSendGridWebHook_Subject">{{ l('Subject') }}</label>
+                        <input
+                            type="text"
+                            #DcSendGridWebHook_Subject="ngModel"
+                            id="DcSendGridWebHook_Subject"
+                            class="form-control"
+                            [(ngModel)]="dcSendGridWebHook.subject"
+                            name="Subject"
+                            minlength="1"
+                            maxlength="255"
+                        />
+                        <validation-messages [formCtrl]="DcSendGridWebHook_Subject"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DcSendGridWebHook_Status">{{ l('Status') }}</label>
+                        <input
+                            type="text"
+                            #DcSendGridWebHook_Status="ngModel"
+                            id="DcSendGridWebHook_Status"
+                            class="form-control"
+                            [(ngModel)]="dcSendGridWebHook.status"
+                            name="Status"
+                            minlength="1"
+                            maxlength="50"
+                        />
+                        <validation-messages [formCtrl]="DcSendGridWebHook_Status"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DcSendGridWebHook_WebHookResponse">{{ l('WebHookResponse') }}</label>
+                        <input
+                            type="text"
+                            #DcSendGridWebHook_WebHookResponse="ngModel"
+                            id="DcSendGridWebHook_WebHookResponse"
+                            class="form-control"
+                            [(ngModel)]="dcSendGridWebHook.webHookResponse"
+                            name="WebHookResponse"
+                            minlength="1"
+                            maxlength="5000"
+                        />
+                        <validation-messages [formCtrl]="DcSendGridWebHook_WebHookResponse"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DcSendGridWebHook_ApiResponse">{{ l('ApiResponse') }}</label>
+                        <input
+                            type="text"
+                            #DcSendGridWebHook_ApiResponse="ngModel"
+                            id="DcSendGridWebHook_ApiResponse"
+                            class="form-control"
+                            [(ngModel)]="dcSendGridWebHook.apiResponse"
+                            name="ApiResponse"
+                            minlength="1"
+                            maxlength="5000"
+                        />
+                        <validation-messages [formCtrl]="DcSendGridWebHook_ApiResponse"></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">
+                        {{ l('Cancel') }}
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary blue"
+                        [disabled]="!dcSendGridWebHookForm.form.valid"
+                        [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"
+                    >
+                        <i class="fa fa-save"></i>
+                        <span>{{ l('Save') }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

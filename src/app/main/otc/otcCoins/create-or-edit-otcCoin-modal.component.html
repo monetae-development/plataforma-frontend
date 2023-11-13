@@ -1,0 +1,101 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #otcCoinForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="otcCoin.id">{{l("EditOTCCoin")}}</span>
+                        <span *ngIf="!otcCoin.id">{{l("CreateNewOTCCoin")}}</span>
+                    </h4>                    
+                    
+                <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                     <span aria-hidden="true">&times;</span>
+                </button>
+             
+                    
+                </div>
+                <div class="modal-body">
+                 
+
+
+
+								<div class="form-group">
+									<label for="OTCCoin_Name">{{l("Name")}} *</label>
+									<input type="text" #OTCCoin_Name="ngModel" id="OTCCoin_Name" class="form-control" [(ngModel)]="otcCoin.name" name="Name"   minlength="1"  maxlength="50"  required/>
+								    <validation-messages [formCtrl]="OTCCoin_Name"></validation-messages>
+								</div>
+					
+								<div class="form-group">
+									<label for="OTCCoin_Key">{{l("Key")}} *</label>
+									<input type="text" #OTCCoin_Key="ngModel" id="OTCCoin_Key" class="form-control" [(ngModel)]="otcCoin.key" name="Key"   minlength="1"  maxlength="10"  required/>
+								    <validation-messages [formCtrl]="OTCCoin_Key"></validation-messages>
+								</div>
+					
+								<div class="form-group">
+									<label for="OTCCoin_Api">{{l("Api")}}</label>
+									<select class="form-select" #OTCCoin_Api="ngModel" name="Api" id="OTCCoin_Api" [(ngModel)]="otcCoin.api" >
+									<option value="1">{{l('CryptoCompare')}}</option>
+
+									<option value="2">{{l('PexoBot')}}</option>
+
+
+									</select>
+									<validation-messages [formCtrl]="OTCCoin_Api"></validation-messages>
+								</div>
+					
+								<br/><div class="m-checkbox-list">
+									<label for="OTCCoin_UseGlobalFee" class="kt-checkbox">
+										<input id="OTCCoin_UseGlobalFee" #OTCCoin_UseGlobalFee="ngModel" type="checkbox" name="UseGlobalFee" [(ngModel)]="otcCoin.useGlobalFee"> 
+										{{l("UseGlobalFee")}}
+										<span></span>
+									</label>
+									<validation-messages [formCtrl]="OTCCoin_UseGlobalFee"></validation-messages>
+								</div>
+								
+					
+								<div class="form-group">
+									<label for="OTCCoin_BaseFee">{{l("BaseFee")}}</label>
+									<input type="number" #OTCCoin_BaseFee="ngModel" id="OTCCoin_BaseFee" class="form-control" [(ngModel)]="otcCoin.baseFee" name="BaseFee"  min="0"  max="30"  />
+									<validation-messages [formCtrl]="OTCCoin_BaseFee"></validation-messages>
+								</div>
+					
+								<div class="form-group">
+									<label for="OTCCoin_TradingFee">{{l("TradingFee")}}</label>
+									<input type="number" #OTCCoin_TradingFee="ngModel" id="OTCCoin_TradingFee" class="form-control" [(ngModel)]="otcCoin.tradingFee" name="TradingFee"  min="0"  max="30"  />
+									<validation-messages [formCtrl]="OTCCoin_TradingFee"></validation-messages>
+								</div>
+					
+								<div class="form-group">
+									<label for="OTCCoin_Order">{{l("Order")}}</label>
+									<input type="number" #OTCCoin_Order="ngModel" id="OTCCoin_Order" class="form-control" [(ngModel)]="otcCoin.order" name="Order"  min="0"  max="1000"  />
+									<validation-messages [formCtrl]="OTCCoin_Order"></validation-messages>
+								</div>
+					
+								<br/><div class="m-checkbox-list">
+									<label for="OTCCoin_Publish" class="kt-checkbox">
+										<input id="OTCCoin_Publish" #OTCCoin_Publish="ngModel" type="checkbox" name="Publish" [(ngModel)]="otcCoin.publish"> 
+										{{l("Publish")}}
+										<span></span>
+									</label>
+									<validation-messages [formCtrl]="OTCCoin_Publish"></validation-messages>
+								</div>
+								
+					
+								<div class="form-group">
+									<label for="OTCCoin_ApiUrl">{{l("ApiUrl")}}</label>
+									<input type="text" #OTCCoin_ApiUrl="ngModel" id="OTCCoin_ApiUrl" class="form-control" [(ngModel)]="otcCoin.apiUrl" name="ApiUrl"   minlength="1"  maxlength="255" />
+								    <validation-messages [formCtrl]="OTCCoin_ApiUrl"></validation-messages>
+								</div>
+					
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!otcCoinForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

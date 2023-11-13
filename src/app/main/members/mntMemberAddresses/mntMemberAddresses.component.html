@@ -1,0 +1,252 @@
+﻿<div [@routerTransition]>
+  <div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+  
+  
+                <div class="kt-subheader kt-grid__item">
+                  <div [class]="containerClass">
+                    <div class="kt-subheader__main">
+                        <h3 class="kt-subheader__title">
+                            <span>{{l("MntMemberAddresses")}}</span>
+                        </h3>
+                        <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                        <span class="kt-subheader__desc">
+                            {{l("MntMemberAddressesHeaderInfo")}}
+                        </span>
+                    </div>
+                    <div class="kt-subheader__toolbar">
+                        <div class="kt-subheader__wrapper">
+            				<button (click)="exportToExcel()" class="btn btn-outline btn-outline-success btn-active-light-success me-1"><i class="fa fa-file-excel"></i> {{l("ExportToExcel")}}</button>
+                <button *ngIf="isGranted('Pages.MntMemberAddresses.Create')" (click)="createMntMemberAddress()" 
+            			class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateNewMntMemberAddress")}}</button>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+            
+    
+    <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <form class="kt-form" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                
+                <div class="form-group m-form__group align-items-center">
+                    <div class="input-group">
+                    <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="l('SearchWithThreeDot')" type="text">
+                        <span class="input-group-btn">
+                            <button (click)="getMntMemberAddresses()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                        </span>
+                    </div>
+                </div>
+        	
+                                
+                            </div>
+                        </div>
+						 <div class="row" [hidden]="!advancedFiltersAreShown">
+						 	<div class="col-md-12">
+						         <div class="kt-separator kt-separator--border-dashed"></div>
+						     </div>
+
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="StreetFilter">{{l("Street")}}</label>
+									<input type="text" class="form-control" id="StreetFilter" name="streetFilter" [(ngModel)]="streetFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="ExteriorNoFilter">{{l("ExteriorNo")}}</label>
+									<input type="text" class="form-control" id="ExteriorNoFilter" name="exteriorNoFilter" [(ngModel)]="exteriorNoFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="InteriorNoFilter">{{l("InteriorNo")}}</label>
+									<input type="text" class="form-control" id="InteriorNoFilter" name="interiorNoFilter" [(ngModel)]="interiorNoFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="ZipCodeFilter">{{l("ZipCode")}}</label>
+									<input type="text" class="form-control" id="ZipCodeFilter" name="zipCodeFilter" [(ngModel)]="zipCodeFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="CityFilter">{{l("City")}}</label>
+									<input type="text" class="form-control" id="CityFilter" name="cityFilter" [(ngModel)]="cityFilter">
+								</div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="ProofFilter">{{l("Proof")}}</label>
+									<input type="text" class="form-control" id="ProofFilter" name="proofFilter" [(ngModel)]="proofFilter">
+								</div>
+                            </div>
+
+
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="MntMemberCommentsFilter">({{l("MntMember")}}) {{l("Comments")}}</label>
+									<input type="text" class="form-control" id="MntMemberCommentsFilter" name="mntMemberCommentsFilter" [(ngModel)]="mntMemberCommentsFilter">
+                                </div>
+                            </div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="CatStateTitleFilter">({{l("CatState")}}) {{l("Title")}}</label>
+									<input type="text" class="form-control" id="CatStateTitleFilter" name="catStateTitleFilter" [(ngModel)]="catStateTitleFilter">
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="row my-4">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> {{l("ShowAdvancedFilters")}}</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> {{l("HideAdvancedFilters")}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container col-12"
+                         [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                                     (onLazyLoad)="getMntMemberAddresses($event)"
+                                     [value]="primengTableHelper.records"
+                                     rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                                     [paginator]="false"
+                                     [lazy]="true"
+                                     [scrollable]="true"
+                                     ScrollWidth="100%"
+                                     [responsive]="primengTableHelper.isResponsive"
+                                     [resizableColumns]="primengTableHelper.resizableColumns">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px" [hidden]="!isGrantedAny('Pages.MntMemberAddresses.Edit', 'Pages.MntMemberAddresses.Delete')">{{l('Actions')}}</th>
+                                    <th style="width: 150px" pSortableColumn="mntMemberFk.comments">
+                                        {{l('Comments')}}
+                                        <p-sortIcon field="mntMemberComments"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="catStateFk.title">
+                                        {{l('Title')}}
+                                        <p-sortIcon field="catStateTitle"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="street">
+                                        {{l('Street')}}
+                                        <p-sortIcon field="mntMemberAddress.street"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="exteriorNo">
+                                        {{l('ExteriorNo')}}
+                                        <p-sortIcon field="mntMemberAddress.exteriorNo"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="interiorNo">
+                                        {{l('InteriorNo')}}
+                                        <p-sortIcon field="mntMemberAddress.interiorNo"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="zipCode">
+                                        {{l('ZipCode')}}
+                                        <p-sortIcon field="mntMemberAddress.zipCode"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="city">
+                                        {{l('City')}}
+                                        <p-sortIcon field="mntMemberAddress.city"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 150px" pSortableColumn="proof">
+                                        {{l('Proof')}}
+                                        <p-sortIcon field="mntMemberAddress.proof"></p-sortIcon>
+                                    </th>
+
+                                </tr>
+                            </ng-template>                           
+							<ng-template pTemplate="body" let-record="$implicit" let-i="rowIndex">
+                                <tr>
+                                    <td style="width: 130px"
+                                        [hidden]="!isGrantedAny('Pages.MntMemberAddresses.Edit', 'Pages.MntMemberAddresses.Delete')">
+                                       <div class="btn-group dropdown" dropdown container="body">
+                                            <button class="dropdown-toggle btn btn-sm btn-primary" dropdownToggle>
+                                                <i class="fa fa-cog"></i><span class="caret"></span> {{l("Actions")}}
+                                            </button>
+												<ul class="dropdown-menu"  *dropdownMenu>
+												<li>
+													<a href="javascript:;" 
+														(click)="viewMntMemberAddressModal.show(record)">{{l('View')}}</a>
+												</li>
+												<li>
+                                                <a href="javascript:;" *ngIf="permission.isGranted('Pages.MntMemberAddresses.Edit')" 
+														(click)="createOrEditMntMemberAddressModal.show(record.mntMemberAddress.id)">{{l('Edit')}}</a>												
+                                                </li>
+												<li>
+											        <a  href="javascript:;" *ngIf="permission.isGranted('Pages.MntMemberAddresses.Delete')"
+														(click)="deleteMntMemberAddress(record.mntMemberAddress)">{{l('Delete')}}</a>
+												</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Comments')}}</span>
+												{{record.mntMemberComments}}
+											</td>
+                                    <td style="width:150px">
+												<span class="ui-column-title"> {{l('Title')}}</span>
+												{{record.catStateTitle}}
+											</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('Street')}}</span>
+											{{record.mntMemberAddress.street}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('ExteriorNo')}}</span>
+											{{record.mntMemberAddress.exteriorNo}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('InteriorNo')}}</span>
+											{{record.mntMemberAddress.interiorNo}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('ZipCode')}}</span>
+											{{record.mntMemberAddress.zipCode}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('City')}}</span>
+											{{record.mntMemberAddress.city}}
+										</td>
+                                    <td style="width:150px">
+											<span class="ui-column-title"> {{l('Proof')}}</span>
+											{{record.mntMemberAddress.proof}}
+										</td>
+
+                                </tr>
+                               
+                            </ng-template>
+                        </p-table>
+						<div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                         #paginator
+                                         (onPageChange)="getMntMemberAddresses($event)"
+                                         [totalRecords]="primengTableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                         [showCurrentPageReport]="true"
+                                         [currentPageReportTemplate]="'TotalRecordsCount' | localize:primengTableHelper.totalRecordsCount"    
+                            >
+                            </p-paginator>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <createOrEditMntMemberAddressModal #createOrEditMntMemberAddressModal (modalSave)="getMntMemberAddresses()"></createOrEditMntMemberAddressModal>    
+    <viewMntMemberAddressModal #viewMntMemberAddressModal></viewMntMemberAddressModal>
+    
+  </div>
+</div>

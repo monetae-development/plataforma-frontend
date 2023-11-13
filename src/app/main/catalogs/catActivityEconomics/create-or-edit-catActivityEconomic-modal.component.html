@@ -1,0 +1,63 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #catActivityEconomicForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="catActivityEconomic.id">{{l("EditCatActivityEconomic")}}</span>
+                        <span *ngIf="!catActivityEconomic.id">{{l("CreateNewCatActivityEconomic")}}</span>
+                    </h4>                    
+                    
+                <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                     <span aria-hidden="true">&times;</span>
+                </button>
+             
+                    
+                </div>
+                <div class="modal-body">
+                 
+
+					<div class="form-group m-form__group">
+                        <label for="CatActivityEconomicCategoryTitle">{{l("CatActivityEconomicCategory")}}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="CatActivityEconomicCategoryTitle" name="catActivityEconomicCategoryTitle" [(ngModel)]="catActivityEconomicCategoryTitle" type="text" disabled>     
+                            <div class="input-group-append">
+                                <button class="btn btn-primary blue" (click)="openSelectCatActivityEconomicCategoryModal()" type="button"><i class="fa fa-search"></i> {{l("Pick")}}</button>
+                            </div> <div class="input-group-prepend">
+                                <button class="btn btn-danger btn-icon" type="button" (click)="setCatActivityEconomicCategoryIdNull()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <input class="form-control" name="catActivityEconomic.catActivityEconomicCategoryId" [(ngModel)]="catActivityEconomic.catActivityEconomicCategoryId" type="text" required hidden>
+		                
+
+
+								<div class="form-group">
+									<label for="CatActivityEconomic_Title">{{l("Title")}} *</label>
+									<input type="text" #CatActivityEconomic_Title="ngModel" id="CatActivityEconomic_Title" class="form-control" [(ngModel)]="catActivityEconomic.title" name="Title"   minlength="1"  maxlength="100"  required/>
+								    <validation-messages [formCtrl]="CatActivityEconomic_Title"></validation-messages>
+								</div>
+					
+								<br/><div class="m-checkbox-list">
+									<label for="CatActivityEconomic_Publish" class="kt-checkbox">
+										<input id="CatActivityEconomic_Publish" #CatActivityEconomic_Publish="ngModel" type="checkbox" name="Publish" [(ngModel)]="catActivityEconomic.publish"> 
+										{{l("Publish")}}
+										<span></span>
+									</label>
+									<validation-messages [formCtrl]="CatActivityEconomic_Publish"></validation-messages>
+								</div>
+								
+					
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!catActivityEconomicForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+<catActivityEconomicCatActivityEconomicCategoryLookupTableModal #catActivityEconomicCatActivityEconomicCategoryLookupTableModal (modalSave)="getNewCatActivityEconomicCategoryId()"></catActivityEconomicCatActivityEconomicCategoryLookupTableModal>
+		 
+</div>

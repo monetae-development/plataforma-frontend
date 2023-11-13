@@ -1,0 +1,154 @@
+<div class="mt-5">
+    <div class="mb-5">
+        <span class="text">
+            {{ l('PurchaseInstructions') }}
+        </span>
+    </div>
+    <form
+        class="text-soft"
+        #otcRequestPurchaseForm="ngForm"
+        novalidate
+        (ngSubmit)="purchaseProcess()"
+        autocomplete="off"
+    >
+        <div class="mt-5 mb-5">
+            <label class="mb-3">{{ l('CryptoCurrency') }}</label>
+            <p-dropdown
+                #cryptoCurrency="ngModel"
+                id="cryptoCurrency"
+                name="cryptoCurrency"
+                [disabled]="!started || processing"
+                [options]="currencies"
+                [(ngModel)]="otcRequestDto.otcCoinId"
+                placeholder="Seleccionar . . ."
+                [showClear]="true"
+                [filter]="true"
+                (onChange)="onChangeCurrency($event)"
+                (onClear)="onReset()"
+                required
+            >
+                <ng-template pTemplate="selectedItem">
+                    <div class="d-flex align-items-center" *ngIf="otcRequestDto.otcCoinId">
+                        <div>
+                            <img
+                                src="/assets/crypto-icons/{{
+                                    cryptoKeys[otcRequestDto.otcCoinId - 1].key.toLowerCase()
+                                }}.png"
+                                style="width: 28px"
+                            />
+                        </div>
+
+                        <div class="ms-2">
+                            {{ cryptoKeys[otcRequestDto.otcCoinId - 1].name }}
+                            <span class="badge text-bg-secondary">
+                                {{ cryptoKeys[otcRequestDto.otcCoinId - 1].key }}
+                            </span>
+                        </div>
+                    </div>
+                </ng-template>
+
+                <ng-template let-coin pTemplate="item">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <img
+                                src="/assets/crypto-icons/{{ cryptoKeys[coin.value - 1].key.toLowerCase() }}.png"
+                                style="width: 28px"
+                            />
+                        </div>
+
+                        <div class="ms-2">
+                            {{ cryptoKeys[coin.value - 1].name }}
+                            <span class="badge text-bg-secondary">
+                                {{ cryptoKeys[coin.value - 1].key }}
+                            </span>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+            <validation-messages [formCtrl]="cryptoCurrency"></validation-messages>
+        </div>
+
+        <div class="text-center mb-5" *ngIf="selectedCurrency.key != undefined">
+            <span class="badge text-bg-warning">
+                {{ l('Price') }} {{ selectedCurrency.key }}:
+                {{ selectedCurrency.salePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}
+            </span>
+        </div>
+
+        <div class="form-group mb-10">
+            <div class="input-group">
+                <label class="input-group-text" id="inputGroup-sizing-default">
+                    {{ l('Amount') }}
+                </label>
+
+                <p-inputNumber
+                    #amount="ngModel"
+                    inputId="amount"
+                    name="amount"
+                    class="form-control"
+                    [(ngModel)]="otcRequestDto.amount"
+                    [disabled]="selectedCurrency.salePrice == undefined || processing"
+                    mode="decimal"
+                    locale="en-US"
+                    [minFractionDigits]="0"
+                    [maxFractionDigits]="5"
+                    (onInput)="amountOnChange($event)"
+                    pTooltip="{{
+                        selectedCurrency.salePrice == undefined
+                            ? l('AmountPurchaseInstructions')
+                            : l('AmountPurchaseInstructionsShort', selectedCurrency.key)
+                    }}"
+                    tooltipPosition="top"
+                    showDelay="500"
+                    required
+                ></p-inputNumber>
+                <span class="input-group-text" *ngIf="selectedCurrency.key != undefined">
+                    {{ selectedCurrency.key }}
+                </span>
+            </div>
+            <validation-messages [formCtrl]="amount"></validation-messages>
+        </div>
+
+        <div class="form-group mb-10">
+            <div class="input-group">
+                <label class="input-group-text">{{ l('Cost') }} $</label>
+
+                <p-inputNumber
+                    #cost="ngModel"
+                    inputId="cost"
+                    name="cost"
+                    class="form-control"
+                    [(ngModel)]="otcRequestDto.cost"
+                    [disabled]="selectedCurrency.salePrice == undefined || processing"
+                    mode="decimal"
+                    locale="en-US"
+                    [minFractionDigits]="2"
+                    (onInput)="costOnChange($event)"
+                    pTooltip="{{
+                        selectedCurrency.salePrice == undefined
+                            ? l('CostPurchaseInstructions')
+                            : l('CostPurchaseInstructionsShort', selectedCurrency.key)
+                    }}"
+                    tooltipPosition="top"
+                    showDelay="500"
+                    required
+                ></p-inputNumber>
+
+                <span class="input-group-text">USD</span>
+            </div>
+            <validation-messages [formCtrl]="cost"></validation-messages>
+        </div>
+
+        <div class="mt-5">
+            <button
+                type="submit"
+                class="btn btn-primary w-100"
+                [disabled]="!otcRequestPurchaseForm.form.valid"
+                [buttonBusy]="processing"
+                [busyText]="l('PurchaseProcesing')"
+            >
+                <span>{{ l('PurchaseContinue') }}</span>
+            </button>
+        </div>
+    </form>
+</div>

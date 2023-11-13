@@ -1,0 +1,65 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #catCountryForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="catCountry.id">{{l("EditCatCountry")}}</span>
+                        <span *ngIf="!catCountry.id">{{l("CreateNewCatCountry")}}</span>
+                    </h4>                    
+                    
+                <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                     <span aria-hidden="true">&times;</span>
+                </button>
+             
+                    
+                </div>
+                <div class="modal-body">
+                 
+
+
+
+								<div class="form-group">
+									<label for="CatCountry_Title">{{l("Title")}} *</label>
+									<input type="text" #CatCountry_Title="ngModel" id="CatCountry_Title" class="form-control" [(ngModel)]="catCountry.title" name="Title"   minlength="1"  maxlength="100"  required/>
+								    <validation-messages [formCtrl]="CatCountry_Title"></validation-messages>
+								</div>
+					
+								<div class="form-group">
+									<label for="CatCountry_Order">{{l("Order")}}</label>
+									<input type="number" #CatCountry_Order="ngModel" id="CatCountry_Order" class="form-control" [(ngModel)]="catCountry.order" name="Order"  min="1"  max="1000"  />
+									<validation-messages [formCtrl]="CatCountry_Order"></validation-messages>
+								</div>
+					
+								<br/><div class="m-checkbox-list">
+									<label for="CatCountry_Publish" class="kt-checkbox">
+										<input id="CatCountry_Publish" #CatCountry_Publish="ngModel" type="checkbox" name="Publish" [(ngModel)]="catCountry.publish"> 
+										{{l("Publish")}}
+										<span></span>
+									</label>
+									<validation-messages [formCtrl]="CatCountry_Publish"></validation-messages>
+								</div>
+								
+					
+								<br/><div class="m-checkbox-list">
+									<label for="CatCountry_Restricted" class="kt-checkbox">
+										<input id="CatCountry_Restricted" #CatCountry_Restricted="ngModel" type="checkbox" name="Restricted" [(ngModel)]="catCountry.restricted"> 
+										{{l("Restricted")}}
+										<span></span>
+									</label>
+									<validation-messages [formCtrl]="CatCountry_Restricted"></validation-messages>
+								</div>
+								
+					
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!catCountryForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

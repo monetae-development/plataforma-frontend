@@ -1,0 +1,55 @@
+﻿<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #catCurrencyForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="catCurrency.id">{{l("EditCatCurrency")}}</span>
+                        <span *ngIf="!catCurrency.id">{{l("CreateNewCatCurrency")}}</span>
+                    </h4>                    
+                    
+                <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                     <span aria-hidden="true">&times;</span>
+                </button>
+             
+                    
+                </div>
+                <div class="modal-body">
+                 
+
+
+
+								<div class="form-group">
+									<label for="CatCurrency_Title">{{l("Title")}} *</label>
+									<input type="text" #CatCurrency_Title="ngModel" id="CatCurrency_Title" class="form-control" [(ngModel)]="catCurrency.title" name="Title"   minlength="1"  maxlength="20"  required/>
+								    <validation-messages [formCtrl]="CatCurrency_Title"></validation-messages>
+								</div>
+					
+								<div class="form-group">
+									<label for="CatCurrency_Symbol">{{l("Symbol")}} *</label>
+									<input type="text" #CatCurrency_Symbol="ngModel" id="CatCurrency_Symbol" class="form-control" [(ngModel)]="catCurrency.symbol" name="Symbol"   minlength="1"  maxlength="10"  required/>
+								    <validation-messages [formCtrl]="CatCurrency_Symbol"></validation-messages>
+								</div>
+					
+								<br/><div class="m-checkbox-list">
+									<label for="CatCurrency_Publish" class="kt-checkbox">
+										<input id="CatCurrency_Publish" #CatCurrency_Publish="ngModel" type="checkbox" name="Publish" [(ngModel)]="catCurrency.publish"> 
+										{{l("Publish")}}
+										<span></span>
+									</label>
+									<validation-messages [formCtrl]="CatCurrency_Publish"></validation-messages>
+								</div>
+								
+					
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!catCurrencyForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

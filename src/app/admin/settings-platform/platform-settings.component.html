@@ -1,0 +1,51 @@
+﻿<div [@routerTransition]>
+    <div class="container-fluid">
+        <div class="row p-0">
+            <div class="col-12 p-0">
+                <div class="card justify-content-between p-3 mb-8">
+                    <div class="d-flex flex-row">
+                        <div class="d-flex">
+                            <h4>
+                                {{ l('PlatformSettings') }}
+                                <small class="text-body-secondary">{{ l('PlatformSettingsHeaderInfo') }}</small>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <div class="row g-3">
+                    <div class="col-md-12 align-items-stretch">
+                        <div class="card card-height-100 pb-5">
+                            <div class="card-header border-bottom-dashed mb-5">
+                                <h6 class="card-title mb-0">{{ l('ConfigurationOptions') }}</h6>
+                            </div>
+                            <div class="container">
+                                <p-tabView styleClass="tabview-custom">
+                                    <p-tabPanel>
+                                        <ng-template pTemplate="header">
+                                            <i class="fa fa-exchange me-2"></i>
+                                            <span>{{ l('OTC') }}</span>
+                                        </ng-template>
+                                        <otc-settings></otc-settings>
+                                    </p-tabPanel>
+                                    <p-tabPanel>
+                                        <ng-template pTemplate="header">
+                                            <i class="fa fa-bank me-2"></i>
+                                            <span>{{ l('BankAccounts') }}</span>
+                                        </ng-template>
+                                    </p-tabPanel>
+                                </p-tabView>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
