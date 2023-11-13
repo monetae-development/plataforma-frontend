@@ -4,5 +4,5 @@ export const environment = {
     production: false,
     hmr: true,
     appConfig: 'appconfig.json',
-    socketioHost: 'http://localhost:3000',
+    socketioHost: 'http://52.207.244.72:3000',
 };
