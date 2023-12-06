@@ -71,7 +71,8 @@
 
               "src/app/shared/core.less",
               "src/app/shared/layout/layout.less",
-              "src/styles.css"
+              "src/styles.css",
+              "src/assets/styles/style.scss"
             ],
             "scripts": [
               "node_modules/@microsoft/signalr/dist/browser/signalr.min.js",

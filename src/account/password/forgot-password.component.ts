@@ -22,6 +22,11 @@ export class ForgotPasswordComponent extends AppComponentBase {
         private _router: Router
     ) {
         super(injector);
+        // this.message.success(this.l('PasswordResetMailSentMessage'), this.l('MailSent'), {
+        //     confirmButtonText : this.l('Continue')
+        // }).then(() => {
+        //     this._router.navigate(['account/login']);
+        // });
     }
 
     save(): void {
@@ -34,7 +39,9 @@ export class ForgotPasswordComponent extends AppComponentBase {
                 })
             )
             .subscribe(() => {
-                this.message.success(this.l('PasswordResetMailSentMessage'), this.l('MailSent')).then(() => {
+                this.message.success(this.l('PasswordResetMailSentMessage'), this.l('MailSent'), {
+                    confirmButtonText : 'Continuar'
+                }).then(() => {
                     this._router.navigate(['account/login']);
                 });
             });

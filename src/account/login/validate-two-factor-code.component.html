@@ -1,11 +1,22 @@
 ﻿<div class="login-form" [@routerTransition]>
-    <div class="pb-13 pt-lg-0 pt-5">
-        <h3 class="text-primary">
+    <button
+        routerLink="/account/login"
+        type="button"
+        class="ae-btn ae-btn--transparent ae-button--back fw-bolder fs-h6 px-8 py-4 my-3"
+    >
+        <i class="fa fa-arrow-left"></i>
+        {{ 'Back' | localize }}
+    </button>
+    <div class="ae-login__title">
+        <h3 class="ae-text-dark">
             {{ 'VerifySecurityCode' | localize }}
         </h3>
+        <p class="ae-text-dark mb-5">{{ 'EnterNumberDigitCode' | localize : email }}</p>
+        <p class="ae-text-gris mb-5">{{ 'SecureAccountHelpUs' | localize }}</p>
     </div>
     <form #twoFactorForm="ngForm" class="login-form form" method="post" (ngSubmit)="submit()">
-        <div class="mb-5">
+        <div class="ae-input mb-10">
+            <label>{{ 'EnterCode' | localize }}</label>
             <input #passwordInput="ngModel" autoFocus [(ngModel)]="code"
                 class="form-control form-control-solid h-auto py-3 px-6 rounded-lg fs-h6" type="password"
                 autocomplete="new-password" placeholder="{{ 'Code' | localize }} *" name="code" required
@@ -13,7 +24,7 @@
             <validation-messages [formCtrl]="passwordInput"></validation-messages>
         </div>
 
-        <div class="mb-5 mt-4" *ngIf="s('Abp.Zero.UserManagement.TwoFactorLogin.IsRememberBrowserEnabled') === 'true'">
+        <!-- <div class="mb-5 mt-4" *ngIf="s('Abp.Zero.UserManagement.TwoFactorLogin.IsRememberBrowserEnabled') === 'true'">
             <label class="form-check form-check-custom form-check-solid py-1">
                 <input type="checkbox" name="rememberClient" [(ngModel)]="loginService.authenticateModel.rememberClient"
                     class="form-check-input" value="true" />
@@ -21,15 +32,15 @@
                     {{ 'RememberThisBrowser' | localize }}
                 </span>
             </label>
-        </div>
+        </div> -->
 
-        <div class="pb-lg-0 pb-5">
-            <button type="submit" class="btn btn-primary fw-bolder fs-h6 px-8 py-4 my-3 me-3"
+        <div class="pb-lg-0 pb-5 flex align-items-center flex-column">
+            <button type="submit" class="ae-btn ae-btn--primary w-full fw-bold mb-4"
                 [disabled]="!twoFactorForm.form.valid">
                 {{ 'Submit' | localize }}
             </button>
-            <span class="text-white ml-5" *ngIf="remainingSeconds >= 0">
-                {{ 'RemainingTime' | localize }}: {{ 'SecondShort{0}' | localize : remainingSeconds }}.
+            <span class="ae-text-dark ae-text-center" *ngIf="remainingSeconds >= 0">
+                {{ 'RemainingTime' | localize }}: <br> {{ 'SecondShort{0}' | localize : remainingSeconds }}.
             </span>
         </div>
     </form>

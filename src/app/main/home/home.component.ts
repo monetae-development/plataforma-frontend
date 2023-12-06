@@ -42,8 +42,9 @@ export class HomeComponent extends AppComponentBase implements OnInit {
 
   ngOnInit() {
     this.menuItems = [
-      { label: 'Proyectos', icon: 'pi pi-fw pi-file' },
-      { label: 'OTC', icon: 'pi pi-fw pi-cog' }
+      { label: 'Inversiones' },
+      { label: 'Portafolio' },
+      { label: 'Historial' }
     ];
     this.activeItem = this.menuItems[0];
   }

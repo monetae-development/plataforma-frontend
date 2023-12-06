@@ -24,6 +24,13 @@ export class SendTwoFactorCodeComponent extends AppComponentBase implements CanA
         private _router: Router
     ) {
         super(injector);
+        this.loginService.authenticateResult.twoFactorAuthProviders.forEach((value) => {
+            let option = { label: this.l('TwoFactorOption:' + value), value: value };
+            this.optionsTwoFactorProvider.push(option);
+            if (this.optionsTwoFactorProvider.length == 1) {
+                this.selectedTwoFactorProvider = this.optionsTwoFactorProvider[0].value;
+            }
+        });
     }
 
     canActivate(): boolean {
@@ -44,16 +51,6 @@ export class SendTwoFactorCodeComponent extends AppComponentBase implements CanA
             this._router.navigate(['account/login']);
             return;
         }
-
-        this.loginService.authenticateResult.twoFactorAuthProviders.forEach((value) => {
-            let option = { label: this.l('TwoFactorOption:' + value), value: value };
-            this.optionsTwoFactorProvider.push(option);
-            if (this.optionsTwoFactorProvider.length == 1) {
-                this.selectedTwoFactorProvider = this.optionsTwoFactorProvider[0].value;
-            }
-        });
-
-        //this.selectedTwoFactorProvider = this.loginService.authenticateResult.twoFactorAuthProviders[0];
     }
 
     submit(): void {

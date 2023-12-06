@@ -1,5 +1,5 @@
-﻿import { RegisterInput } from '@shared/service-proxies/service-proxies';
+﻿import { RegisterSimpleInput } from '@shared/service-proxies/service-proxies';
 
-export class RegisterModel extends RegisterInput {
+export class RegisterModel extends RegisterSimpleInput {
     public passwordRepeat: string;
 }

@@ -15,6 +15,7 @@ import { AppConsts } from '@shared/AppConsts';
 })
 export class ValidateTwoFactorCodeComponent extends AppComponentBase implements CanActivate, OnInit, OnDestroy {
     code: string;
+    email: string = '';
     submitting = false;
     remainingSeconds = 90;
     timerSubscription: Subscription;
@@ -26,6 +27,7 @@ export class ValidateTwoFactorCodeComponent extends AppComponentBase implements 
         private _router: Router
     ) {
         super(injector);
+        this.email = this.loginService.authenticateModel.userNameOrEmailAddress;
     }
 
     get useCaptcha(): boolean {

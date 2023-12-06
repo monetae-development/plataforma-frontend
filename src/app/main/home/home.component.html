@@ -16,21 +16,88 @@
         </div>
     </div>
 
-    <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+    <div class="ae-container">
+        <div class="ae-balance flex align-items-center">
+            <div class="ae-balance__primary">
+                <div class="ae-balance__item flex align-items center justify-content-between">
+                    <div class="ae-item__title">
+                        <h2 class="fw-bold">Balance</h2>
+                        <p class="fw-semibold ae-text-gris">mUSD</p>
+                    </div>
+                    <div class="ae-item__content">
+                        <h2 class="fw-bold">$20.000</h2>
+                        <p class="fw-semibold ae-text-gris">0,581854 BTC</p>
+                    </div>
+                </div>
+            </div>
+            <div class="ae-balance__secondary">
+                <div class="ae-balance__item flex align-items-center">
+                    <div class="ae-item__icon ae-bg-primary flex align-items-center justify-content-center">
+                        <i class="pi pi-plus"></i>
+                    </div>
+                    <div class="ae-item__text">
+                        <p class="fw-semibold">{{ 'PurchaseContinue' | localize }}</p>
+                    </div>
+                </div>
+                <div class="ae-balance__item flex align-items-center">
+                    <div class="ae-item__icon ae-bg-primary flex align-items-center justify-content-center">
+                        <i class="pi pi-arrow-right"></i>
+                    </div>
+                    <div class="ae-item__text">
+                        <p class="fw-semibold">{{ 'Send' | localize }}</p>
+                    </div>
+                </div>
+                <div class="ae-balance__item flex align-items-center" (click)="createMemberFiatDeposit()">
+                    <div class="ae-item__icon ae-bg-secondary flex align-items-center justify-content-center">
+                        <i class="pi pi-download ae-text-primary"></i>
+                    </div>
+                    <div class="ae-item__text">
+                        <p class="fw-semibold">{{ 'MakeDeposit' | localize }}</p>
+                    </div>
+                </div>
+                <div class="ae-balance__item flex align-items-center">
+                    <div class="ae-item__icon ae-bg-primary flex align-items-center justify-content-center">
+                        <i class="pi pi-minus"></i>
+                    </div>
+                    <div class="ae-item__text">
+                        <p class="fw-semibold">{{ 'SaleContinue' | localize }}</p>
+                    </div>
+                </div>
+                <div class="ae-balance__item flex align-items-center">
+                    <div class="ae-item__icon ae-bg-primary flex align-items-center justify-content-center">
+                        <i class="pi pi-arrow-left"></i>
+                    </div>
+                    <div class="ae-item__text">
+                        <p class="fw-semibold">{{ 'Receive' | localize }}</p>
+                    </div>
+                </div>
+                <div class="ae-balance__item flex align-items-center" (click)="createMemberFiatWhitdrawal()">
+                    <div class="ae-item__icon ae-bg-secondary flex align-items-center justify-content-center">
+                        <i class="pi pi-upload ae-text-primary"></i>
+                    </div>
+                    <div class="ae-item__text">
+                        <p class="fw-semibold">{{ 'MakeWithdrawal' | localize }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ae-container kt-grid__item kt-grid__item--fluid'">
         <div class="kt-portlet kt-portlet--mobile">
             <div class="kt-portlet__body">
                 <div class="row g-3">
                     <div class="col-md-12 align-items-stretch">
-                        <div class="card card-height-100 p-5">
+                        <div class="ae-card__container">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-12">
                                     <p-tabMenu
                                         [model]="menuItems"
                                         [activeItem]="activeItem"
                                         (activeItemChange)="onActiveItemChange($event)"
                                     ></p-tabMenu>
                                 </div>
-                                <div class="col-md-8 d-flex flex-row-reverse">
+                                <!-- <div class="col-md-8 d-flex flex-row-reverse">
                                     <div
                                         class="d-flex d-block justify-content-center justify-content-md-end d-sm-flex d-sm-block d-grid gap-2"
                                     >
@@ -59,196 +126,274 @@
                                             {{ l('MakeWithdrawal') }}
                                         </button>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
 
                             <div class="row pt-5">
-                                <div class="col-md-12" *ngIf="activeItem.label == 'Proyectos'">
+                                <div class="col-md-12" *ngIf="activeItem.label == 'Inversiones'">
                                     <div class="row">
-                                        <div class="btn-projects col-md-4" (click)="goToProject('ESA1')">
-                                            <div class="card p-2">
-                                                <div class="text-center">
-                                                    <div class="badge badge-primary badge-projects fw-bold">
-                                                        Crowdfunding
-                                                    </div>
+                                        <div class="ae-project btn-projects col-md-4" (click)="goToProject('ESA1')">
+                                            <div class="card">
+                                                <div class="ae-project__image">
                                                     <img
                                                         src="/assets/projects/01.jpg"
-                                                        class="rounded-4 projects-img mb-3"
+                                                        class="projects-img mb-3"
                                                     />
+                                                    <h2>30%</h2>
+                                                    <span>Inmobiliario</span>
                                                 </div>
-
-                                                <div>
-                                                    <h5 class="mb-0">Proyecto El Salvador</h5>
-                                                    <span class="text-muted">Inmobiliario</span>
+                                                <div class="ae-project__content">
+                                                    <div class="ae-content__title flex align-items-center justify-content-center">
+                                                        <h5 class="mb-0">Proyecto El Salvador</h5>
+                                                        <span class="text-muted">Inmobiliario</span>
+                                                    </div>
+                                                    <div>
+                                                        <div
+                                                            class="d-flex justify-content-between d-block d-sm-flex d-sm-block d-grid gap-2 py-2"
+                                                        >
+                                                            <div class="flex align-items-center">
+                                                                <h2 class="ae-text-secondary">$8M</h2>
+                                                                <span>30%</span>
+                                                            </div>
+                                                            <div class="">
+                                                                <p>Objetivo: $10M USD</p>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="progress"
+                                                            role="progressbar"
+                                                            aria-valuenow="85"
+                                                            aria-valuemin="0"
+                                                            aria-valuemax="100"
+                                                        >
+                                                            <div class="progress-bar ae-bg-primary" style="width: 85%"></div>
+                                                        </div>
+                                                        <div
+                                                            class="mt-2 d-flex justify-content-between d-block d-sm-flex d-sm-block d-grid gap-2 py-2"
+                                                        >
+                                                            <div>Retorno: 18%</div>
+                                                            <div>223</div>
+                                                            <div>46 Días</div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <div
-                                                        class="d-flex justify-content-between d-block d-sm-flex d-sm-block d-grid gap-2 py-2"
-                                                    >
-                                                        <div class="">Progreso</div>
-                                                        <div class="">85%</div>
-                                                    </div>
-                                                    <div
-                                                        class="progress"
-                                                        role="progressbar"
-                                                        aria-valuenow="85"
-                                                        aria-valuemin="0"
-                                                        aria-valuemax="100"
-                                                    >
-                                                        <div class="progress-bar bg-secondary" style="width: 85%"></div>
-                                                    </div>
-                                                    <div
-                                                        class="mt-2 d-flex justify-content-between d-block d-sm-flex d-sm-block d-grid gap-2 py-2"
-                                                    >
-                                                        <div>Meta: $10,000,000 USD</div>
-                                                        <div>Retorno: 18%</div>
-                                                    </div>
+                                                <div class="ae-project__actions">
+                                                    <button class="ae-btn ae-btn--secondary w-full" type="button">Invertir</button>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="btn-projects col-md-4">
-                                            <div class="card p-2">
-                                                <div class="text-center">
-                                                    <div class="badge badge-primary badge-projects fw-bold">
-                                                        Crowdfunding
-                                                    </div>
+                                        <div class="ae-project btn-projects col-md-4">
+                                            <div class="card">
+                                                <div class="ae-project__image">
                                                     <img
                                                         src="/assets/projects/02.jpg"
-                                                        class="rounded-4 projects-img mb-3"
+                                                        class="projects-img mb-3"
                                                     />
+                                                    <h2>30%</h2>
+                                                    <span>Inmobiliario</span>
                                                 </div>
-
-                                                <div>
-                                                    <h5 class="mb-0">Superfast</h5>
-                                                    <span class="text-muted">Financiero</span>
+                                                <div class="ae-project__content">
+                                                    <div class="ae-content__title flex align-items-center justify-content-center">
+                                                        <h5 class="mb-0">Superfast</h5>
+                                                        <span class="text-muted">Financiero</span>
+                                                    </div>
+                                                    <div>
+                                                        <div
+                                                            class="d-flex justify-content-between d-block d-sm-flex d-sm-block d-grid gap-2 py-2"
+                                                        >
+                                                            <div class="flex align-items-center">
+                                                                <h2 class="ae-text-secondary">$4M</h2>
+                                                                <span>60%</span>
+                                                            </div>
+                                                            <div class="">
+                                                                <p>Objetivo: $10M USD</p>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="progress"
+                                                            role="progressbar"
+                                                            aria-valuenow="60"
+                                                            aria-valuemin="0"
+                                                            aria-valuemax="100"
+                                                        >
+                                                            <div class="progress-bar ae-bg-primary" style="width: 60%"></div>
+                                                        </div>
+                                                        <div
+                                                            class="mt-2 d-flex justify-content-between d-block d-sm-flex d-sm-block d-grid gap-2 py-2"
+                                                        >
+                                                            <div>Retorno: 18%</div>
+                                                            <div>223</div>
+                                                            <div>46 Días</div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <div
-                                                        class="d-flex justify-content-between d-block d-sm-flex d-sm-block d-grid gap-2 py-2"
-                                                    >
-                                                        <div class="">Progreso</div>
-                                                        <div class="">60%</div>
-                                                    </div>
-                                                    <div
-                                                        class="progress"
-                                                        role="progressbar"
-                                                        aria-valuenow="60"
-                                                        aria-valuemin="0"
-                                                        aria-valuemax="100"
-                                                    >
-                                                        <div class="progress-bar bg-secondary" style="width: 60%"></div>
-                                                    </div>
-                                                    <div
-                                                        class="mt-2 d-flex justify-content-between d-block d-sm-flex d-sm-block d-grid gap-2 py-2"
-                                                    >
-                                                        <div>Meta: $5,000,000 USD</div>
-                                                        <div>Retorno: 15%</div>
-                                                    </div>
+                                                <div class="ae-project__actions">
+                                                    <button class="ae-btn ae-btn--secondary w-full" type="button">Invertir</button>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="btn-projects col-md-4">
-                                            <div class="card p-2">
-                                                <div class="text-center">
-                                                    <div class="badge badge-primary badge-projects fw-bold">
-                                                        Crowdfunding
-                                                    </div>
+                                        <div class="ae-project btn-projects col-md-4">
+                                            <div class="card">
+                                                <div class="ae-project__image">
                                                     <img
                                                         src="/assets/projects/token01.jpg"
-                                                        class="rounded-4 mb-3 projects-img"
+                                                        class="mb-3 projects-img"
                                                     />
+                                                    <h2>30%</h2>
+                                                    <span>Inmobiliario</span>
                                                 </div>
-
-                                                <div>
-                                                    <h5 class="mb-0">Auto Tren</h5>
-                                                    <span class="text-muted">Vehículos</span>
+                                                <div class="ae-project__content">
+                                                    <div class="ae-content__title flex align-items-center justify-content-center">
+                                                        <h5 class="mb-0">Proyecto El Salvador</h5>
+                                                        <span class="text-muted">Inmobiliario</span>
+                                                    </div>
+                                                    <div>
+                                                        <div
+                                                            class="d-flex justify-content-between d-block d-sm-flex d-sm-block d-grid gap-2 py-2"
+                                                        >
+                                                            <div class="flex align-items-center">
+                                                                <h2 class="ae-text-secondary">$8M</h2>
+                                                                <span>30%</span>
+                                                            </div>
+                                                            <div class="">
+                                                                <p>Objetivo: $10M USD</p>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="progress"
+                                                            role="progressbar"
+                                                            aria-valuenow="85"
+                                                            aria-valuemin="0"
+                                                            aria-valuemax="100"
+                                                        >
+                                                            <div class="progress-bar ae-bg-primary" style="width: 85%"></div>
+                                                        </div>
+                                                        <div
+                                                            class="mt-2 d-flex justify-content-between d-block d-sm-flex d-sm-block d-grid gap-2 py-2"
+                                                        >
+                                                            <div>Retorno: 18%</div>
+                                                            <div>223</div>
+                                                            <div>46 Días</div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <div
-                                                        class="d-flex justify-content-between d-block d-sm-flex d-sm-block d-grid gap-2 py-2"
-                                                    >
-                                                        <div class="">Progreso</div>
-                                                        <div class="">30%</div>
-                                                    </div>
-                                                    <div
-                                                        class="progress"
-                                                        role="progressbar"
-                                                        aria-valuenow="30"
-                                                        aria-valuemin="0"
-                                                        aria-valuemax="100"
-                                                    >
-                                                        <div class="progress-bar bg-secondary" style="width: 30%"></div>
-                                                    </div>
-                                                    <div
-                                                        class="mt-2 d-flex justify-content-between d-block d-sm-flex d-sm-block d-grid gap-2 py-2"
-                                                    >
-                                                        <div>Meta: $2,500,000 USD</div>
-                                                        <div>Retorno: 24%</div>
-                                                    </div>
+                                                <div class="ae-project__actions">
+                                                    <button class="ae-btn ae-btn--secondary w-full" type="button">Invertir</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="row mt-5">
-                                        <div class="btn-projects col-md-4">
-                                            <div class="card p-2">
-                                                <div class="text-center">
-                                                    <div class="badge badge-primary badge-projects fw-bold">
-                                                        Inversión
-                                                    </div>
+                                        <div class="ae-project btn-projects col-md-4">
+                                            <div class="card">
+                                                <div class="ae-project__image">
                                                     <img
                                                         src="/assets/projects/token02.jpg"
-                                                        class="rounded-4 projects-img mb-3"
+                                                        class="projects-img mb-3"
                                                     />
+                                                    <h2>30%</h2>
+                                                    <span>Inmobiliario</span>
                                                 </div>
-
-                                                <div>
-                                                    <h5 class="mb-0">BTG</h5>
-                                                    <span class="text-muted">Fondo de renta variable</span>
-                                                </div>
-                                                <div>
-                                                    <div
-                                                        class="mt-2 d-flex justify-content-between d-block d-sm-flex d-sm-block d-grid gap-2 py-2"
-                                                    >
-                                                        <div>Ticket mínimo: $5,000 USD</div>
-                                                        <div>Retorno: 19.62%</div>
+                                                <div class="ae-project__content">
+                                                    <div class="ae-content__title flex align-items-center justify-content-center">
+                                                        <h5 class="mb-0">Proyecto El Salvador</h5>
+                                                        <span class="text-muted">Inmobiliario</span>
                                                     </div>
+                                                    <div>
+                                                        <div
+                                                            class="d-flex justify-content-between d-block d-sm-flex d-sm-block d-grid gap-2 py-2"
+                                                        >
+                                                            <div class="flex align-items-center">
+                                                                <h2 class="ae-text-secondary">$8M</h2>
+                                                                <span>30%</span>
+                                                            </div>
+                                                            <div class="">
+                                                                <p>Objetivo: $10M USD</p>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="progress"
+                                                            role="progressbar"
+                                                            aria-valuenow="85"
+                                                            aria-valuemin="0"
+                                                            aria-valuemax="100"
+                                                        >
+                                                            <div class="progress-bar ae-bg-primary" style="width: 85%"></div>
+                                                        </div>
+                                                        <div
+                                                            class="mt-2 d-flex justify-content-between d-block d-sm-flex d-sm-block d-grid gap-2 py-2"
+                                                        >
+                                                            <div>Retorno: 18%</div>
+                                                            <div>223</div>
+                                                            <div>46 Días</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ae-project__actions">
+                                                    <button class="ae-btn ae-btn--secondary w-full" type="button">Invertir</button>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="btn-projects col-md-4">
-                                            <div class="card p-2">
-                                                <div class="text-center">
-                                                    <div class="badge badge-primary badge-projects fw-bold">
-                                                        Inversión
-                                                    </div>
+                                        <div class="ae-project btn-projects col-md-4">
+                                            <div class="card">
+                                                <div class="ae-project__image">
                                                     <img
                                                         src="/assets/projects/05.jpg"
-                                                        class="rounded-4 projects-img mb-3"
+                                                        class="projects-img mb-3"
                                                     />
+                                                    <h2>30%</h2>
+                                                    <span>Inmobiliario</span>
                                                 </div>
-
-                                                <div>
-                                                    <h5 class="mb-0">iCash</h5>
-                                                    <span class="text-muted">Crédito sobre nómina</span>
-                                                </div>
-                                                <div>
-                                                    <div
-                                                        class="mt-2 d-flex justify-content-between d-block d-sm-flex d-sm-block d-grid gap-2 py-2"
-                                                    >
-                                                        <div>Ticket mínimo: $1,000 USD</div>
-                                                        <div>Retorno: 17%</div>
+                                                <div class="ae-project__content">
+                                                    <div class="ae-content__title flex align-items-center justify-content-center">
+                                                        <h5 class="mb-0">Proyecto El Salvador</h5>
+                                                        <span class="text-muted">Inmobiliario</span>
                                                     </div>
+                                                    <div>
+                                                        <div
+                                                            class="d-flex justify-content-between d-block d-sm-flex d-sm-block d-grid gap-2 py-2"
+                                                        >
+                                                            <div class="flex align-items-center">
+                                                                <h2 class="ae-text-secondary">$8M</h2>
+                                                                <span>30%</span>
+                                                            </div>
+                                                            <div class="">
+                                                                <p>Objetivo: $10M USD</p>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="progress"
+                                                            role="progressbar"
+                                                            aria-valuenow="85"
+                                                            aria-valuemin="0"
+                                                            aria-valuemax="100"
+                                                        >
+                                                            <div class="progress-bar ae-bg-primary" style="width: 85%"></div>
+                                                        </div>
+                                                        <div
+                                                            class="mt-2 d-flex justify-content-between d-block d-sm-flex d-sm-block d-grid gap-2 py-2"
+                                                        >
+                                                            <div>Retorno: 18%</div>
+                                                            <div>223</div>
+                                                            <div>46 Días</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ae-project__actions">
+                                                    <button class="ae-btn ae-btn--secondary w-full" type="button">Invertir</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-12" *ngIf="activeItem.label == 'OTC'">
+                                <div class="col-md-12" *ngIf="activeItem.label == 'Portafolio'">
+                                    <otc-wrapper></otc-wrapper>
+                                </div>
+                                <div class="col-md-12" *ngIf="activeItem.label == 'Historial'">
                                     <otc-wrapper></otc-wrapper>
                                 </div>
                             </div>

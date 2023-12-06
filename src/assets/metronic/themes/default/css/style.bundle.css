@@ -48627,7 +48627,7 @@ form p-fileupload .p-fileupload-files div.p-fileupload-row div:first-child{
 }
 
 .login-form{
-  background-color: var(--kt-dark);
+  background-color: var(--ae-white);
   color: var(--kt-text-light);
 }
 

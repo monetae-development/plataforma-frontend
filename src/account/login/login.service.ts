@@ -1,5 +1,5 @@
 ﻿import { TokenService, LogService, MessageService, LocalizationService } from 'abp-ng2-module';
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppConsts } from '@shared/AppConsts';
 import { UrlHelper } from '@shared/helpers/UrlHelper';
@@ -9,6 +9,7 @@ import {
     ExternalAuthenticateModel,
     ExternalAuthenticateResultModel,
     ExternalLoginProviderInfoModel,
+    SendTwoFactorAuthCodeModel,
     TokenAuthServiceProxy,
     TwitterServiceProxy,
 } from '@shared/service-proxies/service-proxies';
@@ -20,6 +21,7 @@ import * as AuthenticationContext from 'adal-angular/lib/adal';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { LocalStorageService } from '@shared/utils/local-storage.service';
 import { AuthenticationResult, PublicClientApplication } from '@azure/msal-browser';
+import { AppComponentBase } from '@shared/common/app-component-base';
 
 declare const FB: any; // Facebook API
 declare const gapi: any; // google API
@@ -47,13 +49,15 @@ export class ExternalLoginProvider extends ExternalLoginProviderInfoModel {
 }
 
 @Injectable()
-export class LoginService {
+export class LoginService extends AppComponentBase{
     static readonly twoFactorRememberClientTokenName = 'TwoFactorRememberClientToken';
 
     authenticateModel: AuthenticateModel;
     authenticateResult: AuthenticateResultModel;
     externalLoginProviders: ExternalLoginProvider[] = [];
+    optionsTwoFactorProvider = [];
     rememberMe: boolean;
+    submitting: boolean = false;
 
     wsFederationAuthenticationContext: any;
     localizationSourceName = AppConsts.localization.defaultLocalizationSourceName;
@@ -62,16 +66,18 @@ export class LoginService {
     private MSAL: PublicClientApplication;
 
     constructor(
+        injector: Injector,
         private _tokenAuthService: TokenAuthServiceProxy,
         private _router: Router,
         private _messageService: MessageService,
         private _tokenService: TokenService,
         private _logService: LogService,
         private oauthService: OAuthService,
-        private spinnerService: NgxSpinnerService,
+        private _spinnerService: NgxSpinnerService,
         private _localStorageService: LocalStorageService,
         private _twitterService: TwitterServiceProxy
     ) {
+        super(injector);
         this.clear();
     }
 
@@ -79,7 +85,7 @@ export class LoginService {
         finallyCallback =
             finallyCallback ||
             (() => {
-                this.spinnerService.hide();
+                this._spinnerService.hide();
             });
 
         const self = this;
@@ -162,7 +168,7 @@ export class LoginService {
     }
 
     public twitterLoginCallback(token: string, verifier: string) {
-        this.spinnerService.show();
+        this._spinnerService.show();
 
         this._twitterService.getAccessToken(token, verifier).subscribe((response) => {
             const model = new ExternalAuthenticateModel();
@@ -176,7 +182,7 @@ export class LoginService {
                 .externalAuthenticate(model)
                 .pipe(
                     finalize(() => {
-                        this.spinnerService.hide();
+                        this._spinnerService.hide();
                     })
                 )
                 .subscribe((result: ExternalAuthenticateResultModel) => {
@@ -237,7 +243,7 @@ export class LoginService {
             let authConfig = this.getOpenIdConnectConfig(openIdProvider);
 
             this.oauthService.configure(authConfig);
-            this.spinnerService.show();
+            this._spinnerService.show();
 
             this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
                 let claims = this.oauthService.getIdentityClaims();
@@ -253,7 +259,7 @@ export class LoginService {
                     .externalAuthenticate(model)
                     .pipe(
                         finalize(() => {
-                            this.spinnerService.hide();
+                            this._spinnerService.hide();
                         })
                     )
                     .subscribe((result: ExternalAuthenticateResultModel) => {
@@ -314,7 +320,7 @@ export class LoginService {
 
             } else if (provider.name === ExternalLoginProvider.MICROSOFT) {
                 let scopes = ['user.read'];
-                this.spinnerService.show();
+                this._spinnerService.show();
                 this.MSAL.loginPopup({
                     scopes: scopes,
                 }).then((idTokenResponse: AuthenticationResult) => {
@@ -323,7 +329,7 @@ export class LoginService {
                         scopes: scopes
                     }).then((accessTokenResponse: AuthenticationResult) => {
                         this.microsoftLoginCallback(accessTokenResponse);
-                        this.spinnerService.hide();
+                        this._spinnerService.hide();
                     }).catch((error) => {
                         abp.log.error(error);
                         abp.message.error(
@@ -356,8 +362,25 @@ export class LoginService {
             this.clear();
         } else if (authenticateResult.requiresTwoFactorVerification) {
             // Two factor authentication
+            authenticateResult.twoFactorAuthProviders.forEach((value) => {
+                let option = { label: this.l('TwoFactorOption:' + value), value: value };
+                this.optionsTwoFactorProvider.push(option);
+                if (this.optionsTwoFactorProvider.length == 1) {
+                    const model = new SendTwoFactorAuthCodeModel();
+                    model.userId = authenticateResult.userId;
+                    model.provider = this.optionsTwoFactorProvider[0].value;
 
-            this._router.navigate(['account/send-code']);
+                    this.submitting = true;
+                    this._tokenAuthService
+                        .sendTwoFactorAuthCode(model)
+                        .pipe(finalize(() => (this.submitting = false)))
+                        .subscribe(() => {
+                            this._router.navigate(['account/verify-code']);
+                        });
+                } else {
+                    this._router.navigate(['account/send-code']);
+                }
+            });
         } else if (authenticateResult.accessToken) {
             // Successfully logged in
 
@@ -520,10 +543,10 @@ export class LoginService {
     }
 
     private startTwitterLogin() {
-        this.spinnerService.show();
+        this._spinnerService.show();
         this._twitterService
             .getRequestToken()
-            .pipe(finalize(() => this.spinnerService.hide()))
+            .pipe(finalize(() => this._spinnerService.hide()))
             .subscribe((result) => {
                 if (result.confirmed) {
                     window.location.href = result.redirectUrl;
@@ -575,7 +598,7 @@ export class LoginService {
         model.singleSignIn = UrlHelper.getSingleSignIn();
         model.returnUrl = UrlHelper.getReturnUrl();
 
-        this.spinnerService.show();
+        this._spinnerService.show();
 
         this._tokenAuthService.externalAuthenticate(model).subscribe((result: ExternalAuthenticateResultModel) => {
             if (result.waitingForActivation) {
@@ -593,7 +616,7 @@ export class LoginService {
                 '',
                 result.returnUrl
             );
-            this.spinnerService.hide();
+            this._spinnerService.hide();
         });
     }
 }

@@ -1,11 +1,21 @@
 ﻿<div class="login-form" [@routerTransition]>
+    <button
+        [disabled]="saving"
+        routerLink="/account/login"
+        type="button"
+        class="ae-btn ae-btn--transparent ae-button--back fw-bolder fs-h6 px-8 py-4 my-3"
+    >
+        <i class="fa fa-arrow-left"></i>
+        {{ 'Back' | localize }}
+    </button>
     <div class="pb-5 pt-lg-0 pt-5">
-        <h3 class="fw-bolder text-primary fs-h4 fs-h1-lg">
+        <h3 class="fw-bolder ae-text-dark fs-h4 fs-h1-lg">
             {{ 'SignUp' | localize }}
         </h3>
+        <p class="ae-text-dark">{{ 'MarkedFields' | localize }}</p>
     </div>
     <form #registerForm="ngForm" class="login-form form" method="post" novalidate (ngSubmit)="save()">
-        <div class="mb-5">
+        <!-- <div class="mb-5">
             <input
                 #nameInput="ngModel"
                 class="form-control form-control-solid h-auto py-3 px-6 rounded-lg fs-h6"
@@ -36,9 +46,11 @@
                 pattern="^(?!\s)(.*\S)?(?<!\s)$"
             />
             <validation-messages [formCtrl]="surnameInput"></validation-messages>
-        </div>
+        </div> -->
 
-        <div class="mb-5">
+        <div class="ae-input mb-5">
+            
+            <label>{{ 'EmailAddress' | localize }}</label>
             <input
                 #emailAddressInput="ngModel"
                 class="form-control form-control-solid h-auto py-3 px-6 rounded-lg fs-h6"
@@ -52,7 +64,7 @@
             <validation-messages [formCtrl]="emailAddressInput"></validation-messages>
         </div>
 
-        <div class="mb-5">
+        <!-- <div class="mb-5">
             <input
                 #userNameInput="ngModel"
                 class="form-control form-control-solid h-auto py-3 px-6 rounded-lg fs-h6"
@@ -67,31 +79,44 @@
                 pattern="^(?!\s)(.*\S)?(?<!\s)$"
             />
             <validation-messages [formCtrl]="userNameInput"></validation-messages>
+        </div> -->
+
+        <div class="mb-5 ae-input">
+            <label>{{ 'Password' | localize }}</label>
+            <div class="ae-input__group">
+                <input
+                    [type]="passwordFieldType"
+                    name="Password"
+                    class="form-control form-control-solid h-auto py-3 px-6 rounded-lg fs-h6"
+                    [(ngModel)]="model.password"
+                    #Password="ngModel"
+                    placeholder="{{ 'Password' | localize }}"
+                    validateEqual="PasswordRepeat"
+                    reverse="true"
+                    [requireDigit]="passwordComplexitySetting.requireDigit"
+                    [requireLowercase]="passwordComplexitySetting.requireLowercase"
+                    [requireUppercase]="passwordComplexitySetting.requireUppercase"
+                    [requireNonAlphanumeric]="passwordComplexitySetting.requireNonAlphanumeric"
+                    [requiredLength]="passwordComplexitySetting.requiredLength"
+                    required
+                    pPassword
+                    [promptLabel]="l('PleaseEnterYourNewPassword')"
+                    [weakLabel]="l('weak')"
+                    [mediumLabel]="l('medium')"
+                    [strongLabel]="l('strong')"
+                    maxlength="20"
+                />
+                <i (click)="togglePasswordVisibility()" class="pi pi-eye-slash"></i>
+            </div>
+            
         </div>
 
-        <div class="mb-5">
-            <input
-                type="password"
-                name="Password"
-                class="form-control form-control-solid h-auto py-3 px-6 rounded-lg fs-h6"
-                [(ngModel)]="model.password"
-                #Password="ngModel"
-                placeholder="{{ 'Password' | localize }}"
-                validateEqual="PasswordRepeat"
-                reverse="true"
-                [requireDigit]="passwordComplexitySetting.requireDigit"
-                [requireLowercase]="passwordComplexitySetting.requireLowercase"
-                [requireUppercase]="passwordComplexitySetting.requireUppercase"
-                [requireNonAlphanumeric]="passwordComplexitySetting.requireNonAlphanumeric"
-                [requiredLength]="passwordComplexitySetting.requiredLength"
-                required
-                pPassword
-                [promptLabel]="l('PleaseEnterYourNewPassword')"
-                [weakLabel]="l('weak')"
-                [mediumLabel]="l('medium')"
-                [strongLabel]="l('strong')"
-                maxlength="20"
-            />
+        <div class="ae-checkbox">
+            <p-checkbox 
+                value="val1" 
+                label="Al continuar estoy de acuerdo con los términos y condiciones de servicio y política de privacidad ."
+                [(ngModel)]="model.agree">
+            </p-checkbox>
         </div>
 
         <div [hidden]="registerForm.form.valid || registerForm.form.pristine" class="mb-5">
@@ -114,7 +139,7 @@
             </ul>
         </div>
 
-        <div class="mb-5">
+        <!-- <div class="mb-5">
             <input
                 type="password"
                 name="PasswordRepeat"
@@ -131,9 +156,9 @@
                 [requiredLength]="passwordComplexitySetting.requiredLength"
                 required
             />
-        </div>
+        </div> -->
 
-        <div [hidden]="registerForm.form.valid || registerForm.form.pristine" class="mb-5">
+        <!-- <div [hidden]="registerForm.form.valid || registerForm.form.pristine" class="mb-5">
             <ul class="form-text text-danger" *ngIf="PasswordRepeat.errors">
                 <li [hidden]="!PasswordRepeat.errors.requireDigit">
                     {{ 'PasswordComplexity_RequireDigit_Hint' | localize }}
@@ -152,27 +177,19 @@
                 </li>
                 <li [hidden]="PasswordRepeat.valid">{{ 'PasswordsDontMatch' | localize }}</li>
             </ul>
-        </div>
+        </div> -->
 
-        <div class="pb-lg-0 pb-5">
-            <button
-                [disabled]="saving"
-                routerLink="/account/login"
-                type="button"
-                class="btn-outline btn-outline-primary fw-bolder fs-h6 px-8 py-4 my-3"
-            >
-                <i class="fa fa-arrow-left"></i>
-                {{ 'Back' | localize }}
-            </button>
+        <div class="ae-login__actions pb-lg-0 pb-5">
+            
             <button
                 type="submit"
-                class="btn btn-primary fw-bolder fs-h6 px-8 py-4 my-3 me-3 mx-8"
+                class="ae-btn ae-btn--primary w-full fw-bolder fs-h6"
                 [disabled]="!registerForm.form.valid"
                 [buttonBusy]="saving"
                 [busyText]="l('SavingWithThreeDot')"
             >
-                <i class="fa fa-check"></i>
-                {{ 'Submit' | localize }}
+                <!-- <i class="fa fa-check"></i> -->
+                {{ 'Next2' | localize }}
             </button>
         </div>
     </form>

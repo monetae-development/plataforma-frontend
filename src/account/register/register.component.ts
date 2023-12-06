@@ -19,6 +19,7 @@ import { ReCaptchaV3Service } from 'ng-recaptcha';
     animations: [accountModuleAnimation()],
 })
 export class RegisterComponent extends AppComponentBase implements OnInit {
+    passwordFieldType: string = "password";
     model: RegisterModel = new RegisterModel();
     passwordComplexitySetting: PasswordComplexitySetting = new PasswordComplexitySetting();
     saving = false;
@@ -44,6 +45,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     }
 
     ngOnInit() {
+        // this.notify.success(this.l('SuccessfullyRegistered'));
         //Prevent to register new users in the host context
         if (this.appSession.tenant == null) {
             this._router.navigate(['account/login']);
@@ -60,7 +62,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
             this.saving = true;
             this.model.captchaResponse = token;
             this._accountService
-                .register(this.model)
+                .registerSimple(this.model)
                 .pipe(
                     finalize(() => {
                         this.saving = false;
@@ -75,7 +77,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
 
                     //Autheticate
                     this.saving = true;
-                    this._loginService.authenticateModel.userNameOrEmailAddress = this.model.userName;
+                    this._loginService.authenticateModel.userNameOrEmailAddress = this.model.emailAddress;
                     this._loginService.authenticateModel.password = this.model.password;
                     this._loginService.authenticate(() => {
                         this.saving = false;
@@ -88,5 +90,9 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         } else {
             recaptchaCallback(null);
         }
+    }
+
+    togglePasswordVisibility(): void{
+        this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
     }
 }

@@ -1,3 +1,40 @@
+.ae-login__title{
+    margin-bottom: 20px;
+}
+.ae-login__title h3{
+    color: var(--ae-dark);
+    font-size: 20px;
+}
+.ae-login__line{
+    position: relative;
+    margin: 25px 0;
+    text-align: center;
+    span{
+        display: block;
+        color: var(--ae-gris);
+        width: 100%;
+        max-width: 40px;
+        background-color: var(--ae-white);
+        z-index: 5;
+        position: relative;
+        height: 16px;
+        text-align: center;
+        margin: auto;
+    }
+    br{
+        display: block;
+        content: '';
+        margin: 0;
+        background-color: #F4F4F4;
+        height: 1px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+    }
+}
 .login__options {
     a {
         cursor: pointer;
@@ -19,5 +56,10 @@
                 content: "\f20e";
             }
         }
+    }
+}
+@media (max-width: 480px) {
+    .login__options {
+        flex-direction: column;
     }
 }

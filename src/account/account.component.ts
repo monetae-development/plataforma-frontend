@@ -5,7 +5,6 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { AppUiCustomizationService } from '@shared/common/ui/app-ui-customization.service';
 import { filter as _filter } from 'lodash-es';
 import { LoginService } from './login/login.service';
-import { DateTime } from 'luxon';
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
 import { AppPreBootstrap } from 'AppPreBootstrap';
 
@@ -19,7 +18,7 @@ export class AccountComponent extends AppComponentBase implements OnInit {
     remoteServiceBaseUrl: string = AppConsts.remoteServiceBaseUrl;
     skin = this.appSession.theme.baseSettings.layout.darkMode ? 'dark' : 'light';
     //defaultLogo = AppConsts.appBaseUrl + '/assets/common/images/app-logo-on-' + this.skin + '.svg';
-    defaultLogo = AppConsts.appBaseUrl + '/assets/common/images/logo.png';
+    defaultLogo = AppConsts.appBaseUrl + '/assets/common/images/logo-monetae.svg';
     backgroundImageName = this.appSession.theme.baseSettings.layout.darkMode ? 'login' : 'login';
     tenantChangeDisabledRoutes: string[] = [
         'select-edition',
@@ -36,10 +35,6 @@ export class AccountComponent extends AppComponentBase implements OnInit {
         'stripe-cancel-payment',
         'session-locked',
     ];
-    wWindow: number = window.innerWidth;
-    hWindow: number = window.innerHeight;
-    windowWidth: number = 805;
-    windowCenter: number = (this.hWindow - this.windowWidth) / 2;
 
     private viewContainerRef: ViewContainerRef;
 
@@ -95,17 +90,5 @@ export class AccountComponent extends AppComponentBase implements OnInit {
 
     private supportsTenancyNameInUrl() {
         return AppPreBootstrap.resolveTenancyName(AppConsts.appBaseUrlFormat) != null;
-    }
-
-    @HostListener('window:resize', ['$event'])
-    onResize(event: Event): void {
-        this.wWindow = window.innerWidth;
-        this.hWindow = window.innerHeight;
-        if (this.hWindow > this.windowWidth) {
-            this.windowCenter = (this.hWindow - this.windowWidth) / 2;
-        } else {
-            this.windowCenter = 10;
-        }
-
     }
 }

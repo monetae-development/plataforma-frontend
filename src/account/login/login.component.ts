@@ -16,6 +16,7 @@ import { AppConsts } from '@shared/AppConsts';
 })
 export class LoginComponent extends AppComponentBase implements OnInit {
     submitting = false;
+    passwordFieldType: string = "password";
     isMultiTenancyEnabled: boolean = this.multiTenancy.isEnabled;
 
     constructor(
@@ -115,6 +116,10 @@ export class LoginComponent extends AppComponentBase implements OnInit {
 
     externalLogin(provider: ExternalLoginProvider) {
         this.loginService.externalAuthenticate(provider);
+    }
+
+    togglePasswordVisibility(): void{
+        this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
     }
 
 }

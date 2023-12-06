@@ -175,6 +175,36 @@ export class AccountServiceProxy {
         }));
     }
 
+    registerSimple(body: RegisterSimpleInput | undefined): Observable<RegisterOutput> {
+        let url_ = this.baseUrl + "/api/services/app/Account/RegisterSimple";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processRegister(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRegister(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<RegisterOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<RegisterOutput>;
+        }));
+    }
+
     protected processRegister(response: HttpResponseBase): Observable<RegisterOutput> {
         const status = response.status;
         const responseBlob =
@@ -47980,6 +48010,54 @@ export interface IRegisterInput {
     userName: string;
     emailAddress: string;
     password: string;
+    captchaResponse: string | undefined;
+}
+
+export class RegisterSimpleInput implements IRegisterSimpleInput {
+    emailAddress!: string;
+    password!: string;
+    agree!: boolean;
+    captchaResponse!: string | undefined;
+
+    constructor(data?: IRegisterSimpleInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.emailAddress = _data["emailAddress"];
+            this.password = _data["password"];
+            this.agree = _data["agree"];
+            this.captchaResponse = _data["captchaResponse"];
+        }
+    }
+
+    static fromJS(data: any): RegisterSimpleInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new RegisterSimpleInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["emailAddress"] = this.emailAddress;
+        data["password"] = this.password;
+        data["agree"] = this.agree;
+        data["captchaResponse"] = this.captchaResponse;
+        return data;
+    }
+}
+
+export interface IRegisterSimpleInput {
+    emailAddress: string;
+    password: string;
+    agree: boolean;
     captchaResponse: string | undefined;
 }
 

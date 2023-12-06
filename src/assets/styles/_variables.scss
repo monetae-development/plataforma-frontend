@@ -1,0 +1,12 @@
+@use "sass:map";
+@import "variables/colors";
+
+:root{
+    --ae-primary: #{map-get($theme-colors,"primary")};
+    --ae-secondary: #{map-get($theme-colors,"secondary")};
+    --ae-gris: #{map-get($theme-colors,"gris")};
+    --ae-grey: #{map-get($theme-colors,"grey")};
+    --ae-dark: #{map-get($theme-colors,"dark")};
+    --ae-text: #{map-get($theme-colors,"text")};
+    --ae-white: #{map-get($theme-colors,"white")};
+}
