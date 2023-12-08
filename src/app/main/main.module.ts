@@ -147,6 +147,7 @@ import { NgxBootstrapDatePickerConfigService } from 'assets/ngx-bootstrap/ngx-bo
 import { SubheaderModule } from '@app/shared/common/sub-header/subheader.module';
 import { InputTextModule } from 'primeng/inputtext';
 import { CarouselModule } from 'primeng/carousel';
+import { MenuModule } from 'primeng/menu';
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 
@@ -183,7 +184,8 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 		TabViewModule,
 		TabMenuModule,
 		ProgressBarModule,
-		CarouselModule
+		CarouselModule,
+		MenuModule
 	],
 
 	declarations: [

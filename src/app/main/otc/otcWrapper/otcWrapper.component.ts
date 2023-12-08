@@ -35,6 +35,8 @@ export class OtcWrapperComponent extends AppComponentBase implements OnInit {
 
 
   currencies: SelectItem[];
+  // itemsMenu: any[] = [];
+  itemsMenu: any[] | undefined;
   selectedCurrency!: OTCTradingForViewDto;
   socketOptions: SocketOptions = { auth: { token: abp.auth.getToken() } };
   socket = io(environment.socketioHost, this.socketOptions);
@@ -70,6 +72,17 @@ export class OtcWrapperComponent extends AppComponentBase implements OnInit {
     this._serviceCommonProxy.getSelectOptions('OTCTrading/GetAllCryptoCoins', null).subscribe((result) => {
       this.currencies = result.items;
     });
+    this.itemsMenu = [
+      {
+        label: 'Comprar'
+      },
+      {
+        label: 'Vender'
+      },
+      {
+        label: 'Convertir'
+      }
+    ]
 
   }
 
