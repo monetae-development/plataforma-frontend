@@ -145,6 +145,8 @@ import { BsDatepickerConfig, BsDaterangepickerConfig, BsLocaleService } from 'ng
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgxBootstrapDatePickerConfigService } from 'assets/ngx-bootstrap/ngx-bootstrap-datepicker-config.service';
 import { SubheaderModule } from '@app/shared/common/sub-header/subheader.module';
+import { InputTextModule } from 'primeng/inputtext';
+import { CarouselModule } from 'primeng/carousel';
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 
@@ -158,6 +160,7 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 		InputMaskModule,
 		InputNumberModule,
 		TableModule,
+		InputTextModule,
 		CalendarModule,
 		CommonModule,
 		FormsModule,
@@ -179,7 +182,8 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 		RadioButtonModule,
 		TabViewModule,
 		TabMenuModule,
-		ProgressBarModule
+		ProgressBarModule,
+		CarouselModule
 	],
 
 	declarations: [

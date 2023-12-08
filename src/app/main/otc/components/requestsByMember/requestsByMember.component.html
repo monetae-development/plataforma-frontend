@@ -1,7 +1,7 @@
 <div class="row align-items-center">
     <div class="col-md-12 align-items-stretch">
-        <div class="card card-height-100">
-            <div class="card-header border-bottom-dashed">
+        <div class="card-height-100">
+            <div class="card-header">
                 <h6 class="card-title mb-0">{{ l('MyCryptoRequests') }}</h6>
                 <!--end row-->
             </div>
@@ -22,31 +22,31 @@
                 >
                     <ng-template pTemplate="header">
                         <tr>
-                            <th style="width: 100px" pSortableColumn="folio">
+                            <th pSortableColumn="otcCoinFk.name">
+                                {{ l('Active') }}
+                                <p-sortIcon field="otcCoinFk.name"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="folio">
                                 {{ l('Folio') }}
                                 <p-sortIcon field="otcRequest.folio"></p-sortIcon>
                             </th>
-                            <th style="width: 80px" pSortableColumn="type">
+                            <th pSortableColumn="type">
                                 {{ l('OTCTypeRequest') }}
                                 <p-sortIcon field="otcRequest.type"></p-sortIcon>
                             </th>
-                            <th style="width: 150px" class="text-center" pSortableColumn="creationTime">
+                            <th class="text-center" pSortableColumn="creationTime">
                                 {{ l('RequestCreationTime') }}
                                 <p-sortIcon field="otcRequest.creationTime"></p-sortIcon>
                             </th>
-                            <th style="width: 150px" pSortableColumn="otcCoinFk.name">
-                                {{ l('Product') }}
-                                <p-sortIcon field="otcCoinFk.name"></p-sortIcon>
-                            </th>
-                            <th style="width: 100px" pSortableColumn="amount">
+                            <th pSortableColumn="amount">
                                 {{ l('Amount') }}
                                 <p-sortIcon field="otcRequest.price"></p-sortIcon>
                             </th>
-                            <th style="width: 100px" pSortableColumn="cost">
+                            <th pSortableColumn="cost">
                                 {{ l('Cost') }}
                                 <p-sortIcon field="otcRequest.cost"></p-sortIcon>
                             </th>
-                            <th style="width: 100px" pSortableColumn="status">
+                            <th pSortableColumn="status">
                                 {{ l('Status') }}
                                 <p-sortIcon field="otcRequest.status"></p-sortIcon>
                             </th>
@@ -57,13 +57,35 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-record="$implicit" let-i="rowIndex">
                         <tr>
-                            <td style="width: 100px">
+                            <td>
+                                <div class="flex align-items-center">
+                                    <div class="mr-4">
+                                        <img
+                                            src="/assets/crypto-icons/{{ record.otcCoinFk.key.toLowerCase() }}.png"
+                                            style="width: 28px"
+                                        />
+                                    </div>
+                                    <div class="ae-text__coin">
+                                        <p class="m-0">{{ record.otcCoinFk.name }}</p>
+                                        <span>{{ record.otcCoinFk.key }}</span>
+                                    </div>
+                                </div>
+                                <!-- <img
+                                    src="/assets/crypto-icons/{{ record.otcCoinFk.key.toLowerCase() }}.png"
+                                    style="width: 28px"
+                                />
+                                {{ record.otcCoinFk.name }}
+                                <span class="badge text-bg-secondary">
+                                    {{ record.otcCoinFk.key }}
+                                </span> -->
+                            </td>
+                            <td>
                                 {{ record.otcRequest.folio }}
                             </td>
-                            <td style="width: 80px">
+                            <td>
                                 {{ l(requestType[record.otcRequest.type]) }}
                             </td>
-                            <td style="width: 150px" class="text-center lh-1">
+                            <td class="text-center lh-1">
                                 <span class="fs-6">
                                     {{
                                         getDateTimeFormat(
@@ -82,23 +104,13 @@
                                     }}
                                 </span>
                             </td>
-                            <td style="width: 150px">
-                                <img
-                                    src="/assets/crypto-icons/{{ record.otcCoinFk.key.toLowerCase() }}.png"
-                                    style="width: 28px"
-                                />
-                                {{ record.otcCoinFk.name }}
-                                <span class="badge text-bg-secondary">
-                                    {{ record.otcCoinFk.key }}
-                                </span>
-                            </td>
-                            <td style="width: 100px">
+                            <td>
                                 {{ record.otcRequest.amount | number : '1.0-6' : 'en' }}
                             </td>
-                            <td style="width: 100px">
+                            <td>
                                 {{ record.otcRequest.cost | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}
                             </td>
-                            <td style="width: 50px">
+                            <td>
                                 <span class="badge text-bg-secondary">
                                     {{ l(requestStatus[record.otcRequest.status]) }}
                                 </span>

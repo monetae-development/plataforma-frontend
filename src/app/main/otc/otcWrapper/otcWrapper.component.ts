@@ -89,8 +89,8 @@ export class OtcWrapperComponent extends AppComponentBase implements OnInit {
       this.primengTableHelper.records = result.items;
       this.primengTableHelper.hideLoadingIndicator();
 
-      this.cryptoPurchase.onStart(result.items);
-      this.cryptoSale.onStart(result.items);
+      // this.cryptoPurchase.onStart(result.items);
+      // this.cryptoSale.onStart(result.items);
     });
   }
 

@@ -1,12 +1,11 @@
 <div class="kt-portlet__body">
     <div class="row g-3">
-        <div class="col-md-8 align-items-stretch">
-            <div class="card card-height-100">
-                <div class="card-header border-bottom-dashed">
-                    <h6 class="card-title mb-0">{{ l('MarketsOverview') }}</h6>
-                    <!--end row-->
+        <div class="col-xs-12 align-items-stretch">
+            <div class="card-height-100">
+                <div class="card-header">
+                    <h6 class="card-title mb-0">{{ l('Aquí tienes el registro de todas tus activos digitales') }}</h6>
+                    <!-- <h6 class="card-title mb-0">{{ l('MarketsOverview') }}</h6> -->
                 </div>
-                <!--<Primeng-Datatable-Start>-->
                 <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
                     <p-table
                         #dataTable
@@ -24,41 +23,57 @@
                         dataKey="id"
                         [responsive]="primengTableHelper.isResponsive"
                         [resizableColumns]="primengTableHelper.resizableColumns"
+                        [filterDelay]="0"
+                        [globalFilterFields]="['otcCoin.name', 'otcCoin.key']"
                     >
+                        <ng-template pTemplate="caption">
+                            <div class="flex align-items-center justify-content-end">
+                                <span class="p-input-icon-right ml-auto">
+                                    <i class="pi pi-search"></i>
+                                    <input pInputText type="text" (input)="dataTable.filterGlobal($event.target.value, 'contains')" placeholder="" />
+                                </span>
+                            </div>
+                        </ng-template>
                         <ng-template pTemplate="header">
                             <tr>
-                                <th style="width: 100px">
-                                    {{ l('Name') }}
+                                <th>
+                                    {{ l('Active') }}
                                 </th>
-                                <th style="width: 100px">
-                                    {{ l('PurchasePrice') }}
+                                <th>
+                                    {{ l('Gráfico') }}
+                                    <!-- {{ l('PurchasePrice') }} -->
                                 </th>
-                                <th style="width: 50px">
+                                <th>
                                     {{ l('Change24h') }}
                                 </th>
-                                <th style="width: 100px">
-                                    {{ l('SalePrice') }}
+                                <th>
+                                    {{ l('% del total') }}
                                 </th>
-                                <th style="width: 100px">
-                                    {{ l('Actions') }}
+                                <th>
+                                    {{ l('Cantidad') }}
+                                    <!-- {{ l('SalePrice') }} -->
+                                </th>
+                                <th style="width: 100px;">
+                                    <!-- {{ l('Actions') }} -->
                                 </th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-record="$implicit" let-i="rowIndex">
                             <tr [pSelectableRow]="record.otcCoin">
-                                <td style="width: 100px">
-                                    <div class="d-flex flex-row flex-nowrap">
-                                        <div class="">
+                                <td>
+                                    <div class="flex align-items-center">
+                                        <div class="mr-4">
                                             <img
                                                 src="/assets/crypto-icons/{{ record.otcCoin.key | lowercase }}.png"
                                                 class="crypto-icon-table"
                                                 alt="{{ record.otcCoin.key }}"
                                             />
                                         </div>
-                                        <div class="ms-3">
-                                            {{ record.otcCoin.name }}
+                                        <div class="ae-text__coin">
+                                            <p class="m-0">{{ record.otcCoin.name }}</p>
+                                            <span>{{ record.otcCoin.key }}</span>
                                         </div>
-                                        <div class="badge text-bg-secondary ms-1">
+                                        <!-- <div class="badge text-bg-secondary ms-1">
                                             {{ record.otcCoin.key }}
                                         </div>
                                         <div class="flex-grow-1"></div>
@@ -78,20 +93,13 @@
                                                 "
                                                 class="flaticon2-line fs-3"
                                             ></i>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </td>
                                 <td
-                                    style="width: 100px"
+                                    
                                     [class.text-success]="record.otcCoin.behavior == getBehavior().Up"
                                     [class.text-danger]="record.otcCoin.behavior == getBehavior().Down"
-                                >
-                                    {{ record.otcCoin.salePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}
-                                </td>
-                                <td
-                                    style="width: 50px"
-                                    [class.text-success]="record.otcCoin.change24h > 0"
-                                    [class.text-danger]="record.otcCoin.change24h < 0"
                                 >
                                     <i
                                         class="la la-line-chart fs-2x"
@@ -99,12 +107,28 @@
                                         [class.text-danger]="record.otcCoin.change24h < 0"
                                         [class.rotate-180]="record.otcCoin.change24h < 0"
                                     ></i>
+                                    <!-- {{ record.otcCoin.salePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }} -->
+                                </td>
+                                <td
+                                    
+                                    [class.text-success]="record.otcCoin.change24h > 0"
+                                    [class.text-danger]="record.otcCoin.change24h < 0"
+                                >
+                                    <!-- <i
+                                        class="la la-line-chart fs-2x"
+                                        [class.text-success]="record.otcCoin.change24h > 0"
+                                        [class.text-danger]="record.otcCoin.change24h < 0"
+                                        [class.rotate-180]="record.otcCoin.change24h < 0"
+                                    ></i> -->
                                     {{ record.otcCoin.change24h }}%
                                 </td>
-                                <td style="width: 100px">
-                                    {{ record.otcCoin.purchasePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}
+                                <td>
+                                    <span>50%</span>
                                 </td>
                                 <td>
+                                    {{ record.otcCoin.purchasePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}
+                                </td>
+                                <td style="width: 100px;">
                                     <button class="btn btn-sm btn-light" (click)="onSelectRow(record.otcCoin)">
                                         {{
                                             selectedCurrency.key == record.otcCoin.key
@@ -120,13 +144,11 @@
                         {{ l('NoData') }}
                     </div>
                 </div>
-                <!--<Primeng-Datatable-End>-->
             </div>
         </div>
 
-        <div class="col-xs-12 col-md-4 d-flex align-items-stretch">
+        <!-- <div class="col-xs-12 col-md-4 d-flex align-items-stretch">
             <div class="card card-height-100 p-5 w-100">
-                <!--Purchase Tab-->
                 <p-tabView (onChange)="onChangeTab($event)">
                     <p-tabPanel header="{{ l('Purchase') }}">
                         <otc-crypto-purchase
@@ -136,8 +158,6 @@
                             (onSave)="reloadRequests()"
                         ></otc-crypto-purchase>
                     </p-tabPanel>
-
-                    <!--Sale Tab-->
                     <p-tabPanel header="{{ l('Sale') }}">
                         <otc-crypto-sale
                             #cryptoSale
@@ -148,9 +168,9 @@
                     </p-tabPanel>
                 </p-tabView>
             </div>
-        </div>
+        </div> -->
     </div>
-    <div class="mt-4">
+    <!-- <div class="mt-4">
         <otc-requests-crypto #cryptoRequests></otc-requests-crypto>
-    </div>
+    </div> -->
 </div>

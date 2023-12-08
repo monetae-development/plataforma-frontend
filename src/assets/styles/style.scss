@@ -18,8 +18,20 @@
 .ae-text-gris{
     color: var(--ae-gris) !important;
 }
+.ae-text-gris-dark{
+    color: var(--ae-gris-dark) !important;
+}
 .ae-text-primary{
     color: var(--ae-primary) !important;
+}
+.ae-text-success{
+    color: var(--ae-success) !important;
+}
+.ae-text-warning{
+    color: var(--ae-warning) !important;
+}
+.ae-text-danger{
+    color: var(--ae-danger) !important;
 }
 .ae-bg-primary{
     background-color: var(--ae-primary) !important;
@@ -34,7 +46,7 @@
 .ae-container{
     width: 100%;
     max-width: 1150px;
-    margin: 0 auto;
+    margin: 20px auto;
 }
 
 .ae-btn{
@@ -117,52 +129,123 @@
     width: 100%;
     background-color: #FFFFFF;
     border-radius: 16px;
-    padding: 50px;
+    padding: 40px 50px;
+    &--title{
+        h2{
+            font-size: 16px;
+        }
+        a{
+            font-size: 14px;
+            cursor: pointer;
+        }
+    }
 }
-.ae-project{
-    .card{
-        border-radius: 16px;
-        overflow: hidden;
-        .ae-project__image{
-            position: relative;
-            h2{
-                position: absolute;
-                left: 12px;
-                top: 12px;
-                color: #FFFFFF;
-                text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.50);
+.ae-card{
+    border: 1px solid #F0F0F0;
+    border-radius: 16px;
+    overflow: hidden;
+    &__boxshadow{
+        box-shadow: 4px 4px 16px 0px rgba(0, 0, 0, 0.03);
+    }
+}
+.ae-project__card{
+    margin: 20px 10px;
+    .ae-project__image{
+        position: relative;
+        h2{
+            position: absolute;
+            left: 12px;
+            top: 12px;
+            color: #FFFFFF;
+            text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.50);
+        }
+        span{
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background-color: #F0F0F0;
+            color: #878787;
+            display: flex;
+            display: -webkit-flex;
+            align-items: center;
+            justify-content: center;
+            height: 20px;
+            border-radius: 2px;
+            padding: 0 12px;
+            font-size: 10px;
+        }
+        img{
+            &.projects-img{
+                width: 100%;
+            }
+        }
+    }
+    .ae-project__content{
+        padding: 12px 20px;
+        .ae-content__title{
+            width: 100%;
+            margin-bottom: 15px;
+            h5{
+                width: 100%;
             }
             span{
-                position: absolute;
-                top: 12px;
-                right: 12px;
-                background-color: #F0F0F0;
-                color: #878787;
-                display: flex;
-                display: -webkit-flex;
-                align-items: center;
-                justify-content: center;
-                height: 20px;
-                border-radius: 2px;
-                padding: 0 12px;
+                font-size: 10px;
+                display: block;
             }
+        }
+        .ae-content__objetive{
+            margin-bottom: 5px;
+            h2{
+                font-size: 14px;
+            }
+            span{
+                font-size: 10px;
+            }
+            p{
+                font-size: 12px;
+            }
+        }
+        .ae-project__progress{
+            padding-bottom: 18px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #F1F1F1;
+            .progress{                    
+                height: 8px;
+            }
+        }
+    }
+    .ae-project__actions{
+        padding: 12px 20px;
+    }
+}
+.ae-crypto__card{
+    margin: 20px 10px;
+    padding: 16px;
+    .ae-crypto__title{
+        .ae-coin{
+            width: 100%;
+            max-width: 45px;
             img{
-                &.projects-img{
-                    width: 100%;
-                }
-            }
-        }
-        .ae-project__content{
-            padding: 12px 20px;
-            .ae-content__title{
                 width: 100%;
-                h5{
-                    width: 100%;
-                }
             }
         }
-        .ae-project__actions{
-            padding: 12px 20px;
+        .ae-text{
+            h2{
+                font-size: 16px;
+                margin: 0;
+                margin-bottom: 2px;
+            }
+            p{
+                font-size: 12px;
+                margin: 0;
+            }
+        }
+    }
+    .ae-crypto__content{
+        .ae-text{
+            h2{
+                font-size: 20px;
+            }
         }
     }
 }
@@ -222,6 +305,24 @@
                 p{
                     margin: 0;
                     font-size: 14px;
+                }
+            }
+        }
+    }
+}
+.ae-carousel{
+    .p-carousel {
+        .p-carousel-indicators {
+            .p-carousel-indicator{
+                &.p-highlight{
+                    button{
+                        background-color: var(--ae-primary);
+                    }
+                }
+                button{
+                    width: 6px;
+                    height: 6px;
+                    border-radius: 50%;
                 }
             }
         }

@@ -5,8 +5,12 @@
     --ae-primary: #{map-get($theme-colors,"primary")};
     --ae-secondary: #{map-get($theme-colors,"secondary")};
     --ae-gris: #{map-get($theme-colors,"gris")};
+    --ae-gris-dark: #{map-get($theme-colors,"gris-dark")};
     --ae-grey: #{map-get($theme-colors,"grey")};
     --ae-dark: #{map-get($theme-colors,"dark")};
     --ae-text: #{map-get($theme-colors,"text")};
     --ae-white: #{map-get($theme-colors,"white")};
+    --ae-success: #{map-get($theme-colors,"green")};
+    --ae-warning: #{map-get($theme-colors,"orange")};
+    --ae-danger: #{map-get($theme-colors,"red")};
 }

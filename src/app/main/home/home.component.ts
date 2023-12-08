@@ -14,6 +14,7 @@ import { MntMemberFiatWithdrawalComponent } from '../members/mntMemberFiat/compo
 import * as _ from 'lodash';
 import { DateTime } from 'luxon';
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
+import { OTCRequestsByMemberComponent } from '../otc/components/requestsByMember/requestsByMember.component';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -25,9 +26,14 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   @ViewChild('createMntMemberFiatWithdrawalModal', { static: true }) createMntMemberFiatWithdrawalModal: MntMemberFiatWithdrawalComponent;
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
+  @ViewChild('cryptoRequests') cryptoRequests: OTCRequestsByMemberComponent;
 
   menuItems: MenuItem[] | undefined;
   activeItem: MenuItem | undefined;
+  products: any[] | undefined;
+  cryptos: any[] | undefined;
+  responsiveOptions: any[] | undefined;
+  responsiveOptionsCryptos: any[] | undefined;
 
   constructor(
     injector: Injector,
@@ -41,12 +47,82 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.cryptoRequests);
     this.menuItems = [
       { label: 'Inversiones' },
       { label: 'Portafolio' },
       { label: 'Historial' }
     ];
     this.activeItem = this.menuItems[0];
+    this.products = [
+      {
+        category: 'Inmobiliario',
+        title: 'Proyecto El Salvador'
+      },
+      {
+        category: 'Inmobiliario',
+        title: 'Proyecto El Salvador',
+      },
+      {
+        category: 'Inmobiliario',
+        title: 'Proyecto El Salvador',
+      },
+      {
+        category: 'Inmobiliario',
+        title: 'Proyecto El Salvador',
+      }
+    ]
+    this.cryptos = [
+      {
+        name: 'Bitcoin',
+        coin: 'BTC'
+      },
+      {
+        name: 'Litecoin',
+        coin: 'ITC'
+      },
+      {
+        name: 'Ethereum',
+        coin: 'ETH'
+      },
+      {
+        name: 'Solana',
+        coin: 'SOL'
+      },
+      {
+        name: 'Bitcoin',
+        coin: 'BTC'
+      },
+    ]
+    this.responsiveOptions = [
+      {
+          breakpoint: '1024px',
+          numVisible: 2,
+          numScroll: 1
+      },
+      {
+          breakpoint: '640px',
+          numVisible: 1,
+          numScroll: 1
+      }
+    ];
+    this.responsiveOptionsCryptos = [
+      {
+        breakpoint: '768px',
+        numVisible: 3,
+        numScroll: 1
+      },
+      {
+          breakpoint: '640px',
+          numVisible: 2,
+          numScroll: 1
+      },
+      {
+        breakpoint: '420px',
+        numVisible: 1,
+        numScroll: 1
+      }
+    ]
   }
 
   createMemberFiatDeposit() {
@@ -64,6 +140,10 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   onActiveItemChange(event: MenuItem) {
     console.log(event);
     this.activeItem = event;
+  }
+
+  reloadRequests() {
+    this.cryptoRequests.getAllOtcRequestsByMember();
   }
 
 }
