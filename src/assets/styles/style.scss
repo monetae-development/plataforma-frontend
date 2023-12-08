@@ -243,8 +243,14 @@
     }
     .ae-crypto__content{
         .ae-text{
+            width: 100%;
             h2{
                 font-size: 20px;
+            }
+        }
+        .ae-graphic{
+            i{
+                font-size: 65px;
             }
         }
     }
@@ -311,6 +317,7 @@
     }
 }
 .ae-carousel{
+    position: relative;
     .p-carousel {
         .p-carousel-indicators {
             .p-carousel-indicator{
@@ -325,6 +332,14 @@
                     border-radius: 50%;
                 }
             }
+        }
+        .p-carousel-indicators{
+            position: absolute;
+            bottom: -32px;
+            left: 0;
+            right: 0;
+            margin: auto;
+            z-index: 10;
         }
     }
 }
