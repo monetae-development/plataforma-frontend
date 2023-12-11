@@ -86,6 +86,63 @@
         }
     }
 }
+.ae-button{
+    .p-button{
+        box-shadow: none !important;
+        outline: none !important;
+        border: none;
+        font-size: 14px;
+        background-color: transparent;
+        border-radius: 12px;
+        height: 40px;
+        justify-content: center;
+        margin: 8px 0;
+        width: 100%;
+    }
+    span{
+        font-weight: 600;
+    }
+    .p-button-label{
+        font-weight: 600;
+        width: 100%;
+        max-width: max-content;
+    }
+    &--primary{
+        .p-button{
+            background-color: var(--ae-primary) !important;
+            color: #FFFFFF;
+        }
+    }
+    &--secondary{
+        .p-button{
+            background-color: var(--ae-secondary) !important;
+            color: var(--ae-primary);
+        }
+    }
+    &--default{
+        .p-button{
+            border: 1px solid #F0F0F0;
+            color: var(--ae-dark) !important;
+        }
+    }
+    &--transparent{
+        i{
+            color: var(--ae-dark);
+            margin-right: 5px;
+        }
+        .p-button{
+            border: none;
+            color: var(--ae-dark) !important;
+        }
+    }
+    &[disabled]{
+        background-color: var(--ae-gris);
+        i{
+            color: #FFFFFF;
+            font-size: 16px;
+        }
+    }
+}
 .ae-button--back{
     position: absolute;
     top: 30px;
@@ -406,6 +463,40 @@
                 padding: 12px 32px 32px 32px;
                 border: none;
             }
+        }
+    }
+}
+.ae-dialog{
+    border-radius: 12px !important;
+    overflow: hidden;
+    &.ae-dialog--sm{
+        width: 100%;
+        max-width: 380px;
+    }
+    .p-dialog-content{
+        padding: 24px !important;
+    }
+    &__header{
+        position: relative;
+        padding: 12px 24px;
+        i{
+            position: absolute;
+            left: 0;
+            top: 13px;
+            font-size: 16px;
+        }
+        h2{
+            font-size: 16px;
+            small{
+                font-size: 14px;
+            }
+        }
+    }
+    &__content{
+        .ae-dialog__description{
+            background-color: #E6E6E6;
+            border-radius: 6px;
+            padding: 12px;
         }
     }
 }
