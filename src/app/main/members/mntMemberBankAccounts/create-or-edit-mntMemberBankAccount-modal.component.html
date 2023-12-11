@@ -1,28 +1,28 @@
 ﻿<div
     bsModal
     #createOrEditModal="bs-modal"
-    class="modal fade"
+    class="ae-modal modal fade"
     tabindex="-1"
     role="dialog"
     aria-labelledby="createOrEditModal"
     aria-hidden="true"
     [config]="{ backdrop: 'static' }"
 >
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <form *ngIf="active" #mntMemberBankAccountForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
-                <div class="modal-header">
-                    <h4 class="modal-title">
+                <div class="ae-modal__header modal-header">
+                    <h4 class="modal-title ae-text-dark fw-bolder">
                         <span *ngIf="mntMemberBankAccount.id">{{ l('EditBankAccount') }}</span>
                         <span *ngIf="!mntMemberBankAccount.id">{{ l('CreateNewBankAccount') }}</span>
                     </h4>
-
-                    <button class="btn btn-secondary rounded-circle btn-sm close" (click)="close()">
+                    <i class="ae-text-dark pi pi-arrow-left" (click)="close()"></i>
+                    <!-- <button class="btn btn-secondary rounded-circle btn-sm close" (click)="close()">
                         <i class="fa fa-close"></i>
-                    </button>
+                    </button> -->
                 </div>
-                <div class="modal-body">
-                    <div class="form-group mb-5">
+                <div class="ae-modal__body modal-body">
+                    <div class="ae-input form-group mb-5">
                         <label for="MntMemberBankAccount_Holder">{{ l('Holder') }} *</label>
                         <input
                             type="text"
@@ -38,8 +38,8 @@
                         <validation-messages [formCtrl]="MntMemberBankAccount_Holder"></validation-messages>
                     </div>
 
-                    <div class="form-group mb-5">
-                        <label class="mb-3">{{ l('Country') }} *</label>
+                    <div class="ae-select form-group mb-5">
+                        <label>{{ l('Country') }} *</label>
                         <p-dropdown
                             #country="ngModel"
                             id="country"
@@ -56,8 +56,8 @@
                         <validation-messages [formCtrl]="country"></validation-messages>
                     </div>
 
-                    <div class="form-group mb-5">
-                        <label class="mb-3">{{ l('Bank') }} *</label>
+                    <div class="ae-select form-group mb-5">
+                        <label>{{ l('Bank') }} *</label>
                         <p-dropdown
                             #bank="ngModel"
                             id="bank"
@@ -73,8 +73,8 @@
                         <validation-messages [formCtrl]="bank"></validation-messages>
                     </div>
 
-                    <div class="form-group mb-5">
-                        <label class="mb-3">{{ l('AccountType') }} *</label>
+                    <div class="ae-select form-group mb-5">
+                        <label>{{ l('AccountType') }} *</label>
                         <p-dropdown
                             #accountType="ngModel"
                             id="accountType"
@@ -90,7 +90,7 @@
                         <validation-messages [formCtrl]="accountType"></validation-messages>
                     </div>
 
-                    <div class="form-group mb-5">
+                    <div class="ae-input form-group mb-5">
                         <label for="MntMemberBankAccount_Account">{{ l('AccountNumber') }} *</label>
                         <input
                             type="text"
@@ -106,8 +106,8 @@
                         <validation-messages [formCtrl]="MntMemberBankAccount_Account"></validation-messages>
                     </div>
 
-                    <div class="form-group mb-5">
-                        <label class="mb-3">{{ l('Currency') }} *</label>
+                    <div class="ae-select form-group mb-5">
+                        <label>{{ l('Currency') }} *</label>
                         <p-dropdown
                             #currency="ngModel"
                             id="currency"
@@ -123,7 +123,7 @@
                         <validation-messages [formCtrl]="currency"></validation-messages>
                     </div>
 
-                    <div class="form-group">
+                    <div class="ae-input form-group">
                         <label for="MntMemberBankAccount_Swift">{{ l('Swift') }} ({{ l('Optional') }})</label>
                         <input
                             type="text"
@@ -138,18 +138,18 @@
                         <validation-messages [formCtrl]="MntMemberBankAccount_Swift"></validation-messages>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="ae-modal__footer modal-footer">
                     <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">
                         {{ l('Cancel') }}
                     </button>
                     <button
                         type="submit"
-                        class="btn btn-primary blue"
+                        class="ae-btn ae-btn--primary"
                         [disabled]="!mntMemberBankAccountForm.form.valid"
                         [buttonBusy]="saving"
                         [busyText]="l('SavingWithThreeDot')"
                     >
-                        <i class="fa fa-save"></i>
+                        <i class="pi pi-save mr-2"></i>
                         <span>{{ l('Save') }}</span>
                     </button>
                 </div>
