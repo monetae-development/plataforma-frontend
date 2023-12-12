@@ -11,7 +11,9 @@
 // [data-theme=dark] {
 //     --ae-dark: #FFFFFF;
 // }
-
+.ae-text-small{
+    font-size: 12px !important;
+}
 .ae-text-dark{
     color: var(--ae-dark) !important;
 }
@@ -58,6 +60,9 @@
     border-radius: 12px;
     height: 45px;
     padding: 0 20px;
+    &.border-middle{
+        border-radius: 16px;
+    }
     &--primary{
         background-color: var(--ae-primary);
         color: #FFFFFF;
@@ -154,6 +159,7 @@
         background-color: #FFFFFF;
         height: 38px;
         border-radius: 6px;
+        padding: 6px 12px;
     }
     &__group{
         position: relative;

@@ -6,39 +6,39 @@
     <!--begin::Form-->
     <form #loginForm="ngForm" class="login-form form --kt-text-dark" method="post" (ngSubmit)="login()">
         <div class="ae-input">
-            <label>Email</label>
+            <label>{{ 'EmailEn' | localize }}</label>
             <input #userNameOrEmailAddressInput="ngModel"
                 [(ngModel)]="loginService.authenticateModel.userNameOrEmailAddress" autoFocus
-                class="form-control form-control-solid h-auto py-3 px-6 rounded-lg fs-h6" type="text"
-                autocomplete="new-password" placeholder="{{ 'UserNameOrEmail' | localize }} *"
+                class="form-control" type="text"
+                autocomplete="new-password" placeholder="{{ 'EmailEn' | localize }}"
                 name="userNameOrEmailAddress" required />
             <validation-messages [formCtrl]="userNameOrEmailAddressInput"
                 *ngIf="!userNameOrEmailAddressInput.touched"></validation-messages>
         </div>
 
-        <div class="ae-input">
+        <div class="ae-input mb-2">
             <label>{{ 'Password' | localize }}</label>
             <div class="ae-input__group">
                 <input #passwordInput="ngModel" [(ngModel)]="loginService.authenticateModel.password" 
-                    class="form-control form-control-solid h-auto py-3 px-6 rounded-lg fs-h6" [type]="passwordFieldType"
-                    autocomplete="new-password" placeholder="{{ 'Password' | localize }} *" name="password" required
+                    class="form-control" [type]="passwordFieldType"
+                    autocomplete="new-password" placeholder="{{ 'Password' | localize }}" name="password" required
                     maxlength="32" />
-                <i (click)="togglePasswordVisibility()" class="pi pi-eye-slash"></i>
+                <i (click)="togglePasswordVisibility()" class="pi" [ngClass]="{'pi-eye-slash' : !showPassword,'pi-eye' : showPassword}"></i>
             </div>
             <validation-messages [formCtrl]="passwordInput" *ngIf="!passwordInput.touched"></validation-messages>
         </div>
 
-        <div class="mb-5 d-flex justify-content-between mt-4">
+        <div class="mb-5 d-flex justify-content-between mt-2">
             <a routerLink="/account/forgot-password" id="forget-password"
-                class="ae-text-primary fs-h6 text-hover-primary">
+                class="ae-text-primary ae-text-small fw-semibold text-hover-primary">
                 {{ 'ForgotPassword' | localize }}
             </a>
         </div>
 
         <!--begin::Action-->
-        <div class="ae-login__actions pb-lg-0 pb-5">
+        <div class="ae-login__actions">
             <button type="submit" [disabled]="!loginForm.form.valid"
-                class="ae-btn w-100 ae-btn--primary fw-bolder fs-h6">
+                class="ae-btn w-100 ae-btn--primary fw-bolder border-middle">
                 {{ 'Next2' | localize }}
             </button>
         </div>
@@ -52,22 +52,24 @@
         <div class="pb-lg-0 pb-5 login__options flex align-items-center gap-4"
             *ngIf="(multiTenancySideIsTeanant || !isMultiTenancyEnabled) && loginService.externalLoginProviders.length > 0">
             <a *ngFor="let provider of loginService.externalLoginProviders"
-                class="ae-btn ae-btn--default w-100 flex align-items-center justify-content-center" (click)="externalLogin(provider)"
+                class="ae-btn ae-btn--default w-100 flex align-items-center justify-content-center ae-text-small fw-semibold" (click)="externalLogin(provider)"
                 title="{{ provider.name }}">
-                <img class="mr-5" src="./assets/common/images/social/icon-{{provider.icon}}.svg" alt="logo">
-                {{l('ContinueWith')}} {{ provider.name }}
+                <div class="ae-icon">
+                    <img class="mr-5" src="./assets/common/images/social/icon-{{provider.icon}}.svg" alt="logo">
+                </div>
+                <span>{{l('ContinueWith')}} {{ provider.name }}</span>
             </a>
         </div>
     </form>
     <!--end::Form-->
 </div>
 
-<div class="mt-8 --kt-text-dark">
+<div class="mt-6 --kt-text-dark">
     <div class="flex align-items-center justify-content-center gap-2">
-        <span class="ae-text-dark">{{ 'DontYouHaveAnAccount' | localize }}</span>
+        <span class="ae-text-dark ae-text-small fw-semibold">{{ 'DontYouHaveAnAccount' | localize }}</span>
         <div *ngIf="isSelfRegistrationAllowed">
             <a routerLink="/account/register"
-                class="fw-bolder ae-text-primary fs-h6">
+                class="fw-bolder ae-text-primary ae-text-small">
                 {{ 'CreateAnAccount' | localize }}
             </a>
         </div>

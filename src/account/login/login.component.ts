@@ -16,6 +16,7 @@ import { AppConsts } from '@shared/AppConsts';
 })
 export class LoginComponent extends AppComponentBase implements OnInit {
     submitting = false;
+    showPassword = false;
     passwordFieldType: string = "password";
     isMultiTenancyEnabled: boolean = this.multiTenancy.isEnabled;
 
@@ -120,6 +121,7 @@ export class LoginComponent extends AppComponentBase implements OnInit {
 
     togglePasswordVisibility(): void{
         this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+        this.showPassword = !this.showPassword;
     }
 
 }
