@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { DialogResumenInvestComponent } from './dialog-resumen-invest.component';
+import { DialogOperationSendReceiveComponent } from './dialog-operation-send-receive.component';
 
-describe('DialogResumenInvestComponent', () => {
-  let component: DialogResumenInvestComponent;
-  let fixture: ComponentFixture<DialogResumenInvestComponent>;
+describe('DialogOperationSendReceiveComponent', () => {
+  let component: DialogOperationSendReceiveComponent;
+  let fixture: ComponentFixture<DialogOperationSendReceiveComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DialogResumenInvestComponent ]
+      declarations: [ DialogOperationSendReceiveComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DialogResumenInvestComponent);
+    fixture = TestBed.createComponent(DialogOperationSendReceiveComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
