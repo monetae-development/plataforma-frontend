@@ -11,12 +11,12 @@
         <h3 class="ae-text-dark">
             {{ 'VerifySecurityCode' | localize }}
         </h3>
-        <p class="ae-text-dark mb-5">{{ 'EnterNumberDigitCode' | localize : email }}</p>
-        <p class="ae-text-gris mb-5">{{ 'SecureAccountHelpUs' | localize }}</p>
+        <p class="ae-text-black ae-text-default mb-5">{{ 'EnterNumberDigitCode' | localize : email }}</p>
+        <p class="ae-text-gris-dark ae-text-default mb-5">{{ 'SecureAccountHelpUs' | localize }}</p>
     </div>
     <form #twoFactorForm="ngForm" class="login-form form" method="post" (ngSubmit)="submit()">
         <div class="ae-input mb-10">
-            <label>{{ 'EnterCode' | localize }}</label>
+            <label class="ae-text-gris-dark">{{ 'EnterCode' | localize }}</label>
             <input #passwordInput="ngModel" autoFocus [(ngModel)]="code"
                 class="form-control form-control-solid h-auto py-3 px-6 rounded-lg fs-h6" type="password"
                 autocomplete="new-password" placeholder="{{ 'Code' | localize }} *" name="code" required
@@ -39,7 +39,7 @@
                 [disabled]="!twoFactorForm.form.valid">
                 {{ 'Submit' | localize }}
             </button>
-            <span class="ae-text-dark ae-text-center" *ngIf="remainingSeconds >= 0">
+            <span class="ae-text-dark ae-text-default ae-text-center" *ngIf="remainingSeconds >= 0">
                 {{ 'RemainingTime' | localize }}: <br> {{ 'SecondShort{0}' | localize : remainingSeconds }}.
             </span>
         </div>
