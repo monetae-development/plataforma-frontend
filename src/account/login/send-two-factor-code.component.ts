@@ -1,4 +1,5 @@
 ﻿import { Component, Injector, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { CanActivate, Router } from '@angular/router';
 import { accountModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -21,7 +22,8 @@ export class SendTwoFactorCodeComponent extends AppComponentBase implements CanA
         injector: Injector,
         public loginService: LoginService,
         private _tokenAuthService: TokenAuthServiceProxy,
-        private _router: Router
+        private _router: Router,
+        private location: Location
     ) {
         super(injector);
         this.loginService.authenticateResult.twoFactorAuthProviders.forEach((value) => {
@@ -65,5 +67,9 @@ export class SendTwoFactorCodeComponent extends AppComponentBase implements CanA
             .subscribe(() => {
                 this._router.navigate(['account/verify-code']);
             });
+    }
+
+    goBack(){
+        this.location.back();
     }
 }

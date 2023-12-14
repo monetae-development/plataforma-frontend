@@ -1,14 +1,14 @@
 ﻿<div class="login-form" [@routerTransition]>
     <button
-        routerLink="/account/login"
         type="button"
-        class="ae-btn ae-btn--transparent ae-button--back fw-bolder fs-h6 px-8 py-4 my-3"
+        class="ae-btn ae-btn--transparent ae-button--back fw-bolder"
+        (click)="goBack()"
     >
-        <i class="fa fa-arrow-left"></i>
-        {{ 'Back' | localize }}
+        <i class="ae-text-black pi pi-arrow-left"></i>
+        <span>{{ 'Back' | localize }}</span>
     </button>
     <div class="ae-login__title">
-        <h3 class="ae-text-dark">
+        <h3 class="ae-text-dark mb-8">
             {{ 'VerifySecurityCode' | localize }}
         </h3>
         <p class="ae-text-black ae-text-default mb-5">{{ 'EnterNumberDigitCode' | localize : email }}</p>

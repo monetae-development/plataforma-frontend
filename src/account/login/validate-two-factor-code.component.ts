@@ -1,4 +1,5 @@
 ﻿import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { CanActivate, Router } from '@angular/router';
 import { accountModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -24,7 +25,8 @@ export class ValidateTwoFactorCodeComponent extends AppComponentBase implements 
         injector: Injector,
         public loginService: LoginService,
         private _reCaptchaV3Service: ReCaptchaV3Service,
-        private _router: Router
+        private _router: Router,
+        private location: Location
     ) {
         super(injector);
         this.email = this.loginService.authenticateModel.userNameOrEmailAddress;
@@ -80,5 +82,9 @@ export class ValidateTwoFactorCodeComponent extends AppComponentBase implements 
         } else {
             recaptchaCallback(null);
         }
+    }
+
+    goBack(){
+        this.location.back();
     }
 }

@@ -1,6 +1,14 @@
 ﻿<div class="login-form" [@routerTransition]>
+    <button
+        type="button"
+        class="ae-btn ae-btn--transparent ae-button--back fw-bolder"
+        (click)="goBack()"
+    >
+        <i class="ae-text-black pi pi-arrow-left"></i>
+        <span>{{ 'Back' | localize }}</span>
+    </button>
     <div class="ae-login__title">
-        <h3 class="ae-text-dark">{{ 'SendSecurityCode' | localize }}</h3>
+        <h3 class="ae-text-dark mb-8">{{ 'SendSecurityCode' | localize }}</h3>
         <p class="ae-text-black ae-text-default mb-5">{{ 'SendSecurityCode_Title' | localize }}</p>
     </div>
     <form #twoFactorForm="ngForm" class="login-form form" method="post" (ngSubmit)="submit()"

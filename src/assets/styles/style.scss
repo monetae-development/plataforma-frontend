@@ -89,7 +89,9 @@
         color: var(--ae-dark) !important;
         i{
             color: var(--ae-dark);
-            margin-right: 5px;
+            margin-right: 8px;
+            font-size: 18px;
+            vertical-align: middle;
         }
     }
     &[disabled]{
@@ -159,7 +161,7 @@
 }
 .ae-button--back{
     position: absolute;
-    top: 30px;
+    top: 36px;
     left: 16px;
 }
 .ae-input{
@@ -512,6 +514,18 @@
             background-color: #E6E6E6;
             border-radius: 6px;
             padding: 12px;
+        }
+    }
+}
+@media (max-width: 768px) {
+    .ae-button--back{
+        top: 23px;
+        left: 8px;
+        i{
+            font-size: 16px;
+        }
+        span{
+            display: none;
         }
     }
 }
