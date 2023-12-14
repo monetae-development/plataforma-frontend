@@ -18,7 +18,7 @@
             <strong>{{ 'TitleAtention' | localize }}:</strong>
             {{ 'SendSecurityCode_Information' | localize }}
         </div>-->
-        <div class="mb-5">
+        <div class="mb-10">
             <p-dropdown #twoFactorOptions="ngModel" name="twoFactorOptions" [(ngModel)]="selectedTwoFactorProvider"
                 [options]="optionsTwoFactorProvider" placeholder="{{ 'SelectAnItemDropdown' | localize }}"
                 [showClear]="true" required></p-dropdown>
@@ -26,7 +26,7 @@
         </div>
 
         <div class="pb-lg-0 pb-5">
-            <button type="submit" class="btn btn-primary fw-bolder fs-h6 px-8 py-4 my-3 me-3">
+            <button type="submit" class="ae-btn ae-btn--primary w-full fw-bold">
                 {{ 'Submit' | localize }}
             </button>
         </div>
