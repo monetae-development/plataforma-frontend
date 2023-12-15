@@ -19,6 +19,8 @@ import { ReCaptchaV3Service } from 'ng-recaptcha';
     animations: [accountModuleAnimation()],
 })
 export class RegisterComponent extends AppComponentBase implements OnInit {
+    
+    showPassword = false;
     passwordFieldType: string = "password";
     model: RegisterModel = new RegisterModel();
     passwordComplexitySetting: PasswordComplexitySetting = new PasswordComplexitySetting();
@@ -94,5 +96,6 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
 
     togglePasswordVisibility(): void{
         this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+        this.showPassword = !this.showPassword;
     }
 }

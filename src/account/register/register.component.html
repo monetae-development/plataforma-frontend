@@ -8,11 +8,9 @@
         <i class="ae-text-black pi pi-arrow-left"></i>
         <span>{{ 'Back' | localize }}</span>
     </button>
-    <div class="pb-5 pt-lg-0 pt-5">
-        <h3 class="fw-bolder ae-text-dark fs-h4 fs-h1-lg">
-            {{ 'SignUp' | localize }}
-        </h3>
-        <p class="ae-text-dark">{{ 'MarkedFields' | localize }}</p>
+    <div class="ae-login__title">
+        <h3 class="fw-bold ae-text-dark mb-7">{{ 'SignUp' | localize }}</h3>
+        <p class="ae-text-dark ae-text-small mb-6">{{ 'MarkedFields' | localize }}</p>
     </div>
     <form #registerForm="ngForm" class="login-form form" method="post" novalidate (ngSubmit)="save()">
         <!-- <div class="mb-5">
@@ -50,11 +48,11 @@
 
         <div class="ae-input mb-5">
             
-            <label>{{ 'EmailAddress' | localize }}</label>
+            <label>{{ 'EmailEn' | localize }} *</label>
             <input
                 #emailAddressInput="ngModel"
-                class="form-control form-control-solid h-auto py-3 px-6 rounded-lg fs-h6"
-                placeholder="{{ 'EmailAddress' | localize }} *"
+                class="form-control"
+                placeholder="{{ 'EmailEn' | localize }} *"
                 [(ngModel)]="model.emailAddress"
                 name="EmailAddress"
                 required
@@ -82,15 +80,15 @@
         </div> -->
 
         <div class="mb-5 ae-input">
-            <label>{{ 'Password' | localize }}</label>
+            <label>{{ 'Password' | localize }} *</label>
             <div class="ae-input__group">
                 <input
                     [type]="passwordFieldType"
                     name="Password"
-                    class="form-control form-control-solid h-auto py-3 px-6 rounded-lg fs-h6"
+                    class="form-control"
                     [(ngModel)]="model.password"
                     #Password="ngModel"
-                    placeholder="{{ 'Password' | localize }}"
+                    placeholder="{{ 'Password' | localize }} *"
                     validateEqual="PasswordRepeat"
                     reverse="true"
                     [requireDigit]="passwordComplexitySetting.requireDigit"
@@ -106,7 +104,7 @@
                     [strongLabel]="l('strong')"
                     maxlength="20"
                 />
-                <i (click)="togglePasswordVisibility()" class="pi pi-eye-slash"></i>
+                <i (click)="togglePasswordVisibility()" class="pi" [ngClass]="{'pi-eye-slash' : !showPassword,'pi-eye' : showPassword}"></i>
             </div>
             
         </div>
