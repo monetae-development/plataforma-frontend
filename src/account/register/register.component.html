@@ -52,7 +52,7 @@
             <input
                 #emailAddressInput="ngModel"
                 class="form-control"
-                placeholder="{{ 'EmailEn' | localize }} *"
+                placeholder="{{ 'EmailEn' | localize }}"
                 [(ngModel)]="model.emailAddress"
                 name="EmailAddress"
                 required
@@ -88,7 +88,7 @@
                     class="form-control"
                     [(ngModel)]="model.password"
                     #Password="ngModel"
-                    placeholder="{{ 'Password' | localize }} *"
+                    placeholder="{{ 'Password' | localize }}"
                     validateEqual="PasswordRepeat"
                     reverse="true"
                     [requireDigit]="passwordComplexitySetting.requireDigit"
