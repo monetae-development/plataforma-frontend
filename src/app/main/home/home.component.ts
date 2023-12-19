@@ -15,11 +15,16 @@ import * as _ from 'lodash';
 import { DateTime } from 'luxon';
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
 import { OTCRequestsByMemberComponent } from '../otc/components/requestsByMember/requestsByMember.component';
+import { DialogService } from 'primeng/dynamicdialog';
+import { DialogOperationDepositWithdrawComponent } from '@app/shared/components/dialog/dialog-operation-deposit-withdraw/dialog-operation-deposit-withdraw.component';
+import { DialogOperationBuySellComponent } from '@app/shared/components/dialog/dialog-operation-buy-sell/dialog-operation-buy-sell.component';
+import { DialogOperationSendReceiveComponent } from '@app/shared/components/dialog/dialog-operation-send-receive/dialog-operation-send-receive.component';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'monetae-home',
-  templateUrl: './home.component.html'
+  templateUrl: './home.component.html',
+  providers: [ DialogService ]
 })
 export class HomeComponent extends AppComponentBase implements OnInit {
   @ViewChild('createMntMemberFiatDepositModal', { static: true }) createMntMemberFiatDepositModal: MntMemberFiatDepositComponent;
@@ -42,6 +47,7 @@ export class HomeComponent extends AppComponentBase implements OnInit {
     private _tokenAuth: TokenAuthServiceProxy,
     private _activatedRoute: ActivatedRoute,
     private _dateTimeService: DateTimeService,
+    public dialogService: DialogService,
   ) {
     super(injector);
   }
@@ -133,12 +139,65 @@ export class HomeComponent extends AppComponentBase implements OnInit {
     this.createMntMemberFiatWithdrawalModal.show();
   }
 
+  showDialogBuySell(index){
+    console.log(index);
+    const ref = this.dialogService.open(DialogOperationBuySellComponent, {
+      showHeader: false,
+      styleClass: 'ae-dialog ae-dialog--operations ae-dialog--sm',
+      data: {
+        activeIndex: index
+      },
+    });
+    const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+    dialogRef?.changeDetectorRef.detectChanges();
+    const instance = dialogRef?.instance?.componentRef?.instance as DialogOperationBuySellComponent;
+    instance?.outAccept.subscribe((values) => {
+      console.log(values);
+      ref.close();
+    });
+  }
+
+  showDialogSendReceive(index){
+    console.log(index);
+    const ref = this.dialogService.open(DialogOperationSendReceiveComponent, {
+      showHeader: false,
+      styleClass: 'ae-dialog ae-dialog--operations ae-dialog--sm',
+      data: {
+        activeIndex: index
+      },
+    });
+    const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+    dialogRef?.changeDetectorRef.detectChanges();
+    const instance = dialogRef?.instance?.componentRef?.instance as DialogOperationSendReceiveComponent;
+    instance?.outAccept.subscribe((values) => {
+      console.log(values);
+      ref.close();
+    });
+  }
+
+  showDialogDepositWithdraw(index){
+    console.log(index);
+    const ref = this.dialogService.open(DialogOperationDepositWithdrawComponent, {
+      showHeader: false,
+      styleClass: 'ae-dialog ae-dialog--operations ae-dialog--sm',
+      data: {
+        activeIndex: index
+      },
+    });
+    const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+    dialogRef?.changeDetectorRef.detectChanges();
+    const instance = dialogRef?.instance?.componentRef?.instance as DialogOperationDepositWithdrawComponent;
+    instance?.outAccept.subscribe((values) => {
+      console.log(values);
+      ref.close();
+    });
+  }
+
   goToProject(tokenId: string) {
     this.router.navigate(['/app/main/projects/project-' + tokenId]);
   }
 
   onActiveItemChange(event: MenuItem) {
-    console.log(event);
     this.activeItem = event;
   }
 

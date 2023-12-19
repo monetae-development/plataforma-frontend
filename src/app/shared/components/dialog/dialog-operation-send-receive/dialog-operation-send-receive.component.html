@@ -1,3 +1,19 @@
-<p>
-  dialog-operation-send-receive works!
-</p>
+<div class="ae-tabs">
+  <p-tabMenu
+      [model]="menuItems"
+      [activeItem]="activeItem"
+      (activeItemChange)="onActiveItemChange($event)"
+  ></p-tabMenu>
+</div>
+<div class="ae-tabs__container" *ngIf="activeItem.label == 'Enviar'">
+  <div class="ae-tabs__container--actions">
+    <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
+    <p-button label="Continuar" class="ae-button ae-button--primary" (click)="onAccept()"></p-button>
+  </div>
+</div>
+<div class="ae-tabs__container" *ngIf="activeItem.label == 'Recibir'">
+  <div class="ae-tabs__container--actions">
+    <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
+    <p-button label="Generar QR" class="ae-button ae-button--primary" (click)="onAccept()"></p-button>
+  </div>
+</div>

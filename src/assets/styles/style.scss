@@ -401,7 +401,7 @@
     &__secondary{
         width: 100%;
         display: grid;
-        grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
+        grid-template-columns: repeat(auto-fill,minmax(150px,1fr));
         column-gap: 16px;
         row-gap: 10px;
         .ae-balance__item{
@@ -504,13 +504,6 @@
 .ae-dialog{
     border-radius: 12px !important;
     overflow: hidden;
-    &.ae-dialog--sm{
-        width: 100%;
-        max-width: 380px;
-    }
-    .p-dialog-content{
-        padding: 24px !important;
-    }
     &__header{
         position: relative;
         padding: 12px 24px;
@@ -534,6 +527,51 @@
             padding: 12px;
         }
     }
+    &.ae-dialog--sm{
+        width: 100%;
+        max-width: 380px;
+    }
+    &.ae-dialog--operations{
+        .p-dialog-content{
+            padding: 0 !important;
+            .ae-tabs{
+                .p-tabmenu-nav {
+                    border: none !important;
+                    width: 100%;
+                    .p-tabmenuitem{
+                        width: 100%;
+                        .p-menuitem-link{
+                            padding: 27px 28px !important;
+                            color: var(--ae-dark) !important;
+                            width: 100%;
+                            border-left: 1px solid var(--ae-gris-light) !important;
+                            border-bottom: 1px solid var(--ae-gris-light) !important;
+                            border-radius: 0 !important;
+                            .p-menuitem-text{
+                                margin: auto;
+                            }
+                        }
+                        &.p-highlight{
+                            .p-menuitem-link{
+                                font-weight: 500 !important;
+                                color: var(--ae-primary) !important;
+                            }
+                        }
+                    }
+                    .p-tabmenu-ink-bar{
+                        bottom: -1px !important;
+                        background-color: #FFFFFF;
+                    }
+                }
+            }
+            .ae-tabs__container{
+                padding: 30px;
+            }
+        }
+    }
+    .p-dialog-content{
+        padding: 24px !important;
+    }
 }
 .ae-tabs{
     .p-tabmenu-nav {
@@ -545,6 +583,7 @@
                 font-weight: 500 !important;
                 padding: 13px 28px !important;
                 font-size: 16px;
+                background-color: #FFFFFF !important;
             }
             &.p-highlight{
                 .p-menuitem-link{
