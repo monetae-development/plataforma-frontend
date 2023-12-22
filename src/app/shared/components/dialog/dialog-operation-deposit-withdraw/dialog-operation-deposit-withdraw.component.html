@@ -6,8 +6,21 @@
   ></p-tabMenu>
 </div>
 <div class="ae-tabs__container" *ngIf="activeItem.label == 'Depositar'">
-  <div class="ae-tabs__container--actions">
-    
+  <div class="ae-step__one">
+    <div class="ae-tabs__container--content">
+
+    </div>
+    <div class="ae-tabs__container--actions">
+      <p-button label="Continuar" class="ae-button ae-button--primary" (click)="onAccept()"></p-button>
+    </div>
+  </div>
+  <div class="ae-step__two">
+    <div class="ae-tabs__container--content">
+
+    </div>
+    <div class="ae-tabs__container--actions">
+      <p-button label="Depositar" class="ae-button ae-button--primary" (click)="onAccept()"></p-button>
+    </div>
   </div>
 </div>
 <div class="ae-tabs__container" *ngIf="activeItem.label == 'Retirar'">
