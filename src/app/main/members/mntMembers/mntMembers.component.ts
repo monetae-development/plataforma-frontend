@@ -9,11 +9,13 @@ import { CreateOrEditMntMemberModalComponent } from './create-or-edit-mntMember-
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { Table } from 'primeng/table';
 import { Paginator } from 'primeng/paginator';
-import { LazyLoadEvent } from 'primeng/api';
+import { LazyLoadEvent, SelectItem } from 'primeng/api';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import * as _ from 'lodash';
 import { DateTime } from 'luxon';
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
+import { MemberStatus } from '@shared/service-proxies/enum/Members/MemberStatus.enum';
+import { GetSelectDto } from '@shared/service-proxies/dto/Common/SelectInput/GetSelectDto';
 
 @Component({
     templateUrl: './mntMembers.component.html',
@@ -34,6 +36,7 @@ export class MntMembersComponent extends AppComponentBase {
     userNameFilter = '';
     catStateTitleFilter = '';
     catNationalityTitleFilter = '';
+    memberStatus = MemberStatus;
 
     constructor(
         injector: Injector,
@@ -72,6 +75,7 @@ export class MntMembersComponent extends AppComponentBase {
             this.primengTableHelper.totalRecordsCount = result.totalCount;
             this.primengTableHelper.records = result.items;
             this.primengTableHelper.hideLoadingIndicator();
+            console.log(result.items);
         });
     }
 

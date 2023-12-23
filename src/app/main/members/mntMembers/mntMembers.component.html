@@ -197,9 +197,9 @@
                                             {{ l('PhoneNumber') }}
                                             <p-sortIcon field="userPhoneNumber"></p-sortIcon>
                                         </th>
-                                        <th style="width: 150px" pSortableColumn="catNationalityFk.title">
-                                            {{ l('CatNationality') }}
-                                            <p-sortIcon field="catNationalityTitle"></p-sortIcon>
+                                        <th style="width: 150px" pSortableColumn="userFk.status">
+                                            {{ l('Estado') }}
+                                            <p-sortIcon field="status"></p-sortIcon>
                                         </th>
                                         <th style="width: 150px" pSortableColumn="dayOfBirth">
                                             {{ l('DayOfBirth') }}
@@ -241,6 +241,14 @@
                                                             {{ l('Delete') }}
                                                         </a>
                                                     </li>
+                                                    <li>
+                                                        <a
+                                                            href="javascript:;"
+                                                            (click)="viewMntMemberModal.show(record)"
+                                                        >
+                                                            {{ l('Cambiar estado') }}
+                                                        </a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </td>
@@ -257,7 +265,7 @@
                                             {{ record.userPhoneNumber }}
                                         </td>
                                         <td style="width: 150px">
-                                            {{ record.catNationalityTitle }}
+                                            {{ l(memberStatus[record.status]) }}
                                         </td>
                                         <td style="width: 150px">
                                             <span *ngIf="record.mntMember.dayOfBirth">

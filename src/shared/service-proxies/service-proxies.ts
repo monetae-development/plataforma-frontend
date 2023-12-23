@@ -38182,6 +38182,7 @@ export class GetMntMemberForViewDto implements IGetMntMemberForViewDto {
     userPhoneNumber!: string | undefined;
     userEmail!: string | undefined;
     catNationalityTitle!: string | undefined;
+    status!: number | undefined;
 
     constructor(data?: IGetMntMemberForViewDto) {
         if (data) {
@@ -38200,6 +38201,7 @@ export class GetMntMemberForViewDto implements IGetMntMemberForViewDto {
             this.userPhoneNumber = _data["userPhoneNumber"];
             this.userEmail = _data["userEmail"];
             this.catNationalityTitle = _data["catNationalityTitle"];
+            this.status = _data["status"];
         }
     }
 
@@ -38218,6 +38220,7 @@ export class GetMntMemberForViewDto implements IGetMntMemberForViewDto {
         data["userPhoneNumber"] = this.userPhoneNumber;
         data["userEmail"] = this.userEmail;
         data["catNationalityTitle"] = this.catNationalityTitle;
+        data["status"] = this.status;
         return data;
     }
 }
@@ -38229,6 +38232,7 @@ export interface IGetMntMemberForViewDto {
     userPhoneNumber: string | undefined;
     userEmail: string | undefined;
     catNationalityTitle: string | undefined;
+    status: number | undefined;
 }
 
 export class GetMntMemberIdentityForEditOutput implements IGetMntMemberIdentityForEditOutput {
