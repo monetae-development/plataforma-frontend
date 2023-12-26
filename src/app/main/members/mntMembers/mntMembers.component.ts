@@ -112,8 +112,8 @@ export class MntMembersComponent extends AppComponentBase {
             statusBody.status = values;
             if(values){
                 this._mntMembersServiceProxy.updateStatus(statusBody)
-                .subscribe(result => {
-                    console.log(result);
+                .subscribe(() => {
+                    this.reloadPage();
                     ref.close();
                 },
                 (err) => {
