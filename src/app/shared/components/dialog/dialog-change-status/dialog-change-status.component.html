@@ -23,5 +23,5 @@
   </form>
 </div>
 <div class="ae-dialog__actions">
-  <p-button class="ae-button ae-button--primary w-full" label="Guardar" (click)="onAccept()"></p-button>
+  <p-button class="ae-button ae-button--primary w-full" [disabled]="!statusForm.valid" label="Guardar" (click)="onAccept()"></p-button>
 </div>

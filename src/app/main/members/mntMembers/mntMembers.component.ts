@@ -1,7 +1,7 @@
 ﻿import {AppConsts} from '@shared/AppConsts';
 import { Component, Injector, ViewEncapsulation, ViewChild } from '@angular/core';
 import { ActivatedRoute , Router} from '@angular/router';
-import { MntMembersServiceProxy, MntMemberDto } from '@shared/service-proxies/service-proxies';
+import { MntMembersServiceProxy, MntMemberDto, UpdateStatusDto } from '@shared/service-proxies/service-proxies';
 import { NotifyService } from 'abp-ng2-module';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
@@ -91,7 +91,7 @@ export class MntMembersComponent extends AppComponentBase {
         this.createOrEditMntMemberModal.show();
     }
 
-    showDialogChangeStatus(){
+    showDialogChangeStatus(mntMember: MntMemberDto): void {
         const ref = this.dialogService.open(DialogChangeStatusComponent, {
             showHeader: false,
             styleClass: 'ae-dialog ae-dialog--sm',
@@ -107,8 +107,19 @@ export class MntMembersComponent extends AppComponentBase {
       
           const instance = dialogRef?.instance?.componentRef?.instance as DialogChangeStatusComponent;
           instance?.outAccept.subscribe((values) => {
-            console.log(values);
-            ref.close();
+            const statusBody = new UpdateStatusDto();
+            statusBody.id = mntMember.id;
+            statusBody.status = values;
+            if(values){
+                this._mntMembersServiceProxy.updateStatus(statusBody)
+                .subscribe(result => {
+                    console.log(result);
+                    ref.close();
+                },
+                (err) => {
+                    ref.close();
+                });
+            }
           });
     }
 

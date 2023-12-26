@@ -40,15 +40,14 @@ export class DialogChangeStatusComponent implements OnInit {
     });
   }
 
-  get priceLowControl() { return this.statusForm.controls['priceLow'] as FormControl; }
+  get statusControl() { return this.statusForm.controls['status'] as FormControl; }
 
   onCancel(){
     this.ref.close();
   }
 
   onAccept(): void{
-    this.outAccept.emit(true);
-    
+    this.outAccept.emit(this.statusControl.value);
   }
 
 }
