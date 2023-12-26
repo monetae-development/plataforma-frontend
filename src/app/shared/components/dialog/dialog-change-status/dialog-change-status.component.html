@@ -1,0 +1,27 @@
+<div class="ae-dialog__header flex align-items-center justify-content-center">
+  <i class="pi pi-arrow-left ae-text-dark mr-3" (click)="onCancel()"></i>
+  <h2 class="text-xl font-bold">Cambiar estado del usuario</h2>
+</div>
+<div class="ae-dialog__content">
+  <form [formGroup]="statusForm">
+    <div class="flex align-items-center justify-content-between mt-5 mb-8">
+      <div class="ae-radiobutton">
+          <p-radioButton
+              formControlName="status"
+              [value]="2"
+              label="{{ 'Approved' | localize }}"
+          ></p-radioButton>
+      </div>
+      <div class="ae-radiobutton">
+          <p-radioButton
+              formControlName="status"
+              [value]="3"
+              label="{{ 'Refused' | localize }}"
+          ></p-radioButton>
+      </div>
+  </div>
+  </form>
+</div>
+<div class="ae-dialog__actions">
+  <p-button class="ae-button ae-button--primary w-full" label="Guardar" (click)="onAccept()"></p-button>
+</div>

@@ -16,11 +16,14 @@ import { DateTime } from 'luxon';
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
 import { MemberStatus } from '@shared/service-proxies/enum/Members/MemberStatus.enum';
 import { GetSelectDto } from '@shared/service-proxies/dto/Common/SelectInput/GetSelectDto';
+import { DialogService } from 'primeng/dynamicdialog';
+import { DialogChangeStatusComponent } from '@app/shared/components/dialog/dialog-change-status/dialog-change-status.component';
 
 @Component({
     templateUrl: './mntMembers.component.html',
     encapsulation: ViewEncapsulation.None,
-    animations: [appModuleAnimation()]
+    animations: [appModuleAnimation()],
+    providers: [ DialogService ]
 })
 export class MntMembersComponent extends AppComponentBase {
     @ViewChild('createOrEditMntMemberModal', { static: true }) createOrEditMntMemberModal: CreateOrEditMntMemberModalComponent;
@@ -45,7 +48,8 @@ export class MntMembersComponent extends AppComponentBase {
         private _tokenAuth: TokenAuthServiceProxy,
         private _activatedRoute: ActivatedRoute,
         private _fileDownloadService: FileDownloadService,
-        private _dateTimeService: DateTimeService
+        private _dateTimeService: DateTimeService,
+        public dialogService: DialogService,
     ) {
         super(injector);
     }
@@ -87,6 +91,26 @@ export class MntMembersComponent extends AppComponentBase {
         this.createOrEditMntMemberModal.show();
     }
 
+    showDialogChangeStatus(){
+        const ref = this.dialogService.open(DialogChangeStatusComponent, {
+            showHeader: false,
+            styleClass: 'ae-dialog ae-dialog--sm',
+            data: {
+              transfer: {
+      
+              },
+            },
+          });
+      
+          const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+          dialogRef?.changeDetectorRef.detectChanges();
+      
+          const instance = dialogRef?.instance?.componentRef?.instance as DialogChangeStatusComponent;
+          instance?.outAccept.subscribe((values) => {
+            console.log(values);
+            ref.close();
+          });
+    }
 
     deleteMntMember(mntMember: MntMemberDto): void {
         this.message.confirm(
