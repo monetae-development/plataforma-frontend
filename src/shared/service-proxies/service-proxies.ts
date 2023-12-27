@@ -28814,7 +28814,7 @@ export class MntMemberWalletServiceProxy {
     /**
      * @return Success
      */
-    GetCryptoAssetsForSelect(): Observable<PagedResultDtoOfGetAllSelectOutput> {
+    getCryptoAssetsForSelect(): Observable<PagedResultDtoOfGetAllSelectOutput> {
         let url_ = this.baseUrl + "/api/services/app/MntMemberWallet/GetCryptoAssetsForSelect";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -28862,7 +28862,7 @@ export class MntMemberWalletServiceProxy {
         return _observableOf(null as any);
     }
 
-    GetBlockchainNetwortksForSelect(): Observable<PagedResultDtoOfGetAllSelectOutput> {
+    getBlockchainNetwortksForSelect(): Observable<PagedResultDtoOfGetAllSelectOutput> {
         let url_ = this.baseUrl + "/api/services/app/MntMemberWallet/GetBlockchainNetwortksForSelect";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -28901,6 +28901,58 @@ export class MntMemberWalletServiceProxy {
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
                 result200 = PagedResultDtoOfGetAllSelectOutput.fromJS(resultData200);
                 return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    create(body: CreateMntMemberWalletDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/MntMemberWallet/Create";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); } }
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -32456,6 +32508,54 @@ export interface ICreateOrEditMntMemberDataComplementDto {
     enable: boolean;
     force: boolean;
     id: number | undefined;
+}
+
+export class CreateMntMemberWalletDto implements ICreateMntMemberWalletDto {
+    cryptoAssetId!: number | undefined;
+    address!: string | undefined;
+    blockchainNetworkId!: number | undefined;
+    amount!: number | undefined;
+
+    constructor(data?: ICreateMntMemberWalletDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.cryptoAssetId = _data["cryptoAssetId"];
+            this.address = _data["address"];
+            this.blockchainNetworkId = _data["blockchainNetworkId"];
+            this.amount = _data["amount"];
+        }
+    }
+
+    static fromJS(data: any): CreateMntMemberWalletDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateMntMemberWalletDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["cryptoAssetId"] = this.cryptoAssetId;
+        data["address"] = this.address;
+        data["blockchainNetworkId"] = this.blockchainNetworkId;
+        data["amount"] = this.amount;
+        return data;
+    }
+}
+
+export interface ICreateMntMemberWalletDto {
+    cryptoAssetId: number | undefined;
+    address: string | undefined;
+    blockchainNetworkId: number | undefined;
+    amount: number | undefined;
 }
 
 export class CreateOrEditMntMemberDto implements ICreateOrEditMntMemberDto {
