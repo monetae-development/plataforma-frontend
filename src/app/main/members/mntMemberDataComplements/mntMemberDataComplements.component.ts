@@ -1,8 +1,9 @@
-﻿import {AppConsts} from '@shared/AppConsts';
+﻿import { AppConsts } from '@shared/AppConsts';
 import { Component, Injector, ViewEncapsulation, OnInit, ViewChild, AfterViewInit, Input, ElementRef } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, FormsModule, ReactiveFormsModule, FormControl} from '@angular/forms';
-import { ActivatedRoute , Router} from '@angular/router';
-import { MntMemberDataComplementsServiceProxy,
+import { FormBuilder, Validators, FormGroup, FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import {
+    MntMemberDataComplementsServiceProxy,
     CreateOrEditMntMemberDto,
     CreateOrEditMntMemberIdentityDto,
     CreateOrEditMntMemberAddressDto,
@@ -34,7 +35,7 @@ import { isEmpty } from 'rxjs';
     animations: [appModuleAnimation()],
 })
 
-export class MntMemberDataComplementsComponent extends AppComponentBase implements OnInit, AfterViewInit{
+export class MntMemberDataComplementsComponent extends AppComponentBase implements OnInit, AfterViewInit {
 
     @ViewChild('memberName') memberName: Input;
     @ViewChild('memberSurname') memberSurname: Input;
@@ -152,7 +153,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         this.user = new CurrentUserProfileEditDto();
         this.member = new CreateOrEditMntMemberComplementDto();
         this.memberPersonalData = new CreateOrEditMntMemberDto();
-        this.memberAddress = new  CreateOrEditMntMemberAddressDto();
+        this.memberAddress = new CreateOrEditMntMemberAddressDto();
         this.memberIdentity = new CreateOrEditMntMemberIdentityDto();
         this.memberEconomicInfo = new CreateOrEditMntEconomicInfoDto();
         this.memberPep = new CreateOrEditMntMemberPepDto();
@@ -160,20 +161,20 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         this._sessionServiceProxy.getCurrentLoignIsClientRole().subscribe((result) => {
             this.isClientRole = result.hasClientRole;
 
-            if (!result.hasClientRole){
-                abp.message.warn('El formulario para complementar datos es de uso exclusivo para clientes de Monetae.<br><br> El formulario será visible pero los datos no podrán ser guardados.', 'Atención', {isHtml: true});
+            if (!result.hasClientRole) {
+                abp.message.warn('El formulario para complementar datos es de uso exclusivo para clientes de Monetae.<br><br> El formulario será visible pero los datos no podrán ser guardados.', 'Atención', { isHtml: true });
             }
 
             this._sessionServiceProxy.getCurrentLoginInformations().subscribe((session) => {
-                if (this.isClientRole){
+                if (this.isClientRole) {
                     this._serviceMembersProxy.getIsMemberComplemented(session.user.id).subscribe((result) => {
                         this.isMemberComplemented = result.isCompleted;
                         this.checkSessionAndComplemented = true;
-                        if (!this.isMemberComplemented){
+                        if (!this.isMemberComplemented) {
                             this.formInit();
                         }
                     });
-                }else{
+                } else {
                     this.checkSessionAndComplemented = true;
                     this.formInit();
                 }
@@ -181,11 +182,11 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         });
     }
 
-    ngAfterViewInit(){
+    ngAfterViewInit() {
 
     }
 
-    formInit(){
+    formInit() {
         this._profileService.getCurrentUserProfileForEdit().subscribe((result) => {
             this.user = result;
             this.disableSelects();
@@ -224,7 +225,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     }
 
     // upload event
-    onUpload(event, recordFiles): void{
+    onUpload(event, recordFiles): void {
         for (const file of event.files) {
             recordFiles.push(file);
         }
@@ -234,7 +235,9 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         event.xhr.setRequestHeader('Authorization', 'Bearer ' + abp.auth.getToken());
     }
 
-    onSave(){
+    onSave() {
+        this.memberPersonalData.name = this.user.name;
+        this.memberPersonalData.surname = this.user.surname;
         this.memberPersonalData.dayOfBirth = this._dateTimeService.getEndOfDayForDate(this.memberPersonalData.dayOfBirth);
         this.member.MemberPersonalData = this.memberPersonalData;
         this.member.MemberAddress = this.memberAddress;
@@ -249,19 +252,19 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
             || this.addressForm.invalid
             || this.identityForm.invalid
             || this.economicInfoForm.invalid
-            || this.pepForm.invalid){
-                this.validateForm(this.personalDataForm);
-                this.validateForm(this.addressForm);
-                this.validateForm(this.identityForm);
-                this.validateForm(this.economicInfoForm);
-                this.validateForm(this.pepForm);
-                this.completed = false;
-                this.saving = false;
-                this.isValid = false;
-        }else{
-            if (!this.isClientRole){
-                abp.message.error('El formulario para complementar datos es de uso exclusivo para clientes de Monetae.<br><br> No es posible guardar la información.', 'Error', {isHtml: true});
-            }else{
+            || this.pepForm.invalid) {
+            this.validateForm(this.personalDataForm);
+            this.validateForm(this.addressForm);
+            this.validateForm(this.identityForm);
+            this.validateForm(this.economicInfoForm);
+            this.validateForm(this.pepForm);
+            this.completed = false;
+            this.saving = false;
+            this.isValid = false;
+        } else {
+            if (!this.isClientRole) {
+                abp.message.error('El formulario para complementar datos es de uso exclusivo para clientes de Monetae.<br><br> No es posible guardar la información.', 'Error', { isHtml: true });
+            } else {
                 this.isValid = true;
                 this._serviceMembersProxy.createOrEdit(this.member).subscribe((result) => {
                     this.completed = true;
@@ -272,7 +275,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         }
     }
 
-    onAddressChangeCountry(event?: EventEmitter): void{
+    onAddressChangeCountry(event?: EventEmitter): void {
         this.addressState.placeholder = this.l('loading');
         this.addressState.disabled = true;
         this._serviceCommonProxy.getSelectOptions('MntMemberDataComplements/GetAllStatesForSelect', this.memberAddressCountryId).subscribe((result) => {
@@ -288,22 +291,22 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         Object.keys(formGroup.controls).forEach(field => {
             const control = formGroup.get(field);
             let tempElement;
-            if (control.enabled){
-                if (!control.valid){
+            if (control.enabled) {
+                if (!control.valid) {
                     control.markAsDirty();
                     //console.log(field);
                     //console.log(this[field]);
                     validate = false;
-                    if (!firstElement){
-                        if (this?.[field]?.el !== undefined){
+                    if (!firstElement) {
+                        if (this?.[field]?.el !== undefined) {
                             tempElement = this[field].el.nativeElement.parentElement.parentElement.parentElement;
-                            tempElement?.scrollIntoView({behavior: 'smooth'});
-                        }else if (this?.[field]?.inputViewChild !== undefined){
+                            tempElement?.scrollIntoView({ behavior: 'smooth' });
+                        } else if (this?.[field]?.inputViewChild !== undefined) {
                             tempElement = this[field].inputViewChild.nativeElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
-                            tempElement?.scrollIntoView({behavior: 'smooth'});
-                        }else if (this?.[field] !== undefined){
+                            tempElement?.scrollIntoView({ behavior: 'smooth' });
+                        } else if (this?.[field] !== undefined) {
                             tempElement = this[field].nativeElement.parentElement.parentElement.parentElement;
-                            tempElement?.scrollIntoView({behavior: 'smooth'});
+                            tempElement?.scrollIntoView({ behavior: 'smooth' });
                         }
                         firstElement = true;
                     }
@@ -313,27 +316,27 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         return validate;
     }
 
-    disableControlsPep(){
+    disableControlsPep() {
         Object.keys(this.pepForm.controls).forEach(field => {
             const control = this.pepForm.get(field);
-            if (field.includes('Answer')){
-                if (!this.isPep){
+            if (field.includes('Answer')) {
+                if (!this.isPep) {
                     control.disable();
-                }else{
+                } else {
                     control.enable();
                 }
             }
         });
     }
 
-    protected disableSelects(){
+    protected disableSelects() {
         this.memberNationality.disabled = true;
         this.addressCountry.disabled = true;
         this.addressState.disabled = true;
         this.identityType.disabled = true;
     }
 
-    protected translatePrimeComponents(){
+    protected translatePrimeComponents() {
         this._primeConfig.setTranslation({
             monthNames: [
                 this.l('monthName1'),

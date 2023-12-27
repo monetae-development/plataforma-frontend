@@ -32347,6 +32347,8 @@ export interface ICreateOrEditMntMemberDataComplementDto {
 }
 
 export class CreateOrEditMntMemberDto implements ICreateOrEditMntMemberDto {
+    name!: string | undefined;
+    surname!: string | undefined;
     dayOfBirth!: DateTime | undefined;
     comments!: string | undefined;
     userId!: number;
@@ -32364,6 +32366,8 @@ export class CreateOrEditMntMemberDto implements ICreateOrEditMntMemberDto {
 
     init(_data?: any) {
         if (_data) {
+            this.name = _data["name"];
+            this.surname = _data["surname"];
             this.dayOfBirth = _data["dayOfBirth"] ? DateTime.fromISO(_data["dayOfBirth"].toString()) : <any>undefined;
             this.comments = _data["comments"];
             this.userId = _data["userId"];
@@ -32381,6 +32385,8 @@ export class CreateOrEditMntMemberDto implements ICreateOrEditMntMemberDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["surname"] = this.surname;
         data["dayOfBirth"] = this.dayOfBirth ? this.dayOfBirth.toString() : <any>undefined;
         data["comments"] = this.comments;
         data["userId"] = this.userId;
@@ -32391,6 +32397,8 @@ export class CreateOrEditMntMemberDto implements ICreateOrEditMntMemberDto {
 }
 
 export interface ICreateOrEditMntMemberDto {
+    name: string | undefined;
+    surname: string | undefined;
     dayOfBirth: DateTime | undefined;
     comments: string | undefined;
     userId: number;
