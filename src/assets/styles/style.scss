@@ -190,6 +190,22 @@
         }
     }
 }
+.ae-inputnumber{
+    .p-inputwrapper{
+        width: 100%;
+        .p-inputnumber{
+            width: 100%;
+            .p-inputnumber-input{
+                border-color: var(--ae-grey) !important;
+                background-color: #FFFFFF;
+                height: 38px;
+                border-radius: 6px;
+                padding: 6px 12px;
+                box-shadow: none !important;
+            }
+        }
+    }
+}
 .ae-select{
     .p-dropdown{
         border-color: var(--ae-grey) !important;
@@ -207,6 +223,7 @@
     }
 }
 .ae-input,
+.ae-inputnumber,
 .ae-select{
     margin: 12px 0;
     label{

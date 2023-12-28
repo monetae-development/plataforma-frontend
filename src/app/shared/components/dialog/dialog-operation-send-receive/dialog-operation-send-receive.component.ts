@@ -1,9 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { Component, EventEmitter, Injector, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AppComponentBase } from '@shared/common/app-component-base';
+import { GetSelectDto } from '@shared/service-proxies/dto/Common/SelectInput/GetSelectDto';
+import { OTCCryptoDto } from '@shared/service-proxies/dto/Otc/OTCCryptoDto';
+import { GetOTCTradingForViewDto } from '@shared/service-proxies/dto/Otc/OTCTrading/GetOTCTradingForViewDto';
+import { CreateMntMemberWalletDto, MntMemberWalletServiceProxy, MntSettingsServiceProxy } from '@shared/service-proxies/service-proxies';
+import { MenuItem, SelectItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { TabMenuModule } from 'primeng/tabmenu';
+import { DialogResumenSendComponent } from '../dialog-resumen-send/dialog-resumen-send.component';
 
 @Component({
   standalone: true,
@@ -12,23 +21,42 @@ import { TabMenuModule } from 'primeng/tabmenu';
   styleUrls: ['./dialog-operation-send-receive.component.css'],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     TabMenuModule,
-    ButtonModule
+    ButtonModule,
+    DropdownModule,
+    InputNumberModule
   ]
 })
-export class DialogOperationSendReceiveComponent implements OnInit {
+export class DialogOperationSendReceiveComponent extends AppComponentBase implements OnInit {
 
   outAccept = new EventEmitter();
+  receiveForm: FormGroup;
 
   menuItems: MenuItem[] | undefined;
   activeItem: MenuItem | undefined;
   activeIndex: Number = 0;
+  cryptoAssets: SelectItem[];
+  blockchainNetwortks: SelectItem[];
+  started = false;
+  processing = false;
+
+  mntMemberWalletDto : CreateMntMemberWalletDto;
+  // cryptoRecords: GetOTCTradingForViewDto[];
+  // cryptoKeys: GetSelectDto[];
 
   constructor(
+    injector: Injector,
+    private fb: FormBuilder,
+    private _mntMemberWalletServiceProxy: MntMemberWalletServiceProxy,
+    private _mntSettingsServiceProxy: MntSettingsServiceProxy,
     public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig
+    public config: DynamicDialogConfig,
+    public dialogService: DialogService,
   ) { 
+    super(injector);
     this.activeIndex = config.data?.activeIndex;
+    this.receiveForm = this._buildForm();
   }
 
   ngOnInit() {
@@ -37,14 +65,106 @@ export class DialogOperationSendReceiveComponent implements OnInit {
       { label: 'Recibir' }
     ];
     this.activeItem = this.menuItems[Number(this.activeIndex)];
+    this.loadCryptoAssets();
+    this.loadBlockchainNetwortks();
+    this.loadBalance();
+    this.loadWalletSettings();
   }
+
+  private _buildForm(): FormGroup {
+    return this.fb.group({
+      cryptoAssetId: [null, [Validators.required]],
+      address: [null, [Validators.required]],
+      blockchainNetworkId: [null, [Validators.required]],
+      amount: [null, [Validators.required]],
+    });
+  }
+
+  get cryptoAssetIdControl() { return this.receiveForm.controls['cryptoAssetId'] as FormControl; }
+  get addressControl() { return this.receiveForm.controls['address'] as FormControl; }
+  get blockchainNetworkIdControl() { return this.receiveForm.controls['blockchainNetworkId'] as FormControl; }
+  get amountControl() { return this.receiveForm.controls['amount'] as FormControl; }
+
+  loadCryptoAssets(){
+    this._mntMemberWalletServiceProxy.getCryptoAssetsForSelect()
+      .subscribe((result) => {
+        this.cryptoAssets = result.items;
+        console.log(this.cryptoAssets);
+      });
+  }
+
+  loadBlockchainNetwortks(){
+    this._mntMemberWalletServiceProxy.getBlockchainNetwortksForSelect()
+      .subscribe((result) => {
+        this.blockchainNetwortks = result.items
+        console.log(result);
+      });
+  }
+
+  loadBalance(){
+    this._mntMemberWalletServiceProxy.getBalance()
+      .subscribe((result) => {
+        console.log(result);
+      });
+  }
+
+  loadWalletSettings(){
+    this._mntSettingsServiceProxy.getWalletSettings()
+    .subscribe((result) => {
+      console.log(result);
+    });
+  }
+
+  onReset() {
+
+  }
+
+  onChangeCurrency(event: any) {
+    // this.mntMemberWalletDto.cryptoAssetId = event.value;
+    console.log(event);
+    console.log(this.receiveForm.value);
+    console.log(this.cryptoAssetIdControl.value);
+  }
+
+  // setCriptoKeys(records: GetSelectDto[]) {
+  //   this.cryptoKeys = [];
+  //   for (const record of records) {
+  //     let temp = new GetSelectDto();
+  //     temp.label = record.label;
+  //     temp.subtitle = record.subtitle;
+  //     temp.value = record.value;
+  //     this.cryptoKeys.push(temp);
+  //     console.log(this.cryptoKeys);
+  //   }
+  // }
+
+  // getOtcRecordById(id: number): OTCTradingForViewDto {
+  //   for (const record of this.cryptoRecords) {
+  //     if (record.otcCoin.id === id) {
+  //       return record.otcCoin;
+  //     }
+  //   }
+  //   return;
+  // }
 
   onCancel(){
     this.ref.close();
   }
 
-  onAccept(): void{
-    this.outAccept.emit(true);
+  onContinue(): void{
+    const ref = this.dialogService.open(DialogResumenSendComponent, {
+      showHeader: false,
+      styleClass: 'ae-dialog ae-dialog--sm',
+      data: {
+        transfer: {
+
+        },
+      },
+    });
+  }
+
+  onReceive(): void{
+    
   }
 
   onActiveItemChange(event: MenuItem) {

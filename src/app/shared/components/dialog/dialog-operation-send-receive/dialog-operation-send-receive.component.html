@@ -5,16 +5,138 @@
       (activeItemChange)="onActiveItemChange($event)"
   ></p-tabMenu>
 </div>
- 
 <div class="ae-tabs__container" *ngIf="activeItem.label == 'Enviar'">
   <div class="ae-tabs__container--content">
     <p class="ae-text-dark ae-text-default">Registre la siguiente información para realizar una solicitud de envió.</p>
+    <form [formGroup]="receiveForm">
+      <div class="ae-select">
+        <label class="mb-3">{{ l('Seleccionar activo') }}</label>
+        <p-dropdown
+            [disabled]="!started || processing"
+            [options]="cryptoAssets"
+            optionLabel="label"
+            [formControl]="cryptoAssetIdControl"
+            placeholder="{{ l('SelectTreeDots') }}"
+            [showClear]="true"
+            [filter]="true"
+            (onChange)="onChangeCurrency($event)"
+            (onClear)="onReset()"
+            required
+        >
+            <ng-template pTemplate="selectedItem">
+                <div class="d-flex align-items-center" *ngIf="cryptoAssetIdControl">
+                    <div>
+                        <img
+                          src="/assets/crypto-icons/{{ cryptoAssetIdControl.value?.subtitle.toLowerCase() }}.png" 
+                          style="width: 28px"
+                        />
+                    </div>
+                    <div class="ms-2">
+                        {{ cryptoAssetIdControl.value?.label }}
+                        <span class="badge text-bg-secondary">
+                            {{ cryptoAssetIdControl.value?.subtitle }}
+                        </span>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template let-coin pTemplate="item">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <img 
+                          src="/assets/crypto-icons/{{ coin.subtitle.toLowerCase() }}.png" 
+                          style="width: 28px"/>
+                    </div>
+                    <div class="ms-2">
+                        {{ coin.label }}
+                        <span class="badge text-bg-secondary">
+                            {{ coin.subtitle }}
+                        </span>
+                    </div>
+                </div>
+            </ng-template>
+        </p-dropdown>
+        <!-- <validation-messages [formCtrl]="cryptoAssetIdControl"></validation-messages> -->
+      </div>
+      <div class="ae-input">
+        <label htmlFor="address">{{ l('Enviar a / Direccion de wallet') }}</label>
+        <input 
+          id="address" 
+          name="address" 
+          type="text" 
+          class="form-control m-input" 
+          pInputText
+          [formControl]="addressControl"
+        />
+      </div>
+      <div class="ae-select">
+        <label class="mb-3">{{ l('Seleccionar red') }}</label>
+        <p-dropdown
+            [disabled]="!started || processing"
+            [options]="blockchainNetwortks"
+            optionLabel="label"
+            [formControl]="blockchainNetworkIdControl"
+            placeholder="{{ l('SelectTreeDots') }}"
+            [showClear]="true"
+            [filter]="true"
+            (onChange)="onChangeCurrency($event)"
+            (onClear)="onReset()"
+            required
+        >
+            <ng-template pTemplate="selectedItem">
+                <div class="d-flex align-items-center" *ngIf="blockchainNetworkIdControl">
+                    <div>
+                        <img
+                          src="/assets/crypto-icons/{{ blockchainNetworkIdControl.value?.subtitle.toLowerCase() }}.png" 
+                          style="width: 28px"
+                        />
+                    </div>
+                    <div class="ms-2">
+                        {{ blockchainNetworkIdControl.value?.label }}
+                        <span class="badge text-bg-secondary">
+                            {{ blockchainNetworkIdControl.value?.subtitle }}
+                        </span>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template let-coin pTemplate="item">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <img 
+                          src="/assets/crypto-icons/{{ coin.subtitle.toLowerCase() }}.png" 
+                          style="width: 28px"/>
+                    </div>
+                    <div class="ms-2">
+                        {{ coin.label }}
+                        <span class="badge text-bg-secondary">
+                            {{ coin.subtitle }}
+                        </span>
+                    </div>
+                </div>
+            </ng-template>
+        </p-dropdown>
+      </div>
+      <div class="ae-inputnumber">
+        <label htmlFor="amount">{{ l('Ingresar cantidad') }}</label>
+        <p-inputNumber
+            name="amount"
+            [formControl]="amountControl"
+            mode="decimal"
+            locale="en-US"
+            [minFractionDigits]="0"
+            [maxFractionDigits]="9"
+            [min]="0"
+            [max]="30"
+            required
+        ></p-inputNumber>
+        <small class="ae-text-gris-dark ae-text-small">{{ l('Saldo disponible:') }} </small>
+      </div>
+    </form>
     <small class="ae-text-gris-dark ae-text-small fw-normal">Por favor, asegúrate de elegir la criptomoneda y red correcta al realizar una transacción.
       Si envías criptomonedas a una dirección equivocada, podrías perder tus activos.</small>
   </div>
   <div class="ae-tabs__container--actions">
     <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
-    <p-button label="Continuar" class="ae-button ae-button--primary" (click)="onAccept()"></p-button>
+    <p-button label="Continuar" class="ae-button ae-button--primary" [disabled]="!receiveForm.valid" (click)="onContinue()"></p-button>
   </div>
 </div>
 <div class="ae-tabs__container" *ngIf="activeItem.label == 'Recibir'">
@@ -23,6 +145,6 @@
   </div>
   <div class="ae-tabs__container--actions">
     <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
-    <p-button label="Generar QR" class="ae-button ae-button--primary" (click)="onAccept()"></p-button>
+    <p-button label="Generar QR" class="ae-button ae-button--primary" (click)="onReceive()"></p-button>
   </div>
 </div>

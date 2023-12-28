@@ -18330,6 +18330,57 @@ export class MntSettingsServiceProxy {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @return Success
+     */
+    getWalletSettings(): Observable<WalletSettingsDto> {
+        let url_ = this.baseUrl + "/api/services/app/MntSettings/GetWalletSettings";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processGetWalletSettings(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetWalletSettings(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<WalletSettingsDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<WalletSettingsDto>;
+        }));
+    }
+
+    protected processGetWalletSettings(response: HttpResponseBase): Observable<WalletSettingsDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); } }
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result200: any = null;
+                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = WalletSettingsDto.fromJS(resultData200);
+                return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -28900,6 +28951,57 @@ export class MntMemberWalletServiceProxy {
                 let result200: any = null;
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
                 result200 = PagedResultDtoOfGetAllSelectOutput.fromJS(resultData200);
+                return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getBalance(): Observable<BalanceDto> {
+        let url_ = this.baseUrl + "/api/services/app/MntMemberWallet/GetBalance";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processGetBalance(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBalance(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BalanceDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BalanceDto>;
+        }));
+    }
+
+    protected processGetBalance(response: HttpResponseBase): Observable<BalanceDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); } }
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result200: any = null;
+                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = BalanceDto.fromJS(resultData200);
                 return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -44588,6 +44690,78 @@ export interface IOTCSettingsForEditDto {
     redisChannel: string | undefined;
     notifyPhonesRs: string[] | undefined;
     notifyEmailsRs: string[] | undefined;
+}
+
+export class WalletSettingsDto implements IWalletSettingsDto {
+    sendFee!: number;
+
+    constructor(data?: IWalletSettingsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.sendFee = _data["sendFee"];
+        }
+    }
+
+    static fromJS(data: any): WalletSettingsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WalletSettingsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["sendFee"] = this.sendFee;
+        return data;
+    }
+}
+
+export interface IWalletSettingsDto {
+    sendFee: number;
+}
+
+export class BalanceDto implements IBalanceDto {
+    amount!: number;
+
+    constructor(data?: IBalanceDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.amount = _data["amount"];
+        }
+    }
+
+    static fromJS(data: any): BalanceDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BalanceDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["amount"] = this.amount;
+        return data;
+    }
+}
+
+export interface IBalanceDto {
+    amount: number;
 }
 
 export class OpenIdConnectExternalLoginProviderSettings implements IOpenIdConnectExternalLoginProviderSettings {
