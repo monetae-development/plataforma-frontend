@@ -24,33 +24,29 @@
             required
         >
             <ng-template pTemplate="selectedItem">
-                <div class="d-flex align-items-center" *ngIf="cryptoAssetIdControl">
-                    <div>
+                <div class="flex align-items-center" *ngIf="cryptoAssetIdControl">
+                    <div class="mr-3">
                         <img
                           src="/assets/crypto-icons/{{ cryptoAssetIdControl.value?.subtitle.toLowerCase() }}.png" 
                           style="width: 28px"
                         />
                     </div>
-                    <div class="ms-2">
-                        {{ cryptoAssetIdControl.value?.label }}
-                        <span class="badge text-bg-secondary">
-                            {{ cryptoAssetIdControl.value?.subtitle }}
-                        </span>
+                    <div class="flex align-items-center">
+                        <span class="mr-2">{{ cryptoAssetIdControl.value?.label }}</span>
+                        <span>{{ cryptoAssetIdControl.value?.subtitle }}</span>
                     </div>
                 </div>
             </ng-template>
             <ng-template let-coin pTemplate="item">
                 <div class="d-flex align-items-center">
-                    <div>
+                    <div class="mr-3">
                         <img 
                           src="/assets/crypto-icons/{{ coin.subtitle.toLowerCase() }}.png" 
                           style="width: 28px"/>
                     </div>
-                    <div class="ms-2">
-                        {{ coin.label }}
-                        <span class="badge text-bg-secondary">
-                            {{ coin.subtitle }}
-                        </span>
+                    <div class="flex flex-column">
+                        <span>{{ coin.label }}</span>
+                        <span>{{ coin.subtitle }}</span>
                     </div>
                 </div>
             </ng-template>
@@ -83,33 +79,29 @@
             required
         >
             <ng-template pTemplate="selectedItem">
-                <div class="d-flex align-items-center" *ngIf="blockchainNetworkIdControl">
-                    <div>
+                <div class="flex align-items-center" *ngIf="blockchainNetworkIdControl">
+                    <div class="mr-3">
                         <img
                           src="/assets/crypto-icons/{{ blockchainNetworkIdControl.value?.subtitle.toLowerCase() }}.png" 
                           style="width: 28px"
                         />
                     </div>
-                    <div class="ms-2">
-                        {{ blockchainNetworkIdControl.value?.label }}
-                        <span class="badge text-bg-secondary">
-                            {{ blockchainNetworkIdControl.value?.subtitle }}
-                        </span>
+                    <div class="flex align-items-center">
+                      <span class="mr-2">{{ blockchainNetworkIdControl.value?.label }}</span>
+                      <span>{{ blockchainNetworkIdControl.value?.subtitle }}</span>
                     </div>
                 </div>
             </ng-template>
             <ng-template let-coin pTemplate="item">
-                <div class="d-flex align-items-center">
-                    <div>
+                <div class="flex align-items-center">
+                    <div class="mr-3">
                         <img 
                           src="/assets/crypto-icons/{{ coin.subtitle.toLowerCase() }}.png" 
                           style="width: 28px"/>
                     </div>
-                    <div class="ms-2">
-                        {{ coin.label }}
-                        <span class="badge text-bg-secondary">
-                            {{ coin.subtitle }}
-                        </span>
+                    <div class="flex flex-column">
+                      <span>{{ coin.label }}</span>
+                      <span>{{ coin.subtitle }}</span>
                     </div>
                 </div>
             </ng-template>

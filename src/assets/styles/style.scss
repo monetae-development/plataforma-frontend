@@ -219,6 +219,9 @@
             height: 38px;
             font-size: 14px;
             font-weight: 400;
+            display: flex;
+            display: -webkit-flex;
+            align-items: center;
         }
     }
 }
