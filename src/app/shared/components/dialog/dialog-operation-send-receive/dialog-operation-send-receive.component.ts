@@ -38,6 +38,7 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
   activeIndex: Number = 0;
   cryptoAssets: SelectItem[];
   blockchainNetwortks: SelectItem[];
+  amount: number = 0;
   started = false;
   processing = false;
 
@@ -105,6 +106,7 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
     this._mntMemberWalletServiceProxy.getBalance()
       .subscribe((result) => {
         console.log(result);
+        this.amount = result.amount;
       });
   }
 
@@ -126,26 +128,6 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
     console.log(this.cryptoAssetIdControl.value);
   }
 
-  // setCriptoKeys(records: GetSelectDto[]) {
-  //   this.cryptoKeys = [];
-  //   for (const record of records) {
-  //     let temp = new GetSelectDto();
-  //     temp.label = record.label;
-  //     temp.subtitle = record.subtitle;
-  //     temp.value = record.value;
-  //     this.cryptoKeys.push(temp);
-  //     console.log(this.cryptoKeys);
-  //   }
-  // }
-
-  // getOtcRecordById(id: number): OTCTradingForViewDto {
-  //   for (const record of this.cryptoRecords) {
-  //     if (record.otcCoin.id === id) {
-  //       return record.otcCoin;
-  //     }
-  //   }
-  //   return;
-  // }
 
   onCancel(){
     this.ref.close();
@@ -155,11 +137,7 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
     const ref = this.dialogService.open(DialogResumenSendComponent, {
       showHeader: false,
       styleClass: 'ae-dialog ae-dialog--sm',
-      data: {
-        transfer: {
-
-        },
-      },
+      data: this.receiveForm.value
     });
   }
 

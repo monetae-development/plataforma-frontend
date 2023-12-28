@@ -3,7 +3,57 @@
     <h2 class="text-xl font-bold">Resumen de envio</h2>
   </div>
   <div class="ae-dialog__content">
-
+    <div class="ae-table__resumen">
+        <div class="ae-resumen__item flex align-items-center justify-content-between">
+            <div class="ae-description">
+                <p class="ae-text-dark ae-text-default w-full">Dirección a enviar</p>
+            </div>
+            <div class="ae-content">
+                <span class="ae-text-gris-dark ae-text-default w-full">{{ resumenSend.address }}</span>
+            </div>
+        </div>
+        <div class="ae-resumen__item flex align-items-center justify-content-between">
+            <div class="ae-description">
+                <p class="ae-text-dark ae-text-default w-full">Red</p>
+            </div>
+            <div class="ae-content">
+                <span class="ae-text-gris-dark ae-text-default w-full">{{ resumenSend.blockchainNetworkId.label }}</span>
+            </div>
+        </div>
+        <div class="ae-resumen__item flex align-items-center justify-content-between">
+            <div class="ae-description">
+                <p class="ae-text-dark ae-text-default w-full">Fecha y hora</p>
+            </div>
+            <div class="ae-content">
+                <span class="ae-text-gris-dark ae-text-default w-full">{{ dateTime }}</span>
+                <span class="ae-text-gris-dark ae-text-default w-full">{{ hourTime }}</span>
+            </div>
+        </div>
+        <div class="ae-resumen__item flex align-items-center justify-content-between">
+            <div class="ae-description">
+                <p class="ae-text-dark ae-text-default w-full">Total $</p>
+            </div>
+            <div class="ae-content">
+                <span class="ae-text-gris-dark ae-text-default w-full">{{ resumenSend.address }}</span>
+            </div>
+        </div>
+        <div class="ae-resumen__item flex align-items-center justify-content-between">
+            <div class="ae-description">
+                <p class="ae-text-dark ae-text-default w-full">Comisión</p>
+            </div>
+            <div class="ae-content">
+                <span class="ae-text-gris-dark ae-text-default w-full">{{ resumenSend.address }} {{ resumenSend.blockchainNetworkId.subtitle }}</span>
+            </div>            
+        </div>
+        <div class="ae-resumen__item flex align-items-center justify-content-between">
+            <div class="ae-description">
+                <p class="ae-text-dark ae-text-default w-full">Total</p>
+            </div>
+            <div class="ae-content">
+                <span class="ae-text-primary ae-text-default w-full">{{ resumenSend.blockchainNetworkId.subtitle }} {{ resumenSend.address }}</span>
+            </div>
+        </div>
+    </div>
   </div>
   <div class="ae-dialog__actions">
     <p-button class="ae-button ae-button--primary w-full" label="Solicitar envio" (click)="onRequestSend()"></p-button>

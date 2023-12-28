@@ -630,6 +630,21 @@
         }
     }
 }
+.ae-table__resumen{
+    margin: 20px 0;
+    .ae-resumen__item{
+        margin: 10px 0;
+        p{
+            margin: 0;
+            text-align: left;
+        }
+        span{
+            text-align: right;
+            display: block;
+            line-height: normal;
+        }
+    }
+}
 @media (max-width: 768px) {
     .ae-button--back{
         top: 23px;
