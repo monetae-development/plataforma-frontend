@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Injector, OnInit } from '@angular/core';
 import { AppSharedModule } from '@app/shared/app-shared.module';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { MntMemberWalletServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CreateMntMemberWalletDto, MntMemberWalletServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ButtonModule } from 'primeng/button';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
@@ -18,6 +18,8 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 export class DialogResumenSendComponent extends AppComponentBase implements OnInit {
 
   resumenSend: any;
+  amountCommision: number = 0;
+  amountTotal: number = 0;
   dateNow: Date = new Date();
   // dateConvert: any;
 
@@ -30,7 +32,9 @@ export class DialogResumenSendComponent extends AppComponentBase implements OnIn
     public config: DynamicDialogConfig
   ) { 
     super(injector);
-    this.resumenSend = config.data;
+    this.resumenSend = config.data.resumenSend;
+    this.amountCommision = config.data.amountCommision;
+    this.amountTotal = this.resumenSend.amount + this.amountCommision;
   }
 
   ngOnInit() {
@@ -44,13 +48,24 @@ export class DialogResumenSendComponent extends AppComponentBase implements OnIn
 
   onCancel(){
     this.ref.close();
-    // console.log(this.date);
   }
 
   onRequestSend(): void {
-    this._mntMemberWalletServiceProxy.getBlockchainNetwortksForSelect()
-      .subscribe((result) => {
-        console.log(result);
+    const receiveBody = new CreateMntMemberWalletDto();
+    receiveBody.cryptoAssetId = this.resumenSend.cryptoAssetId.value;
+    receiveBody.address = this.resumenSend.address;
+    receiveBody.blockchainNetworkId = this.resumenSend.blockchainNetworkId.value;
+    receiveBody.amount = this.resumenSend.amount;
+    this._mntMemberWalletServiceProxy.create(receiveBody)
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+          this.outAccept.emit(true);
+          this.ref.close();
+        },
+        error: (err) => {
+          this.ref.close();
+        }
       });
   }
 

@@ -31,6 +31,7 @@ import { DialogResumenSendComponent } from '../dialog-resumen-send/dialog-resume
 export class DialogOperationSendReceiveComponent extends AppComponentBase implements OnInit {
 
   outAccept = new EventEmitter();
+  sendForm: FormGroup;
   receiveForm: FormGroup;
 
   menuItems: MenuItem[] | undefined;
@@ -39,6 +40,8 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
   cryptoAssets: SelectItem[];
   blockchainNetwortks: SelectItem[];
   amount: number = 0;
+  amountCommision: number = 0;
+  comission: number = 0;
   started = false;
   processing = false;
 
@@ -57,7 +60,8 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
   ) { 
     super(injector);
     this.activeIndex = config.data?.activeIndex;
-    this.receiveForm = this._buildForm();
+    this.sendForm = this._buildSendForm();
+    this.receiveForm = this._buildReceiveForm();
   }
 
   ngOnInit() {
@@ -72,7 +76,7 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
     this.loadWalletSettings();
   }
 
-  private _buildForm(): FormGroup {
+  private _buildSendForm(): FormGroup {
     return this.fb.group({
       cryptoAssetId: [null, [Validators.required]],
       address: [null, [Validators.required]],
@@ -81,10 +85,22 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
     });
   }
 
-  get cryptoAssetIdControl() { return this.receiveForm.controls['cryptoAssetId'] as FormControl; }
-  get addressControl() { return this.receiveForm.controls['address'] as FormControl; }
-  get blockchainNetworkIdControl() { return this.receiveForm.controls['blockchainNetworkId'] as FormControl; }
-  get amountControl() { return this.receiveForm.controls['amount'] as FormControl; }
+  private _buildReceiveForm(): FormGroup {
+    return this.fb.group({
+      cryptoAssetId: [null, [Validators.required]],
+      blockchainNetworkId: [null, [Validators.required]],
+      qr: [null, [Validators.required]],
+    });
+  }
+
+  get cryptoAssetIdControl() { return this.sendForm.controls['cryptoAssetId'] as FormControl; }
+  get addressControl() { return this.sendForm.controls['address'] as FormControl; }
+  get blockchainNetworkIdControl() { return this.sendForm.controls['blockchainNetworkId'] as FormControl; }
+  get amountControl() { return this.sendForm.controls['amount'] as FormControl; }
+
+  get cryptoAssetIdReceiveControl() { return this.receiveForm.controls['cryptoAssetId'] as FormControl; }
+  get blockchainNetworkIdReceiveControl() { return this.receiveForm.controls['blockchainNetworkId'] as FormControl; }
+  get qrReceiveControl() { return this.receiveForm.controls['qr'] as FormControl; }
 
   loadCryptoAssets(){
     this._mntMemberWalletServiceProxy.getCryptoAssetsForSelect()
@@ -113,6 +129,7 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
   loadWalletSettings(){
     this._mntSettingsServiceProxy.getWalletSettings()
     .subscribe((result) => {
+      this.comission = result.sendFee;
       console.log(result);
     });
   }
@@ -124,20 +141,51 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
   onChangeCurrency(event: any) {
     // this.mntMemberWalletDto.cryptoAssetId = event.value;
     console.log(event);
-    console.log(this.receiveForm.value);
+    console.log(this.sendForm.value);
     console.log(this.cryptoAssetIdControl.value);
   }
 
+  amountOnChange(event: any) {
+    if (event.value == null) {
+      this.amountCommision = null;
+      return;
+    }
+    this.amountControl.setValue(event.value);
+    this.calculateCost();
+  }
+
+  calculateCost() {
+    console.log(this.amountControl.value);
+    console.log(this.comission);
+    if (this.amount) {
+      this.amountCommision = this.amountControl.value * this.comission;
+    } else {
+      this.amountCommision = undefined;
+    }
+    console.log(this.amountCommision);
+  }
 
   onCancel(){
     this.ref.close();
   }
 
   onContinue(): void{
+    console.log(this.amountCommision);
     const ref = this.dialogService.open(DialogResumenSendComponent, {
       showHeader: false,
       styleClass: 'ae-dialog ae-dialog--sm',
-      data: this.receiveForm.value
+      data: {
+        resumenSend: this.sendForm.value,
+        amountCommision: this.amountCommision
+      }
+    });
+    const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+    dialogRef?.changeDetectorRef.detectChanges();
+
+    const instance = dialogRef?.instance?.componentRef?.instance as DialogResumenSendComponent;
+    instance?.outAccept.subscribe(() => {
+      console.log("entra");
+      this.ref.close();
     });
   }
 

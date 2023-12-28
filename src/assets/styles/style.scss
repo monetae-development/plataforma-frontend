@@ -649,6 +649,12 @@
     }
 }
 @media (max-width: 768px) {
+    .ae-balance{
+        flex-direction: column;
+        &__primary{
+            max-width: 100%;
+        }
+    }
     .ae-button--back{
         top: 23px;
         left: 8px;

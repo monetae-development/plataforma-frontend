@@ -3,6 +3,14 @@
     <h2 class="text-xl font-bold">Resumen de envio</h2>
   </div>
   <div class="ae-dialog__content">
+    <div class="ae-resumen__title flex align-items-center justify-content-center">
+        <img
+            class="mr-3"
+            src="/assets/crypto-icons/{{ resumenSend.cryptoAssetId.subtitle.toLowerCase() }}.png" 
+            style="width: 30px"
+        />
+        <p class="m-0 ae-text-dark ae-text-default fw-bold">{{ amountTotal}}</p>
+    </div>
     <div class="ae-table__resumen">
         <div class="ae-resumen__item flex align-items-center justify-content-between">
             <div class="ae-description">
@@ -17,7 +25,7 @@
                 <p class="ae-text-dark ae-text-default w-full">Red</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-gris-dark ae-text-default w-full">{{ resumenSend.blockchainNetworkId.label }}</span>
+                <span class="ae-text-gris-dark ae-text-default w-full">{{ resumenSend.cryptoAssetId.label }}</span>
             </div>
         </div>
         <div class="ae-resumen__item flex align-items-center justify-content-between">
@@ -31,10 +39,10 @@
         </div>
         <div class="ae-resumen__item flex align-items-center justify-content-between">
             <div class="ae-description">
-                <p class="ae-text-dark ae-text-default w-full">Total $</p>
+                <p class="ae-text-dark ae-text-default w-full">Total de envio</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-gris-dark ae-text-default w-full">{{ resumenSend.address }}</span>
+                <span class="ae-text-gris-dark ae-text-default w-full">{{ resumenSend.amount }}</span>
             </div>
         </div>
         <div class="ae-resumen__item flex align-items-center justify-content-between">
@@ -42,7 +50,7 @@
                 <p class="ae-text-dark ae-text-default w-full">Comisión</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-gris-dark ae-text-default w-full">{{ resumenSend.address }} {{ resumenSend.blockchainNetworkId.subtitle }}</span>
+                <span class="ae-text-gris-dark ae-text-default w-full">{{ amountCommision }} {{ resumenSend.cryptoAssetId.subtitle }}</span>
             </div>            
         </div>
         <div class="ae-resumen__item flex align-items-center justify-content-between">
@@ -50,7 +58,7 @@
                 <p class="ae-text-dark ae-text-default w-full">Total</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-primary ae-text-default w-full">{{ resumenSend.blockchainNetworkId.subtitle }} {{ resumenSend.address }}</span>
+                <span class="ae-text-primary ae-text-default w-full">{{ amountTotal}} {{ resumenSend.cryptoAssetId.subtitle }}</span>
             </div>
         </div>
     </div>
