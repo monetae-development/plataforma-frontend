@@ -528,6 +528,7 @@
 .ae-dialog{
     border-radius: 12px !important;
     overflow: hidden;
+    max-height: 100% !important;
     &__header{
         position: relative;
         padding: 12px 24px;
@@ -555,6 +556,13 @@
     &.ae-dialog--sm{
         width: 100%;
         max-width: 380px;
+        .ae-dialog__actions{
+            .ae-button{
+                .p-button-label{
+                    font-size: 16px;
+                }
+            }
+        }
     }
     &.ae-dialog--operations{
         .p-dialog-content{
@@ -594,8 +602,13 @@
                 .ae-tabs__container--actions{
                     display: grid;
                     gap: 16px;
-                    grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
+                    grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
                     margin-top: 20px;
+                    .ae-button{
+                        .p-button-label{
+                            font-size: 16px;
+                        }
+                    }
                 }
             }
         }
@@ -669,6 +682,19 @@
         }
         span{
             display: none;
+        }
+    }
+}
+@media (max-width: 420px) {
+    .ae-dialog{
+        &.ae-dialog--operations{
+            .p-dialog-content{
+                .ae-tabs__container{
+                    .ae-tabs__container--actions{
+                        gap: 8px;
+                    }
+                }
+            }
         }
     }
 }
