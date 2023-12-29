@@ -1,6 +1,6 @@
 <div class="ae-dialog__header flex align-items-center justify-content-center">
     <i class="pi pi-arrow-left ae-text-dark mr-3" (click)="onCancel()"></i>
-    <h2 class="text-xl font-bold">Resumen de envio</h2>
+    <h2 class="ae-text-dark fw-bold">Resumen de envio</h2>
   </div>
   <div class="ae-dialog__content">
     <div class="ae-resumen__title flex align-items-center justify-content-center">
@@ -17,7 +17,7 @@
                 <p class="ae-text-dark ae-text-default w-full">Dirección a enviar</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-gris-dark ae-text-default w-full">{{ shortAdress }}</span>
+                <span class="ae-text-gris-network ae-text-default w-full">{{ shortAdress }}</span>
             </div>
         </div>
         <div class="ae-resumen__item flex align-items-center justify-content-between">
@@ -25,7 +25,7 @@
                 <p class="ae-text-dark ae-text-default w-full">Red</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-gris-dark ae-text-default w-full">{{ resumenSend.cryptoAssetId.label }}</span>
+                <span class="ae-text-gris-dark ae-text-default w-full">{{ resumenSend.blockchainNetworkId.label }}</span>
             </div>
         </div>
         <div class="ae-resumen__item flex align-items-center justify-content-between">
