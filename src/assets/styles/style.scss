@@ -651,8 +651,11 @@
 @media (max-width: 768px) {
     .ae-balance{
         flex-direction: column;
+        padding: 16px;
         &__primary{
             max-width: 100%;
+            margin: 0;
+            margin-bottom: 16px;
         }
     }
     .ae-button--back{

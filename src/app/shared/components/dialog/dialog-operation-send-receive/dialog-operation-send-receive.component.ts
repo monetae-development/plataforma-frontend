@@ -158,7 +158,7 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
     console.log(this.amountControl.value);
     console.log(this.comission);
     if (this.amount) {
-      this.amountCommision = this.amountControl.value * this.comission;
+      this.amountCommision = (this.amountControl.value * this.comission) / 100;
     } else {
       this.amountCommision = undefined;
     }

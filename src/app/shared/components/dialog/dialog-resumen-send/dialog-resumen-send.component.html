@@ -17,7 +17,7 @@
                 <p class="ae-text-dark ae-text-default w-full">Dirección a enviar</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-gris-dark ae-text-default w-full">{{ resumenSend.address }}</span>
+                <span class="ae-text-gris-dark ae-text-default w-full">{{ shortAdress }}</span>
             </div>
         </div>
         <div class="ae-resumen__item flex align-items-center justify-content-between">
@@ -42,7 +42,7 @@
                 <p class="ae-text-dark ae-text-default w-full">Total de envio</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-gris-dark ae-text-default w-full">{{ resumenSend.amount }}</span>
+                <span class="ae-text-gris-dark ae-text-default w-full">{{ resumenSend.amount }} {{ resumenSend.cryptoAssetId.subtitle }}</span>
             </div>
         </div>
         <div class="ae-resumen__item flex align-items-center justify-content-between">
