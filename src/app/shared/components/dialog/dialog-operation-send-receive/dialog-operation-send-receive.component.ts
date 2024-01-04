@@ -210,6 +210,7 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
     elementoInput.select();
     document.execCommand('copy');
     document.body.removeChild(elementoInput);
+    this.notify.success(this.l('Copiado a portapapeles'));
   }
 
   onActiveItemChange(event: MenuItem) {
