@@ -47,6 +47,8 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
   address: string = '';
   started = false;
   processing = false;
+  actionsReceive = true;
+
 
   mntMemberWalletDto : CreateMntMemberWalletDto;
   // cryptoRecords: GetOTCTradingForViewDto[];
@@ -142,10 +144,8 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
   }
 
   onChangeCurrency(event: any) {
-    // this.mntMemberWalletDto.cryptoAssetId = event.value;
-    console.log(event);
-    console.log(this.sendForm.value);
-    console.log(this.cryptoAssetIdControl.value);
+    this.address = '';
+    this.actionsReceive = true;
   }
 
   amountOnChange(event: any) {
@@ -199,6 +199,7 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
       this.BlockchainNetworkId
     )
     .subscribe((result) => {
+      this.actionsReceive = false;
       this.address = result.address;
     });
   }

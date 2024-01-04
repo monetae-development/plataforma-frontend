@@ -19,7 +19,6 @@
             placeholder="{{ l('SelectTreeDots') }}"
             [showClear]="true"
             [filter]="true"
-            (onChange)="onChangeCurrency($event)"
             (onClear)="onReset()"
             required
         >
@@ -73,7 +72,6 @@
             placeholder="{{ l('SelectTreeDots') }}"
             [showClear]="true"
             [filter]="true"
-            (onChange)="onChangeCurrency($event)"
             (onClear)="onReset()"
             required
         >
@@ -227,16 +225,16 @@
           </div>
           <div class="ae-qr__text flex align-items-center">
             <p class="ae-text-default ae-text-gris-dark m-0 fw-normal">{{ address }}</p>
-            <div class="ae-icon" (click)="copyAddress()">
-              <i class="pi pi-copy"></i>
+            <div class="ae-icon flex align-items-center justify-content-center" (click)="copyAddress()">
+              <i class="pi pi-copy ae-text-default ae-text-dark"></i>
             </div>
           </div>
         </div>
       </div>
     </form>
   </div>
-  <div class="ae-tabs__container--actions mt-15">
+  <div class="ae-tabs__container--actions mt-10">
     <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
-    <p-button label="Generar QR" class="ae-button ae-button--primary" (click)="onReceive()"></p-button>
+    <p-button *ngIf="actionsReceive" label="Generar QR" class="ae-button ae-button--primary" (click)="onReceive()"></p-button>
   </div>
 </div>

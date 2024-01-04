@@ -568,9 +568,18 @@
         }
     }
     &.ae-dialog--operations{
+        overflow: visible;
         .p-dialog-content{
             padding: 0 !important;
+            overflow: visible;
+            border-bottom-left-radius: 8px !important;
+            border-bottom-right-radius: 8px !important;
+            border-top-left-radius: 8px !important;
+            border-top-right-radius: 8px !important;
             .ae-tabs{
+                overflow: hidden;
+                border-top-left-radius: 8px !important;
+                border-top-right-radius: 8px !important;
                 .p-tabmenu-nav {
                     border: none !important;
                     width: 100%;
@@ -680,8 +689,11 @@
         }
         .ae-icon{
             width: 100%;
-            max-width: 16px;
-            margin-left: 5px;
+            max-width: 27px;
+            height: 27px;
+            border-radius: 50%;
+            margin-left: 10px;
+            background-color: #F1F1F1;
             cursor: pointer;
         }
     }
