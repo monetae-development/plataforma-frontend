@@ -221,10 +221,21 @@
                 </div>
             </ng-template>
         </p-dropdown>
+        <div class="ae-qr" *ngIf="address">
+          <div class="ae-qr__image">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data={{ address }}" alt="Monetae">
+          </div>
+          <div class="ae-qr__text flex align-items-center">
+            <p class="ae-text-default ae-text-gris-dark m-0 fw-normal">{{ address }}</p>
+            <div class="ae-icon" (click)="copyAddress()">
+              <i class="pi pi-copy"></i>
+            </div>
+          </div>
+        </div>
       </div>
     </form>
   </div>
-  <div class="ae-tabs__container--actions">
+  <div class="ae-tabs__container--actions mt-15">
     <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
     <p-button label="Generar QR" class="ae-button ae-button--primary" (click)="onReceive()"></p-button>
   </div>

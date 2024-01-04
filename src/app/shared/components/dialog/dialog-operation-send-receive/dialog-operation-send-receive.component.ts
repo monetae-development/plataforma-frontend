@@ -42,6 +42,9 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
   amount: number = 0;
   amountCommision: number = 0;
   comission: number = 0;
+  coinId: number = 0;
+  BlockchainNetworkId: number = 0;
+  address: string = '';
   started = false;
   processing = false;
 
@@ -184,13 +187,29 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
 
     const instance = dialogRef?.instance?.componentRef?.instance as DialogResumenSendComponent;
     instance?.outAccept.subscribe(() => {
-      console.log("entra");
       this.ref.close();
     });
   }
 
   onReceive(): void{
-    
+    this.coinId = this.cryptoAssetIdReceiveControl.value.value;
+    this.BlockchainNetworkId = this.blockchainNetworkIdReceiveControl.value.value;
+    this._mntMemberWalletServiceProxy.getAddress(
+      this.coinId,
+      this.BlockchainNetworkId
+    )
+    .subscribe((result) => {
+      this.address = result.address;
+    });
+  }
+
+  copyAddress(){
+    const elementoInput = document.createElement('input');
+    elementoInput.value = this.address;
+    document.body.appendChild(elementoInput);
+    elementoInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(elementoInput);
   }
 
   onActiveItemChange(event: MenuItem) {

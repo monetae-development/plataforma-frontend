@@ -29012,6 +29012,62 @@ export class MntMemberWalletServiceProxy {
         return _observableOf(null as any);
     }
 
+    getAddress(coinId: number | undefined, blockchainNetworkId: number | undefined): Observable<AddressDto> {
+        let url_ = this.baseUrl + "/api/services/app/MntMemberWallet/GetAddress?";
+        if (coinId === null)
+            throw new Error("The parameter 'coinId' cannot be null.");
+        else if (coinId !== undefined)
+            url_ += "CoinId=" + encodeURIComponent("" + coinId) + "&";
+        if (blockchainNetworkId === null)
+            throw new Error("The parameter 'blockchainNetworkId' cannot be null.");
+        else if (blockchainNetworkId !== undefined)
+            url_ += "BlockchainNetworkId=" + encodeURIComponent("" + blockchainNetworkId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processGetAddress(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAddress(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<AddressDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<AddressDto>;
+        }));
+    }
+
+    protected processGetAddress(response: HttpResponseBase): Observable<AddressDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); } }
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result200: any = null;
+                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = AddressDto.fromJS(resultData200);
+                return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
     /**
      * @param body (optional) 
      * @return Success
@@ -44762,6 +44818,50 @@ export class BalanceDto implements IBalanceDto {
 
 export interface IBalanceDto {
     amount: number;
+}
+
+export class AddressDto implements IAddressDto {
+    coin!: string;
+    blockchainNetwork!: string;
+    address!: string;
+
+    constructor(data?: IAddressDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.coin = _data["coin"];
+            this.blockchainNetwork = _data["blockchainNetwork"];
+            this.address = _data["address"];
+        }
+    }
+
+    static fromJS(data: any): AddressDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddressDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["coin"] = this.coin;
+        data["blockchainNetwork"] = this.blockchainNetwork;
+        data["address"] = this.address;
+        return data;
+    }
+}
+
+export interface IAddressDto {
+    coin: string;
+    blockchainNetwork: string;
+    address: string;
 }
 
 export class OpenIdConnectExternalLoginProviderSettings implements IOpenIdConnectExternalLoginProviderSettings {

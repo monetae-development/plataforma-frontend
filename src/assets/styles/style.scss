@@ -525,6 +525,9 @@
         }
     }
 }
+.p-dialog-mask{
+    z-index: 999 !important;
+}
 .ae-dialog{
     border-radius: 12px !important;
     overflow: hidden;
@@ -661,6 +664,25 @@
             text-align: right;
             display: block;
             line-height: normal;
+        }
+    }
+}
+.ae-qr{
+    &__image{
+        margin: 30px 0 20px 0;
+        text-align: center;
+    }
+    &__text{
+        p{
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .ae-icon{
+            width: 100%;
+            max-width: 16px;
+            margin-left: 5px;
+            cursor: pointer;
         }
     }
 }
