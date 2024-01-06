@@ -85,20 +85,20 @@
     <div class="ae-container kt-grid__item kt-grid__item--fluid'">
         <div class="kt-portlet kt-portlet--mobile">
             <div class="kt-portlet__body">
-                <div class="row g-3">
-                    <div class="col-md-12 align-items-stretch">
-                        <div class="ae-card__container">
-                            <div class="ae-tabs">
-                                <p-tabMenu
-                                    [model]="menuItems"
-                                    [activeItem]="activeItem"
-                                    (activeItemChange)="onActiveItemChange($event)"
-                                ></p-tabMenu>
-                            </div>
-                            <div class="ae-tabs__container" *ngIf="activeItem.label == 'Inversiones'">
+                <div class="align-items-stretch">
+                    <div class="ae-card__container">
+                        <div class="ae-tabs">
+                            <p-tabMenu
+                                [model]="menuItems"
+                                [activeItem]="activeItem"
+                                (activeItemChange)="onActiveItemChange($event)"
+                            ></p-tabMenu>
+                        </div>
+                        <div class="ae-tabs__container" *ngIf="activeItem.label == 'Inversiones'">
+                            <div *ngIf="isInversionesCarousel; else isInversionesCards">
                                 <div class="ae-tabs__container--title flex align-items-center justify-content-between">
-                                    <h2 class="m-0 ae-text-medium ae-text-dark fw-semibold">Invierte en Tokens de proyectos</h2>
-                                    <a class="ae-text-default ae-text-gris-dark fw-semibold">Ver más</a>
+                                    <h2 class="m-0 ae-text-medium ae-text-dark fw-bold">Invierte en Tokens de proyectos</h2>
+                                    <a class="ae-text-default ae-text-gris-dark fw-semibold" (click)="isInversionesCarousel = false">Ver más</a>
                                 </div>
                                 <div class="ae-carousel">
                                     <p-carousel [value]="products" [numVisible]="3" [numScroll]="3" [responsiveOptions]="responsiveOptions">
@@ -158,12 +158,76 @@
                                     </p-carousel>
                                 </div>
                             </div>
-                            <div class="ae-tabs__container" *ngIf="activeItem.label == 'Portafolio'">
-                                <otc-wrapper></otc-wrapper>
-                            </div>
-                            <div class="ae-tabs__container" *ngIf="activeItem.label == 'Historial'">
-                                <otc-requests-crypto #cryptoRequests></otc-requests-crypto>
-                            </div>
+                            <ng-template #isInversionesCards>
+                                <div class="ae-tabs__container--title flex flex-column-mobile align-items-center justify-content-between">
+                                    <div class="ae-title flex align-items-center">
+                                        <i class="pi pi-arrow-left ae-text-black ae-text-medium mr-4" (click)="isInversionesCarousel = true"></i>
+                                        <h2 class="m-0 ae-text-medium ae-text-dark fw-bold">Invierte en Tokens de proyectos</h2>
+                                    </div>
+                                    <div class="ae-select m-0">
+                                        <p-dropdown [options]="filterInversiones" optionLabel="name" placeholder="Todos"></p-dropdown>
+                                    </div>
+                                </div>
+                                <div class="ae-grid__card">
+                                    <div class="ae-project__card ae-card btn-projects" *ngFor="let product of products" (click)="goToProject('ESA1')">
+                                        <div class="ae-project__image">
+                                            <img
+                                                src="/assets/projects/01.jpg"
+                                                class="projects-img mb-3"
+                                            />
+                                            <h2 class="ae-text-medium">30%</h2>
+                                            <span class="ae-text-gris-dark fw-bold">Inmobiliario</span>
+                                        </div>
+                                        <div class="ae-project__content">
+                                            <div class="ae-content__title flex align-items-center justify-content-center">
+                                                <h5 class="ae-text-medium ae-text-dark mb-0">Proyecto El Salvador</h5>
+                                                <span class="ae-text-gris-dark fw-bold">Crowdfounding</span>
+                                            </div>
+                                            <div class="ae-content__objetive flex justify-content-between gap-2">
+                                                <div class="flex align-items-center">
+                                                    <h2 class="ae-text-primary fw-bold mb-0 mr-2">$8M</h2>
+                                                    <span class="ae-text-gris-dark fw-semibold">30%</span>
+                                                </div>
+                                                <p class="ae-text-gris m-0">Objetivo: $10M USD</p>
+                                            </div>
+                                            <div class="ae-project__progress">
+                                                <div
+                                                    class="progress"
+                                                    role="progressbar"
+                                                    aria-valuenow="85"
+                                                    aria-valuemin="0"
+                                                    aria-valuemax="100"
+                                                >
+                                                    <div class="progress-bar ae-bg-primary" style="width: 85%"></div>
+                                                </div>
+                                            </div>
+                                            <div class="flex justify-content-between gap-2">
+                                                <div class="ae-content__item flex align-items-center">
+                                                    <p class="mb-0 mr-2 ae-text-gris ae-text-default">Retorno</p>
+                                                    <span class="ae-text-dark fw-semibold ae-text-default">18%</span>
+                                                </div>
+                                                <div class="ae-content__item flex align-items-center">
+                                                    <i class="pi pi-user mr-2 ae-text-gris"></i>
+                                                    <span class="ae-text-dark fw-semibold ae-text-default">223</span>
+                                                </div>
+                                                <div class="ae-content__item flex align-items-center">
+                                                    <i class="pi pi-clock mr-2 ae-text-gris"></i>
+                                                    <span class="ae-text-dark fw-semibold ae-text-default">46 Días</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="ae-project__actions">
+                                            <button class="ae-btn ae-btn--secondary w-full fw-bold" type="button">Invertir</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div class="ae-tabs__container" *ngIf="activeItem.label == 'Portafolio'">
+                            <otc-wrapper></otc-wrapper>
+                        </div>
+                        <div class="ae-tabs__container" *ngIf="activeItem.label == 'Historial'">
+                            <otc-requests-crypto #cryptoRequests></otc-requests-crypto>
                         </div>
                     </div>
                 </div>

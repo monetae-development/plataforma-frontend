@@ -4,6 +4,7 @@
 :root{
     --ae-primary: #{map-get($theme-colors,"primary")};
     --ae-secondary: #{map-get($theme-colors,"secondary")};
+    --ae-secondary-hover: #{map-get($theme-colors,"secondary-hover")};
     --ae-gris: #{map-get($theme-colors,"gris")};
     --ae-gris-light: #{map-get($theme-colors,"gris-light")};
     --ae-gris-dark: #{map-get($theme-colors,"gris-dark")};

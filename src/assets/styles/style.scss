@@ -23,6 +23,9 @@
 .ae-text-black{
     color: var(--ae-black) !important;
 }
+.ae-text-black{
+    color: var(--ae-black) !important;
+}
 .ae-text-dark{
     color: var(--ae-dark) !important;
 }
@@ -72,6 +75,11 @@
     border-radius: 12px;
     height: 45px;
     padding: 0 20px;
+    -webkit-transition: background-color .35s ease-in-out;
+    -moz-transition: background-color .35s ease-in-out;
+    -ms-transition: background-color .35s ease-in-out;
+    -o-transition: background-color .35s ease-in-out;
+    transition: background-color .35s ease-in-out;
     &.border-middle{
         border-radius: 16px;
     }
@@ -82,6 +90,9 @@
     &--secondary{
         background-color: var(--ae-secondary);
         color: var(--ae-primary);
+        &:HOVER{
+            background-color: var(--ae-secondary-hover);
+        }
     }
     &--default{
         border: 1px solid #F0F0F0;
@@ -285,6 +296,9 @@
 }
 .ae-project__card{
     margin: 16px 10px;
+    &:hover{
+        opacity: 1 !important;
+    }
     .ae-project__image{
         position: relative;
         h2{
@@ -659,6 +673,9 @@
         a{
             cursor: pointer;
         }
+        .pi{
+            cursor: pointer;
+        }
     }
 }
 .ae-table__resumen{
@@ -698,6 +715,14 @@
         }
     }
 }
+.ae-grid__card{
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+    .ae-project__card{
+        margin: 8px 3px;
+    }
+}
 @media (max-width: 768px) {
     .ae-balance{
         flex-direction: column;
@@ -718,8 +743,12 @@
             display: none;
         }
     }
+    .ae-card__container{
+        padding: 24px 20px;
+        border-radius: 0;
+    }
 }
-@media (max-width: 420px) {
+@media (max-width: 480px) {
     .ae-dialog{
         &.ae-dialog--operations{
             .p-dialog-content{
@@ -727,6 +756,20 @@
                     .ae-tabs__container--actions{
                         gap: 8px;
                     }
+                }
+            }
+        }
+    }
+    .ae-tabs__container{
+        &--title{
+            &.flex-column-mobile{
+                flex-direction: column;
+                .ae-title{
+                    width: 100%;
+                    margin-bottom: 20px;
+                }
+                .ae-select{
+                    width: 100%;
                 }
             }
         }

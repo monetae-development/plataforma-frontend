@@ -39,6 +39,8 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   cryptos: any[] | undefined;
   responsiveOptions: any[] | undefined;
   responsiveOptionsCryptos: any[] | undefined;
+  isInversionesCarousel: Boolean = true;
+  filterInversiones: any;
 
   constructor(
     injector: Injector,
@@ -64,6 +66,14 @@ export class HomeComponent extends AppComponentBase implements OnInit {
       {
         category: 'Inmobiliario',
         title: 'Proyecto El Salvador'
+      },
+      {
+        category: 'Inmobiliario',
+        title: 'Proyecto El Salvador',
+      },
+      {
+        category: 'Inmobiliario',
+        title: 'Proyecto El Salvador',
       },
       {
         category: 'Inmobiliario',
@@ -203,6 +213,10 @@ export class HomeComponent extends AppComponentBase implements OnInit {
 
   reloadRequests() {
     this.cryptoRequests.getAllOtcRequestsByMember();
+  }
+
+  goToInversionesCards(){
+    this.isInversionesCarousel = false;
   }
 
 }
