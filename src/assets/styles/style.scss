@@ -35,6 +35,9 @@
 .ae-text-gris-dark{
     color: var(--ae-gris-dark) !important;
 }
+.ae-text-gris-light{
+    color: var(--ae-gris-light) !important;
+}
 .ae-text-gris-network{
     color: var(--ae-gris-network) !important;
 }
@@ -217,6 +220,36 @@
                 padding: 6px 12px;
                 box-shadow: none !important;
             }
+        }
+        &.p-inputNumber--space{
+            .p-inputnumber{
+                .p-inputnumber-input{
+                    padding-left: 64px;
+                }
+            }
+        }
+    }
+    .ae-inputnumber__group{
+        position: relative;
+        .ae-inputnumber__coin{
+            background-color: #E9ECEF;
+            width: 100%;
+            max-width: max-content;
+            height: 100%;
+            padding: 5px 12px;
+            position: absolute;
+            border: 1px solid var(--ae-gris-light);
+            border-bottom-left-radius: 8px;
+            border-top-left-radius: 8px;
+        }
+        .ae-inputnumber__max{
+            cursor: pointer;
+            position: absolute;
+            right: 0;
+            height: 100%;
+            top: 0;
+            bottom: 0;
+            right: 16px;
         }
     }
 }

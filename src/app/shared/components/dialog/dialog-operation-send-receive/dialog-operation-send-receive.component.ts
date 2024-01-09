@@ -45,6 +45,7 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
   coinId: number = 0;
   BlockchainNetworkId: number = 0;
   address: string = '';
+  coinSubtitle: string = '';
   started = false;
   processing = false;
   actionsReceive = true;
@@ -143,6 +144,16 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
 
   }
 
+  onChangeCurrencySend(event: any) {
+    if (event.value == null) {
+      this.coinSubtitle = null;
+      return;
+    }
+    this.coinSubtitle = event.value.subtitle;
+    console.log(event.value);
+  }
+
+
   onChangeCurrency(event: any) {
     this.address = '';
     this.actionsReceive = true;
@@ -204,7 +215,7 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
     });
   }
 
-  copyAddress(){
+  copyAddress(): void {
     const elementoInput = document.createElement('input');
     elementoInput.value = this.address;
     document.body.appendChild(elementoInput);
@@ -212,6 +223,10 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
     document.execCommand('copy');
     document.body.removeChild(elementoInput);
     this.notify.success(this.l('Copiado a portapapeles'));
+  }
+
+  setMaxAmount(): void {
+    this.amountControl.setValue(this.amount);
   }
 
   onActiveItemChange(event: MenuItem) {

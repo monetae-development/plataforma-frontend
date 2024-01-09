@@ -29,7 +29,10 @@ export class ValidateTwoFactorCodeComponent extends AppComponentBase implements 
         private location: Location
     ) {
         super(injector);
-        this.email = this.loginService.authenticateModel.userNameOrEmailAddress;
+        const email = this.loginService.authenticateModel.userNameOrEmailAddress;
+        const parts = email.split('@');
+        const first_part = parts[0].substring(0, 2) + '****';
+        this.email = first_part + '@' + parts[1];
     }
 
     get useCaptcha(): boolean {
