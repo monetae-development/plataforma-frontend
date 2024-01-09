@@ -13,10 +13,13 @@ import { LoginService } from '../login/login.service';
 import { RegisterModel } from './register.model';
 import { finalize, catchError } from 'rxjs/operators';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
+import { DialogService } from 'primeng/dynamicdialog';
+import { DialogDefaultComponent } from '@app/shared/components/dialog/dialog-default/dialog-default.component';
 
 @Component({
     templateUrl: './register.component.html',
     animations: [accountModuleAnimation()],
+    providers: [ DialogService ],
 })
 export class RegisterComponent extends AppComponentBase implements OnInit {
     
@@ -37,7 +40,8 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         private _router: Router,
         private readonly _loginService: LoginService,
         private _profileService: ProfileServiceProxy,
-        private _reCaptchaV3Service: ReCaptchaV3Service
+        private _reCaptchaV3Service: ReCaptchaV3Service,
+        public dialogService: DialogService,
     ) {
         super(injector);
     }
@@ -47,7 +51,6 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     }
 
     ngOnInit() {
-        // this.notify.success(this.l('SuccessfullyRegistered'));
         //Prevent to register new users in the host context
         if (this.appSession.tenant == null) {
             this._router.navigate(['account/login']);
@@ -72,8 +75,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 )
                 .subscribe((result: RegisterOutput) => {
                     if (!result.canLogin) {
-                        this.notify.success(this.l('SuccessfullyRegistered'));
-                        this._router.navigate(['account/login']);
+                        this.openMessageDialog();
                         return;
                     }
 
@@ -97,5 +99,25 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     togglePasswordVisibility(): void{
         this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
         this.showPassword = !this.showPassword;
+    }
+
+    private openMessageDialog(): void {
+        const ref = this.dialogService.open(DialogDefaultComponent, {
+            showHeader: false,
+            styleClass: 'ae-dialog ae-dialog--md',
+            data: {
+              icon: 'pi pi-envelope',
+              title: 'Verifique su correo electrónico',
+              subtitle: this.l('WeHaveSentVerifyEmail', this.model.emailAddress),
+            }
+        });
+        const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+        dialogRef?.changeDetectorRef.detectChanges();
+
+        const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
+        instance?.outAccept.subscribe(() => {
+            this._router.navigate(['account/login']);
+            ref.close();
+        });
     }
 }
