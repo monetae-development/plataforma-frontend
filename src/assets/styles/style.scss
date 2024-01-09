@@ -614,6 +614,43 @@
             }
         }
     }
+    &.ae-dialog--md{
+        width: 100%;
+        max-width: 510px;
+        .ae-dialog__message{
+            text-align: center;
+            padding: 0 20px;
+            .pi{
+                width: 100%;
+                max-width: 73px;
+                height: 73px;
+                background-color: #F8F8F8;
+                margin: auto;
+                border-radius: 50%;
+                font-size: 30px;
+                margin-bottom: 24px;
+            }
+            h2{
+                font-size: 18px;
+                margin-bottom: 24px;
+            }
+            p{
+                margin-bottom: 24px;
+            }
+        }
+        .ae-dialog__actions{
+            text-align: center;
+            .ae-button{
+                .p-button{
+                    max-width: 355px;
+                    margin: 20px auto;
+                }
+                .p-button-label{
+                    font-size: 14px;
+                }
+            }
+        }
+    }
     &.ae-dialog--operations{
         overflow: visible;
         .p-dialog-content{

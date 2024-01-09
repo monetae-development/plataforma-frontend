@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { DialogSelectAssetDigitalComponent } from './dialog-select-asset-digital.component';
+import { DialogDefaultComponent } from './dialog-default.component';
 
-describe('DialogSelectAssetDigitalComponent', () => {
-  let component: DialogSelectAssetDigitalComponent;
-  let fixture: ComponentFixture<DialogSelectAssetDigitalComponent>;
+describe('DialogDefaultComponent', () => {
+  let component: DialogDefaultComponent;
+  let fixture: ComponentFixture<DialogDefaultComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DialogSelectAssetDigitalComponent ]
+      declarations: [ DialogDefaultComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DialogSelectAssetDigitalComponent);
+    fixture = TestBed.createComponent(DialogDefaultComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

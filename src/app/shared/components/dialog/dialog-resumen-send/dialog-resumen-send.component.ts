@@ -21,7 +21,6 @@ export class DialogResumenSendComponent extends AppComponentBase implements OnIn
   amountCommision: number = 0;
   amountTotal: number = 0;
   dateNow: Date = new Date();
-  // dateConvert: any;
 
   outAccept = new EventEmitter();
 
@@ -39,8 +38,6 @@ export class DialogResumenSendComponent extends AppComponentBase implements OnIn
 
   ngOnInit() {
     console.log(this.resumenSend);
-    // this.dateConvert = "2023-12-05T21:58:06.076319";
-    // console.log(this.dateConvert);
   }
 
   get dateTime() { return this.dateNow.toLocaleDateString("en")}
