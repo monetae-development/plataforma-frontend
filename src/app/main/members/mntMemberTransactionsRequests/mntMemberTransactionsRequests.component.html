@@ -254,14 +254,13 @@
                                                 {{ record.folio }}
                                             </td>
                                             <td style="width: 150px">
-                                                {{ record.name }}
-                                                {{ record.surnames }}
+                                                {{ record.userFullName }}
                                             </td>
                                             <td style="width: 150px">
-                                                {{ record.emailAddress }}
+                                                {{ record.userEmail }}
                                             </td>
                                             <td style="width: 80px">
-                                                {{ record.destinationAddress }}
+                                                {{ record.transaction.destinationAddress }}
                                             </td>
                                             <td style="width: 100px">
                                                 {{ record.amount | number : '1.0-6' : 'en' }}
