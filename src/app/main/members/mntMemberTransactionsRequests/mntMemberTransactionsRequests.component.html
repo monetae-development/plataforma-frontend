@@ -1,0 +1,313 @@
+<div [@routerTransition]>
+    <div class="container-fluid">
+        <div class="row p-0">
+            <div class="col-12 p-0">
+                <div class="card justify-content-between p-3 mb-8">
+                    <div class="d-flex flex-row">
+                        <div class="d-flex">
+                            <h4>
+                                {{ l('OTCRequests') }}
+                                <small class="text-body-secondary">{{ l('OTCRequestsHeaderInfo') }}</small>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__body">
+                <div class="row g-3">
+                    <div class="col-md-12 align-items-stretch">
+                        <div class="card card-height-100">
+                            <div class="card-header border-bottom-dashed">
+                                <h6 class="card-title mb-0">{{ l('MyCryptoRequests') }}</h6>
+                            </div>
+
+                            <div class="card-header">
+                                <div class="container">
+                                    <form class="kt-form" autocomplete="off">
+                                        <div class="row">
+                                            <div class="col-md-3 col-xl-3">
+                                                <label htmlFor="folio">Folio</label>
+                                                <span class="p-input-icon-left">
+                                                    <i class="pi pi-search"></i>
+                                                    <input
+                                                        #folio="ngModel"
+                                                        id="folio"
+                                                        name="folio"
+                                                        type="text"
+                                                        class="form-control m-input"
+                                                        pInputText
+                                                        [(ngModel)]="folioFilter"
+                                                        placeholder="Folio"
+                                                    />
+                                                </span>
+                                            </div>
+                                            <div class="col-md-3 col-xl-3">
+                                                <label htmlFor="folio">Email</label>
+                                                <span class="p-input-icon-left">
+                                                    <i class="pi pi-search"></i>
+                                                    <input
+                                                        #folio="ngModel"
+                                                        id="folio"
+                                                        name="folio"
+                                                        type="text"
+                                                        class="form-control m-input"
+                                                        pInputText
+                                                        [(ngModel)]="userEmailFilter"
+                                                        placeholder="Email"
+                                                    />
+                                                </span>
+                                            </div>
+                                            <div class="col-md-3 col-xl-3">
+                                                <label htmlFor="userName">Nombre</label>
+                                                <input
+                                                    #userName="ngModel"
+                                                    id="userName"
+                                                    name="userName"
+                                                    type="text"
+                                                    class="form-control m-input"
+                                                    pInputText
+                                                    [(ngModel)]="userNameFilter"
+                                                    placeholder="Nombre"
+                                                />
+                                            </div>
+                                            <div class="col-md-3 col-xl-3">
+                                                <label htmlFor="userName">Apellidos</label>
+                                                <input
+                                                    #userName="ngModel"
+                                                    id="userName"
+                                                    name="userName"
+                                                    type="text"
+                                                    class="form-control m-input"
+                                                    pInputText
+                                                    [(ngModel)]="userSurnamesFilter"
+                                                    placeholder="Usuario o email"
+                                                />
+                                            </div>
+
+                                            <div class="col-md-3 col-xl-3">
+                                                <div
+                                                    class="d-flex d-block justify-content-center d-sm-flex d-sm-block justify-content-sm-center d-grid gap-2 mt-7"
+                                                >
+                                                    <button
+                                                        class="btn btn-primary"
+                                                        type="button"
+                                                        (click)="getAllTransactionRequests()"
+                                                        pTooltip="{{ l('SearchByFilters') }}"
+                                                        tooltipPosition="top"
+                                                    >
+                                                        <i class="fa fa-search fs-4"></i>
+                                                    </button>
+                                                    <button
+                                                        class="btn btn-secondary"
+                                                        type="button"
+                                                        (click)="cleanFilters()"
+                                                        pTooltip="{{ l('CleanFilters') }}"
+                                                        tooltipPosition="top"
+                                                    >
+                                                        <i class="fa fa-eraser fs-4"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            class="btn btn-secondary btn-sm p-2 f-7 my-2"
+                                            *ngIf="!advancedFiltersAreShown"
+                                            (click)="advancedFiltersAreShown = !advancedFiltersAreShown"
+                                        >
+                                            {{ l('ShowMoreFilters') }}
+                                            <i class="flaticon2-down"></i>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            class="btn btn-secondary btn-sm p-2 f-7 my-2"
+                                            *ngIf="advancedFiltersAreShown"
+                                            (click)="advancedFiltersAreShown = !advancedFiltersAreShown"
+                                        >
+                                            {{ l('ShowLessFilters') }}
+                                            <i class="flaticon2-up"></i>
+                                        </button>
+                                        <div class="row" [hidden]="!advancedFiltersAreShown">
+                                            <div class="col-md-3 col-xl-3">
+                                                <label htmlFor="destinationAddress">Dirección de destino</label>
+                                                <input
+                                                    #destinationAddress="ngModel"
+                                                    id="destinationAddress"
+                                                    name="destinationAddress"
+                                                    type="text"
+                                                    class="form-control m-input"
+                                                    pInputText
+                                                    [(ngModel)]="destinationAddressFilter"
+                                                    placeholder="Dirección de destino"
+                                                />
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!--<Primeng-Datatable-Start>-->
+                            <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
+                                <p-table
+                                    #dataTable
+                                    (onLazyLoad)="getAllTransactionRequests($event)"
+                                    [value]="primengTableHelper.records"
+                                    rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                                    [paginator]="false"
+                                    [lazy]="true"
+                                    [scrollable]="true"
+                                    ScrollWidth="100%"
+                                    [responsive]="primengTableHelper.isResponsive"
+                                    [resizableColumns]="primengTableHelper.resizableColumns"
+                                    styleClass="p-datatable-striped"
+                                >
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th style="width: 100px" pSortableColumn="creationTime">
+                                                {{ l('Date') }}
+                                                <p-sortIcon
+                                                    field="mntMemberTransactionRequest.creationTime"
+                                                ></p-sortIcon>
+                                            </th>
+                                            <th style="width: 100px" pSortableColumn="folio">
+                                                {{ l('Folio') }}
+                                                <p-sortIcon field="mntMemberTransactionRequest.folio"></p-sortIcon>
+                                            </th>
+                                            <th style="width: 150px" pSortableColumn="name">
+                                                {{ l('Name') }}
+                                                <p-sortIcon
+                                                    field="mntMemberTransactionRequest.userFk.name"
+                                                ></p-sortIcon>
+                                            </th>
+                                            <th style="width: 150px" pSortableColumn="emailAddress">
+                                                {{ l('Email') }}
+                                                <p-sortIcon
+                                                    field="mntMemberTransactionRequest.userFk.emailAddress"
+                                                ></p-sortIcon>
+                                            </th>
+                                            <th style="width: 80px" pSortableColumn="destinationAddress">
+                                                {{ l('DestinationAddress') }}
+                                                <p-sortIcon
+                                                    field="mntMemberTransactionRequest.transactionFk.destinationAddress"
+                                                ></p-sortIcon>
+                                            </th>
+                                            <th style="width: 180px" pSortableColumn="amount">
+                                                {{ l('Amount') }}
+                                                <p-sortIcon field="mntMemberTransactionRequest.amount"></p-sortIcon>
+                                            </th>
+                                            <th style="width: 100px" pSortableColumn="coinName">
+                                                {{ l('Coin') }}
+                                                <p-sortIcon field="mntMemberTransactionRequest.coinName"></p-sortIcon>
+                                            </th>
+                                            <th style="width: 100px" pSortableColumn="blockchainNetworkName">
+                                                {{ l('BlockchainNetworkName') }}
+                                                <p-sortIcon
+                                                    field="mntMemberTransactionRequest.blockchainNetworkName"
+                                                ></p-sortIcon>
+                                            </th>
+                                            <th style="width: 100px" pSortableColumn="status">
+                                                {{ l('Status') }}
+                                                <p-sortIcon
+                                                    field="mntMemberTransactionRequest.transactionFk.status"
+                                                ></p-sortIcon>
+                                            </th>
+                                            <th style="width: 150px" pSortableColumn="subStatus">
+                                                {{ l('SubStatus') }}
+                                                <p-sortIcon
+                                                    field="mntMemberTransactionRequest.transactionFk.subStatus"
+                                                ></p-sortIcon>
+                                            </th>
+                                            <th style="width: 130px">
+                                                {{ l('Message') }}
+                                                <p-sortIcon
+                                                    field="mntMemberTransactionRequest.transactionFk.errorLog"
+                                                ></p-sortIcon>
+                                            </th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-record="$implicit" let-i="rowIndex">
+                                        <tr>
+                                            <td style="width: 100px" class="text-center lh-1">
+                                                <span class="fs-6">
+                                                    {{
+                                                        getDateTimeFormat(
+                                                            record.creationTime | luxonFormat : 'dd/MM/yyyy HH:mm:ss',
+                                                            0
+                                                        )
+                                                    }}
+                                                </span>
+                                                <br />
+                                                <span class="fs-7">
+                                                    {{
+                                                        getDateTimeFormat(
+                                                            record.creationTime | luxonFormat : 'dd/MM/yyyy HH:mm:ss',
+                                                            1
+                                                        )
+                                                    }}
+                                                </span>
+                                            </td>
+                                            <td style="width: 100px">
+                                                {{ record.folio }}
+                                            </td>
+                                            <td style="width: 150px">
+                                                {{ record.name }}
+                                                {{ record.surnames }}
+                                            </td>
+                                            <td style="width: 150px">
+                                                {{ record.emailAddress }}
+                                            </td>
+                                            <td style="width: 80px">
+                                                {{ record.destinationAddress }}
+                                            </td>
+                                            <td style="width: 100px">
+                                                {{ record.amount | number : '1.0-6' : 'en' }}
+                                            </td>
+                                            <td style="width: 180px">
+                                                {{ record.coinName }}
+                                            </td>
+                                            <td style="width: 100px">
+                                                {{ record.blockchainNetworkName }}
+                                            </td>
+                                            <td style="width: 100px">
+                                                {{ record.transaction.status }}
+                                            </td>
+
+                                            <td style="width: 150px">
+                                                {{ record.transaction.subStatus }}
+                                            </td>
+                                            <td style="width: 130px">
+                                                {{ record.transaction.errorLog }}
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                                <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                                    {{ l('NoData') }}
+                                </div>
+                                <div class="primeng-paging-container">
+                                    <p-paginator
+                                        [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                        #paginator
+                                        (onPageChange)="getAllTransactionRequests($event)"
+                                        [totalRecords]="primengTableHelper.totalRecordsCount"
+                                        [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                        [showCurrentPageReport]="true"
+                                        [currentPageReportTemplate]="
+                                            'TotalRecordsCount' | localize : primengTableHelper.totalRecordsCount
+                                        "
+                                    ></p-paginator>
+                                </div>
+                            </div>
+                            <!--<Primeng-Datatable-End>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <viewOTCRequestModal #viewOTCRequestModal></viewOTCRequestModal>
+</div>

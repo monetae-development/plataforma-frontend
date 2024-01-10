@@ -67,6 +67,7 @@ export class AppNavigationService {
                     new AppMenuItem('MntMembers', 'Pages.MntMembers', 'flaticon-more', '/app/main/members/mntMembers'),
                     new AppMenuItem('OTCRequests', 'Pages.OTCRequests', 'flaticon-more', '/app/main/otc/otcRequests'),
                     new AppMenuItem('MntMemberFiatRequests', 'Pages.Administration.MntMemberFiatRequests', 'flaticon-more', '/app/main/members/mntMemberFiatRequests'),
+                    new AppMenuItem('MntMemberTransactionRequests', 'Pages.MntMembersTransactions', 'fas fa-people-arrows', '/app/main/members/transactions'),
                     //TODO:Remover vistas y urls(routes) de estos catálogos, hay que analizarlo
                     /*new AppMenuItem('MntMemberAddresses', 'Pages.MntMemberAddresses', 'flaticon-more', '/app/main/members/mntMemberAddresses'),
                     new AppMenuItem('MntEconomicInfos', 'Pages.MntEconomicInfos', 'flaticon-more', '/app/main/members/mntEconomicInfos'),

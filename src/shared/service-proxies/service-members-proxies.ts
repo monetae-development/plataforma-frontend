@@ -18,6 +18,7 @@ import { CreateMntMemberFiatWithdrawalDto } from './dto/members/mntMemberFiat/Cr
 import { PRGetPlatformBankAccountForViewMemberDto } from './dto/Platform/PlatformBankAccount/PRGetPlatformBankAccountForViewMemberDto';
 import { PRGetAllMntMemberFiatForFullViewDto } from './dto/members/mntMemberFiat/PRGetAllMntMemberFiatForFullViewDto';
 import { UpdateMntMemberFiatRequestStatusInput } from './dto/members/mntMemberFiat/UpdateMntMemberFiatRequestStatusInput';
+import { PRGetAllMntMemberTransactionRequestForViewDto } from './dto/members/mntMemberTransactionRequest/PRGetAllMntMemberTransactionRequestForViewDto';
 import { Helpers } from './service-helpers';
 import { DateTime, Duration } from 'luxon';
 
@@ -147,7 +148,7 @@ export class ServiceMembersProxy {
      * @param holderFilter (optional)
      * @param accountFilter (optional)
      * @param swiftFilter (optional)
-     * @param statusFilter (optional)
+     * @param vaultNameFilter (optional)
      * @param mntMemberCommentsFilter (optional)
      * @param catBankTitleFilter (optional)
      * @param catAccountTypeTitleFilter (optional)
@@ -157,7 +158,7 @@ export class ServiceMembersProxy {
      * @param maxResultCount (optional)
      * @return Success
      */
-    getAllBankAccountsByMemmber(filter: string | undefined, holderFilter: string | undefined, accountFilter: string | undefined, swiftFilter: string | undefined, statusFilter: number | undefined, mntMemberCommentsFilter: string | undefined, catBankTitleFilter: string | undefined, catAccountTypeTitleFilter: string | undefined, catCurrencyTitleFilter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PRGetMntMemberBankAccountForViewDto> {
+    getAllBankAccountsByMemmber(filter: string | undefined, holderFilter: string | undefined, accountFilter: string | undefined, swiftFilter: string | undefined, vaultNameFilter: number | undefined, mntMemberCommentsFilter: string | undefined, catBankTitleFilter: string | undefined, catAccountTypeTitleFilter: string | undefined, catCurrencyTitleFilter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PRGetMntMemberBankAccountForViewDto> {
         let url_ = this.baseUrl + '/api/services/app/MntMemberBankAccounts/GetAllByMember?';
         if (filter === null) {
             throw new Error('The parameter \'filter\' cannot be null.');
@@ -179,10 +180,10 @@ export class ServiceMembersProxy {
         } else if (swiftFilter !== undefined) {
             url_ += 'SwiftFilter=' + encodeURIComponent('' + swiftFilter) + '&';
         }
-        if (statusFilter === null) {
-            throw new Error('The parameter \'statusFilter\' cannot be null.');
-        } else if (statusFilter !== undefined) {
-            url_ += 'StatusFilter=' + encodeURIComponent('' + statusFilter) + '&';
+        if (vaultNameFilter === null) {
+            throw new Error('The parameter \'vaultNameFilter\' cannot be null.');
+        } else if (vaultNameFilter !== undefined) {
+            url_ += 'vaultNameFilter=' + encodeURIComponent('' + vaultNameFilter) + '&';
         }
         if (mntMemberCommentsFilter === null) {
             throw new Error('The parameter \'mntMemberCommentsFilter\' cannot be null.');
@@ -482,17 +483,17 @@ export class ServiceMembersProxy {
     }
 
     /**
-     * @param folioFilter (optional)
-     * @param typeFilter (optional)
+     * @param userEmailFilter (optional)
+     * @param destinationAddressFilter (optional)
      * @param sorting (optional)
      * @param skipCount (optional)
      * @param maxResultCount (optional)
      * @return Success
      */
-    getAllFiatRequestsByMemmber(folioFilter: string | undefined, typeFilter: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PRGetAllMntMemberFiatForViewDto> {
+    getAllFiatRequestsByMemmber(userEmailFilter: string | undefined, destinationAddressFilter: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PRGetAllMntMemberFiatForViewDto> {
         let url_ = this.baseUrl + '/api/services/app/MntMemberFiat/GetAllRequestsByMember?';
-        url_ += 'FolioFilter=' + encodeURIComponent('' + ((folioFilter === null || folioFilter === undefined) ? '' : folioFilter)) + '&';
-        url_ += 'TypeFilter=' + encodeURIComponent('' + ((typeFilter === null || typeFilter === undefined) ? '' : typeFilter)) + '&';
+        url_ += 'userEmailFilter=' + encodeURIComponent('' + ((userEmailFilter === null || userEmailFilter === undefined) ? '' : userEmailFilter)) + '&';
+        url_ += 'destinationAddressFilter=' + encodeURIComponent('' + ((destinationAddressFilter === null || destinationAddressFilter === undefined) ? '' : destinationAddressFilter)) + '&';
         url_ += 'Sorting=' + encodeURIComponent('' + ((sorting === null || sorting === undefined) ? '' : sorting)) + '&';
         url_ += 'SkipCount=' + encodeURIComponent('' + ((skipCount === null || skipCount === undefined) ? '' : skipCount)) + '&';
         url_ += 'MaxResultCount=' + encodeURIComponent('' + ((maxResultCount === null || maxResultCount === undefined) ? '' : maxResultCount)) + '&';
@@ -759,17 +760,17 @@ export class ServiceMembersProxy {
     }
 
     /**
-     * @param folioFilter (optional)
-     * @param typeFilter (optional)
+     * @param userEmailFilter (optional)
+     * @param destinationAddressFilter (optional)
      * @param sorting (optional)
      * @param skipCount (optional)
      * @param maxResultCount (optional)
      * @return Success
      */
-    getAllFiatRequests(folioFilter: string | undefined, typeFilter: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PRGetAllMntMemberFiatForFullViewDto> {
+    getAllFiatRequests(userEmailFilter: string | undefined, destinationAddressFilter: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PRGetAllMntMemberFiatForFullViewDto> {
         let url_ = this.baseUrl + '/api/services/app/MntMemberFiatRequests/GetAllRequests?';
-        url_ += 'FolioFilter=' + encodeURIComponent('' + ((folioFilter === null || folioFilter === undefined) ? '' : folioFilter)) + '&';
-        url_ += 'TypeFilter=' + encodeURIComponent('' + ((typeFilter === null || typeFilter === undefined) ? '' : typeFilter)) + '&';
+        url_ += 'userEmailFilter=' + encodeURIComponent('' + ((userEmailFilter === null || userEmailFilter === undefined) ? '' : userEmailFilter)) + '&';
+        url_ += 'destinationAddressFilter=' + encodeURIComponent('' + ((destinationAddressFilter === null || destinationAddressFilter === undefined) ? '' : destinationAddressFilter)) + '&';
         url_ += 'Sorting=' + encodeURIComponent('' + ((sorting === null || sorting === undefined) ? '' : sorting)) + '&';
         url_ += 'SkipCount=' + encodeURIComponent('' + ((skipCount === null || skipCount === undefined) ? '' : skipCount)) + '&';
         url_ += 'MaxResultCount=' + encodeURIComponent('' + ((maxResultCount === null || maxResultCount === undefined) ? '' : maxResultCount)) + '&';
@@ -865,6 +866,66 @@ export class ServiceMembersProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => _observableOf(null as any)));
+        } else if (status !== 200 && status !== 204) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers)));
+        }
+        return _observableOf(null as any);
+    }
+
+    getAllTransactionRequests(folioFilter: string | undefined, userEmailFilter: string | undefined, userNameFilter: string | undefined, userSurnamesFilter: string | undefined, destinationAddressFilter: string | undefined, vaultNameFilter: string | undefined, assetIdFilter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PRGetAllMntMemberTransactionRequestForViewDto> {
+        let url_ = this.baseUrl + '/api/services/app/MntMemberTransactionRequest/GetAll?';
+        url_ += 'folioFilter=' + encodeURIComponent('' + ((folioFilter === null || folioFilter === undefined) ? '' : folioFilter)) + '&';
+        url_ += 'userEmailFilter=' + encodeURIComponent('' + ((userEmailFilter === null || userEmailFilter === undefined) ? '' : userEmailFilter)) + '&';
+        url_ += 'UserNameFilter=' + encodeURIComponent('' + ((userNameFilter === null || userNameFilter === undefined) ? '' : userNameFilter)) + '&';
+        url_ += 'userSurnamesFilter=' + encodeURIComponent('' + ((userSurnamesFilter === null || userSurnamesFilter === undefined) ? '' : userSurnamesFilter)) + '&';
+        url_ += 'destinationAddressFilter=' + encodeURIComponent('' + ((destinationAddressFilter === null || destinationAddressFilter === undefined) ? -1 : destinationAddressFilter)) + '&';
+        url_ += 'vaultNameFilter=' + encodeURIComponent('' + ((vaultNameFilter === null || vaultNameFilter === undefined) ? -1 : vaultNameFilter)) + '&';
+        url_ += 'assetIdFilter=' + encodeURIComponent('' + ((assetIdFilter === null || assetIdFilter === undefined) ? -1 : assetIdFilter)) + '&';
+        url_ += 'Sorting=' + encodeURIComponent('' + ((sorting === null || sorting === undefined) ? '' : sorting)) + '&';
+        url_ += 'SkipCount=' + encodeURIComponent('' + ((skipCount === null || skipCount === undefined) ? '' : skipCount)) + '&';
+        url_ += 'MaxResultCount=' + encodeURIComponent('' + ((maxResultCount === null || maxResultCount === undefined) ? '' : maxResultCount)) + '&';
+        url_ = url_.replace(/[?&]$/, '');
+
+        let options_: any = {
+            observe: 'response',
+            responseType: 'blob',
+            headers: new HttpHeaders({
+                'Accept': 'text/plain'
+            })
+        };
+
+        return this.http.request('get', url_, options_).pipe(_observableMergeMap((response_: any) => this.processGetAllTransactionRequests(response_))).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllTransactionRequests(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PRGetAllMntMemberTransactionRequestForViewDto>;
+                }
+            } else {
+                return _observableThrow(response_) as any as Observable<PRGetAllMntMemberTransactionRequestForViewDto>;
+            }
+        }));
+    }
+
+    protected processGetAllTransactionRequests(response: HttpResponseBase): Observable<PRGetAllMntMemberTransactionRequestForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {};
+        if (response.headers) {
+            for (let key of response.headers.keys()) {
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        if (status === 200) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = PRGetAllMntMemberTransactionRequestForViewDto.fromJS(resultData200);
+                return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers)));
         }

@@ -9,6 +9,8 @@ import { ProjectsComponent } from './projects/projects.component';
 import { ProjectTemplateComponent } from './projects/project-template/project-template.component';
 import { ProjectsInvestComponent } from './projects/components/invest/invest.component';
 
+import { MntMemberTransactionsRequestsComponent } from './members/mntMemberTransactionsRequests/mntMemberTransactionsRequests.component';
+
 import { MntMemberFiatComponent } from './members/mntMemberFiat/mntMemberFiat.component';
 import { MntMemberFiatDepositComponent } from './members/mntMemberFiat/components/deposit/deposit.component';
 import { MntMemberFiatWithdrawalComponent } from './members/mntMemberFiat/components/withdrawal/withdrawal.component';
@@ -195,6 +197,8 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 		ProjectsComponent,
 		ProjectTemplateComponent,
 		ProjectsInvestComponent,
+
+		MntMemberTransactionsRequestsComponent,
 
 		MntMemberFiatComponent,
 		MntMemberFiatDepositComponent,

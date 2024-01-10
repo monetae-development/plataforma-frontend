@@ -1,6 +1,7 @@
 ﻿import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
+import { MntMemberTransactionsRequestsComponent } from './members/mntMemberTransactionsRequests/mntMemberTransactionsRequests.component';
 import { MntMemberFiatComponent } from './members/mntMemberFiat/mntMemberFiat.component';
 import { MntMemberFiatRequestsComponent } from './members/mntMemberFiatRequests/mntMemberFiatRequests.component';
 import { MntMemberBankAccountsComponent } from './members/mntMemberBankAccounts/mntMemberBankAccounts.component';
@@ -39,6 +40,7 @@ import { LogoutComponent } from './components/logout/logout.component';
                 path: '',
                 children: [
                     { path: 'projects/project-ESA1', component: ProjectTemplateComponent, data: { permission: 'Pages.Projects' } },
+                    { path: 'members/transactions', component: MntMemberTransactionsRequestsComponent, data: { permission: 'Pages.MntMembersTransactions' } },
                     { path: 'members/mntMemberFiat', component: MntMemberFiatComponent, data: { permission: 'Pages.MntMemberFiat' } },
                     { path: 'members/mntMemberFiatRequests', component: MntMemberFiatRequestsComponent, data: { permission: 'Pages.Administration.MntMemberFiatRequests' } },
                     { path: 'members/mntMemberBankAccounts', component: MntMemberBankAccountsComponent, data: { permission: 'Pages.MntMemberBankAccounts' } },
