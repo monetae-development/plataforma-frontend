@@ -64,5 +64,5 @@
     </div>
   </div>
   <div class="ae-dialog__actions">
-    <p-button class="ae-button ae-button--primary w-full" label="Solicitar Envio" (click)="onRequestSend()"></p-button>
+    <p-button class="ae-button ae-button--primary w-full" label="Solicitar Envio" [disabled]="sending" (click)="onRequestSend()"></p-button>
   </div>

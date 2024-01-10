@@ -21,6 +21,7 @@ export class DialogResumenSendComponent extends AppComponentBase implements OnIn
   amountCommision: number = 0;
   amountTotal: number = 0;
   dateNow: Date = new Date();
+  sending = false;
 
   outAccept = new EventEmitter();
 
@@ -57,6 +58,7 @@ export class DialogResumenSendComponent extends AppComponentBase implements OnIn
   }
 
   onRequestSend(): void {
+    this.sending = true;
     const receiveBody = new CreateMntMemberWalletDto();
     receiveBody.cryptoAssetId = this.resumenSend.cryptoAssetId.value;
     receiveBody.address = this.resumenSend.address;
@@ -65,12 +67,13 @@ export class DialogResumenSendComponent extends AppComponentBase implements OnIn
     this._mntMemberWalletServiceProxy.create(receiveBody)
       .subscribe({
         next: (response) => {
-          console.log(response);
+          this.sending = false;
           this.outAccept.emit(true);
           this.ref.close();
         },
         error: (err) => {
           this.ref.close();
+          this.sending = false;
         }
       });
   }
