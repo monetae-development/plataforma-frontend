@@ -27,6 +27,7 @@ import { ChipsModule } from 'primeng/chips'
 import { TooltipModule as pTooltipModule } from 'primeng/tooltip'
 import { AppCommonModule } from './common/app-common.module'
 import { ThemesLayoutBaseComponent } from './layout/themes/themes-layout-base.component'
+import { CheckboxModule } from 'primeng/checkbox'
 
 const imports = [
     CommonModule,
@@ -48,6 +49,7 @@ const imports = [
     TabViewModule,
     InputTextModule,
     InputNumberModule,
+    CheckboxModule,
     ChipsModule,
     pTooltipModule,
     PaginatorModule,

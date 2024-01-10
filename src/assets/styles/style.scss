@@ -272,6 +272,25 @@
         }
     }
 }
+.ae-checkbox{
+    .p-checkbox-label{
+        line-height: normal;
+    }
+    .p-checkbox{
+        .p-checkbox-box{
+            &.p-highlight{
+                background-color: var(--ae-primary) !important;
+                border-color: var(--ae-primary) !important;
+                .p-checkbox-icon{
+                    &::before{
+                        top: 8px !important;
+                        left: 2px !important;
+                    }
+                }
+            }
+        }
+    }
+}
 .ae-input,
 .ae-inputnumber,
 .ae-select{

@@ -150,6 +150,7 @@ import { SubheaderModule } from '@app/shared/common/sub-header/subheader.module'
 import { InputTextModule } from 'primeng/inputtext';
 import { CarouselModule } from 'primeng/carousel';
 import { MenuModule } from 'primeng/menu';
+import { CheckboxModule } from 'primeng/checkbox';
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 
@@ -164,6 +165,7 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 		InputNumberModule,
 		TableModule,
 		InputTextModule,
+		CheckboxModule,
 		CalendarModule,
 		CommonModule,
 		FormsModule,
