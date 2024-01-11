@@ -24,13 +24,13 @@ export class MntMemberTransactionsRequestsComponent extends AppComponentBase imp
 
   advancedFiltersAreShown = false;
 
-  folioFilter: string;
-  userEmailFilter: string;
-  userNameFilter: string;
-  userSurnamesFilter: string;
-  destinationAddressFilter: string;
-  vaultNameFilter: string;
-  assetIdFilter: string;
+  folioFilter = '';
+  userEmailFilter = '';
+  userNameFilter = '';
+  userSurnamesFilter = '';
+  destinationAddressFilter = '';
+  vaultNameFilter = '';
+  assetIdFilter = '';
 
   constructor(
     injector: Injector,
