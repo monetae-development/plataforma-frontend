@@ -362,25 +362,25 @@ export class LoginService extends AppComponentBase{
             this.clear();
         } else if (authenticateResult.requiresTwoFactorVerification) {
             // Two factor authentication
+            this.optionsTwoFactorProvider = [];
             authenticateResult.twoFactorAuthProviders.forEach((value) => {
                 let option = { label: this.l('TwoFactorOption:' + value), value: value };
                 this.optionsTwoFactorProvider.push(option);
-                if (this.optionsTwoFactorProvider.length == 1) {
-                    const model = new SendTwoFactorAuthCodeModel();
-                    model.userId = authenticateResult.userId;
-                    model.provider = this.optionsTwoFactorProvider[0].value;
-
-                    this.submitting = true;
-                    this._tokenAuthService
-                        .sendTwoFactorAuthCode(model)
-                        .pipe(finalize(() => (this.submitting = false)))
-                        .subscribe(() => {
-                            this._router.navigate(['account/verify-code']);
-                        });
-                } else {
-                    this._router.navigate(['account/send-code']);
-                }
             });
+            if (this.optionsTwoFactorProvider.length == 1) {
+                const model = new SendTwoFactorAuthCodeModel();
+                model.userId = authenticateResult.userId;
+                model.provider = this.optionsTwoFactorProvider[0].value;
+                this.submitting = true;
+                this._tokenAuthService
+                    .sendTwoFactorAuthCode(model)
+                    .pipe(finalize(() => (this.submitting = false)))
+                    .subscribe(() => {
+                        this._router.navigate(['account/verify-code']);
+                    });
+            } else {
+                this._router.navigate(['account/send-code']);
+            }
         } else if (authenticateResult.accessToken) {
             // Successfully logged in
 
