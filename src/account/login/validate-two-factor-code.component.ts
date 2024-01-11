@@ -1,6 +1,6 @@
 ﻿import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { CanActivate, Router } from '@angular/router';
+import { ActivatedRoute, CanActivate, Router } from '@angular/router';
 import { accountModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { Subscription, Observable } from 'rxjs';
@@ -20,6 +20,7 @@ export class ValidateTwoFactorCodeComponent extends AppComponentBase implements 
     submitting = false;
     remainingSeconds = 90;
     timerSubscription: Subscription;
+    provider: string = '';
 
     constructor(
         injector: Injector,
@@ -52,9 +53,8 @@ export class ValidateTwoFactorCodeComponent extends AppComponentBase implements 
             this._router.navigate(['account/login']);
             return;
         }
-
+        this.provider = history.state.provider;
         this.remainingSeconds = this.appSession.application.twoFactorCodeExpireSeconds;
-
         const timerSource = timer(1000, 1000);
         this.timerSubscription = timerSource.subscribe(() => {
             this.remainingSeconds = this.remainingSeconds - 1;

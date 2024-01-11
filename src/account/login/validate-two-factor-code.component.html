@@ -11,8 +11,10 @@
         <h3 class="ae-text-dark mb-8">
             {{ 'VerifySecurityCode' | localize }}
         </h3>
-        <p class="ae-text-black ae-text-default mb-5">{{ 'EnterNumberDigitCode' | localize : email }}</p>
-        <p class="ae-text-gris-dark ae-text-default mb-5">{{ 'SecureAccountHelpUs' | localize }}</p>
+        <ng-container *ngIf="provider === 'Email'">
+            <p class="ae-text-black ae-text-default mb-5">{{ 'EnterNumberDigitCode' | localize : email }}</p>
+            <p class="ae-text-gris-dark ae-text-default mb-5">{{ 'SecureAccountHelpUs' | localize }}</p>
+        </ng-container>
     </div>
     <form #twoFactorForm="ngForm" class="login-form form" method="post" (ngSubmit)="submit()">
         <div class="ae-input mb-10">
