@@ -12,7 +12,6 @@
       <div class="ae-select">
         <label>{{ l('Seleccionar activo') }}</label>
         <p-dropdown
-            [disabled]="!started || processing"
             [options]="cryptoAssets"
             optionLabel="label"
             [formControl]="cryptoAssetIdControl"
@@ -20,7 +19,6 @@
             [showClear]="true"
             [filter]="true"
             (onChange)="onChangeCurrencySend($event)"
-            (onClear)="onReset()"
             required
         >
             <ng-template pTemplate="selectedItem">
@@ -66,14 +64,12 @@
       <div class="ae-select">
         <label>{{ l('Seleccionar red') }}</label>
         <p-dropdown
-            [disabled]="!started || processing"
             [options]="blockchainNetwortks"
             optionLabel="label"
             [formControl]="blockchainNetworkIdControl"
             placeholder="{{ l('SelectTreeDots') }}"
             [showClear]="true"
             [filter]="true"
-            (onClear)="onReset()"
             required
         >
             <ng-template pTemplate="selectedItem">
@@ -149,7 +145,6 @@
       <div class="ae-select">
         <label>{{ l('Seleccionar activo') }}</label>
         <p-dropdown
-            [disabled]="!started || processing"
             [options]="cryptoAssets"
             optionLabel="label"
             [formControl]="cryptoAssetIdReceiveControl"
@@ -157,7 +152,6 @@
             [showClear]="true"
             [filter]="true"
             (onChange)="onChangeCurrency($event)"
-            (onClear)="onReset()"
             required
         >
             <ng-template pTemplate="selectedItem">
@@ -192,7 +186,6 @@
       <div class="ae-select">
         <label>{{ l('Seleccionar red') }}</label>
         <p-dropdown
-            [disabled]="!started || processing"
             [options]="blockchainNetwortks"
             optionLabel="label"
             [formControl]="blockchainNetworkIdReceiveControl"
@@ -200,7 +193,6 @@
             [showClear]="true"
             [filter]="true"
             (onChange)="onChangeCurrency($event)"
-            (onClear)="onReset()"
             required
         >
             <ng-template pTemplate="selectedItem">

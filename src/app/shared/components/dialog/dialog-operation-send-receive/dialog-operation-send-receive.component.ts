@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Injector, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { GetSelectDto } from '@shared/service-proxies/dto/Common/SelectInput/GetSelectDto';
 import { OTCCryptoDto } from '@shared/service-proxies/dto/Otc/OTCCryptoDto';
@@ -37,7 +37,7 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
   menuItems: MenuItem[] | undefined;
   activeItem: MenuItem | undefined;
   activeIndex: Number = 0;
-  cryptoAssets: SelectItem[];
+  cryptoAssets: SelectItem[] = undefined;
   blockchainNetwortks: SelectItem[];
   amount: number = 0;
   amountCommision: number = 0;
@@ -46,14 +46,10 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
   BlockchainNetworkId: number = 0;
   address: string = '';
   coinSubtitle: string = '';
-  started = false;
-  processing = false;
   actionsReceive = true;
 
 
   mntMemberWalletDto : CreateMntMemberWalletDto;
-  // cryptoRecords: GetOTCTradingForViewDto[];
-  // cryptoKeys: GetSelectDto[];
 
   constructor(
     injector: Injector,
@@ -84,9 +80,9 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
 
   private _buildSendForm(): FormGroup {
     return this.fb.group({
-      cryptoAssetId: [null, [Validators.required]],
+      cryptoAssetId: [{ value: null, disabled: true}, [Validators.required]],
       address: [null, [Validators.required]],
-      blockchainNetworkId: [null, [Validators.required]],
+      blockchainNetworkId: [{ value: null, disabled: true},, [Validators.required]],
       amount: [null, [Validators.required]],
     });
   }
@@ -112,22 +108,23 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
     this._mntMemberWalletServiceProxy.getCryptoAssetsForSelect()
       .subscribe((result) => {
         this.cryptoAssets = result.items;
-        console.log(this.cryptoAssets);
+        this.cryptoAssetIdControl.enable();
+        this.cryptoAssetIdReceiveControl.enable();
       });
   }
 
   loadBlockchainNetwortks(){
     this._mntMemberWalletServiceProxy.getBlockchainNetwortksForSelect()
       .subscribe((result) => {
-        this.blockchainNetwortks = result.items
-        console.log(result);
+        this.blockchainNetwortks = result.items;
+        this.blockchainNetworkIdControl.enable();
+        this.blockchainNetworkIdReceiveControl.enable();
       });
   }
 
   loadBalance(){
     this._mntMemberWalletServiceProxy.getBalance()
       .subscribe((result) => {
-        console.log(result);
         this.amount = result.amount;
       });
   }
@@ -136,12 +133,7 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
     this._mntSettingsServiceProxy.getWalletSettings()
     .subscribe((result) => {
       this.comission = result.sendFee;
-      console.log(result);
     });
-  }
-
-  onReset() {
-
   }
 
   onChangeCurrencySend(event: any) {
@@ -150,7 +142,6 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
       return;
     }
     this.coinSubtitle = event.value.subtitle;
-    console.log(event.value);
   }
 
 
@@ -169,14 +160,11 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
   }
 
   calculateCost() {
-    console.log(this.amountControl.value);
-    console.log(this.comission);
     if (this.amount) {
       this.amountCommision = (this.amountControl.value * this.comission) / 100;
     } else {
       this.amountCommision = undefined;
     }
-    console.log(this.amountCommision);
   }
 
   onCancel(){
@@ -184,7 +172,6 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
   }
 
   onContinue(): void{
-    console.log(this.amountCommision);
     const ref = this.dialogService.open(DialogResumenSendComponent, {
       showHeader: false,
       styleClass: 'ae-dialog ae-dialog--sm',
