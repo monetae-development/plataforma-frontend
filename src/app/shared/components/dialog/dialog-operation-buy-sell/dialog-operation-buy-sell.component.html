@@ -6,12 +6,134 @@
   ></p-tabMenu>
 </div>
 <div class="ae-tabs__container" *ngIf="activeItem.label == 'Comprar'">
+  <div class="ae-tabs__container--content">
+    <p class="ae-text-dark ae-text-default">Registre la siguiente información para realizar una solicitud de compra.</p>
+    <form [formGroup]="purchaseForm">
+      <div class="ae-select">
+        <label>{{ l('Seleccionar activo') }}</label>
+        <p-dropdown
+            [options]="cryptoAssets"
+            optionLabel="label"
+            [formControl]="cryptoAssetIdPurchaseControl"
+            placeholder="{{ l('SelectTreeDots') }}"
+            [showClear]="true"
+            [filter]="true"
+            (onChange)="onChangeCurrencyPurchase($event)"
+            required
+        >
+            <ng-template pTemplate="selectedItem">
+                <div class="flex align-items-center" *ngIf="cryptoAssetIdPurchaseControl">
+                    <div class="mr-3">
+                        <img
+                          src="/assets/crypto-icons/{{ cryptoAssetIdPurchaseControl.value?.subtitle.toLowerCase() }}.png" 
+                          style="width: 28px"
+                        />
+                    </div>
+                    <div class="flex align-items-center">
+                        <span class="mr-2 ae-text-dark ae-text-default fw-semibold">{{ cryptoAssetIdPurchaseControl.value?.label }}</span>
+                        <span class=" ae-text-gris-dark ae-text-default fw-semibold">{{ cryptoAssetIdPurchaseControl.value?.subtitle }}</span>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template let-coin pTemplate="item">
+                <div class="d-flex align-items-center">
+                    <div class="mr-3">
+                        <img 
+                          src="/assets/crypto-icons/{{ coin.subtitle.toLowerCase() }}.png" 
+                          style="width: 28px"/>
+                    </div>
+                    <div class="flex flex-column">
+                        <span class="ae-text-dark ae-text-default fw-semibold">{{ coin.label }}</span>
+                        <span class="ae-text-gris-dark ae-text-default">{{ coin.subtitle }}</span>
+                    </div>
+                </div>
+            </ng-template>
+        </p-dropdown>
+      </div>
+      <div class="ae-inputnumber">
+        <label htmlFor="amount">{{ l('Ingresar cantidad') }}</label>
+        <div class="ae-inputnumber__group">
+          <div class="ae-inputnumber__coin flex align-items-center" *ngIf="coinSubtitle">
+            <span class="ae-text-light">{{ coinSubtitle }}</span>
+          </div>
+          <p-inputNumber
+            [ngClass]="{'p-inputNumber--space' : coinSubtitle}"
+            name="amount"
+            [formControl]="amountPurchaseControl"
+            inputmode="decimal"
+            mode="decimal"
+            locale="en-US"
+            [minFractionDigits]="0"
+            [maxFractionDigits]="9"
+            [min]="0"
+            [max]="30"
+            (onInput)="amountPurchaseOnChange($event)"
+            required
+          >
+          </p-inputNumber>
+          <div class="ae-inputnumber__max flex align-items-center" (click)="setMaxAmount()">
+            <span class="mr-3 ae-text-gris ae-text-default">MAX</span>
+            <i class="pi pi-arrow-right-arrow-left ae-text-gris"></i>
+          </div>
+        </div>
+        <small class="ae-text-gris-dark ae-text-small">{{ l('Saldo disponible:') }} {{ amount }} </small>
+      </div>
+    </form>
+  </div>
   <div class="ae-tabs__container--actions">
-    
+    <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
+    <p-button label="Continuar" class="ae-button ae-button--primary" (click)="onContinuePurchase()"></p-button>
   </div>
 </div>
 <div class="ae-tabs__container" *ngIf="activeItem.label == 'Vender'">
+  <div class="ae-tabs__container--content">
+    <p class="ae-text-dark ae-text-default">Registre la siguiente información para realizar una solicitud de venta.</p>
+    <form [formGroup]="saleForm">
+      <div class="ae-select">
+        <label>{{ l('Seleccionar activo') }}</label>
+        <p-dropdown
+            [options]="cryptoAssets"
+            optionLabel="label"
+            [formControl]="cryptoAssetIdSaleControl"
+            placeholder="{{ l('SelectTreeDots') }}"
+            [showClear]="true"
+            [filter]="true"
+            (onChange)="onChangeCurrencyPurchase($event)"
+            required
+        >
+            <ng-template pTemplate="selectedItem">
+                <div class="flex align-items-center" *ngIf="cryptoAssetIdSaleControl">
+                    <div class="mr-3">
+                        <img
+                          src="/assets/crypto-icons/{{ cryptoAssetIdSaleControl.value?.subtitle.toLowerCase() }}.png" 
+                          style="width: 28px"
+                        />
+                    </div>
+                    <div class="flex align-items-center">
+                        <span class="mr-2 ae-text-dark ae-text-default fw-semibold">{{ cryptoAssetIdSaleControl.value?.label }}</span>
+                        <span class=" ae-text-gris-dark ae-text-default fw-semibold">{{ cryptoAssetIdSaleControl.value?.subtitle }}</span>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template let-coin pTemplate="item">
+                <div class="d-flex align-items-center">
+                    <div class="mr-3">
+                        <img 
+                          src="/assets/crypto-icons/{{ coin.subtitle.toLowerCase() }}.png" 
+                          style="width: 28px"/>
+                    </div>
+                    <div class="flex flex-column">
+                        <span class="ae-text-dark ae-text-default fw-semibold">{{ coin.label }}</span>
+                        <span class="ae-text-gris-dark ae-text-default">{{ coin.subtitle }}</span>
+                    </div>
+                </div>
+            </ng-template>
+        </p-dropdown>
+      </div>
+    </form>
+  </div>
   <div class="ae-tabs__container--actions">
-    
+    <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
+    <p-button label="Continuar" class="ae-button ae-button--primary" (click)="onContinueSale()"></p-button>
   </div>
 </div>
