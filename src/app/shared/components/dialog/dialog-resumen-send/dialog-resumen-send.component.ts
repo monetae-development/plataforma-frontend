@@ -43,7 +43,7 @@ export class DialogResumenSendComponent extends AppComponentBase implements OnIn
 
   get dateTime() { return this.dateNow.toLocaleDateString("en")}
   get hourTime() { return this.dateNow.toTimeString().slice(0, 8) }
-  get shortAdress(){
+  get shortAddress(){
     const originalAdress = this.resumenSend.address;
     const strStart = originalAdress.slice(0, 12);
     const strEnd = originalAdress.slice(-6);
