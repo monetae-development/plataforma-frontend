@@ -108,12 +108,29 @@ export class DialogOperationBuySellComponent  extends AppComponentBase implement
       return;
     }
     this.amountPurchaseControl.setValue(event.value);
-    this.calculateCost();
+    this.calculatePurchaseCost();
   }
 
-  calculateCost() {
+  amountSaleOnChange(event: any) {
+    if (event.value == null) {
+      this.amountCommision = null;
+      return;
+    }
+    this.amountSaleControl.setValue(event.value);
+    this.calculateSaleCost();
+  }
+
+  calculatePurchaseCost() {
     if (this.amount) {
       this.amountCommision = (this.amountPurchaseControl.value * this.comission) / 100;
+    } else {
+      this.amountCommision = undefined;
+    }
+  }
+
+  calculateSaleCost() {
+    if (this.amount) {
+      this.amountCommision = (this.amountSaleControl.value * this.comission) / 100;
     } else {
       this.amountCommision = undefined;
     }

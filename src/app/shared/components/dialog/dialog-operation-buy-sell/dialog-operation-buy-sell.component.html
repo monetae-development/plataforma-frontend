@@ -130,6 +130,34 @@
             </ng-template>
         </p-dropdown>
       </div>
+      <div class="ae-inputnumber">
+        <label htmlFor="amount">{{ l('Ingresar cantidad') }}</label>
+        <div class="ae-inputnumber__group">
+          <div class="ae-inputnumber__coin flex align-items-center" *ngIf="coinSubtitle">
+            <span class="ae-text-light">{{ coinSubtitle }}</span>
+          </div>
+          <p-inputNumber
+            [ngClass]="{'p-inputNumber--space' : coinSubtitle}"
+            name="amount"
+            [formControl]="amountSaleControl"
+            inputmode="decimal"
+            mode="decimal"
+            locale="en-US"
+            [minFractionDigits]="0"
+            [maxFractionDigits]="9"
+            [min]="0"
+            [max]="30"
+            (onInput)="amountSaleOnChange($event)"
+            required
+          >
+          </p-inputNumber>
+          <div class="ae-inputnumber__max flex align-items-center" (click)="setMaxAmount()">
+            <span class="mr-3 ae-text-gris ae-text-default">MAX</span>
+            <i class="pi pi-arrow-right-arrow-left ae-text-gris"></i>
+          </div>
+        </div>
+        <small class="ae-text-gris-dark ae-text-small">{{ l('Saldo disponible:') }} {{ amount }} </small>
+      </div>
     </form>
   </div>
   <div class="ae-tabs__container--actions">

@@ -14,7 +14,7 @@
     <div class="ae-table__resumen">
         <div class="ae-resumen__item flex align-items-center justify-content-between">
             <div class="ae-description">
-                <p class="ae-text-dark ae-text-default w-full">Dirección a enviar</p>
+                <p class="ae-text-dark ae-text-default w-full">Precio {{ resumenSend.cryptoAssetId.label }}</p>
             </div>
             <div class="ae-content">
                 <span class="ae-text-gris-network ae-text-default w-full">{{ shortAddress }}</span>
@@ -22,15 +22,7 @@
         </div>
         <div class="ae-resumen__item flex align-items-center justify-content-between">
             <div class="ae-description">
-                <p class="ae-text-dark ae-text-default w-full">Red</p>
-            </div>
-            <div class="ae-content">
-                <span class="ae-text-gris-dark ae-text-default w-full">{{ resumenSend.blockchainNetworkId.label }}</span>
-            </div>
-        </div>
-        <div class="ae-resumen__item flex align-items-center justify-content-between">
-            <div class="ae-description">
-                <p class="ae-text-dark ae-text-default w-full">Fecha y hora</p>
+                <p class="ae-text-dark ae-text-default w-full">Fecha</p>
             </div>
             <div class="ae-content">
                 <span class="ae-text-gris-dark ae-text-default w-full">{{ dateTime }}</span>
@@ -39,7 +31,15 @@
         </div>
         <div class="ae-resumen__item flex align-items-center justify-content-between">
             <div class="ae-description">
-                <p class="ae-text-dark ae-text-default w-full">Total de envio</p>
+                <p class="ae-text-dark ae-text-default w-full">Monto USD</p>
+            </div>
+            <div class="ae-content">
+                <span class="ae-text-gris-dark ae-text-default w-full">{{ resumenSend.amount }} {{ resumenSend.cryptoAssetId.subtitle }}</span>
+            </div>
+        </div>
+        <div class="ae-resumen__item flex align-items-center justify-content-between">
+            <div class="ae-description">
+                <p class="ae-text-dark ae-text-default w-full">Subtotal</p>
             </div>
             <div class="ae-content">
                 <span class="ae-text-gris-dark ae-text-default w-full">{{ resumenSend.amount }} {{ resumenSend.cryptoAssetId.subtitle }}</span>
