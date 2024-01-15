@@ -6,9 +6,10 @@ import { ServiceCommonProxy } from '@shared/service-proxies/service-common-proxi
 import { MenuItem, SelectItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { TabMenuModule } from 'primeng/tabmenu';
+import { DialogResumenBuySellComponent } from '../dialog-resumen-buy-sell/dialog-resumen-buy-sell.component';
 
 @Component({
   standalone: true,
@@ -35,7 +36,8 @@ export class DialogOperationBuySellComponent  extends AppComponentBase implement
   activeIndex: Number = 0;
   cryptoAssets: SelectItem[] = undefined;
   amount: number = 0;
-  amountCommision: number = 0;
+  amountPurchaseCommision: number = 0;
+  amountSaleCommision: number = 0;
   comission: number = 0;
   coinSubtitle: string = '';
 
@@ -44,6 +46,7 @@ export class DialogOperationBuySellComponent  extends AppComponentBase implement
     private fb: FormBuilder,
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
+    public dialogService: DialogService,
     private _serviceCommonProxy: ServiceCommonProxy,
   ) { 
     super(injector);
@@ -104,7 +107,7 @@ export class DialogOperationBuySellComponent  extends AppComponentBase implement
 
   amountPurchaseOnChange(event: any) {
     if (event.value == null) {
-      this.amountCommision = null;
+      this.amountPurchaseCommision = null;
       return;
     }
     this.amountPurchaseControl.setValue(event.value);
@@ -113,7 +116,7 @@ export class DialogOperationBuySellComponent  extends AppComponentBase implement
 
   amountSaleOnChange(event: any) {
     if (event.value == null) {
-      this.amountCommision = null;
+      this.amountSaleCommision = null;
       return;
     }
     this.amountSaleControl.setValue(event.value);
@@ -122,17 +125,17 @@ export class DialogOperationBuySellComponent  extends AppComponentBase implement
 
   calculatePurchaseCost() {
     if (this.amount) {
-      this.amountCommision = (this.amountPurchaseControl.value * this.comission) / 100;
+      this.amountPurchaseCommision = (this.amountPurchaseControl.value * this.comission) / 100;
     } else {
-      this.amountCommision = undefined;
+      this.amountPurchaseCommision = undefined;
     }
   }
 
   calculateSaleCost() {
     if (this.amount) {
-      this.amountCommision = (this.amountSaleControl.value * this.comission) / 100;
+      this.amountSaleCommision = (this.amountSaleControl.value * this.comission) / 100;
     } else {
-      this.amountCommision = undefined;
+      this.amountSaleCommision = undefined;
     }
   }
 
@@ -141,10 +144,42 @@ export class DialogOperationBuySellComponent  extends AppComponentBase implement
   }
 
   onContinuePurchase(): void {
+    const ref = this.dialogService.open(DialogResumenBuySellComponent, {
+      showHeader: false,
+      styleClass: 'ae-dialog ae-dialog--sm',
+      data: {
+        title: 'Resumen de compra',
+        titleAction: 'Comprar',
+        resumenSend: this.purchaseForm.value,
+        amountCommision: this.amountPurchaseCommision
+      }
+    });
+    const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+    dialogRef?.changeDetectorRef.detectChanges();
 
+    const instance = dialogRef?.instance?.componentRef?.instance as DialogResumenBuySellComponent;
+    instance?.outAccept.subscribe(() => {
+      this.ref.close();
+    });
   }
   onContinueSale(): void {
+    const ref = this.dialogService.open(DialogResumenBuySellComponent, {
+      showHeader: false,
+      styleClass: 'ae-dialog ae-dialog--sm',
+      data: {
+        title: 'Resumen de venta',
+        titleAction: 'Vender',
+        resumenSend: this.saleForm.value,
+        amountCommision: this.amountSaleCommision
+      }
+    });
+    const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+    dialogRef?.changeDetectorRef.detectChanges();
 
+    const instance = dialogRef?.instance?.componentRef?.instance as DialogResumenBuySellComponent;
+    instance?.outAccept.subscribe(() => {
+      this.ref.close();
+    });
   }
 
   setMaxAmount(): void {

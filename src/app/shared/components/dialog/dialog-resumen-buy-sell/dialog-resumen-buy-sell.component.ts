@@ -17,6 +17,8 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 })
 export class DialogResumenBuySellComponent extends AppComponentBase implements OnInit {
 
+  title: string = '';
+  titleAction: string = '';
   resumenSend: any;
   amountCommision: number = 0;
   amountTotal: number = 0;
@@ -32,6 +34,8 @@ export class DialogResumenBuySellComponent extends AppComponentBase implements O
     public config: DynamicDialogConfig
   ) { 
     super(injector);
+    this.title = config.data.title;
+    this.titleAction = config.data.titleAction;
     this.resumenSend = config.data.resumenSend;
     this.amountCommision = config.data.amountCommision;
     this.amountTotal = this.resumenSend.amount + this.amountCommision;
@@ -41,16 +45,19 @@ export class DialogResumenBuySellComponent extends AppComponentBase implements O
     console.log(this.resumenSend);
   }
 
-  get dateTime() { return this.dateNow.toLocaleDateString("en")}
-  get hourTime() { return this.dateNow.toTimeString().slice(0, 8) }
-  get shortAddress(){
-    const originalAdress = this.resumenSend.address;
-    const strStart = originalAdress.slice(0, 12);
-    const strEnd = originalAdress.slice(-6);
-    if (originalAdress.length <= 20) {
-      return originalAdress;
-    }
-    return strStart + "...." + strEnd;
+  get dateTime() {
+    const months = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    const day = this.dateNow.getDate();
+    const month = months[this.dateNow.getMonth()];
+    const year = this.dateNow.getFullYear();
+    const hour = this.dateNow.getHours();
+    const minutes = this.dateNow.getMinutes();
+    const seconds = this.dateNow.getSeconds();
+    const ampm = hour >= 12 ? 'pm' : 'am';
+    return  `${day} ${month} ${year}, ${hour}:${minutes}:${seconds} ${ampm}`;
   }
 
   onCancel(){
