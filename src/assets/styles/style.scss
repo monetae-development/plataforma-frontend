@@ -677,6 +677,9 @@
         width: 100%;
         max-width: 380px;
         .ae-dialog__actions{
+            display: grid;
+            gap: 16px;
+            grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
             .ae-button{
                 .p-button-label{
                     font-size: 16px;
