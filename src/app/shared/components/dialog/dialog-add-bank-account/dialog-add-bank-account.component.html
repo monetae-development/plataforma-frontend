@@ -1,0 +1,121 @@
+<div class="ae-dialog__header flex align-items-center justify-content-center">
+  <i class="pi pi-arrow-left ae-text-dark mr-3" (click)="onCancel()"></i>
+  <h2 class="ae-text-dark fw-bold">{{ l('CreateNewBankAccount') }}</h2>
+</div>
+<div class="ae-dialog__content">
+  <form [formGroup]="bankAccountForm">
+    <div class="ae-input">
+      <label for="MntMemberBankAccount_Holder">{{ l('Holder') }} *</label>
+      <input
+          type="text"
+          #MntMemberBankAccount_Holder="ngModel"
+          id="MntMemberBankAccount_Holder"
+          class="form-control"
+          [(ngModel)]="mntMemberBankAccount.holder"
+          name="Holder"
+          minlength="1"
+          maxlength="255"
+          required
+      />
+      <validation-messages [formCtrl]="MntMemberBankAccount_Holder"></validation-messages>
+    </div>
+    <div class="ae-select">
+        <label>{{ l('Country') }} *</label>
+        <p-dropdown
+            #country="ngModel"
+            id="country"
+            name="country"
+            [disabled]="!active"
+            [options]="countries"
+            [(ngModel)]="selectedCountry"
+            placeholder="{{ l('SelectTreeDots') }}"
+            [showClear]="true"
+            [filter]="true"
+            (onChange)="onChangeCountry($event)"
+            required
+        ></p-dropdown>
+        <validation-messages [formCtrl]="country"></validation-messages>
+    </div>
+    <div class="ae-select">
+        <label>{{ l('Bank') }} *</label>
+        <p-dropdown
+            #bank="ngModel"
+            id="bank"
+            name="bank"
+            [disabled]="!(selectedCountry && banks != undefined)"
+            [options]="banks"
+            [(ngModel)]="mntMemberBankAccount.catBankId"
+            placeholder="{{ l('SelectTreeDots') }}"
+            [showClear]="true"
+            [filter]="true"
+            required
+        ></p-dropdown>
+        <validation-messages [formCtrl]="bank"></validation-messages>
+    </div>
+    <div class="ae-select">
+        <label>{{ l('AccountType') }} *</label>
+        <p-dropdown
+            #accountType="ngModel"
+            id="accountType"
+            name="accountType"
+            [disabled]="!accountTypes"
+            [options]="accountTypes"
+            [(ngModel)]="mntMemberBankAccount.catAccountTypeId"
+            placeholder="{{ l('SelectTreeDots') }}"
+            [showClear]="true"
+            [filter]="true"
+            required
+        ></p-dropdown>
+        <validation-messages [formCtrl]="accountType"></validation-messages>
+    </div>
+    <div class="ae-input">
+        <label for="MntMemberBankAccount_Account">{{ l('AccountNumber') }} *</label>
+        <input
+            type="text"
+            #MntMemberBankAccount_Account="ngModel"
+            id="MntMemberBankAccount_Account"
+            class="form-control"
+            [(ngModel)]="mntMemberBankAccount.account"
+            name="Account"
+            minlength="6"
+            maxlength="20"
+            required
+        />
+        <validation-messages [formCtrl]="MntMemberBankAccount_Account"></validation-messages>
+    </div>
+    <div class="ae-select">
+        <label>{{ l('Currency') }} *</label>
+        <p-dropdown
+            #currency="ngModel"
+            id="currency"
+            name="currency"
+            [disabled]="!currencies"
+            [options]="currencies"
+            [(ngModel)]="mntMemberBankAccount.catCurrencyId"
+            placeholder="{{ l('SelectTreeDots') }}"
+            [showClear]="true"
+            [filter]="true"
+            required
+        ></p-dropdown>
+        <validation-messages [formCtrl]="currency"></validation-messages>
+    </div>
+    <div class="ae-input form-group">
+        <label for="MntMemberBankAccount_Swift">{{ l('Swift') }} ({{ l('Optional') }})</label>
+        <input
+            type="text"
+            #MntMemberBankAccount_Swift="ngModel"
+            id="MntMemberBankAccount_Swift"
+            class="form-control"
+            [(ngModel)]="mntMemberBankAccount.swift"
+            name="Swift"
+            minlength="8"
+            maxlength="11"
+        />
+        <validation-messages [formCtrl]="MntMemberBankAccount_Swift"></validation-messages>
+    </div>
+  </form>
+</div>
+<div class="ae-dialog__actions">
+  <p-button class="ae-button ae-button--default w-full" label="Cancelar"></p-button>
+  <p-button class="ae-button ae-button--primary w-full" label="Guardar"></p-button>
+</div>

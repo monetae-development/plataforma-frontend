@@ -25,7 +25,7 @@ import { DialogResumenBuySellComponent } from '../dialog-resumen-buy-sell/dialog
     InputNumberModule 
   ]
 })
-export class DialogOperationBuySellComponent  extends AppComponentBase implements OnInit {
+export class DialogOperationBuySellComponent extends AppComponentBase implements OnInit {
 
   outAccept = new EventEmitter();
   purchaseForm: FormGroup;

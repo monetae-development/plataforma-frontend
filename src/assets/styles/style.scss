@@ -20,6 +20,12 @@
 .ae-text-medium{
     font-size: 16px !important;
 }
+.ae-text-large{
+    font-size: 18px !important;
+}
+.ae-text-xlarge{
+    font-size: 20px !important;
+}
 .ae-text-black{
     color: var(--ae-black) !important;
 }
@@ -205,6 +211,17 @@
             font-size: 20px;
             cursor: pointer;
         }
+        .ae-input__coin{
+            background-color: #E9ECEF;
+            width: 100%;
+            max-width: max-content;
+            height: 100%;
+            padding: 5px 12px;
+            position: absolute;
+            border: 1px solid var(--ae-gris-light);
+            border-bottom-left-radius: 8px;
+            border-top-left-radius: 8px;
+        }
     }
 }
 .ae-inputnumber{
@@ -271,6 +288,10 @@
             align-items: center;
         }
     }
+    small{
+        display: block;
+        cursor: pointer;
+    }
 }
 .ae-checkbox{
     .p-checkbox-label{
@@ -293,7 +314,8 @@
 }
 .ae-input,
 .ae-inputnumber,
-.ae-select{
+.ae-select,
+.ae-upload{
     margin: 12px 0;
     label{
         display: block;
@@ -521,6 +543,35 @@
         }
     }
 }
+.ae-card__bankaccount{
+    background-color: #FBFBFB;
+    border-radius: 16px;
+    padding: 20px 36px;
+    .ae-bankaccount__item{
+        margin: 12px 0;
+        .ae-text{
+            width: 100%;
+            padding-right: 10px;
+            small{
+                display: block;
+                font-size: 12px;
+                margin-bottom: 4px;
+                color: var(--ae-gris-dark);
+            }
+            p{
+                margin: 0;
+                font-size: 14px;
+                color: var(--ae-dark);
+            }
+        }
+        .ae-icon{
+            cursor: pointer;
+            .pi{
+                font-size: 18px;
+            }
+        }
+    }
+}
 .ae-carousel{
     position: relative;
     margin-left: -45px;
@@ -714,6 +765,11 @@
             }
             .ae-tabs__container{
                 padding: 30px;
+                .ae-tabs__container--content{
+                    max-height: 500px;
+                    overflow: hidden;
+                    overflow-y: auto;
+                }
                 .ae-tabs__container--actions{
                     display: grid;
                     gap: 16px;

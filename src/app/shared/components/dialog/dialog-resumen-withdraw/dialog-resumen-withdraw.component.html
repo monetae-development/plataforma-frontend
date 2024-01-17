@@ -1,0 +1,35 @@
+<div class="ae-dialog__header flex align-items-center justify-content-center">
+    <i class="pi pi-arrow-left ae-text-dark mr-3" (click)="onCancel()"></i>
+    <h2 class="ae-text-dark fw-bold">Resumen de solicitud de retiro</h2>
+  </div>
+  <div class="ae-dialog__content">
+    <div class="ae-table__resumen">
+        <div class="ae-resumen__item flex align-items-center justify-content-between">
+            <div class="ae-description">
+                <p class="ae-text-dark ae-text-default w-full">Cuenta destino</p>
+            </div>
+            <div class="ae-content">
+                <span class="ae-text-gris-network ae-text-default w-full">******44178</span>
+            </div>
+        </div>
+        <div class="ae-resumen__item flex align-items-center justify-content-between">
+            <div class="ae-description">
+                <p class="ae-text-dark ae-text-default w-full">Fecha</p>
+            </div>
+            <div class="ae-content">
+                <span class="ae-text-gris-dark ae-text-default w-full">{{ dateTime }}</span>
+            </div>
+        </div>
+        <div class="ae-resumen__item flex align-items-center justify-content-between">
+            <div class="ae-description">
+                <p class="ae-text-dark ae-text-default w-full">Total</p>
+            </div>
+            <div class="ae-content">
+                <span class="ae-text-primary ae-text-default w-full">100 </span>
+            </div>
+        </div>
+    </div>
+  </div>
+  <div class="ae-dialog__actions">
+    <p-button class="ae-button ae-button--primary w-full" label="Solicitar retiro" [disabled]="sending" (click)="onRequestSend()"></p-button>
+  </div>
