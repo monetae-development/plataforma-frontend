@@ -151,6 +151,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CarouselModule } from 'primeng/carousel';
 import { MenuModule } from 'primeng/menu';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ButtonModule } from 'primeng/button';
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 
@@ -189,7 +190,8 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 		TabMenuModule,
 		ProgressBarModule,
 		CarouselModule,
-		MenuModule
+		MenuModule,
+		ButtonModule
 	],
 
 	declarations: [

@@ -43,12 +43,13 @@ export class ForgotPasswordComponent extends AppComponentBase {
     private openMessageDialog(): void {
         const ref = this.dialogService.open(DialogDefaultComponent, {
             showHeader: false,
-            styleClass: 'ae-dialog ae-dialog--md',
+            styleClass: 'ae-dialog ae-dialog--default',
             data: {
               icon: 'pi pi-envelope',
               title: this.l('MailSent'),
               subtitle: this.l('PasswordResetMailSentMessage'),
               info: this.l('HasntReceivedTryToContact'),
+              titleAction: this.l('Continue'),
             }
         });
         const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);

@@ -5,5 +5,5 @@
   <p class="ae-text-gris-dark ae-text-default" *ngIf="info">{{ info }}</p>
 </div>
 <div class="ae-dialog__actions">
-  <p-button class="ae-button ae-button--primary w-full" label="Continuar" (click)="onAccept()"></p-button>
+  <p-button class="ae-button ae-button--primary w-full" [label]="titleAction" (click)="onAccept()"></p-button>
 </div>

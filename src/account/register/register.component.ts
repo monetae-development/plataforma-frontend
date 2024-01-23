@@ -104,11 +104,12 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     private openMessageDialog(): void {
         const ref = this.dialogService.open(DialogDefaultComponent, {
             showHeader: false,
-            styleClass: 'ae-dialog ae-dialog--md',
+            styleClass: 'ae-dialog ae-dialog--default',
             data: {
               icon: 'pi pi-envelope',
               title: 'Verifique su correo electrónico',
               subtitle: this.l('WeHaveSentVerifyEmail', this.model.emailAddress),
+              titleAction: this.l('Continue'),
             }
         });
         const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);

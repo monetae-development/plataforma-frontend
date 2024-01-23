@@ -28,11 +28,15 @@ import { DateTime } from 'luxon';
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
 import { EventEmitter } from 'stream';
 import { isEmpty } from 'rxjs';
+import { DialogDefaultComponent } from '@app/shared/components/dialog/dialog-default/dialog-default.component';
+import { DialogService } from 'primeng/dynamicdialog';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
     templateUrl: './mntMemberDataComplements.component.html',
     encapsulation: ViewEncapsulation.None,
     animations: [appModuleAnimation()],
+    providers: [ DialogService ],
 })
 
 export class MntMemberDataComplementsComponent extends AppComponentBase implements OnInit, AfterViewInit {
@@ -128,6 +132,12 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     isValid = false;
     isClientRole = false;
 
+    step0VerifyAccount: Boolean = true;
+    step1VerifyAccount: Boolean = false;
+    step2VerifyAccount: Boolean = false;
+    step3VerifyAccount: Boolean = false;
+    step4VerifyAccount: Boolean = false;
+
     private member: CreateOrEditMntMemberComplementDto;
 
     constructor(
@@ -143,6 +153,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         private _profileService: ProfileServiceProxy,
         private _formBuilder: FormBuilder,
         private _dateTimeService: DateTimeService,
+        private _dialogService: DialogService,
     ) {
         super(injector);
         this.uploadUrl = AppConsts.remoteServiceBaseUrl + '/DemoUiComponents/UploadFiles';
@@ -162,7 +173,8 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
             this.isClientRole = result.hasClientRole;
 
             if (!result.hasClientRole) {
-                abp.message.warn('El formulario para complementar datos es de uso exclusivo para clientes de Monetae.<br><br> El formulario será visible pero los datos no podrán ser guardados.', 'Atención', { isHtml: true });
+                this.openMessageDialogVerifyAccount();
+                // abp.message.warn('El formulario para complementar datos es de uso exclusivo para clientes de Monetae.<br><br> El formulario será visible pero los datos no podrán ser guardados.', 'Atención', { isHtml: true });
             }
 
             this._sessionServiceProxy.getCurrentLoginInformations().subscribe((session) => {
@@ -270,6 +282,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
                     this.completed = true;
                     this.saving = false;
                     this.isMemberComplemented = true;
+                    this.openMessageDialogSuccessAccount();
                 });
             }
         }
@@ -389,6 +402,64 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
                 this.l('dayNameMin6'),
                 this.l('dayNameMin7')],
             weekHeader: this.l('PrimeNGWeekHeader'),
+        });
+    }
+
+    nextStep(step: number): void {
+        if(step === 0){
+            this.step0VerifyAccount = false;
+            this.step1VerifyAccount = true;
+        } else if(step === 1) {
+            this.step1VerifyAccount = false;
+            this.step2VerifyAccount = true;
+        } else if(step === 2) {
+            this.step2VerifyAccount = false;
+            this.step3VerifyAccount = true;
+        } else if(step === 3) {
+            this.step3VerifyAccount = false;
+            this.step4VerifyAccount = true;
+        }
+    }
+
+    openCameraPhoto(): void {
+
+    }
+
+    private openMessageDialogVerifyAccount(): void {
+        const ref = this._dialogService.open(DialogDefaultComponent, {
+            showHeader: false,
+            styleClass: 'ae-dialog ae-dialog--default ae-dialog--sm',
+            data: {
+                icon: 'pi pi-id-card',
+                title: 'Verificar cuenta',
+                subtitle: 'Completa la verificación KYC para continuar con la operación',
+                titleAction: 'Empezar ahora'
+            }
+        });
+        const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
+        dialogRef?.changeDetectorRef.detectChanges();
+        const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
+        instance?.outAccept.subscribe(() => {
+            ref.close();
+        });
+    }
+
+    private openMessageDialogSuccessAccount(): void {
+        const ref = this._dialogService.open(DialogDefaultComponent, {
+            showHeader: false,
+            styleClass: 'ae-dialog ae-dialog--default',
+            data: {
+                icon: 'pi pi-id-card',
+                title: 'Gracias por completar el proceso de verificación',
+                subtitle: 'Actualmente, estamos analizando tus datos con diligencia. En breve, te informaremos los resultados. ¡Gracias por tu paciencia!"',
+                titleAction: this.l('Continue'),
+            }
+        });
+        const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
+        dialogRef?.changeDetectorRef.detectChanges();
+        const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
+        instance?.outAccept.subscribe(() => {
+            ref.close();
         });
     }
 }

@@ -19,6 +19,7 @@ export class DialogDefaultComponent implements OnInit {
   title: string = '';
   subtitle: string = '';
   info: string = '';
+  titleAction: string = '';
 
   outAccept = new EventEmitter();
 
@@ -30,6 +31,7 @@ export class DialogDefaultComponent implements OnInit {
     this.title = config.data.title;
     this.subtitle = config.data.subtitle;
     this.info = config.data.info;
+    this.titleAction = config.data.titleAction;
   }
 
   ngOnInit() {
