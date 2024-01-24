@@ -60,19 +60,28 @@
             <div class="flex align-items-center">
                 <div class="ae-radiobutton__item">
                     <p-radioButton
+                        #typeUserInput="ngModel"
+                        name="typeUser"
                         [(ngModel)]="model.typeUser"
                         value="1"
+                        inputId="typeUser1"
                         label="Persona Jurídica"
+                        required
                     ></p-radioButton>
                 </div>
                 <div class="ae-radiobutton__item">
                     <p-radioButton
+                        #typeUserInput="ngModel"
+                        name="typeUser"
                         [(ngModel)]="model.typeUser"
                         value="2"
+                        inputId="typeUser2"
                         label="Persona Natural"
+                        required
                     ></p-radioButton>
                 </div>
-              </div>
+            </div>
+            <validation-messages [formCtrl]="typeUserInput"></validation-messages>
         </div>
         <div class="ae-checkbox">
             <p-checkbox 
