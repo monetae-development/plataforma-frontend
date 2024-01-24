@@ -232,7 +232,7 @@
         <div class="ae-container__header">
             <div class="ae-header__title flex align-items-center justify-content-between">
                 <div class="ae-text flex align-items-center">
-                    <i class="pi pi-arrow-left ae-text-dark ae-text-medium mr-5"></i>
+                    <i class="pi pi-arrow-left ae-text-dark ae-text-medium mr-5" (click)="nextStep(0)"></i>
                     <h2 class="ae-text-dark ae-text-xlarge m-0">{{ 'AddressTitle' | localize }}</h2>
                 </div>
                 <div class="ae-steps">
@@ -462,7 +462,7 @@
         <div class="ae-container__header">
             <div class="ae-header__title flex align-items-center justify-content-between">
                 <div class="ae-text flex align-items-center">
-                    <i class="pi pi-arrow-left ae-text-dark ae-text-medium mr-5"></i>
+                    <i class="pi pi-arrow-left ae-text-dark ae-text-medium mr-5" (click)="nextStep(1)"></i>
                     <h2 class="ae-text-dark ae-text-xlarge m-0">{{ 'IdentityPersonalTitle' | localize }}</h2>
                 </div>
                 <div class="ae-steps">
@@ -611,12 +611,12 @@
                                 </ul>
                             </ng-template>
                         </p-fileUpload>
-                        <div class="ae-inputcamera flex align-items-center flex-column justify-content-center" (click)="openCameraPhoto()">
+                        <!-- <div class="ae-inputcamera flex align-items-center flex-column justify-content-center" (click)="openCameraPhoto()">
                             <div class="ae-inputcamera__icon">
                                 <i class="pi pi-camera"></i>
                             </div>
                             <p>Tomar foto</p>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="ae-upload">
                         <label for="identityBackPicture">{{ 'IdentityBackPicture' | localize }}</label>
@@ -643,12 +643,12 @@
                                 </ul>
                             </ng-template>
                         </p-fileUpload>
-                        <div class="ae-inputcamera flex align-items-center flex-column justify-content-center">
+                        <!-- <div class="ae-inputcamera flex align-items-center flex-column justify-content-center">
                             <div class="ae-inputcamera__icon">
                                 <i class="pi pi-camera"></i>
                             </div>
                             <p>Tomar foto</p>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </form>
@@ -661,7 +661,7 @@
         <div class="ae-container__header">
             <div class="ae-header__title flex align-items-center justify-content-between">
                 <div class="ae-text flex align-items-center">
-                    <i class="pi pi-arrow-left ae-text-dark ae-text-medium mr-5"></i>
+                    <i class="pi pi-arrow-left ae-text-dark ae-text-medium mr-5" (click)="nextStep(2)"></i>
                     <h2 class="ae-text-dark ae-text-xlarge m-0">{{ 'EconomicInfoTitle' | localize }}</h2>
                 </div>
                 <div class="ae-steps">

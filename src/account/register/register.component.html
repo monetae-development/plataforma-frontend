@@ -13,41 +13,7 @@
         <p class="ae-text-dark ae-text-small mb-6">{{ 'MarkedFields' | localize }}</p>
     </div>
     <form #registerForm="ngForm" class="login-form form" method="post" novalidate (ngSubmit)="save()">
-        <!-- <div class="mb-5">
-            <input
-                #nameInput="ngModel"
-                class="form-control form-control-solid h-auto py-3 px-6 rounded-lg fs-h6"
-                autoFocus
-                type="text"
-                placeholder="{{ 'Name' | localize }} *"
-                [(ngModel)]="model.name"
-                name="Name"
-                required
-                minlength="3"
-                maxlength="50"
-                pattern="^(?!\s)(.*\S)?(?<!\s)$"
-            />
-            <validation-messages [formCtrl]="nameInput"></validation-messages>
-        </div>
-
-        <div class="mb-5">
-            <input
-                #surnameInput="ngModel"
-                class="form-control form-control-solid h-auto py-3 px-6 rounded-lg fs-h6"
-                type="text"
-                placeholder="{{ 'Surname' | localize }} *"
-                [(ngModel)]="model.surname"
-                name="Surname"
-                required
-                minlength="3"
-                maxlength="50"
-                pattern="^(?!\s)(.*\S)?(?<!\s)$"
-            />
-            <validation-messages [formCtrl]="surnameInput"></validation-messages>
-        </div> -->
-
         <div class="ae-input mb-5">
-            
             <label>{{ 'EmailEn' | localize }} *</label>
             <input
                 #emailAddressInput="ngModel"
@@ -61,25 +27,7 @@
             />
             <validation-messages [formCtrl]="emailAddressInput"></validation-messages>
         </div>
-
-        <!-- <div class="mb-5">
-            <input
-                #userNameInput="ngModel"
-                class="form-control form-control-solid h-auto py-3 px-6 rounded-lg fs-h6"
-                type="text"
-                autocomplete="new-password"
-                placeholder="{{ 'UserName' | localize }} *"
-                name="UserName"
-                [(ngModel)]="model.userName"
-                required
-                minlength="6"
-                maxlength="20"
-                pattern="^(?!\s)(.*\S)?(?<!\s)$"
-            />
-            <validation-messages [formCtrl]="userNameInput"></validation-messages>
-        </div> -->
-
-        <div class="mb-5 ae-input">
+        <div class="ae-input mb-5">
             <label>{{ 'Password' | localize }} *</label>
             <div class="ae-input__group">
                 <input
@@ -106,9 +54,26 @@
                 />
                 <i (click)="togglePasswordVisibility()" class="pi" [ngClass]="{'pi-eye-slash' : !showPassword,'pi-eye' : showPassword}"></i>
             </div>
-            
         </div>
-
+        <div class="ae-radiobutton">
+            <label>¿Qué tipo de registro? *</label>
+            <div class="flex align-items-center">
+                <div class="ae-radiobutton__item">
+                    <p-radioButton
+                        [(ngModel)]="model.typeUser"
+                        value="1"
+                        label="Persona Jurídica"
+                    ></p-radioButton>
+                </div>
+                <div class="ae-radiobutton__item">
+                    <p-radioButton
+                        [(ngModel)]="model.typeUser"
+                        value="2"
+                        label="Persona Natural"
+                    ></p-radioButton>
+                </div>
+              </div>
+        </div>
         <div class="ae-checkbox">
             <p-checkbox 
                 class="ae-text-dark ae-text-small"
@@ -117,7 +82,6 @@
                 [(ngModel)]="model.agree">
             </p-checkbox>
         </div>
-
         <div [hidden]="registerForm.form.valid || registerForm.form.pristine" class="mb-5">
             <ul class="form-text text-danger" *ngIf="Password.errors">
                 <li [hidden]="!Password.errors.requireDigit">
@@ -137,49 +101,7 @@
                 </li>
             </ul>
         </div>
-
-        <!-- <div class="mb-5">
-            <input
-                type="password"
-                name="PasswordRepeat"
-                class="form-control form-control-solid h-auto py-3 px-6 rounded-lg fs-h6"
-                [ngModel]="model.passwordRepeat"
-                #PasswordRepeat="ngModel"
-                placeholder="{{ 'PasswordRepeat' | localize }}"
-                validateEqual="Password"
-                reverse="false"
-                [requireDigit]="passwordComplexitySetting.requireDigit"
-                [requireLowercase]="passwordComplexitySetting.requireLowercase"
-                [requireUppercase]="passwordComplexitySetting.requireUppercase"
-                [requireNonAlphanumeric]="passwordComplexitySetting.requireNonAlphanumeric"
-                [requiredLength]="passwordComplexitySetting.requiredLength"
-                required
-            />
-        </div> -->
-
-        <!-- <div [hidden]="registerForm.form.valid || registerForm.form.pristine" class="mb-5">
-            <ul class="form-text text-danger" *ngIf="PasswordRepeat.errors">
-                <li [hidden]="!PasswordRepeat.errors.requireDigit">
-                    {{ 'PasswordComplexity_RequireDigit_Hint' | localize }}
-                </li>
-                <li [hidden]="!PasswordRepeat.errors.requireLowercase">
-                    {{ 'PasswordComplexity_RequireLowercase_Hint' | localize }}
-                </li>
-                <li [hidden]="!PasswordRepeat.errors.requireUppercase">
-                    {{ 'PasswordComplexity_RequireUppercase_Hint' | localize }}
-                </li>
-                <li [hidden]="!PasswordRepeat.errors.requireNonAlphanumeric">
-                    {{ 'PasswordComplexity_RequireNonAlphanumeric_Hint' | localize }}
-                </li>
-                <li [hidden]="!PasswordRepeat.errors.requiredLength">
-                    {{ 'PasswordComplexity_RequiredLength_Hint' | localize : passwordComplexitySetting.requiredLength }}
-                </li>
-                <li [hidden]="PasswordRepeat.valid">{{ 'PasswordsDontMatch' | localize }}</li>
-            </ul>
-        </div> -->
-
         <div class="ae-login__actions pb-lg-0 pb-5">
-            
             <button
                 type="submit"
                 class="ae-btn ae-btn--primary w-full fw-bolder fs-h6"

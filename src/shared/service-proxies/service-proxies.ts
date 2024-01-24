@@ -48618,6 +48618,7 @@ export interface IRegisterInput {
 export class RegisterSimpleInput implements IRegisterSimpleInput {
     emailAddress!: string;
     password!: string;
+    typeUser!: number;
     agree!: boolean;
     captchaResponse!: string | undefined;
 
@@ -48634,6 +48635,7 @@ export class RegisterSimpleInput implements IRegisterSimpleInput {
         if (_data) {
             this.emailAddress = _data["emailAddress"];
             this.password = _data["password"];
+            this.typeUser = _data["typeUser"];
             this.agree = _data["agree"];
             this.captchaResponse = _data["captchaResponse"];
         }
@@ -48650,6 +48652,7 @@ export class RegisterSimpleInput implements IRegisterSimpleInput {
         data = typeof data === 'object' ? data : {};
         data["emailAddress"] = this.emailAddress;
         data["password"] = this.password;
+        data["typeUser"] = this.typeUser;
         data["agree"] = this.agree;
         data["captchaResponse"] = this.captchaResponse;
         return data;
@@ -48659,6 +48662,7 @@ export class RegisterSimpleInput implements IRegisterSimpleInput {
 export interface IRegisterSimpleInput {
     emailAddress: string;
     password: string;
+    typeUser: number;
     agree: boolean;
     captchaResponse: string | undefined;
 }

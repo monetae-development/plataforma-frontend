@@ -5,8 +5,16 @@ import { AccountSharedModule } from '@account/shared/account-shared.module';
 import { RegisterComponent } from './register.component';
 import { PasswordModule } from 'primeng/password';
 import { NgxMaskModule } from 'ngx-mask';
+import { RadioButtonModule } from 'primeng/radiobutton';
 @NgModule({
-    imports: [AppSharedModule, AccountSharedModule, RegisterRoutingModule, PasswordModule, NgxMaskModule.forRoot()],
+    imports: [
+        AppSharedModule, 
+        AccountSharedModule, 
+        RegisterRoutingModule, 
+        PasswordModule,
+        RadioButtonModule, 
+        NgxMaskModule.forRoot()
+    ],
     declarations: [RegisterComponent],
 })
 export class RegisterModule {}

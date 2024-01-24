@@ -419,11 +419,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
             this.step3VerifyAccount = false;
             this.step4VerifyAccount = true;
         }
-    }
-
-    openCameraPhoto(): void {
-
-    }
+    }s
 
     private openMessageDialogVerifyAccount(): void {
         const ref = this._dialogService.open(DialogDefaultComponent, {
