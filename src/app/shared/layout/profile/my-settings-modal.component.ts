@@ -106,11 +106,10 @@ export class MySettingsModalComponent extends AppComponentBase implements OnInit
 
     smsVerify(): void {
         let input = new SendVerificationSmsInputDto();
-        input.phoneNumber = this.user.phoneNumber;
-        console.log(this.memberPhoneCodeId);
-        // this._profileService.sendVerificationSms(input).subscribe(() => {
-        //     this.smsVerificationModal.show();
-        // });
+        input.phoneNumber = this.user.phoneCodeNumber['label'] + this.user.phoneNumber;
+        this._profileService.sendVerificationSms(input).subscribe(() => {
+            this.smsVerificationModal.show();
+        });
     }
 
     changePhoneNumberToVerified(): void {

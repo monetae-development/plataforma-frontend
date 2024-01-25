@@ -190,6 +190,10 @@
             font-size: 16px;
         }
     }
+    &--verify{
+        width: 100%;
+        max-width: max-content;
+    }
 }
 .ae-button--back{
     position: absolute;

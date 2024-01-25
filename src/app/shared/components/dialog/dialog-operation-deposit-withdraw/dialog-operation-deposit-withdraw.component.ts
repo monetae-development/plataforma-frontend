@@ -58,6 +58,7 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
   mntMemberBankAccount: CreateMntMemberFiatWithdrawalDto = new CreateMntMemberFiatWithdrawalDto();
 
   uploadUrl: string;
+  uploadedOperationProof: any[] = [];
 
   constructor(
     injector: Injector,
@@ -178,6 +179,17 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
 
   onUploadExcelError(): void {
       this.notify.error(this.l('ImportUsersUploadFailed'));
+  }
+
+  // upload event
+  onUpload(event, recordFiles): void {
+    for (const file of event.files) {
+        recordFiles.push(file);
+    }
+  }
+
+  onBeforeSend(event): void {
+      event.xhr.setRequestHeader('Authorization', 'Bearer ' + abp.auth.getToken());
   }
 
   showDialogAddBankAccount(): void {

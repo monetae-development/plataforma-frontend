@@ -33429,6 +33429,7 @@ export class CurrentUserProfileEditDto implements ICurrentUserProfileEditDto {
     userName!: string;
     emailAddress!: string;
     phoneNumber!: string | undefined;
+    phoneCodeNumber!: string;
     isPhoneNumberConfirmed!: boolean;
     timezone!: string | undefined;
     qrCodeSetupImageUrl!: string | undefined;
@@ -33450,6 +33451,7 @@ export class CurrentUserProfileEditDto implements ICurrentUserProfileEditDto {
             this.userName = _data["userName"];
             this.emailAddress = _data["emailAddress"];
             this.phoneNumber = _data["phoneNumber"];
+            this.phoneCodeNumber = _data["phoneCodeNumber"];
             this.isPhoneNumberConfirmed = _data["isPhoneNumberConfirmed"];
             this.timezone = _data["timezone"];
             this.qrCodeSetupImageUrl = _data["qrCodeSetupImageUrl"];
@@ -33471,6 +33473,7 @@ export class CurrentUserProfileEditDto implements ICurrentUserProfileEditDto {
         data["userName"] = this.userName;
         data["emailAddress"] = this.emailAddress;
         data["phoneNumber"] = this.phoneNumber;
+        data["phoneCodeNumber"] = this.phoneCodeNumber;
         data["isPhoneNumberConfirmed"] = this.isPhoneNumberConfirmed;
         data["timezone"] = this.timezone;
         data["qrCodeSetupImageUrl"] = this.qrCodeSetupImageUrl;
@@ -33485,6 +33488,7 @@ export interface ICurrentUserProfileEditDto {
     userName: string;
     emailAddress: string;
     phoneNumber: string | undefined;
+    phoneCodeNumber: string;
     isPhoneNumberConfirmed: boolean;
     timezone: string | undefined;
     qrCodeSetupImageUrl: string | undefined;

@@ -67,29 +67,16 @@
                                 <validation-messages [formCtrl]="emailAddressInput"></validation-messages>
                             </div>
                             <div *ngIf="smsEnabled">
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-10 offset-md-1">
-                                        <div class="alert alert-info w-100" role="alert">
-                                            <span class="fw-bold">{{ 'PhoneNumberTitleDetail' | localize }}:</span>
-                                            {{ 'PhoneNumberDetail' | localize }}
-                                            <br />
-                                            <span class="fw-bold">
-                                                {{ 'PhoneVerificationTitleDetail' | localize }}:
-                                            </span>
-                                            {{ 'PhoneVerificationDetail' | localize }}
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div class="mb-5">
                                     <div class="flex align-items-end">
-                                        <div class="ae-selectinput mb-0">
+                                        <div class="ae-selectinput mb-0 mr-4">
                                             <label>{{ 'PhoneNumber' | localize }} *</label>
                                             <div class="flex align-items-start">
                                                 <p-dropdown
-                                                    #memberPhoneCode
-                                                    [(ngModel)]="memberPhoneCodeId"
+                                                    name="phoneCodeNumber"
+                                                    [(ngModel)]="user.phoneCodeNumber"
                                                     [options]="personalDataPhones" 
+                                                    optionLabel="label"
                                                     placeholder="{{ 'Loading' | localize }}"
                                                     [filter]="true"
                                                 ></p-dropdown>
@@ -104,7 +91,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <span id="SpanSmsVerificationUnverified" class="input-group-append">
+                                        <span id="SpanSmsVerificationUnverified" class="ae-button--verify input-group-append">
                                             <button
                                                 id="btnSmsVerification"
                                                 (click)="smsVerify()"
