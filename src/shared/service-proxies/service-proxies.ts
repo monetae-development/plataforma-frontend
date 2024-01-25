@@ -32719,10 +32719,13 @@ export interface ICreateMntMemberWalletDto {
 export class CreateOrEditMntMemberDto implements ICreateOrEditMntMemberDto {
     name!: string | undefined;
     surname!: string | undefined;
+    phone!: string | undefined;
     dayOfBirth!: DateTime | undefined;
     comments!: string | undefined;
     userId!: number;
-    catNationalityId!: number;
+    catNationalityId!: number | undefined;
+    residenceCountryId!: number | undefined;
+    isPep!: boolean | undefined;
     id!: number | undefined;
 
     constructor(data?: ICreateOrEditMntMemberDto) {
@@ -32738,10 +32741,13 @@ export class CreateOrEditMntMemberDto implements ICreateOrEditMntMemberDto {
         if (_data) {
             this.name = _data["name"];
             this.surname = _data["surname"];
+            this.phone = _data["phone"];
             this.dayOfBirth = _data["dayOfBirth"] ? DateTime.fromISO(_data["dayOfBirth"].toString()) : <any>undefined;
             this.comments = _data["comments"];
             this.userId = _data["userId"];
             this.catNationalityId = _data["catNationalityId"];
+            this.residenceCountryId = _data["residenceCountryId"];
+            this.isPep = _data["isPep"];
             this.id = _data["id"];
         }
     }
@@ -32757,10 +32763,13 @@ export class CreateOrEditMntMemberDto implements ICreateOrEditMntMemberDto {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
         data["surname"] = this.surname;
+        data["phone"] = this.phone;
         data["dayOfBirth"] = this.dayOfBirth ? this.dayOfBirth.toString() : <any>undefined;
         data["comments"] = this.comments;
         data["userId"] = this.userId;
         data["catNationalityId"] = this.catNationalityId;
+        data["residenceCountryId"] = this.residenceCountryId;
+        data["isPep"] = this.isPep;
         data["id"] = this.id;
         return data;
     }
@@ -32769,10 +32778,13 @@ export class CreateOrEditMntMemberDto implements ICreateOrEditMntMemberDto {
 export interface ICreateOrEditMntMemberDto {
     name: string | undefined;
     surname: string | undefined;
+    phone: string | undefined;
     dayOfBirth: DateTime | undefined;
     comments: string | undefined;
     userId: number;
-    catNationalityId: number;
+    catNationalityId: number | undefined;
+    residenceCountryId: number | undefined;
+    isPep: boolean | undefined;
     id: number | undefined;
 }
 
@@ -32823,6 +32835,7 @@ export class CreateOrEditMntMemberIdentityDto implements ICreateOrEditMntMemberI
     backPicture!: string | undefined;
     selfie!: string | undefined;
     catIdentityTypeId!: number;
+    issuingCountryId!: number;
     mntMemberId!: number;
     id!: number | undefined;
 
@@ -32843,6 +32856,7 @@ export class CreateOrEditMntMemberIdentityDto implements ICreateOrEditMntMemberI
             this.backPicture = _data["backPicture"];
             this.selfie = _data["selfie"];
             this.catIdentityTypeId = _data["catIdentityTypeId"];
+            this.issuingCountryId = _data["issuingCountryId"];
             this.mntMemberId = _data["mntMemberId"];
             this.id = _data["id"];
         }
@@ -32863,6 +32877,7 @@ export class CreateOrEditMntMemberIdentityDto implements ICreateOrEditMntMemberI
         data["backPicture"] = this.backPicture;
         data["selfie"] = this.selfie;
         data["catIdentityTypeId"] = this.catIdentityTypeId;
+        data["issuingCountryId"] = this.issuingCountryId;
         data["mntMemberId"] = this.mntMemberId;
         data["id"] = this.id;
         return data;
@@ -32876,6 +32891,7 @@ export interface ICreateOrEditMntMemberIdentityDto {
     backPicture: string | undefined;
     selfie: string | undefined;
     catIdentityTypeId: number;
+    issuingCountryId: number;
     mntMemberId: number;
     id: number | undefined;
 }

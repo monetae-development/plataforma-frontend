@@ -14,6 +14,9 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { SmsVerificationModalComponent } from './sms-verification-modal.component';
 import { finalize } from 'rxjs/operators';
 import { EnableTwoFactorAuthenticationModalComponent } from './enable-two-factor-authentication-modal.component';
+import { ServiceCommonProxy } from '@shared/service-proxies/service-common-proxies';
+import { SelectItem } from 'primeng/api';
+import { Dropdown } from 'primeng/dropdown';
 
 @Component({
     selector: 'mySettingsModal',
@@ -25,6 +28,7 @@ export class MySettingsModalComponent extends AppComponentBase implements OnInit
     enableTwoFactorAuthenticationModal: EnableTwoFactorAuthenticationModalComponent;
     @ViewChild('smsVerificationModal') smsVerificationModal: SmsVerificationModalComponent;
     @ViewChild('verifyCodeModal') verifyCodeModal: SmsVerificationModalComponent;
+    @ViewChild('memberPhoneCode') memberPhoneCode: Dropdown;
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 
     public active = false;
@@ -38,13 +42,19 @@ export class MySettingsModalComponent extends AppComponentBase implements OnInit
     public defaultTimezoneScope: SettingScopes = SettingScopes.User;
     public savedPhoneNumber: string;
     public newPhoneNumber: string;
+    public memberPhoneCodeId: number;
+    public personalDataPhones: SelectItem[];
 
     isMultiTenancyEnabled: boolean = this.multiTenancy.isEnabled;
     isTwoFactorLoginEnabledForApplication = false;
 
     private _initialTimezone: string = undefined;
 
-    constructor(injector: Injector, private _profileService: ProfileServiceProxy) {
+    constructor(
+        injector: Injector, 
+        private _profileService: ProfileServiceProxy,
+        private _serviceCommonProxy: ServiceCommonProxy,
+    ) {
         super(injector);
     }
 
@@ -52,6 +62,9 @@ export class MySettingsModalComponent extends AppComponentBase implements OnInit
         this.isTwoFactorLoginEnabledForApplication = abp.setting.getBoolean(
             'Abp.Zero.UserManagement.TwoFactorLogin.IsEnabled'
         );
+        this._serviceCommonProxy.getSelectOptions('MntMemberDataComplements/GetAllCountryPhoneCodesForSelect', null).subscribe((result) => {
+            this.personalDataPhones = result.items;
+        });
     }
 
     show(): void {
@@ -94,9 +107,10 @@ export class MySettingsModalComponent extends AppComponentBase implements OnInit
     smsVerify(): void {
         let input = new SendVerificationSmsInputDto();
         input.phoneNumber = this.user.phoneNumber;
-        this._profileService.sendVerificationSms(input).subscribe(() => {
-            this.smsVerificationModal.show();
-        });
+        console.log(this.memberPhoneCodeId);
+        // this._profileService.sendVerificationSms(input).subscribe(() => {
+        //     this.smsVerificationModal.show();
+        // });
     }
 
     changePhoneNumberToVerified(): void {

@@ -196,9 +196,13 @@
     top: 36px;
     left: 16px;
 }
+.ae-selectinput,
 .ae-input{
+    .formgroup-control{
+        height: 38px;
+    }
     .form-control{
-        border-color: var(--ae-grey) !important;
+        border: 1px solid var(--ae-grey) !important;
         background-color: #FFFFFF;
         height: 38px;
         border-radius: 6px;
@@ -225,6 +229,9 @@
             border-bottom-left-radius: 8px;
             border-top-left-radius: 8px;
         }
+    }
+    .spin-validation{
+        top: -34px !important;
     }
 }
 .ae-inputnumber{
@@ -273,9 +280,10 @@
         }
     }
 }
+.ae-selectinput,
 .ae-select{
     .p-dropdown{
-        border-color: var(--ae-grey) !important;
+        border: 1px solid var(--ae-grey) !important;
         background-color: #FFFFFF;
         height: 38px !important;
         border-radius: 6px;
@@ -294,6 +302,29 @@
     small{
         display: block;
         cursor: pointer;
+    }
+    .spin-validation{
+        top: -34px !important;
+    }
+    .formgroup-control{
+        height: 38px;
+    }
+    .p-overlay{
+        max-width: 320px;
+    }
+}
+.ae-selectinput{
+    .p-dropdown{
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        width: 100%;
+        max-width: 100px;
+        border: 1px solid var(--ae-grey) !important;
+    }
+    .form-control{
+        border-left: none;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
     }
 }
 .ae-checkbox{
@@ -317,17 +348,23 @@
 }
 .ae-calendar{
     .p-calendar-w-btn{
-        border-color: var(--ae-grey) !important;
+        border: 1px solid var(--ae-grey) !important;
         background-color: #FFFFFF;
         height: 38px;
         border-radius: 6px;
         .p-button{
             background-color: transparent !important;
             .pi{
-                font-size: 30px;
+                font-size: 20px;
                 color: var(--ae-gris-dark);
             }
         }
+    }
+    .spin-validation{
+        top: -34px !important;
+    }
+    .formgroup-control{
+        height: 38px;
     }
 }
 .ae-inputcamera{
@@ -353,12 +390,48 @@
         margin-right: 10px;
     }
 }
+.ae-upload{
+    .p-fileupload-buttonbar{
+        border: 1px dashed var(--ae-grey) !important;
+        border-radius: 12px !important;
+        position: relative;
+        height: 95px;
+        display: flex;
+        display: -webkit-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 10px 0;
+        .p-fileupload-choose{
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            opacity: 0;
+        }
+        .ae-upload__header{
+            text-align: center;
+            .pi{
+                font-size: 32px;
+            }
+        }
+    }
+    .p-fileupload-content{
+        border: none !important;
+        padding: 12px !important;
+        .p-button-icon-only{
+            background-color: var(--ae-primary) !important;
+        }
+    }
+}
 .ae-radiobutton,
 .ae-inputcamera,
 .ae-calendar,
 .ae-input,
 .ae-inputnumber,
 .ae-select,
+.ae-selectinput,
 .ae-upload{
     margin: 12px 0;
     label{
@@ -929,6 +1002,11 @@
     }
     .ae-container__header{
         margin-bottom: 20px;
+        .ae-text{
+            .pi{
+                cursor: pointer;
+            }
+        }
     }
     .ae-container__content{
         margin-bottom: 20px;

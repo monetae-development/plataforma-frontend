@@ -8,7 +8,6 @@ import {
     CreateOrEditMntMemberIdentityDto,
     CreateOrEditMntMemberAddressDto,
     CreateOrEditMntEconomicInfoDto,
-    CreateOrEditMntMemberPepDto
 } from '@shared/service-proxies/service-proxies';
 import { ServiceMembersProxy } from '@shared/service-proxies/service-members-proxies';
 import { CreateOrEditMntMemberComplementDto } from '@shared/service-proxies/dto/mntMembers/CreateOrEditMntMemberComplementDto';
@@ -41,29 +40,34 @@ import { ButtonModule } from 'primeng/button';
 
 export class MntMemberDataComplementsComponent extends AppComponentBase implements OnInit, AfterViewInit {
 
+    @ViewChild('residenceCountry') residenceCountry: Dropdown;
+    @ViewChild('addressCountry') addressCountry: Dropdown;
     @ViewChild('memberName') memberName: Input;
     @ViewChild('memberSurname') memberSurname: Input;
+    @ViewChild('memberPhoneCode') memberPhoneCode: Dropdown;
     @ViewChild('memberPhone') memberPhone: Input;
     @ViewChild('memberDayOfBirth') memberDayOfBirth: Input;
     @ViewChild('memberNationality') memberNationality: Dropdown;
     @ViewChild('addressStreet') addressStreet: Input;
     @ViewChild('addressExteriorNo') addressExteriorNo: Input;
     @ViewChild('addressZipCode') addressZipCode: Input;
-    @ViewChild('addressCountry') addressCountry: Dropdown;
     @ViewChild('addressState') addressState: Dropdown;
     @ViewChild('addressCity') addressCity: Input;
     @ViewChild('identityType') identityType: Dropdown;
     @ViewChild('identityId') identityId: Input;
     @ViewChild('identityExpiration') identityExpiration: Input;
+    @ViewChild('identityIssuingCountry') identityIssuingCountry: Dropdown;
     @ViewChild('economicInfoProfession') economicInfoProfession: Dropdown;
     @ViewChild('economicInfoIncome') economicInfoIncome: Input;
     @ViewChild('economicInfoSourceFounds') economicInfoSourceFounds: Dropdown;
     @ViewChild('economicInfoExpectedTransactions') economicInfoExpectedTransactions: Input;
     @ViewChild('pep') pep: RadioButton;
 
+    residenceDataCountries: SelectItem[];
     personalDataNationalities: SelectItem[];
     personalDataCountries: SelectItem[];
     personalDataStates: SelectItem[];
+    personalDataPhones: SelectItem[];
     addressCountries: SelectItem[];
     addressStates: SelectItem[];
     identityTypes: SelectItem[];
@@ -75,9 +79,9 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     public memberPersonalDataCountryId: number;
     public memberAddress: CreateOrEditMntMemberAddressDto;
     public memberAddressCountryId: number;
+    public memberPhoneCodeId: number;
     public memberIdentity: CreateOrEditMntMemberIdentityDto;
     public memberEconomicInfo: CreateOrEditMntEconomicInfoDto;
-    public memberPep: CreateOrEditMntMemberPepDto;
 
     advancedFiltersAreShown = false;
     filterText = '';
@@ -89,11 +93,17 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     uploadedProofIncome: any[] = [];
     uploadedTaxReturn: any[] = [];
 
+    minDate: Date;
+
     pattern_numbers = '^[1-9][0-9]*$';
 
+    residenceForm = this._formBuilder.group({
+        'residenceCountry': new FormControl('', Validators.required),
+    });
     personalDataForm = this._formBuilder.group({
         'memberName': new FormControl('', Validators.required),
         'memberSurname': new FormControl('', Validators.required),
+        'memberPhoneCode': new FormControl('', Validators.required),
         'memberPhone': new FormControl('', Validators.required),
         'memberNationality': new FormControl('', Validators.required),
         'memberDayOfBirth': new FormControl('', Validators.required),
@@ -110,6 +120,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         'identityType': new FormControl('', Validators.required),
         'identityId': new FormControl('', Validators.required),
         'identityExpiration': new FormControl('', Validators.required),
+        'identityIssuingCountry': new FormControl('', Validators.required),
     });
     economicInfoForm = this._formBuilder.group({
         'economicInfoProfession': new FormControl('', Validators.required),
@@ -119,9 +130,6 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     });
     pepForm = this._formBuilder.group({
         'pep': new FormControl('', Validators.required),
-        'pepAnswer1': new FormControl('', Validators.required),
-        'pepAnswer2': new FormControl('', Validators.required),
-        'pepAnswer3': new FormControl('', Validators.required),
     });
 
     checkSessionAndComplemented = false;
@@ -157,6 +165,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     ) {
         super(injector);
         this.uploadUrl = AppConsts.remoteServiceBaseUrl + '/DemoUiComponents/UploadFiles';
+        this.minDate = new Date();
     }
 
     ngOnInit(): void {
@@ -167,7 +176,6 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         this.memberAddress = new CreateOrEditMntMemberAddressDto();
         this.memberIdentity = new CreateOrEditMntMemberIdentityDto();
         this.memberEconomicInfo = new CreateOrEditMntEconomicInfoDto();
-        this.memberPep = new CreateOrEditMntMemberPepDto();
 
         this._sessionServiceProxy.getCurrentLoignIsClientRole().subscribe((result) => {
             this.isClientRole = result.hasClientRole;
@@ -201,36 +209,34 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     formInit() {
         this._profileService.getCurrentUserProfileForEdit().subscribe((result) => {
             this.user = result;
-            this.disableSelects();
-            this._serviceCommonProxy.getSelectOptions('MntMemberDataComplements/GetAllNationalitiesForSelect', null).subscribe((result) => {
-                this.personalDataNationalities = result.items;
-                this.memberNationality.placeholder = this.l('SelectAnItemDropdown');
-                this.memberNationality.disabled = false;
-            });
-
+            this.residenceCountry.disabled = true;
+            
             this._serviceCommonProxy.getSelectOptions('MntMemberDataComplements/GetAllContriesForSelect', null).subscribe((result) => {
+                this.residenceDataCountries = result.items;
                 this.personalDataCountries = result.items;
                 this.addressCountries = result.items;
-                this.addressCountry.placeholder = this.l('SelectAnItemDropdown');
-                this.addressCountry.disabled = false;
+                this.residenceCountry.placeholder = this.l('SelectAnItemDropdown');
+                this.residenceCountry.disabled = false;
+            });
+
+            this._serviceCommonProxy.getSelectOptions('MntMemberDataComplements/GetAllNationalitiesForSelect', null).subscribe((result) => {
+                this.personalDataNationalities = result.items;
+            });
+
+            this._serviceCommonProxy.getSelectOptions('MntMemberDataComplements/GetAllCountryPhoneCodesForSelect', null).subscribe((result) => {
+                this.personalDataPhones = result.items;
             });
 
             this._serviceCommonProxy.getSelectOptions('MntMemberDataComplements/GetAllIndentitiesTypesForSelect', null).subscribe((result) => {
                 this.identityTypes = result.items;
-                this.identityType.placeholder = this.l('SelectAnItemDropdown');
-                this.identityType.disabled = false;
             });
 
             this._serviceCommonProxy.getSelectOptions('MntMemberDataComplements/GetAllProfessionsForSelect', null).subscribe((result) => {
                 this.economicInfoProfessions = result.items;
-                this.economicInfoProfession.placeholder = this.l('SelectAnItemDropdown');
-                this.economicInfoProfession.disabled = false;
             });
 
             this._serviceCommonProxy.getSelectOptions('MntMemberDataComplements/GetAllSourcesFoundsForSelect', null).subscribe((result) => {
                 this.economicInfoSourceFoundses = result.items;
-                this.economicInfoSourceFounds.placeholder = this.l('SelectAnItemDropdown');
-                this.economicInfoSourceFounds.disabled = false;
             });
 
         });
@@ -250,15 +256,14 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     onSave() {
         this.memberPersonalData.name = this.user.name;
         this.memberPersonalData.surname = this.user.surname;
+        this.memberPersonalData.phone = this.personalDataForm.value.memberPhoneCode + this.personalDataForm.value.memberPhone;
         this.memberPersonalData.dayOfBirth = this._dateTimeService.getEndOfDayForDate(this.memberPersonalData.dayOfBirth);
+        this.memberPersonalData.isPep = this.isPep;
         this.member.MemberPersonalData = this.memberPersonalData;
         this.member.MemberAddress = this.memberAddress;
         this.memberIdentity.expiration = this._dateTimeService.getEndOfDayForDate(this.memberIdentity.expiration);
         this.member.MemberIdentity = this.memberIdentity;
         this.member.MemberEconomicInfo = this.memberEconomicInfo;
-        this.member.IsPep = this.isPep;
-        this.member.MemberPep = this.memberPep;
-
         this.saving = true;
         if (this.personalDataForm.invalid
             || this.addressForm.invalid
@@ -274,6 +279,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
             this.saving = false;
             this.isValid = false;
         } else {
+            console.log(this.member);
             if (!this.isClientRole) {
                 abp.message.error('El formulario para complementar datos es de uso exclusivo para clientes de Monetae.<br><br> No es posible guardar la información.', 'Error', { isHtml: true });
             } else {
@@ -342,13 +348,6 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         });
     }
 
-    protected disableSelects() {
-        this.memberNationality.disabled = true;
-        this.addressCountry.disabled = true;
-        this.addressState.disabled = true;
-        this.identityType.disabled = true;
-    }
-
     protected translatePrimeComponents() {
         this._primeConfig.setTranslation({
             monthNames: [
@@ -405,21 +404,53 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         });
     }
 
+    backStep(step: number): void {
+        if(step === 0){
+            this.step0VerifyAccount = true;
+            this.step1VerifyAccount = false;
+        } else if(step === 1) {
+            this.step1VerifyAccount = true;
+            this.step2VerifyAccount = false;
+        } else if(step === 2) {
+            this.step2VerifyAccount = true;
+            this.step3VerifyAccount = false;
+        } else if(step === 3) {
+            this.step3VerifyAccount = true;
+            this.step4VerifyAccount = false;
+        }
+    }
+
     nextStep(step: number): void {
         if(step === 0){
-            this.step0VerifyAccount = false;
-            this.step1VerifyAccount = true;
+            if (this.residenceForm.invalid) {
+                this.validateForm(this.residenceForm);
+            } else {
+                this.step0VerifyAccount = false;
+                this.step1VerifyAccount = true;
+            }
         } else if(step === 1) {
-            this.step1VerifyAccount = false;
-            this.step2VerifyAccount = true;
+            if (this.personalDataForm.invalid) {
+                this.validateForm(this.personalDataForm);
+            } else {
+                this.step1VerifyAccount = false;
+                this.step2VerifyAccount = true;
+            }
         } else if(step === 2) {
-            this.step2VerifyAccount = false;
-            this.step3VerifyAccount = true;
+            if (this.addressForm.invalid) {
+                this.validateForm(this.addressForm);
+            } else {
+                this.step2VerifyAccount = false;
+                this.step3VerifyAccount = true;
+            }
         } else if(step === 3) {
-            this.step3VerifyAccount = false;
-            this.step4VerifyAccount = true;
+            if (this.identityForm.invalid) {
+                this.validateForm(this.identityForm);
+            } else {
+                this.step3VerifyAccount = false;
+                this.step4VerifyAccount = true;
+            }
         }
-    }s
+    }
 
     private openMessageDialogVerifyAccount(): void {
         const ref = this._dialogService.open(DialogDefaultComponent, {

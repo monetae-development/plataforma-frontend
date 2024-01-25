@@ -27,8 +27,7 @@ import { finalize } from 'rxjs';
 })
 export class DialogAddBankAccountComponent extends AppComponentBase implements OnInit {
 
-  bankAccountForm: FormGroup;
-  active = false;
+  active = true;
   saving = false;
   countries: SelectItem[];
   banks: SelectItem[];
@@ -41,12 +40,10 @@ export class DialogAddBankAccountComponent extends AppComponentBase implements O
   constructor(
     injector: Injector,
     public ref: DynamicDialogRef,
-    private fb: FormBuilder,
     private _serviceMemberProxy: ServiceMembersProxy,
     private _serviceCommonProxy: ServiceCommonProxy,
   ) {
     super(injector);
-    this.bankAccountForm = this._buildBankAccountForm();
    }
 
   ngOnInit() {
@@ -54,16 +51,6 @@ export class DialogAddBankAccountComponent extends AppComponentBase implements O
     this.loadAccountTypes();
     this.loadCurrencies();
   }
-
-  private _buildBankAccountForm(): FormGroup {
-    return this.fb.group({
-      mntMemberBankAccountId: [{ value: null, disabled: true}, [Validators.required]],
-      amount: [null, [Validators.required]],
-    });
-  }
-
-  // get mntMemberBankAccountIdControl() { return this.bankAccountForm.controls['mntMemberBankAccountId'] as FormControl; }
-  // get amountDepositControl() { return this.bankAccountForm.controls['amount'] as FormControl; }
 
   onCancel(){
     this.ref.close();
@@ -77,6 +64,7 @@ export class DialogAddBankAccountComponent extends AppComponentBase implements O
     this._serviceCommonProxy.getSelectOptions('MntMemberBankAccounts/GetAllCountriesForSelect', null)
     .subscribe((result) => {
       this.countries = result.items;
+      this.active = false;
     });
   }
 
