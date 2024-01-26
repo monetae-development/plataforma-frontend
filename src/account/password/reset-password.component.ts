@@ -86,13 +86,14 @@ export class ResetPasswordComponent extends AppComponentBase implements OnInit {
                     this.saving = true;
                     this._loginService.authenticateModel.userNameOrEmailAddress = result.userName;
                     this._loginService.authenticateModel.password = this.model.password;
-                    this._loginService.authenticate(
-                        () => {
-                            this.saving = false;
-                        },
-                        null,
-                        token
-                    );
+                    this._router.navigate(['account/login']);
+                    // this._loginService.authenticate(
+                    //     () => {
+                    //         this.saving = false;
+                    //     },
+                    //     null,
+                    //     token
+                    // );
                 };
 
                 if (this.useCaptcha) {

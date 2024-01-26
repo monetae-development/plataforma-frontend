@@ -34,6 +34,7 @@ export class MySettingsModalComponent extends AppComponentBase implements OnInit
     public active = false;
     public saving = false;
     public isGoogleAuthenticatorEnabled = false;
+    public activeMessagePhone = false;
     public isPhoneNumberConfirmed: boolean;
     public smsEnabled: boolean;
     public user: CurrentUserProfileEditDto;
@@ -104,12 +105,24 @@ export class MySettingsModalComponent extends AppComponentBase implements OnInit
             });
     }
 
+    onChangePhoneNumber(): void{
+        if(this.user.phoneCodeNumber && this.user.phoneNumber){
+            this.activeMessagePhone = false;
+        } else {
+            this.activeMessagePhone = true;
+        }
+    }
+
     smsVerify(): void {
-        let input = new SendVerificationSmsInputDto();
-        input.phoneNumber = this.user.phoneCodeNumber['label'] + this.user.phoneNumber;
-        this._profileService.sendVerificationSms(input).subscribe(() => {
-            this.smsVerificationModal.show();
-        });
+        if(!this.user.phoneCodeNumber || !this.user.phoneNumber){
+            this.activeMessagePhone = true;
+        } else {
+            let input = new SendVerificationSmsInputDto();
+            input.phoneNumber = this.user.phoneCodeNumber['label'] + this.user.phoneNumber;
+            this._profileService.sendVerificationSms(input).subscribe(() => {
+                this.smsVerificationModal.show();
+            });
+        }
     }
 
     changePhoneNumberToVerified(): void {

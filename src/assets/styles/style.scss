@@ -1071,6 +1071,12 @@
         border-radius: 0;
     }
 }
+.error-message{
+    display: block;
+    font-size: 11px;
+    color: #ea868f;
+    margin-top: 5px;
+}
 @media (max-width: 480px) {
     .ae-dialog{
         &.ae-dialog--operations{

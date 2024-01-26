@@ -8,6 +8,7 @@ import {
     CreateOrEditMntMemberIdentityDto,
     CreateOrEditMntMemberAddressDto,
     CreateOrEditMntEconomicInfoDto,
+    MntMemberFilesServiceProxy,
 } from '@shared/service-proxies/service-proxies';
 import { ServiceMembersProxy } from '@shared/service-proxies/service-members-proxies';
 import { CreateOrEditMntMemberComplementDto } from '@shared/service-proxies/dto/mntMembers/CreateOrEditMntMemberComplementDto';
@@ -154,6 +155,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         //TODO:Ajustar nombres de servicios
         private _serviceMembersProxy: ServiceMembersProxy,
         private _serviceCommonProxy: ServiceCommonProxy,
+        // private _mntMemberFilesServiceProxy: MntMemberFilesServiceProxy,
         private _notifyService: NotifyService,
         private _tokenAuth: TokenAuthServiceProxy,
         private _activatedRoute: ActivatedRoute,
@@ -242,15 +244,29 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         });
     }
 
-    // upload event
-    onUpload(event, recordFiles): void {
+    onUploadFileAddressProof(event): void {
+        console.log("entra");
         for (const file of event.files) {
-            recordFiles.push(file);
+            // this.uploadedAddressProof.push(file);
+            // recordFiles.push(file);
+            // console.log(recordFiles);
+            alert("Hello");
+        }
+    }
+
+    // upload event
+    onUploadFile(event, recordFiles): void {
+        console.log("entra");
+        for (const file of event.files) {
+            // recordFiles.push(file);
+            console.log(recordFiles);
+            alert("Hello");
         }
     }
 
     onBeforeSend(event): void {
         event.xhr.setRequestHeader('Authorization', 'Bearer ' + abp.auth.getToken());
+        console.log("entra");
     }
 
     onSave() {

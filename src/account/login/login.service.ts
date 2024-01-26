@@ -349,7 +349,7 @@ export class LoginService extends AppComponentBase{
 
     private processAuthenticateResult(authenticateResult: AuthenticateResultModel, redirectUrl?: string) {
         this.authenticateResult = authenticateResult;
-
+        console.log(this.authenticateResult);
         if (authenticateResult.shouldResetPassword) {
             // Password reset
 
@@ -368,6 +368,7 @@ export class LoginService extends AppComponentBase{
                 this.optionsTwoFactorProvider.push(option);
             });
             if (this.optionsTwoFactorProvider.length == 1) {
+                console.log(this.optionsTwoFactorProvider);
                 const model = new SendTwoFactorAuthCodeModel();
                 model.userId = authenticateResult.userId;
                 model.provider = this.optionsTwoFactorProvider[0].value;

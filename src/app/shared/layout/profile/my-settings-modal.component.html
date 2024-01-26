@@ -67,7 +67,7 @@
                                 <validation-messages [formCtrl]="emailAddressInput"></validation-messages>
                             </div>
                             <div *ngIf="smsEnabled">
-                                <div class="mb-5">
+                                <div class="mb-10">
                                     <div class="flex align-items-end">
                                         <div class="ae-selectinput mb-0 mr-4">
                                             <label>{{ 'PhoneNumber' | localize }} *</label>
@@ -79,6 +79,7 @@
                                                     optionLabel="label"
                                                     placeholder="{{ 'Loading' | localize }}"
                                                     [filter]="true"
+                                                    (onChange)="onChangePhoneNumber()"
                                                 ></p-dropdown>
                                                 <div class="formgroup-control">
                                                     <input
@@ -87,6 +88,7 @@
                                                         class="form-control"
                                                         [(ngModel)]="user.phoneNumber"
                                                         maxlength="32"
+                                                        (keyup)="onChangePhoneNumber()"
                                                     />
                                                 </div>
                                             </div>
@@ -123,6 +125,7 @@
                                             </span>
                                         </div>
                                     </div>
+                                    <span class="error-message" *ngIf="activeMessagePhone">Este campo es requerido.</span>
                                 </div>
                             </div>
 
