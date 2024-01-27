@@ -24,7 +24,7 @@
             </div>
             <div class="ae-container__content">
                 <form [formGroup]="residenceForm">
-                    <div class="ae-select">
+                    <div class="ae-select mb-10">
                         <label>País de residencia *</label>
                         <div class="formgroup-control">
                             <p-dropdown 
@@ -54,7 +54,7 @@
                         </div>
                     </div>
                 </form>
-                <p class="ae-text-default ae-text-gris-dark mb-5">Completa los siguientes pasos para verificar tu cuenta en <strong>5 minutos</strong></p>
+                <p class="ae-text-default ae-text-gris-dark mb-8">Completa los siguientes pasos para verificar tu cuenta en <strong>5 minutos</strong></p>
                 <div class="ae-steps__verify">
                     <div class="ae-steps__item flex align-items-center">
                         <i class="pi pi-user ae-text-gris-dark ae-text-medium  mr-3"></i>
@@ -75,7 +75,7 @@
                 </div>
             </div>
             <div class="ae-container__actions">
-                <p-button class="ae-button ae-button--primary w-full" label="Siguiente" (click)="nextStep(0)"></p-button>
+                <p-button class="ae-button ae-button--primary w-full ae-text-default" label="Siguiente" (click)="nextStep(0)"></p-button>
             </div>
         </div>
         <div class="ae-container__kyc ae-container--md" *ngIf="step1VerifyAccount">
@@ -94,14 +94,14 @@
                 <form [formGroup]="personalDataForm">
                     <div class="ae-form__grid">
                         <div class="ae-input">
-                            <label>Apellido(s) *</label>
+                            <label>{{ 'FirstName' | localize }} *</label>
                             <div class="formgroup-control">
                                 <input
                                     type="text"
                                     #memberName
                                     formControlName="memberName"
                                     [(ngModel)]="user.name"
-                                    placeholder="Apellido(s)"
+                                    placeholder="{{ 'FirstName' | localize }}"
                                     class="form-control"
                                     minlength="3"
                                     maxlength="64"
@@ -124,14 +124,14 @@
                             </div>
                         </div>
                         <div class="ae-input">
-                            <label>{{ 'Surname' | localize }} *</label>
+                            <label>Apellido(s) *</label>
                             <div class="formgroup-control">
                                 <input
                                     type="text"
                                     #memberSurname
                                     formControlName="memberSurname"
                                     [(ngModel)]="user.surname"
-                                    placeholder="{{ 'Surname' | localize }}"
+                                    placeholder="Apellido(s)"
                                     class="form-control"
                                     minlength="3"
                                     maxlength="64"
@@ -801,7 +801,7 @@
                             </div>
                         </div>
                         <div class="ae-input">
-                            <label>Movimientos por mes ({{ 'Aprox' | localize }})*</label>
+                            <label>Estimado de operaciones en USD *</label>
                             <div class="formgroup-control">
                                 <input
                                     type="text"
@@ -810,7 +810,10 @@
                                     [(ngModel)]="memberEconomicInfo.expectedTransactions"
                                     placeholder="{{ 'MonthlyExpectedTransactions' | localize }}"
                                     class="form-control"
-                                    mask="0*"
+                                    prefix="$"
+                                    mask="separator"
+                                    thousandSeparator=","
+                                    [validation]="true"
                                     maxlength="32"
                                 />
                                 <div class="spin-validation">

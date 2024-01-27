@@ -1021,6 +1021,7 @@
     .ae-container__content{
         margin-bottom: 20px;
         .ae-steps__verify{
+            margin-bottom: 50px;
             .ae-steps__item{
                 margin: 14px 0;
             }
@@ -1042,6 +1043,9 @@
             max-width: 235px;
             .p-button{
                 max-width: 235px;
+                .p-button-label{
+                    font-size: 14px;
+                }
             }
             &.w-full{
                 max-width: 100%;
