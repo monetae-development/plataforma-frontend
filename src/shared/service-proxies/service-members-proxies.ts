@@ -931,4 +931,12 @@ export class ServiceMembersProxy {
         }
         return _observableOf(null as any);
     }
+
+    downloadMemberFile(userId: number | undefined, type: number | undefined): void {
+        let url_ = this.baseUrl + '/api/services/app/MntMemberFiles/DownloadFileMember?';
+        url_ += 'userId=' + encodeURIComponent('' + ((userId === null || userId === undefined) ? '' : userId)) + '&';
+        url_ += 'type=' + encodeURIComponent('' + ((type === null || type === undefined) ? '' : type)) + '&';
+        url_ = url_.replace(/[?&]$/, '');
+        location.href = url_;
+    }
 }

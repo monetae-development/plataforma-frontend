@@ -22,7 +22,7 @@
                 <div class="row mb-5">
                     <div class="col-10">
                         <h5>
-                            {{ l('User') }}:
+                            {{ l('Name') }}:
                             <span class="text-danger">{{ item.userName }} {{ item.userSurname }}</span>
                         </h5>
                     </div>
@@ -42,6 +42,10 @@
                         {{ item.mntMember.dayOfBirth | luxonFormat : 'dd/MM/yyyy' }}
                     </div>
                     <div class="col-6 mb-3">
+                        <h6>{{ l('ResidenceCountry') }} :</h6>
+                        {{ item.residenceCountryTitle }}
+                    </div>
+                    <div class="col-6 mb-3">
                         <h6>{{ l('CatNationality') }} :</h6>
                         {{ item.catNationalityTitle }}
                     </div>
@@ -59,15 +63,11 @@
                                     {{ address.street }}
                                 </div>
                                 <div class="col-6 mb-3">
-                                    <h6>{{ l('ExteriorNo') }} :</h6>
+                                    <h6>{{ l('Number') }} :</h6>
                                     {{ address.exteriorNo }}
                                 </div>
                                 <div class="col-6 mb-3">
-                                    <h6>{{ l('InteriorNo') }} :</h6>
-                                    {{ address.interiorNo }}
-                                </div>
-                                <div class="col-6 mb-3">
-                                    <h6>{{ l('Zipcode') }} :</h6>
+                                    <h6>{{ l('ZipCode') }} :</h6>
                                     {{ address.zipCode }}
                                 </div>
                                 <div class="col-6 mb-3">
@@ -77,6 +77,14 @@
                                 <div class="col-6 mb-3">
                                     <h6>{{ l('CatState') }} :</h6>
                                     {{ address.catStateTitle }}
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <button
+                                        class="btn btn-sm btn-primary"
+                                        (click)="downloadFile(fileType.AddressProof)"
+                                    >
+                                        {{ l('DownloadAddressProof') }}
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -95,12 +103,32 @@
                                     {{ identity.catIdentityTypeTitle }}
                                 </div>
                                 <div class="col-6 mb-3">
+                                    <h6>{{ l('IssuingCountry') }} :</h6>
+                                    {{ identity.issuingCountryTitle }}
+                                </div>
+                                <div class="col-6 mb-3">
                                     <h6>{{ l('IdentityId') }} :</h6>
                                     {{ identity.identityId }}
                                 </div>
                                 <div class="col-6 mb-3">
-                                    <h6>{{ l('Expiration') }} :</h6>
+                                    <h6>{{ l('ExpirationDate') }} :</h6>
                                     {{ identity.expiration | luxonFormat : 'dd/MM/yyyy' }}
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <button
+                                        class="btn btn-sm btn-primary"
+                                        (click)="downloadFile(fileType.IdentityFront)"
+                                    >
+                                        {{ l('DownloadIdentityFront') }}
+                                    </button>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <button
+                                        class="btn btn-sm btn-primary"
+                                        (click)="downloadFile(fileType.IdentityBack)"
+                                    >
+                                        {{ l('DownloadIdentityBack') }}
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -130,38 +158,19 @@
                                     <h6>{{ 'MonthlyExpectedTransactions' | localize }} :</h6>
                                     {{ economic.expectedTransactions }}
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row mb-5">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5>{{ l('PepTitle') }}</h5>
-                        </div>
-                        <div class="card-body">
-                            <div *ngIf="pep.mntMemberId == undefined" class="row" class="row">
-                                <div class="col-sm-12 col-md-10 offset-md-1">
-                                    <div class="alert alert-warning w-100" role="alert">
-                                        <span class="fw-bold">{{ 'AlertinfoTitle' | localize }}:</span>
-                                        {{ 'NotPep' | localize }}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div *ngIf="pep.mntMemberId != undefined" class="row">
                                 <div class="col-6 mb-3">
-                                    {{ l('PepAnswer1') }}
-                                    <h6>{{ pep.answer1 ? ('OptionYes' | localize) : ('OptionNo' | localize) }}</h6>
+                                    <button class="btn btn-sm btn-primary" (click)="downloadFile(fileType.IncomeProof)">
+                                        {{ l('DownloadIncomeProof') }}
+                                    </button>
                                 </div>
                                 <div class="col-6 mb-3">
-                                    {{ l('PepAnswer2') }}
-                                    <h6>{{ pep.answer2 ? ('OptionYes' | localize) : ('OptionNo' | localize) }}</h6>
+                                    <button class="btn btn-sm btn-primary" (click)="downloadFile(fileType.TaxReturn)">
+                                        {{ l('DownloadTaxReturn') }}
+                                    </button>
                                 </div>
                                 <div class="col-6 mb-3">
-                                    {{ l('PepAnswer3') }}
-                                    <h6>{{ pep.answer3 ? ('OptionYes' | localize) : ('OptionNo' | localize) }}</h6>
+                                    <h6>{{ l('PepTitle') }} :</h6>
+                                    {{ economic.pep ? l('Yes') : l('No') }}
                                 </div>
                             </div>
                         </div>

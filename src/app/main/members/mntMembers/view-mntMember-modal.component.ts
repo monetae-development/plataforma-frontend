@@ -1,11 +1,14 @@
 ﻿import { AppConsts } from '@shared/AppConsts';
 import { Component, ViewChild, Injector, Output, EventEmitter } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { GetMntMemberForViewDto, MntMemberDto,
+import {
+    GetMntMemberForViewDto, MntMemberDto,
     MntMemberAddressesServiceProxy, GetMntMemberAddressCompletedDto,
     MntMemberIdentitiesServiceProxy, GetMntMemberIdentityCompletedDto,
     MntEconomicInfosServiceProxy, GetMntEconomicInfoCompletedDto,
-    MntMemberPepsServiceProxy, MntMemberPepDto} from '@shared/service-proxies/service-proxies';
+} from '@shared/service-proxies/service-proxies';
+import { ServiceMembersProxy } from '@shared/service-proxies/service-members-proxies';
+import { FileType } from '@shared/service-proxies/enum/Members/FileType.enum';
 import { AppComponentBase } from '@shared/common/app-component-base';
 
 @Component({
@@ -24,14 +27,14 @@ export class ViewMntMemberModalComponent extends AppComponentBase {
     address: GetMntMemberAddressCompletedDto;
     identity: GetMntMemberIdentityCompletedDto;
     economic: GetMntEconomicInfoCompletedDto;
-    pep: MntMemberPepDto;
+    fileType = FileType;
 
     constructor(
         injector: Injector,
         private _mntMemberAddressesServiceProxy: MntMemberAddressesServiceProxy,
         private _mntMemberIdentitiesServiceProxy: MntMemberIdentitiesServiceProxy,
         private _mntEconomicInfosServiceProxy: MntEconomicInfosServiceProxy,
-        private _mntMemberPepsServiceProxy: MntMemberPepsServiceProxy,
+        private _mntMembersProxy: ServiceMembersProxy,
     ) {
         super(injector);
         this.item = new GetMntMemberForViewDto();
@@ -39,7 +42,6 @@ export class ViewMntMemberModalComponent extends AppComponentBase {
         this.address = new GetMntMemberAddressCompletedDto();
         this.identity = new GetMntMemberIdentityCompletedDto();
         this.economic = new GetMntEconomicInfoCompletedDto();
-        this.pep = new MntMemberPepDto();
     }
 
     show(item: GetMntMemberForViewDto): void {
@@ -57,10 +59,10 @@ export class ViewMntMemberModalComponent extends AppComponentBase {
         this._mntEconomicInfosServiceProxy.getMntEconomicInfoByMemberId(this.item.mntMember.id).subscribe(result => {
             this.economic = result;
         });
+    }
 
-        this._mntMemberPepsServiceProxy.getMntMemberPepByMemberId(this.item.mntMember.id).subscribe(result => {
-            this.pep = result;
-        });
+    downloadFile(fileType: number): void {
+        this._mntMembersProxy.downloadMemberFile(this.item.mntMember.userId, fileType);
     }
 
     close(): void {

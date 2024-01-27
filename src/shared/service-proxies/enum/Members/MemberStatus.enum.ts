@@ -1,6 +1,7 @@
 export enum MemberStatus {
-    Pending = 0,
-    Review = 1,
-    Approved = 2,
-    Refused = 3
+    Register = 0,
+    Pending = 1,
+    Review = 2,
+    Approved = 3,
+    Refused = 4
 }

@@ -38684,6 +38684,7 @@ export class GetMntMemberForViewDto implements IGetMntMemberForViewDto {
     userPhoneNumber!: string | undefined;
     userEmail!: string | undefined;
     catNationalityTitle!: string | undefined;
+    residenceCountryTitle!: string | undefined;
     status!: number | undefined;
 
     constructor(data?: IGetMntMemberForViewDto) {
@@ -38703,6 +38704,7 @@ export class GetMntMemberForViewDto implements IGetMntMemberForViewDto {
             this.userPhoneNumber = _data["userPhoneNumber"];
             this.userEmail = _data["userEmail"];
             this.catNationalityTitle = _data["catNationalityTitle"];
+            this.residenceCountryTitle = _data["residenceCountryTitle"]
             this.status = _data["status"];
         }
     }
@@ -38722,6 +38724,7 @@ export class GetMntMemberForViewDto implements IGetMntMemberForViewDto {
         data["userPhoneNumber"] = this.userPhoneNumber;
         data["userEmail"] = this.userEmail;
         data["catNationalityTitle"] = this.catNationalityTitle;
+        data["residenceCountryTitle"] = this.residenceCountryTitle;
         data["status"] = this.status;
         return data;
     }
@@ -38734,6 +38737,7 @@ export interface IGetMntMemberForViewDto {
     userPhoneNumber: string | undefined;
     userEmail: string | undefined;
     catNationalityTitle: string | undefined;
+    residenceCountryTitle: string | undefined;
     status: number | undefined;
 }
 
@@ -42427,6 +42431,7 @@ export class MntEconomicInfoDto implements IMntEconomicInfoDto {
     taxReturn!: string | undefined;
     catProfessionId!: number;
     catSourceFoundsId!: number;
+    pep: boolean;
     mntMemberId!: number;
     id!: number;
 
@@ -42448,6 +42453,7 @@ export class MntEconomicInfoDto implements IMntEconomicInfoDto {
             this.catProfessionId = _data["catProfessionId"];
             this.catSourceFoundsId = _data["catSourceFoundsId"];
             this.mntMemberId = _data["mntMemberId"];
+            this.pep = _data["pep"]
             this.id = _data["id"];
         }
     }
@@ -42468,6 +42474,7 @@ export class MntEconomicInfoDto implements IMntEconomicInfoDto {
         data["catProfessionId"] = this.catProfessionId;
         data["catSourceFoundsId"] = this.catSourceFoundsId;
         data["mntMemberId"] = this.mntMemberId;
+        data["pep"] = this.pep;
         data["id"] = this.id;
         return data;
     }
@@ -42481,6 +42488,7 @@ export interface IMntEconomicInfoDto {
     catProfessionId: number;
     catSourceFoundsId: number;
     mntMemberId: number;
+    pep: boolean;
     id: number;
 }
 
@@ -42492,6 +42500,7 @@ export class GetMntEconomicInfoCompletedDto implements IGetMntEconomicInfoComple
     catSourceFoundsId!: number;
     catSourceFoundsTitle!: string | undefined;
     mntMemberId!: number;
+    pep: boolean;
     id!: number;
 
     constructor(data?: GetMntEconomicInfoCompletedDto) {
@@ -42512,6 +42521,7 @@ export class GetMntEconomicInfoCompletedDto implements IGetMntEconomicInfoComple
             this.catSourceFoundsId = _data["catSourceFoundsId"];
             this.catSourceFoundsTitle = _data["catSourceFoundsTitle"];
             this.mntMemberId = _data["mntMemberId"];
+            this.pep = _data["pep"]
             this.id = _data["id"];
         }
     }
@@ -42532,6 +42542,7 @@ export class GetMntEconomicInfoCompletedDto implements IGetMntEconomicInfoComple
         data["catSourceFoundsId"] = this.catSourceFoundsId;
         data["catSourceFoundsTitle"] = this.catSourceFoundsTitle;
         data["mntMemberId"] = this.mntMemberId;
+        data["pep"] = this.pep;
         data["id"] = this.id;
         return data;
     }
@@ -42545,6 +42556,7 @@ export interface IGetMntEconomicInfoCompletedDto {
     catSourceFoundsId: number;
     catSourceFoundsTitle: string | undefined;
     mntMemberId: number;
+    pep: boolean;
     id: number;
 }
 
@@ -43424,6 +43436,8 @@ export class MntMemberIdentityCompletedDto implements IMntMemberIdentityComplete
     selfie!: string | undefined;
     catIdentityTypeId!: number;
     catIdentityTypeTitle!: string | undefined;
+    issuingCountryId!: number;
+    issuingCountryTitle!: string | undefined;
     mntMemberId!: number;
     id!: number;
 
@@ -43445,6 +43459,8 @@ export class MntMemberIdentityCompletedDto implements IMntMemberIdentityComplete
             this.selfie = _data["selfie"];
             this.catIdentityTypeId = _data["catIdentityTypeId"];
             this.catIdentityTypeTitle = _data["catIdentityTypeTitle"];
+            this.issuingCountryId = _data["issuingCountryId"];
+            this.issuingCountryTitle = _data["issuingCountryTitle"];
             this.mntMemberId = _data["mntMemberId"];
             this.id = _data["id"];
         }
@@ -43466,6 +43482,8 @@ export class MntMemberIdentityCompletedDto implements IMntMemberIdentityComplete
         data["selfie"] = this.selfie;
         data["catIdentityTypeId"] = this.catIdentityTypeId;
         data["catIdentityTypeTitle"] = this.catIdentityTypeTitle;
+        data["issuingCountryId"] = this.issuingCountryId;
+        data["issuingCountryTitle"] = this.issuingCountryTitle;
         data["mntMemberId"] = this.mntMemberId;
         data["id"] = this.id;
         return data;
@@ -43480,6 +43498,8 @@ export interface IMntMemberIdentityCompletedDto {
     selfie: string | undefined;
     catIdentityTypeId: number;
     catIdentityTypeTitle: string | undefined;
+    issuingCountryId: number;
+    issuingCountryTitle: string | undefined;
     mntMemberId: number;
     id: number;
 }
@@ -43556,6 +43576,8 @@ export class GetMntMemberIdentityCompletedDto implements IGetMntMemberIdentityCo
     selfie!: string | undefined;
     catIdentityTypeId!: number;
     catIdentityTypeTitle!: string | undefined;
+    issuingCountryId!: number;
+    issuingCountryTitle!: string | undefined;
     mntMemberId!: number;
     id!: number;
 
@@ -43577,6 +43599,8 @@ export class GetMntMemberIdentityCompletedDto implements IGetMntMemberIdentityCo
             this.selfie = _data["selfie"];
             this.catIdentityTypeId = _data["catIdentityTypeId"];
             this.catIdentityTypeTitle = _data["catIdentityTypeTitle"];
+            this.issuingCountryId = _data["issuingCountryId"];
+            this.issuingCountryTitle = _data["issuingCountryTitle"];
             this.mntMemberId = _data["mntMemberId"];
             this.id = _data["id"];
         }
@@ -43598,6 +43622,8 @@ export class GetMntMemberIdentityCompletedDto implements IGetMntMemberIdentityCo
         data["selfie"] = this.selfie;
         data["catIdentityTypeId"] = this.catIdentityTypeId;
         data["catIdentityTypeTitle"] = this.catIdentityTypeTitle;
+        data["issuingCountryId"] = this.issuingCountryId;
+        data["issuingCountryTitle"] = this.issuingCountryTitle;
         data["mntMemberId"] = this.mntMemberId;
         data["id"] = this.id;
         return data;
@@ -43612,6 +43638,8 @@ export interface IGetMntMemberIdentityCompletedDto {
     selfie: string | undefined;
     catIdentityTypeId: number;
     catIdentityTypeTitle: string | undefined;
+    issuingCountryId: number;
+    issuingCountryTitle: string | undefined;
     mntMemberId: number;
     id: number;
 }
