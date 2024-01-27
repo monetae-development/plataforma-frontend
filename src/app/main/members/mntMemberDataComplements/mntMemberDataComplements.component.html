@@ -1,17 +1,4 @@
 ﻿<div [@routerTransition]>
-    <div *ngIf="isMemberComplemented && checkSessionAndComplemented" class="mt-20 mb-20">
-        <div class="ae-container__kyc ae-container--sm">
-            <h3 class="text-primary text-center mb-5">
-                {{ 'ThankYou' | localize }}
-                <br />
-                <br />
-                {{ 'ComplementedDataCompletedTitle' | localize }}!
-            </h3>
-            <div class="alert alert-info">
-                {{ 'ComplementedDataCompletedMessage' | localize }}
-            </div>
-        </div>
-    </div>
     <div *ngIf="!completed && !isMemberComplemented && checkSessionAndComplemented">
         <div class="ae-container__kyc ae-container--sm" *ngIf="step0VerifyAccount">
             <div class="ae-container__header">
@@ -452,7 +439,7 @@
                         <div class="ae-upload ae-grid--fullwidth">
                             <label for="addressProof">
                                 Adjuntar comprobante de domicilio *
-                                <span class="details">{{ 'AddressProofDetails' | localize }}</span>
+                                <span class="ae-text-default ae-text-gris-dark">{{ 'AddressProofDetails' | localize }}</span>
                                 <br />
                             </label>
                             <p-fileUpload
@@ -507,7 +494,7 @@
             <div class="ae-container__content">
                 <form [formGroup]="identityForm">
                     <div class="ae-form__grid">
-                        <div class="ae-select">
+                        <div class="ae-select ae-orden__two">
                             <label>{{ l('CatIdentityType') }} *</label>
                             <div class="formgroup-control">
                                 <p-dropdown
@@ -536,7 +523,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="ae-select">
+                        <div class="ae-select ae-orden__one">
                             <label>País Emisor *</label>
                             <div class="formgroup-control">
                                 <p-dropdown 
@@ -565,7 +552,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="ae-input">
+                        <div class="ae-input ae-orden__three">
                             <label>{{ 'IdentityId' | localize }} *</label>
                             <div class="formgroup-control">
                                 <input
@@ -594,7 +581,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="ae-calendar">
+                        <div class="ae-calendar ae-orden__four">
                             <label>{{ 'ExpirationDate' | localize }} *</label>
                             <div class="formgroup-control">
                                 <p-calendar
@@ -623,7 +610,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="ae-upload">
+                        <div class="ae-upload ae-orden__five">
                             <label for="identityFrontPicture">{{ 'IdentityFrontPicture' | localize }}</label>
                             <p-fileUpload
                                 id="identityFrontPicture"
@@ -655,7 +642,7 @@
                                 </ng-template>
                             </p-fileUpload>
                         </div>
-                        <div class="ae-upload">
+                        <div class="ae-upload ae-orden__six">
                             <label for="identityBackPicture">{{ 'IdentityBackPicture' | localize }}</label>
                             <p-fileUpload
                                 fileLimit="1"
@@ -837,7 +824,7 @@
                         <div class="ae-upload ae-grid--fullwidth mb-0">
                             <label for="economicInfoProofIncome">
                                 {{ 'ProofIncome' | localize }} *
-                                <span class="details">{{ 'ProofIncomeDetails' | localize }}</span>
+                                <span class="ae-text-default ae-text-gris-dark">{{ 'ProofIncomeDetails' | localize }}</span>
                                 <br />
                             </label>
                             <p-fileUpload
@@ -873,7 +860,7 @@
                         <div class="ae-upload ae-grid--fullwidth">
                             <label for="economicInfoTaxReturn">
                                 {{ 'TaxReturn' | localize }} (últimos 2 años). <br>
-                                <span class="details">{{ 'TaxReturnDetails' | localize }}</span>
+                                <span class="ae-text-default ae-text-gris-dark">{{ 'TaxReturnDetails' | localize }}</span>
                             </label>
                             <p-fileUpload
                                 fileLimit="1"
@@ -913,7 +900,7 @@
                         <span class="ae-text-xsmall ae-text-gris-dark">{{ 'PepNotice' | localize }}</span>
                     </div>
                     <div class="ae-radiobutton flex align-items-center">
-                        <div class="ae-radiobutton__item">
+                        <div class="ae-radiobutton__item mr-8">
                             <p-radioButton
                                 #pep
                                 formControlName="pep"

@@ -151,6 +151,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
 
     constructor(
         injector: Injector,
+        private _router: Router,
         private _sessionServiceProxy: SessionServiceProxy,
         //TODO:Ajustar nombres de servicios
         private _serviceMembersProxy: ServiceMembersProxy,
@@ -184,7 +185,6 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
 
             if (!result.hasClientRole) {
                 this.openMessageDialogVerifyAccount();
-                // abp.message.warn('El formulario para complementar datos es de uso exclusivo para clientes de Monetae.<br><br> El formulario será visible pero los datos no podrán ser guardados.', 'Atención', { isHtml: true });
             }
 
             this._sessionServiceProxy.getCurrentLoginInformations().subscribe((session) => {
@@ -194,6 +194,8 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
                         this.checkSessionAndComplemented = true;
                         if (!this.isMemberComplemented) {
                             this.formInit();
+                        } else {
+                            this.openMessageDialogSuccessAccount();
                         }
                     });
                 } else {
@@ -502,6 +504,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         dialogRef?.changeDetectorRef.detectChanges();
         const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
         instance?.outAccept.subscribe(() => {
+            this._router.navigate(['app/main/dashboard']);
             ref.close();
         });
     }
