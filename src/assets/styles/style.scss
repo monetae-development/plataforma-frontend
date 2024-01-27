@@ -204,6 +204,12 @@
 .ae-input{
     .formgroup-control{
         height: 38px;
+        &:has(.form-control.ng-dirty.ng-valid){
+            margin: 0 !important;
+        }
+        .form-control{
+            padding-right: 45px;
+        }
     }
     .form-control{
         border: 1px solid var(--ae-grey) !important;
@@ -423,7 +429,7 @@
     }
     .p-fileupload-content{
         border: none !important;
-        padding: 12px !important;
+        padding: 3px 12px !important;
         .p-button-icon-only{
             background-color: var(--ae-primary) !important;
         }

@@ -19,7 +19,7 @@
                     <h2 class="ae-text-dark ae-text-xlarge m-0">Completar registro KYC</h2>
                 </div>
                 <div class="ae-header__content">
-                    <p>{{ 'InstruccionsMemberDataComplements' | localize }}</p>
+                    <p class="ae-text-default ae-text-black">{{ 'InstruccionsMemberDataComplements' | localize }}</p>
                 </div>
             </div>
             <div class="ae-container__content">
@@ -94,14 +94,14 @@
                 <form [formGroup]="personalDataForm">
                     <div class="ae-form__grid">
                         <div class="ae-input">
-                            <label>{{ 'FirstName' | localize }} *</label>
+                            <label>Apellido(s) *</label>
                             <div class="formgroup-control">
                                 <input
                                     type="text"
                                     #memberName
                                     formControlName="memberName"
                                     [(ngModel)]="user.name"
-                                    placeholder="{{ 'FirstName' | localize }}"
+                                    placeholder="Apellido(s)"
                                     class="form-control"
                                     minlength="3"
                                     maxlength="64"
@@ -162,7 +162,7 @@
                                     [(ngModel)]="memberPhoneCodeId"
                                     [disabled]="true"
                                     [options]="personalDataPhones" 
-                                    placeholder="{{ 'Loading' | localize }}"
+                                    placeholder="{{ 'SelectAnItemDropdown' | localize }}"
                                     [filter]="true"
                                 ></p-dropdown>
                                 <div class="formgroup-control">
@@ -201,7 +201,7 @@
                                     [(ngModel)]="memberPersonalData.catNationalityId" 
                                     [disabled]="true"
                                     [options]="personalDataNationalities" 
-                                    placeholder="{{ 'Loading' | localize }}"
+                                    placeholder="{{ 'SelectAnItemDropdown' | localize }}"
                                     [showClear]="true"
                                     [filter]="true"
                                 ></p-dropdown>
@@ -268,7 +268,7 @@
                     </div>
                 </div>
             </div>
-            <div class="ae-container__content">
+            <div class="ae-container__content mb-2">
                 <form [formGroup]="addressForm">
                     <div class="ae-form__grid">
                         <div class="ae-select">
@@ -280,7 +280,7 @@
                                     [(ngModel)]="memberAddressCountryId"
                                     [disabled]="true"
                                     [options]="addressCountries"
-                                    placeholder="{{ 'Loading' | localize }}"
+                                    placeholder="{{ 'SelectAnItemDropdown' | localize }}"
                                     [showClear]="true"
                                     [filter]="true"
                                     (onChange)="onAddressChangeCountry()"
@@ -516,7 +516,7 @@
                                     [(ngModel)]="memberIdentity.catIdentityTypeId"
                                     [disabled]="true"
                                     [options]="identityTypes"
-                                    placeholder="{{ 'Loading' | localize }}"
+                                    placeholder="{{ 'SelectAnItemDropdown' | localize }}"
                                     [showClear]="true"
                                     [filter]="true"
                                 ></p-dropdown>
@@ -537,7 +537,7 @@
                             </div>
                         </div>
                         <div class="ae-select">
-                            <label>País Emisor</label>
+                            <label>País Emisor *</label>
                             <div class="formgroup-control">
                                 <p-dropdown 
                                     #identityIssuingCountry 
@@ -545,7 +545,7 @@
                                     [(ngModel)]="memberIdentity.issuingCountryId"
                                     [disabled]="true"
                                     [options]="personalDataNationalities"
-                                    placeholder="{{ 'Loading' | localize }}"
+                                    placeholder="{{ 'SelectAnItemDropdown' | localize }}"
                                     [showClear]="true"
                                     [filter]="true"
                                 ></p-dropdown>
@@ -718,7 +718,7 @@
                                     [(ngModel)]="memberEconomicInfo.catProfessionId"
                                     [disabled]="true"
                                     [options]="economicInfoProfessions"
-                                    placeholder="{{ 'Loading' | localize }}"
+                                    placeholder="{{ 'SelectAnItemDropdown' | localize }}"
                                     [showClear]="true"
                                     [filter]="true"
                                 ></p-dropdown>
@@ -780,7 +780,7 @@
                                     [(ngModel)]="memberEconomicInfo.catSourceFoundsId"
                                     [disabled]="true"
                                     [options]="economicInfoSourceFoundses"
-                                    placeholder="{{ 'Loading' | localize }}"
+                                    placeholder="{{ 'SelectAnItemDropdown' | localize }}"
                                     [showClear]="true"
                                     [filter]="true"
                                 ></p-dropdown>
