@@ -834,7 +834,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="ae-upload ae-grid--fullwidth">
+                        <div class="ae-upload ae-grid--fullwidth mb-0">
                             <label for="economicInfoProofIncome">
                                 {{ 'ProofIncome' | localize }} *
                                 <span class="details">{{ 'ProofIncomeDetails' | localize }}</span>
@@ -872,7 +872,7 @@
                         </div>
                         <div class="ae-upload ae-grid--fullwidth">
                             <label for="economicInfoTaxReturn">
-                                {{ 'TaxReturn' | localize }}
+                                {{ 'TaxReturn' | localize }} (últimos 2 años). <br>
                                 <span class="details">{{ 'TaxReturnDetails' | localize }}</span>
                             </label>
                             <p-fileUpload
@@ -912,23 +912,23 @@
                         <p class="ae-text-gris-dark ae-text-default mb-3">{{ 'IsPepAnswer' | localize }}</p>
                         <span class="ae-text-xsmall ae-text-gris-dark">{{ 'PepNotice' | localize }}</span>
                     </div>
-                    <div class="row">
-                        <div class="col-3">
+                    <div class="ae-radiobutton flex align-items-center">
+                        <div class="ae-radiobutton__item">
                             <p-radioButton
                                 #pep
                                 formControlName="pep"
                                 [value]="true"
-                                label="{{ 'OptionYes' | localize }}"
+                                label="Soy PPE"
                                 [(ngModel)]="isPep"
                                 (onClick)="disableControlsPep()"
                             ></p-radioButton>
                         </div>
-                        <div class="col-2">
+                        <div class="ae-radiobutton__item">
                             <p-radioButton
                                 #pep
                                 formControlName="pep"
                                 [value]="false"
-                                label="{{ 'OptionNo' | localize }}"
+                                label="No soy PPE"
                                 [(ngModel)]="isPep"
                                 (onClick)="disableControlsPep()"
                             ></p-radioButton>

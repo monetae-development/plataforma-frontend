@@ -429,7 +429,7 @@
     }
     .p-fileupload-content{
         border: none !important;
-        padding: 3px 12px !important;
+        padding: 0 12px !important;
         .p-button-icon-only{
             background-color: var(--ae-primary) !important;
         }
@@ -1030,7 +1030,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
             column-gap: 16px;
-            row-gap: 5px;
+            row-gap: 0;
             .ae-grid--fullwidth{
                 grid-column-start: 1;
                 grid-column-end: 3;
@@ -1119,6 +1119,16 @@
                 .ae-grid--fullwidth{
                     grid-column-start: 1;
                     grid-column-end: 1;
+                }
+                .ae-radiobutton,
+                .ae-inputcamera,
+                .ae-calendar,
+                .ae-input,
+                .ae-inputnumber,
+                .ae-select,
+                .ae-selectinput,
+                .ae-upload{
+                    margin: 8px 0;
                 }
             }
         }
