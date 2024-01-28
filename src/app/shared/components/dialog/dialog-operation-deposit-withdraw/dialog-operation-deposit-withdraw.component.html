@@ -258,21 +258,24 @@
     <div class="ae-title">
       <h2 class="ae-text-default ae-text-dark">Retirar fondos</h2>
     </div>
-    <form [formGroup]="withdrawForm">
+    <form #mntMemberFiatWithdrawalForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
       <div class="ae-select">
         <p-dropdown
+          #MntMemberFiatWithdrawal_BankAccount="ngModel"
+          id="MntMemberFiatWithdrawal_BankAccount"
+          name="MntMemberFiatWithdrawal_BankAccount"
           [hidden]="loadBankAccountsComplete && !hasBankAccounts"
           [disabled]="!hasBankAccounts"
           [options]="memberBankAccounts"
-          [formControl]="mntMemberBankAccountIdWithdrawControl"
+          [(ngModel)]="fiatWithdrawal.mntMemberBankAccountId"
           placeholder="{{ l('SelectTreeDots') }}"
           (onChange)="onChangeMemberAccount($event)"
           required
-        >
+      >
           <ng-template let-account pTemplate="selectedItem">
               <div
                   class="flex align-items-center gap-2"
-                  *ngIf="mntMemberBankAccountIdWithdrawControl"
+                  *ngIf="fiatWithdrawal.mntMemberBankAccountId"
               >
                   <div class="d-flex align-items-center">
                       <div class="ms-2">
@@ -294,12 +297,12 @@
                   </div>
               </div>
           </ng-template>
-        </p-dropdown>
-        <small class="ae-text-small ae-text-gris-dark mt-2" (click)="showDialogAddBankAccount()">Añadir cuenta bancaria</small>
-        <!-- <validation-messages
-          [formCtrl]="MntMemberFiatDeposit_BankAccount"
+      </p-dropdown>
+      <validation-messages
+          [formCtrl]="MntMemberFiatWithdrawal_BankAccount"
           [hidden]="loadBankAccountsComplete && !hasBankAccounts"
-        ></validation-messages> -->
+      ></validation-messages>
+        <small class="ae-text-small ae-text-gris-dark mt-2" (click)="showDialogAddBankAccount()">Añadir cuenta bancaria</small>
       </div>
       <div class="ae-inputnumber">
         <label>Ingresar cantidad</label>
@@ -308,20 +311,22 @@
             <span class="ae-text-light">USD</span>
           </div>
           <p-inputNumber
-            class="p-inputNumber--space"
-            [formControl]="mntMemberBankAccountIdWithdrawControl"
+            #MntMemberFiatWithdrawal_Amount="ngModel"
+            inputId="MntMemberFiatWithdrawal_Amount"
+            name="MntMemberFiatWithdrawal_Amount"
+            [(ngModel)]="fiatWithdrawal.amount"
             [disabled]="saving"
             mode="decimal"
             locale="en-US"
             [minFractionDigits]="0"
             [maxFractionDigits]="2"
             required
-          ></p-inputNumber>
+        ></p-inputNumber>
         </div>
-        <!-- <validation-messages [formCtrl]="MntMemberFiatWithdrawal_Amount"></validation-messages> -->
+        <validation-messages [formCtrl]="MntMemberFiatWithdrawal_Amount"></validation-messages>
       </div>
     </form>
-    <p class="ae-text-small ae-text-gris-dark mb-5">Recuerda que el horario para realizar retiros es de 09:00 am hasta las 6:00 pm (Hora del centro) de lunes a viernes.</p>
+    <p class="ae-text-small ae-text-gris-dark mb-7">Recuerda que el horario para realizar retiros es de 09:00 am hasta las 6:00 pm (Hora del centro) de lunes a viernes.</p>
     <p class="ae-text-small ae-text-dark">El depósito puede tardar hasta 24 horas hábiles dependiendo de los tiempos de los bancos.</p>
   </div>
   <div class="ae-tabs__container--actions">

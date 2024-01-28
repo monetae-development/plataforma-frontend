@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Injector, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { GetMntMemberBankAccountForViewDto } from '@shared/service-proxies/dto/members/mntMemberBankAccount/GetMntMemberBankAccountForViewDto';
 import { ServiceCommonProxy } from '@shared/service-proxies/service-common-proxies';
@@ -17,6 +17,7 @@ import { CreateMntMemberFiatWithdrawalDto } from '@shared/service-proxies/dto/me
 import { finalize } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { DialogResumenWithdrawComponent } from '../dialog-resumen-withdraw/dialog-resumen-withdraw.component';
+import { UtilsModule } from '@shared/utils/utils.module';
 
 @Component({
   standalone: true,
@@ -25,12 +26,14 @@ import { DialogResumenWithdrawComponent } from '../dialog-resumen-withdraw/dialo
   styleUrls: ['./dialog-operation-deposit-withdraw.component.css'],
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     TabMenuModule,
     ButtonModule,
     DropdownModule,
     InputNumberModule,
-    FileUploadModule 
+    FileUploadModule,
+    UtilsModule 
   ]
 })
 export class DialogOperationDepositWithdrawComponent extends AppComponentBase implements OnInit {
@@ -38,11 +41,9 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
   outAccept = new EventEmitter();
 
   depositForm: FormGroup;
-  withdrawForm: FormGroup;
-
+  fiatWithdrawal: CreateMntMemberFiatWithdrawalDto;
   memberBankAccount: GetMntMemberBankAccountForViewDto;
   memberBankAccounts: SelectItem[];
-  active = false;
   saving = false;
   hasBankAccounts = false;
   refreshMemberBankAccounts = false;
@@ -54,8 +55,6 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
   activeItem: MenuItem | undefined;
   activeIndex: Number = 0;
   isStepOne: Boolean = true;
-
-  mntMemberBankAccount: CreateMntMemberFiatWithdrawalDto = new CreateMntMemberFiatWithdrawalDto();
 
   uploadUrl: string;
   uploadedOperationProof: any[] = [];
@@ -73,7 +72,6 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
     super(injector);
     this.activeIndex = config.data?.activeIndex;
     this.depositForm = this._buildDepositForm();
-    this.withdrawForm = this._buildWithdrawForm();
   }
 
   ngOnInit() {
@@ -82,6 +80,8 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
       { label: 'Retirar' }
     ];
     this.activeItem = this.menuItems[Number(this.activeIndex)];
+    this.fiatWithdrawal = new CreateMntMemberFiatWithdrawalDto();
+    this.memberBankAccount = new GetMntMemberBankAccountForViewDto();
   }
 
   private _buildDepositForm(): FormGroup {
@@ -92,25 +92,28 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
     });
   }
 
-  private _buildWithdrawForm(): FormGroup {
-    return this.fb.group({
-      mntMemberBankAccountId: [{ value: null, disabled: true}, [Validators.required]],
-      amount: [null, [Validators.required]],
-    });
-  }
-
   get mntMemberBankAccountIdDepositControl() { return this.depositForm.controls['mntMemberBankAccountId'] as FormControl; }
   get amountDepositControl() { return this.depositForm.controls['amount'] as FormControl; }
   get referenceControl() { return this.depositForm.controls['reference'] as FormControl; }
 
-  get mntMemberBankAccountIdWithdrawControl() { return this.withdrawForm.controls['mntMemberBankAccountId'] as FormControl; }
-  get amountWithdrawControl() { return this.withdrawForm.controls['amount'] as FormControl; }
+  save(): void {
+    this.saving = true;
+    this._serviceMemberProxy.createFiatWithdrawalByMember(this.fiatWithdrawal)
+      .pipe(finalize(() => {
+        this.saving = false;
+      }))
+      .subscribe((result) => {
+        this.notify.info(this.l('SavedSuccessfully'));
+        abp.message.success(this.l('OTCRequestCreatedSuccessfully'), this.l('RequestSuccessfully', result.folio));
+        // this.onSave.emit(null);
+        // this.close();
+      });
+  }
 
   loadBankAccounts() {
     this.refreshMemberBankAccounts = true;
     this.loadBankAccountsComplete = false;
-    this._serviceCommonProxy.getSelectSubtitleOptions('MntMemberBankAccounts/GetAllBankAccountsForSelect', null)
-    .subscribe((result) => {
+    this._serviceCommonProxy.getSelectSubtitleOptions('MntMemberBankAccounts/GetAllBankAccountsForSelect', null).subscribe((result) => {
       if (result.totalCount > 0) {
         this.hasBankAccounts = true;
       } else {
@@ -122,10 +125,13 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
     });
   }
 
+  refreshBankAccounts() {
+    this.loadBankAccounts();
+  }
+
   onChangeMemberAccount(event: any) {
     if (event.value != null || event.value !== undefined) {
-      this._serviceMemberProxy.getBankAccountByMemberForView(event.value)
-      .subscribe((result) => {
+      this._serviceMemberProxy.getBankAccountByMemberForView(event.value).subscribe((result) => {
         this.memberBankAccount = result;
       });
     }
@@ -156,7 +162,7 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
       showHeader: false,
       styleClass: 'ae-dialog ae-dialog--sm',
       data: {
-        resumenWithdraw: this.withdrawForm.value,
+        resumenWithdraw: this.fiatWithdrawal,
       }
     });
   }
