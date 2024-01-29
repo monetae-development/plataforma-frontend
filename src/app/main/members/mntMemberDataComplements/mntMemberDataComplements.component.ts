@@ -95,10 +95,10 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     uploadedProofIncome: any[] = [];
     uploadedTaxReturn: any[] = [];
     uploadFileAddressProof = false;
-    UploadFileIdentityFront = false;
-    UploadFileIdentityBack = false;
-    UploadFileIncomeProof = false;
-    UploadFileTaxReturn = false;
+    uploadFileIdentityFront = false;
+    uploadFileIdentityBack = false;
+    uploadFileIncomeProof = false;
+    uploadFileTaxReturn = false;
 
     minDate: Date;
 
@@ -275,22 +275,27 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
                   };
                 if(typeUpload === 'UploadAddressProof'){
                     this._mntMemberFilesServiceProxy.uploadAddressProof(fileParameter).subscribe((result) => {
+                        this.uploadFileAddressProof = true;
                         console.log(result);
                     });
                 } else if(typeUpload === 'UploadIdentityFront') {
                     this._mntMemberFilesServiceProxy.uploadIdentityFront(fileParameter).subscribe((result) => {
+                        this.uploadFileIdentityFront = true;
                         console.log(result);
                     });
                 } else if(typeUpload === 'UploadIdentityBack') {
                     this._mntMemberFilesServiceProxy.uploadIdentityBack(fileParameter).subscribe((result) => {
+                        this.uploadFileIdentityBack = false;
                         console.log(result);
                     });
                 } else if(typeUpload === 'UploadIncomeProof') {
                     this._mntMemberFilesServiceProxy.uploadIncomeProof(fileParameter).subscribe((result) => {
+                        this.uploadFileIncomeProof = true;
                         console.log(result);
                     });
                 } else if(typeUpload === 'UploadTaxReturn') {
                     this._mntMemberFilesServiceProxy.uploadTaxReturn(fileParameter).subscribe((result) => {
+                        this.uploadFileTaxReturn = true;
                         console.log(result);
                     });
                 }

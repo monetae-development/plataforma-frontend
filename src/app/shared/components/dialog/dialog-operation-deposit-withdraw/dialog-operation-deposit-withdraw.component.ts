@@ -211,6 +211,7 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
                 fileName: file.name
             };
             this._mntMemberFilesServiceProxy.uploadDepositReceipt(fileParameter).subscribe((result) => {
+              this.uploadFileDepositReceipt = true;
                 console.log(result);
             });
         }
