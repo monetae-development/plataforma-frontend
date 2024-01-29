@@ -209,7 +209,7 @@
               maxFileSize="10000000"
               fileLimit="1"
               [url]="uploadUrl"
-              (onUpload)="onUpload($event, uploadedOperationProof)"
+              (onSelect)="onUploadFile($event, uploadedOperationProof)"
               (onBeforeSend)="onBeforeSend($event)"
               [showUploadButton]="false"
               [showCancelButton]="false"

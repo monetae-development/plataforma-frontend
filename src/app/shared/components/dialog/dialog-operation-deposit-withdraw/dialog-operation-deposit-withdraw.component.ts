@@ -19,6 +19,7 @@ import { HttpClient } from '@angular/common/http';
 import { DialogResumenWithdrawComponent } from '../dialog-resumen-withdraw/dialog-resumen-withdraw.component';
 import { UtilsModule } from '@shared/utils/utils.module';
 import { ToastModule } from 'primeng/toast';
+import { FileParameter, MntMemberFilesServiceProxy } from '@shared/service-proxies/service-proxies';
 
 @Component({
   standalone: true,
@@ -63,6 +64,7 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
   uploadedOperationProof: any[] = [];
 
   destinationAccount: string;
+  uploadFileDepositReceipt = false;
 
   constructor(
     injector: Injector,
@@ -74,6 +76,7 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
     private _serviceCommonProxy: ServiceCommonProxy,
     private _httpClient: HttpClient,
     private _messageService: MessageService,
+    private _mntMemberFilesServiceProxy: MntMemberFilesServiceProxy
   ) { 
     super(injector);
     this.activeIndex = config.data?.activeIndex;
@@ -219,11 +222,23 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
   }
 
   // upload event
-  onUpload(event, recordFiles): void {
+  onUploadFile(event, recordFiles): void {
     for (const file of event.files) {
         recordFiles.push(file);
+        console.log(file);
+        console.log(recordFiles);
+        if(recordFiles){
+            console.log("entra al record")
+            const fileParameter: FileParameter = {
+                data: file,
+                fileName: file.name
+            };
+            this._mntMemberFilesServiceProxy.uploadDepositReceipt(fileParameter).subscribe((result) => {
+                console.log(result);
+            });
+        }
     }
-  }
+}
 
   onBeforeSend(event): void {
       event.xhr.setRequestHeader('Authorization', 'Bearer ' + abp.auth.getToken());

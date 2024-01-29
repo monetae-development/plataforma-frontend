@@ -9,6 +9,7 @@ import {
     CreateOrEditMntMemberAddressDto,
     CreateOrEditMntEconomicInfoDto,
     MntMemberFilesServiceProxy,
+    FileParameter,
 } from '@shared/service-proxies/service-proxies';
 import { ServiceMembersProxy } from '@shared/service-proxies/service-members-proxies';
 import { CreateOrEditMntMemberComplementDto } from '@shared/service-proxies/dto/mntMembers/CreateOrEditMntMemberComplementDto';
@@ -93,6 +94,11 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     uploadedBack: any[] = [];
     uploadedProofIncome: any[] = [];
     uploadedTaxReturn: any[] = [];
+    uploadFileAddressProof = false;
+    UploadFileIdentityFront = false;
+    UploadFileIdentityBack = false;
+    UploadFileIncomeProof = false;
+    UploadFileTaxReturn = false;
 
     minDate: Date;
 
@@ -156,7 +162,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         //TODO:Ajustar nombres de servicios
         private _serviceMembersProxy: ServiceMembersProxy,
         private _serviceCommonProxy: ServiceCommonProxy,
-        // private _mntMemberFilesServiceProxy: MntMemberFilesServiceProxy,
+        private _mntMemberFilesServiceProxy: MntMemberFilesServiceProxy,
         private _notifyService: NotifyService,
         private _tokenAuth: TokenAuthServiceProxy,
         private _activatedRoute: ActivatedRoute,
@@ -251,18 +257,44 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         for (const file of event.files) {
             // this.uploadedAddressProof.push(file);
             // recordFiles.push(file);
-            // console.log(recordFiles);
-            alert("Hello");
+            console.log(event);
         }
     }
 
     // upload event
-    onUploadFile(event, recordFiles): void {
-        console.log("entra");
+    onUploadFile(event, recordFiles, typeUpload: string): void {
         for (const file of event.files) {
-            // recordFiles.push(file);
+            recordFiles.push(file);
+            console.log(file);
             console.log(recordFiles);
-            alert("Hello");
+            if(recordFiles){
+                console.log("entra al record")
+                const fileParameter: FileParameter = {
+                    data: file,
+                    fileName: file.name
+                  };
+                if(typeUpload === 'UploadAddressProof'){
+                    this._mntMemberFilesServiceProxy.uploadAddressProof(fileParameter).subscribe((result) => {
+                        console.log(result);
+                    });
+                } else if(typeUpload === 'UploadIdentityFront') {
+                    this._mntMemberFilesServiceProxy.uploadIdentityFront(fileParameter).subscribe((result) => {
+                        console.log(result);
+                    });
+                } else if(typeUpload === 'UploadIdentityBack') {
+                    this._mntMemberFilesServiceProxy.uploadIdentityBack(fileParameter).subscribe((result) => {
+                        console.log(result);
+                    });
+                } else if(typeUpload === 'UploadIncomeProof') {
+                    this._mntMemberFilesServiceProxy.uploadIncomeProof(fileParameter).subscribe((result) => {
+                        console.log(result);
+                    });
+                } else if(typeUpload === 'UploadTaxReturn') {
+                    this._mntMemberFilesServiceProxy.uploadTaxReturn(fileParameter).subscribe((result) => {
+                        console.log(result);
+                    });
+                }
+            }
         }
     }
 

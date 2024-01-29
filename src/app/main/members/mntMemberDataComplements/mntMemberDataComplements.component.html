@@ -243,7 +243,7 @@
                 <p-button class="ae-button ae-button--primary" label="Siguiente" (click)="nextStep(1)"></p-button>
             </div>
         </div>
-        <div class="ae-container__kyc ae-container--md" *ngIf="step2VerifyAccount">
+        <div class="ae-container__kyc ae-container--md" *ngIf="!step2VerifyAccount">
             <div class="ae-container__header">
                 <div class="ae-header__title flex align-items-center justify-content-between">
                     <div class="ae-text flex align-items-center">
@@ -449,7 +449,8 @@
                                 maxFileSize="10000000"
                                 fileLimit="1"
                                 [url]="uploadUrl"
-                                (onUpload)="onUploadFileAddressProof($event)"
+                                mode="advanced"
+                                (onSelect)="onUploadFile($event, uploadedAddressProof, 'UploadAddressProof')"
                                 (onBeforeSend)="onBeforeSend($event)"
                                 [showUploadButton]="false"
                                 [showCancelButton]="false"
@@ -619,7 +620,7 @@
                                 maxFileSize="10000000"
                                 fileLimit="1"
                                 [url]="uploadUrl"
-                                (onUpload)="onUploadFile($event, uploadedFront)"
+                                (onSelect)="onUploadFile($event, uploadedFront, 'UploadIdentityFront')"
                                 (onBeforeSend)="onBeforeSend($event)"
                                 [showUploadButton]="false"
                                 [showCancelButton]="false"
@@ -651,7 +652,7 @@
                                 accept="image/*"
                                 maxFileSize="10000000"
                                 [url]="uploadUrl"
-                                (onUpload)="onUploadFile($event, uploadedBack)"
+                                (onSelect)="onUploadFile($event, uploadedBack, 'UploadIdentityBack')"
                                 (onBeforeSend)="onBeforeSend($event)"
                                 [showUploadButton]="false"
                                 [showCancelButton]="false"
@@ -834,7 +835,7 @@
                                 maxFileSize="10000000"
                                 fileLimit="1"
                                 [url]="uploadUrl"
-                                (onUpload)="onUploadFile($event, uploadedProofIncome)"
+                                (onSelect)="onUploadFile($event, uploadedProofIncome, 'UploadIncomeProof')"
                                 (onBeforeSend)="onBeforeSend($event)"
                                 [showUploadButton]="false"
                                 [showCancelButton]="false"
@@ -869,7 +870,7 @@
                                 accept="image/*,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-fontobject,application/pdf"
                                 maxFileSize="10000000"
                                 [url]="uploadUrl"
-                                (onUpload)="onUploadFile($event, uploadedTaxReturn)"
+                                (onSelect)="onUploadFile($event, uploadedTaxReturn, 'UploadTaxReturn')"
                                 (onBeforeSend)="onBeforeSend($event)"
                                 [showUploadButton]="false"
                                 [showCancelButton]="false"
