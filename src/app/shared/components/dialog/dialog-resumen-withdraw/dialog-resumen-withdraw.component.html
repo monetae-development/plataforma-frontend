@@ -9,7 +9,7 @@
                 <p class="ae-text-dark ae-text-default w-full">Cuenta destino</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-gris-network ae-text-default w-full">******44178</span>
+                <span class="ae-text-gris-network ae-text-default w-full">{{ destinationAccount }}</span>
             </div>
         </div>
         <div class="ae-resumen__item flex align-items-center justify-content-between">
@@ -25,11 +25,17 @@
                 <p class="ae-text-dark ae-text-default w-full">Total</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-primary ae-text-default w-full">100 </span>
+                <span class="ae-text-primary ae-text-default w-full">$ {{ resumenWithdraw.amount }}</span>
             </div>
         </div>
     </div>
   </div>
   <div class="ae-dialog__actions">
-    <p-button class="ae-button ae-button--primary w-full" label="Solicitar retiro" [disabled]="sending" (click)="onRequestSend()"></p-button>
+    <button
+        type="button" 
+        class="ae-button ae-button--component ae-button--primary w-full"
+        [disabled]="saving" 
+        (click)="onRequestSend()">
+        Solicitar retiro
+    </button>
   </div>

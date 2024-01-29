@@ -258,7 +258,7 @@
     <div class="ae-title">
       <h2 class="ae-text-default ae-text-dark">Retirar fondos</h2>
     </div>
-    <form #mntMemberFiatWithdrawalForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+    <form #mntMemberFiatWithdrawalForm="ngForm" novalidate autocomplete="off">
       <div class="ae-select">
         <p-dropdown
           #MntMemberFiatWithdrawal_BankAccount="ngModel"
@@ -269,7 +269,7 @@
           [options]="memberBankAccounts"
           [(ngModel)]="fiatWithdrawal.mntMemberBankAccountId"
           placeholder="{{ l('SelectTreeDots') }}"
-          (onChange)="onChangeMemberAccount($event)"
+          (onChange)="onChangeMemberAccountWithdraw($event)"
           required
       >
           <ng-template let-account pTemplate="selectedItem">
@@ -278,10 +278,10 @@
                   *ngIf="fiatWithdrawal.mntMemberBankAccountId"
               >
                   <div class="d-flex align-items-center">
-                      <div class="ms-2">
+                      <div class="ae-text-dark ae-text-small">
                           {{ account.label }}
-                          <span class="badge text-bg-secondary">
-                              {{ account.subtitle }}
+                          <span class="ae-text-dark ae-text-small">
+                              ({{ account.subtitle }})
                           </span>
                       </div>
                   </div>
@@ -289,10 +289,10 @@
           </ng-template>
           <ng-template let-account pTemplate="item">
               <div class="d-flex align-items-center">
-                  <div class="ms-2">
+                  <div class="ae-text-dark ae-text-small">
                       {{ account.label }}
-                      <span class="badge text-bg-secondary" *ngIf="account.subtitle">
-                          {{ account.subtitle }}
+                      <span class="ae-text-dark ae-text-small" *ngIf="account.subtitle">
+                          ({{ account.subtitle }})
                       </span>
                   </div>
               </div>
@@ -312,6 +312,7 @@
           </div>
           <p-inputNumber
             #MntMemberFiatWithdrawal_Amount="ngModel"
+            class="p-inputNumber--space"
             inputId="MntMemberFiatWithdrawal_Amount"
             name="MntMemberFiatWithdrawal_Amount"
             [(ngModel)]="fiatWithdrawal.amount"
@@ -331,6 +332,11 @@
   </div>
   <div class="ae-tabs__container--actions">
     <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
-    <p-button label="Continuar" class="ae-button ae-button--primary" (click)="onContinueWithdraw()"></p-button>
+    <button
+      type="button"
+      class="ae-button ae-button--component ae-button--primary" 
+      [disabled]="!mntMemberFiatWithdrawalForm.form.valid"
+      (click)="onContinueWithdraw()">Continuar</button>
   </div>
 </div>
+<p-toast></p-toast>

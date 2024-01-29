@@ -5,7 +5,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { GetMntMemberBankAccountForViewDto } from '@shared/service-proxies/dto/members/mntMemberBankAccount/GetMntMemberBankAccountForViewDto';
 import { ServiceCommonProxy } from '@shared/service-proxies/service-common-proxies';
 import { ServiceMembersProxy } from '@shared/service-proxies/service-members-proxies';
-import { MenuItem, SelectItem } from 'primeng/api';
+import { MenuItem, MessageService, SelectItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { FileUpload, FileUploadModule } from 'primeng/fileupload';
@@ -18,6 +18,7 @@ import { finalize } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { DialogResumenWithdrawComponent } from '../dialog-resumen-withdraw/dialog-resumen-withdraw.component';
 import { UtilsModule } from '@shared/utils/utils.module';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   standalone: true,
@@ -33,8 +34,10 @@ import { UtilsModule } from '@shared/utils/utils.module';
     DropdownModule,
     InputNumberModule,
     FileUploadModule,
-    UtilsModule 
-  ]
+    UtilsModule,
+    ToastModule 
+  ],
+  providers: [MessageService]
 })
 export class DialogOperationDepositWithdrawComponent extends AppComponentBase implements OnInit {
 
@@ -59,6 +62,8 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
   uploadUrl: string;
   uploadedOperationProof: any[] = [];
 
+  destinationAccount: string;
+
   constructor(
     injector: Injector,
     private fb: FormBuilder,
@@ -68,6 +73,7 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
     private _serviceMemberProxy: ServiceMembersProxy,
     private _serviceCommonProxy: ServiceCommonProxy,
     private _httpClient: HttpClient,
+    private _messageService: MessageService,
   ) { 
     super(injector);
     this.activeIndex = config.data?.activeIndex;
@@ -75,6 +81,7 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
   }
 
   ngOnInit() {
+    this.loadBankAccounts();
     this.menuItems = [
       { label: 'Depositar' },
       { label: 'Retirar' }
@@ -105,8 +112,6 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
       .subscribe((result) => {
         this.notify.info(this.l('SavedSuccessfully'));
         abp.message.success(this.l('OTCRequestCreatedSuccessfully'), this.l('RequestSuccessfully', result.folio));
-        // this.onSave.emit(null);
-        // this.close();
       });
   }
 
@@ -114,6 +119,7 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
     this.refreshMemberBankAccounts = true;
     this.loadBankAccountsComplete = false;
     this._serviceCommonProxy.getSelectSubtitleOptions('MntMemberBankAccounts/GetAllBankAccountsForSelect', null).subscribe((result) => {
+      console.log(result);
       if (result.totalCount > 0) {
         this.hasBankAccounts = true;
       } else {
@@ -130,9 +136,19 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
   }
 
   onChangeMemberAccount(event: any) {
+    console.log(event);
     if (event.value != null || event.value !== undefined) {
       this._serviceMemberProxy.getBankAccountByMemberForView(event.value).subscribe((result) => {
         this.memberBankAccount = result;
+        console.log(result);
+      });
+    }
+  }
+
+  onChangeMemberAccountWithdraw(event: any) {
+    if (event.value != null || event.value !== undefined) {
+      this._serviceMemberProxy.getBankAccountByMemberForView(event.value).subscribe((result) => {
+        this.destinationAccount = result.mntMemberBankAccount.account;
       });
     }
   }
@@ -163,6 +179,21 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
       styleClass: 'ae-dialog ae-dialog--sm',
       data: {
         resumenWithdraw: this.fiatWithdrawal,
+        destinationAccount: this.destinationAccount
+      }
+    });
+    const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+    dialogRef?.changeDetectorRef.detectChanges();
+
+    const instance = dialogRef?.instance?.componentRef?.instance as DialogResumenWithdrawComponent;
+    instance?.outAccept.subscribe((values) => {
+      if(values){
+        this._messageService
+        .add({ 
+          severity: 'success', 
+          summary: 'Solicitud de Retiro finalizada', 
+          detail: 'Su solicitud de retiro se ha realizado con éxito' 
+        });
       }
     });
   }

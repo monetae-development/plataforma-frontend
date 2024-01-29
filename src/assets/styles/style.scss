@@ -145,6 +145,9 @@
         justify-content: center;
         margin: 8px 0;
         width: 100%;
+        &.p-disabled{
+            pointer-events: none;
+        }
     }
     span{
         font-weight: 600;
@@ -193,6 +196,37 @@
     &--verify{
         width: 100%;
         max-width: max-content;
+    }
+    &--component{
+        box-shadow: none;
+        outline: none;
+        border: none;
+        font-size: 14px;
+        background-color: transparent;
+        border-radius: 12px;
+        height: 40px;
+        justify-content: center;
+        margin: 8px 0;
+        width: 100%;
+        &.ae-button--primary{
+            background-color: var(--ae-primary);
+            color: #FFFFFF;
+        }
+        &.ae-button--secondary{
+            background-color: var(--ae-secondary);
+            color: var(--ae-primary);
+        }
+        &.ae-button--default{
+            color: var(--ae-dark);
+            background-color: transparent;
+        }
+        &.ae-button--transparent{
+            color: var(--ae-dark);
+            i{
+                color: var(--ae-dark);
+                margin-right: 5px;
+            }
+        }
     }
 }
 .ae-button--back{

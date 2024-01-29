@@ -1,8 +1,10 @@
 import { Component, EventEmitter, Injector, OnInit } from '@angular/core';
 import { AppSharedModule } from '@app/shared/app-shared.module';
 import { AppComponentBase } from '@shared/common/app-component-base';
+import { ServiceMembersProxy } from '@shared/service-proxies/service-members-proxies';
 import { ButtonModule } from 'primeng/button';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { finalize } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -18,20 +20,25 @@ export class DialogResumenWithdrawComponent extends AppComponentBase implements 
 
   outAccept = new EventEmitter();
 
-  resumenSend: any;
+  resumenWithdraw: any;
+  destinationAccount: string;
   dateNow: Date = new Date();
-  sending = false;
+  saving = false;
 
   constructor(
     injector: Injector,
     public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig
+    public config: DynamicDialogConfig,
+    private _serviceMemberProxy: ServiceMembersProxy
   ) { 
     super(injector);
+    console.log(config.data.resumenWithdraw);
+    this.resumenWithdraw = config.data.resumenWithdraw;
+    this.destinationAccount = config.data.destinationAccount;
   }
 
   ngOnInit() {
-
+    
   }
 
   get dateTime() {
@@ -50,24 +57,15 @@ export class DialogResumenWithdrawComponent extends AppComponentBase implements 
   }
 
   onRequestSend(): void {
-    this.sending = true;
-    // const receiveBody = new CreateMntMemberWalletDto();
-    // receiveBody.cryptoAssetId = this.resumenSend.cryptoAssetId.value;
-    // receiveBody.address = this.resumenSend.address;
-    // receiveBody.blockchainNetworkId = this.resumenSend.blockchainNetworkId.value;
-    // receiveBody.amount = this.resumenSend.amount;
-    // this._mntMemberWalletServiceProxy.create(receiveBody)
-    //   .subscribe({
-    //     next: (response) => {
-    //       this.sending = false;
-    //       this.outAccept.emit(true);
-    //       this.ref.close();
-    //     },
-    //     error: (err) => {
-    //       this.ref.close();
-    //       this.sending = false;
-    //     }
-    //   });
+    this.saving = true;
+    this._serviceMemberProxy.createFiatWithdrawalByMember(this.resumenWithdraw)
+      .pipe(finalize(() => {
+        this.saving = false;
+        this.ref.close();
+      }))
+      .subscribe((result) => {
+        this.outAccept.emit(true);
+      });
   }
 
 }
