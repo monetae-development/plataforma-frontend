@@ -18,11 +18,14 @@ import { ServiceMembersProxy } from '@shared/service-proxies/service-members-pro
 import { FiatType } from '@shared/service-proxies/enum/Members/FiatType.enum';
 import { FiatStatus } from '@shared/service-proxies/enum/Members/FiatStatus.enum';
 import { GetSelectDto } from '@shared/service-proxies/dto/Common/SelectInput/GetSelectDto';
+import { DialogOperationDepositWithdrawComponent } from '@app/shared/components/dialog/dialog-operation-deposit-withdraw/dialog-operation-deposit-withdraw.component';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
   templateUrl: './mntMemberFiat.component.html',
-  animations: [appModuleAnimation()]
+  animations: [appModuleAnimation()],
+  providers: [ DialogService ]
 })
 export class MntMemberFiatComponent extends AppComponentBase implements OnInit {
   @ViewChild('createMntMemberFiatDepositModal', { static: true }) createMntMemberFiatDepositModal: MntMemberFiatDepositComponent;
@@ -47,6 +50,7 @@ export class MntMemberFiatComponent extends AppComponentBase implements OnInit {
     private _activatedRoute: ActivatedRoute,
     private _dateTimeService: DateTimeService,
     private _serviceMemberProxy: ServiceMembersProxy,
+    public dialogService: DialogService,
   ) {
     super(injector);
   }
@@ -122,6 +126,24 @@ export class MntMemberFiatComponent extends AppComponentBase implements OnInit {
   getDateTimeFormat(input: string, index: number): string {
     let dateTime = input.split(' ');
     return dateTime[index];
+  }
+
+  showDialogDepositWithdraw(index){
+    console.log(index);
+    const ref = this.dialogService.open(DialogOperationDepositWithdrawComponent, {
+      showHeader: false,
+      styleClass: 'ae-dialog ae-dialog--operations ae-dialog--sm',
+      data: {
+        activeIndex: index
+      },
+    });
+    const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+    dialogRef?.changeDetectorRef.detectChanges();
+    const instance = dialogRef?.instance?.componentRef?.instance as DialogOperationDepositWithdrawComponent;
+    instance?.outAccept.subscribe((values) => {
+      console.log(values);
+      ref.close();
+    });
   }
 
 }

@@ -445,13 +445,14 @@
                             <p-fileUpload
                                 id="addressProof"
                                 name="addressProof"
-                                accept="image/*,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-fontobject,application/pdf"
-                                maxFileSize="10000000"
+                                accept="image/*,application/pdf"
+                                maxFileSize="maxFileSize"
                                 fileLimit="1"
                                 [url]="uploadUrl"
                                 mode="advanced"
                                 (onSelect)="onUploadFile($event, uploadedAddressProof, 'UploadAddressProof')"
                                 (onBeforeSend)="onBeforeSend($event)"
+                                (onRemove)="onRemoveFile($event, 'UploadAddressProof')"
                                 [showUploadButton]="false"
                                 [showCancelButton]="false"
                             >
@@ -461,17 +462,19 @@
                                         <p class="ae-text-gris ae-text-small m-0">Cargar archivo</p>
                                     </div>
                                 </ng-template>
-                                <ng-template pTemplate="content">
+                                <!-- <ng-template pTemplate="content">
                                     <ul *ngIf="uploadedAddressProof.length">
-                                        <li *ngFor="let file of uploadedAddressProof">
+                                        <li *ngFor="let file of uploadedAddressProof" class="flex align-items-center justify-content-between mt-2">
                                             <div class="flex flex-column">
                                                 <p>{{ file.name }}</p>
                                                 <small>{{ file.size }} bytes</small>
                                             </div>
+                                            <i class="pi pi-times" (click)="onRemoveFile(file)"></i>
                                         </li>
                                     </ul>
-                                </ng-template>
+                                </ng-template> -->
                             </p-fileUpload>
+                            <span *ngIf="messageUploadFileAddressProof" class="error-message">{{ messageUploadFileAddressProof }}</span>
                         </div>
                     </div>
                 </form>
@@ -616,8 +619,8 @@
                             <p-fileUpload
                                 id="identityFrontPicture"
                                 name="identityFrontPicture"
-                                accept="image/*"
-                                maxFileSize="10000000"
+                                accept="image/*,application/pdf"
+                                maxFileSize="maxFileSize"
                                 fileLimit="1"
                                 [url]="uploadUrl"
                                 (onSelect)="onUploadFile($event, uploadedFront, 'UploadIdentityFront')"
@@ -631,7 +634,7 @@
                                         <p class="ae-text-gris ae-text-small m-0">Cargar archivo</p>
                                     </div>
                                 </ng-template>
-                                <ng-template pTemplate="content">
+                                <!-- <ng-template pTemplate="content">
                                     <ul *ngIf="uploadedFront.length">
                                         <li *ngFor="let file of uploadedFront">
                                             <div class="flex flex-column">
@@ -640,8 +643,9 @@
                                             </div>
                                         </li>
                                     </ul>
-                                </ng-template>
+                                </ng-template> -->
                             </p-fileUpload>
+                            <span *ngIf="messageUploadFileIdentityFront" class="error-message">{{ messageUploadFileIdentityFront }}</span>
                         </div>
                         <div class="ae-upload ae-orden__six">
                             <label for="identityBackPicture">{{ 'IdentityBackPicture' | localize }}</label>
@@ -649,8 +653,8 @@
                                 fileLimit="1"
                                 id="identityBackPicture"
                                 name="identityBackPicture"
-                                accept="image/*"
-                                maxFileSize="10000000"
+                                accept="image/*,application/pdf"
+                                maxFileSize="maxFileSize"
                                 [url]="uploadUrl"
                                 (onSelect)="onUploadFile($event, uploadedBack, 'UploadIdentityBack')"
                                 (onBeforeSend)="onBeforeSend($event)"
@@ -663,7 +667,7 @@
                                         <p class="ae-text-gris ae-text-small m-0">Cargar archivo</p>
                                     </div>
                                 </ng-template>
-                                <ng-template pTemplate="content">
+                                <!-- <ng-template pTemplate="content">
                                     <ul *ngIf="uploadedBack.length">
                                         <li *ngFor="let file of uploadedBack">
                                             <div class="flex flex-column">
@@ -672,8 +676,9 @@
                                             </div>
                                         </li>
                                     </ul>
-                                </ng-template>
+                                </ng-template> -->
                             </p-fileUpload>
+                            <span *ngIf="messageUploadFileIdentityBack" class="error-message">{{ messageUploadFileIdentityBack }}</span>
                         </div>
                     </div>
                 </form>
@@ -831,8 +836,8 @@
                             <p-fileUpload
                                 id="economicInfoProofIncome"
                                 name="economicInfoProofIncome"
-                                accept="image/*,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-fontobject,application/pdf"
-                                maxFileSize="10000000"
+                                accept="image/*,application/pdf"
+                                maxFileSize="maxFileSize"
                                 fileLimit="1"
                                 [url]="uploadUrl"
                                 (onSelect)="onUploadFile($event, uploadedProofIncome, 'UploadIncomeProof')"
@@ -846,7 +851,7 @@
                                         <p class="ae-text-gris ae-text-small m-0">Cargar archivo</p>
                                     </div>
                                 </ng-template>
-                                <ng-template pTemplate="content">
+                                <!-- <ng-template pTemplate="content">
                                     <ul *ngIf="uploadedProofIncome.length">
                                         <li *ngFor="let file of uploadedProofIncome">
                                             <div class="flex flex-column">
@@ -855,8 +860,9 @@
                                             </div>
                                         </li>
                                     </ul>
-                                </ng-template>
+                                </ng-template> -->
                             </p-fileUpload>
+                            <span *ngIf="messageUploadFileIncomeProof" class="error-message">{{ messageUploadFileIncomeProof }}</span>
                         </div>
                         <div class="ae-upload ae-grid--fullwidth">
                             <label for="economicInfoTaxReturn">
@@ -867,8 +873,8 @@
                                 fileLimit="1"
                                 id="economicInfoTaxReturn"
                                 name="economicInfoTaxReturn"
-                                accept="image/*,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-fontobject,application/pdf"
-                                maxFileSize="10000000"
+                                accept="image/*,application/pdf"
+                                maxFileSize="maxFileSize"
                                 [url]="uploadUrl"
                                 (onSelect)="onUploadFile($event, uploadedTaxReturn, 'UploadTaxReturn')"
                                 (onBeforeSend)="onBeforeSend($event)"
@@ -881,7 +887,7 @@
                                         <p class="ae-text-gris ae-text-small m-0">Cargar archivo</p>
                                     </div>
                                 </ng-template>
-                                <ng-template pTemplate="content">
+                                <!-- <ng-template pTemplate="content">
                                     <ul *ngIf="uploadedTaxReturn.length">
                                         <li *ngFor="let file of uploadedTaxReturn">
                                             <div class="flex flex-column">
@@ -890,8 +896,9 @@
                                             </div>
                                         </li>
                                     </ul>
-                                </ng-template>
+                                </ng-template> -->
                             </p-fileUpload>
+                            <span *ngIf="messageUploadFileTaxReturn" class="error-message">{{ messageUploadFileTaxReturn }}</span>
                         </div>
                     </div>
                 </form>

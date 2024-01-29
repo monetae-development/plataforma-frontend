@@ -94,7 +94,7 @@
                                                     <button
                                                         class="btn btn-primary"
                                                         type="button"
-                                                        (click)="createMemberFiatDeposit()"
+                                                        (click)="showDialogDepositWithdraw(0)"
                                                     >
                                                         <i class="fa fa-coins fs-4"></i>
                                                         {{ l('MakeDeposit') }}
@@ -102,7 +102,7 @@
                                                     <button
                                                         class="btn btn-primary"
                                                         type="button"
-                                                        (click)="createMemberFiatWhitdrawal()"
+                                                        (click)="showDialogDepositWithdraw(1)">
                                                     >
                                                         <i class="fa fa-hand-holding-usd fs-3"></i>
                                                         {{ l('MakeWithdrawal') }}

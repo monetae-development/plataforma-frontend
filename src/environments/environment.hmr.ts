@@ -5,4 +5,5 @@ export const environment = {
     hmr: true,
     appConfig: 'appconfig.json',
     socketioHost: 'http://52.207.244.72:3000',
+    uploadMaxFileSize: 10485760,
 };

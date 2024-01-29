@@ -31,7 +31,7 @@ import { EventEmitter } from 'stream';
 import { isEmpty } from 'rxjs';
 import { DialogDefaultComponent } from '@app/shared/components/dialog/dialog-default/dialog-default.component';
 import { DialogService } from 'primeng/dynamicdialog';
-import { ButtonModule } from 'primeng/button';
+import { environment } from 'environments/environment';
 
 @Component({
     templateUrl: './mntMemberDataComplements.component.html',
@@ -99,6 +99,12 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     uploadFileIdentityBack = false;
     uploadFileIncomeProof = false;
     uploadFileTaxReturn = false;
+    messageUploadFileAddressProof: string = '';
+    messageUploadFileIdentityFront: string = '';
+    messageUploadFileIdentityBack: string = '';
+    messageUploadFileIncomeProof: string = '';
+    messageUploadFileTaxReturn: string = '';
+    maxFileSize = environment.uploadMaxFileSize;
 
     minDate: Date;
 
@@ -265,14 +271,31 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     onUploadFile(event, recordFiles, typeUpload: string): void {
         for (const file of event.files) {
             recordFiles.push(file);
-            console.log(file);
-            console.log(recordFiles);
+            console.log(file.size);
+            console.log(this.maxFileSize);
+            if (file.size > this.maxFileSize) {
+                if(typeUpload === 'UploadAddressProof'){
+                    this.messageUploadFileAddressProof =  `El tamaño máximo permitido para la carga de archivos es de ${this.maxFileSize}`;
+                    return;
+                } else if(typeUpload === 'UploadIdentityFront') {
+                    this.messageUploadFileIdentityFront =  `El tamaño máximo permitido para la carga de archivos es de ${this.maxFileSize}`;
+                    return;
+                } else if(typeUpload === 'UploadIdentityBack') {
+                    this.messageUploadFileIdentityBack =  `El tamaño máximo permitido para la carga de archivos es de ${this.maxFileSize}`;
+                    return;
+                } else if(typeUpload === 'UploadIncomeProof') {
+                    this.messageUploadFileIncomeProof =  `El tamaño máximo permitido para la carga de archivos es de ${this.maxFileSize}`;
+                    return;
+                } else if(typeUpload === 'UploadTaxReturn') {
+                    this.messageUploadFileTaxReturn =  `El tamaño máximo permitido para la carga de archivos es de ${this.maxFileSize}`;
+                    return;
+                }
+            }
             if(recordFiles){
-                console.log("entra al record")
                 const fileParameter: FileParameter = {
                     data: file,
                     fileName: file.name
-                  };
+                };
                 if(typeUpload === 'UploadAddressProof'){
                     this._mntMemberFilesServiceProxy.uploadAddressProof(fileParameter).subscribe((result) => {
                         this.uploadFileAddressProof = true;
@@ -285,7 +308,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
                     });
                 } else if(typeUpload === 'UploadIdentityBack') {
                     this._mntMemberFilesServiceProxy.uploadIdentityBack(fileParameter).subscribe((result) => {
-                        this.uploadFileIdentityBack = false;
+                        this.uploadFileIdentityBack = true;
                         console.log(result);
                     });
                 } else if(typeUpload === 'UploadIncomeProof') {
@@ -300,6 +323,20 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
                     });
                 }
             }
+        }
+    }
+
+    onRemoveFile(event, typeUpload: string){
+        if(typeUpload === 'UploadAddressProof'){
+            this.uploadFileAddressProof = false;
+        } else if(typeUpload === 'UploadIdentityFront') {
+            this.uploadFileIdentityFront = false;
+        } else if(typeUpload === 'UploadIdentityBack') {
+            this.uploadFileIdentityBack = false;
+        } else if(typeUpload === 'UploadIncomeProof') {
+            this.uploadFileIncomeProof = false;
+        } else if(typeUpload === 'UploadTaxReturn') {
+            this.uploadFileTaxReturn = false;
         }
     }
 
@@ -324,7 +361,12 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
             || this.addressForm.invalid
             || this.identityForm.invalid
             || this.economicInfoForm.invalid
-            || this.pepForm.invalid) {
+            || this.pepForm.invalid
+            || this.uploadFileAddressProof
+            || this.uploadFileIdentityBack
+            || this.uploadFileIdentityFront
+            || this.uploadFileIncomeProof
+            || this.uploadFileTaxReturn) {
             this.validateForm(this.personalDataForm);
             this.validateForm(this.addressForm);
             this.validateForm(this.identityForm);
