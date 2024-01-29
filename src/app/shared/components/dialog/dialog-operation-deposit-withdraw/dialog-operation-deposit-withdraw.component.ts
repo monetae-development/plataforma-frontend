@@ -20,6 +20,7 @@ import { DialogResumenWithdrawComponent } from '../dialog-resumen-withdraw/dialo
 import { UtilsModule } from '@shared/utils/utils.module';
 import { ToastModule } from 'primeng/toast';
 import { FileParameter, MntMemberFilesServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CreateMntMemberFiatDto } from '@shared/service-proxies/dto/members/mntMemberFiat/CreateMntMemberFiatDto';
 
 @Component({
   standalone: true,
@@ -44,7 +45,7 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
 
   outAccept = new EventEmitter();
 
-  depositForm: FormGroup;
+  fiatDeposit: CreateMntMemberFiatDto;
   fiatWithdrawal: CreateMntMemberFiatWithdrawalDto;
   memberBankAccount: GetMntMemberBankAccountForViewDto;
   memberBankAccounts: SelectItem[];
@@ -80,7 +81,6 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
   ) { 
     super(injector);
     this.activeIndex = config.data?.activeIndex;
-    this.depositForm = this._buildDepositForm();
   }
 
   ngOnInit() {
@@ -90,32 +90,9 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
       { label: 'Retirar' }
     ];
     this.activeItem = this.menuItems[Number(this.activeIndex)];
+    this.fiatDeposit = new CreateMntMemberFiatDto();
     this.fiatWithdrawal = new CreateMntMemberFiatWithdrawalDto();
     this.memberBankAccount = new GetMntMemberBankAccountForViewDto();
-  }
-
-  private _buildDepositForm(): FormGroup {
-    return this.fb.group({
-      mntMemberBankAccountId: [{ value: null, disabled: true}, [Validators.required]],
-      amount: [null, [Validators.required]],
-      reference: [null, [Validators.required]],
-    });
-  }
-
-  get mntMemberBankAccountIdDepositControl() { return this.depositForm.controls['mntMemberBankAccountId'] as FormControl; }
-  get amountDepositControl() { return this.depositForm.controls['amount'] as FormControl; }
-  get referenceControl() { return this.depositForm.controls['reference'] as FormControl; }
-
-  save(): void {
-    this.saving = true;
-    this._serviceMemberProxy.createFiatWithdrawalByMember(this.fiatWithdrawal)
-      .pipe(finalize(() => {
-        this.saving = false;
-      }))
-      .subscribe((result) => {
-        this.notify.info(this.l('SavedSuccessfully'));
-        abp.message.success(this.l('OTCRequestCreatedSuccessfully'), this.l('RequestSuccessfully', result.folio));
-      });
   }
 
   loadBankAccounts() {
