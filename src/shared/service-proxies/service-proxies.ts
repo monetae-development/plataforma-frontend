@@ -38740,6 +38740,7 @@ export class GetMntMemberForViewDto implements IGetMntMemberForViewDto {
     mntMember!: MntMemberDto;
     userName!: string | undefined;
     userSurname!: string | undefined;
+    userPhoneCode!: string | undefined;
     userPhoneNumber!: string | undefined;
     userEmail!: string | undefined;
     catNationalityTitle!: string | undefined;
@@ -38760,6 +38761,7 @@ export class GetMntMemberForViewDto implements IGetMntMemberForViewDto {
             this.mntMember = _data["mntMember"] ? MntMemberDto.fromJS(_data["mntMember"]) : <any>undefined;
             this.userName = _data["userName"];
             this.userSurname = _data["userSurname"];
+            this.userPhoneCode = _data["userPhoneCode"];
             this.userPhoneNumber = _data["userPhoneNumber"];
             this.userEmail = _data["userEmail"];
             this.catNationalityTitle = _data["catNationalityTitle"];
@@ -38780,6 +38782,7 @@ export class GetMntMemberForViewDto implements IGetMntMemberForViewDto {
         data["mntMember"] = this.mntMember ? this.mntMember.toJSON() : <any>undefined;
         data["userName"] = this.userName;
         data["userSurname"] = this.userSurname;
+        data["userPhoneCode"] = this.userPhoneNumber;
         data["userPhoneNumber"] = this.userPhoneNumber;
         data["userEmail"] = this.userEmail;
         data["catNationalityTitle"] = this.catNationalityTitle;
@@ -38793,6 +38796,7 @@ export interface IGetMntMemberForViewDto {
     mntMember: MntMemberDto;
     userName: string | undefined;
     userSurname: string | undefined;
+    userPhoneCode: string | undefined;
     userPhoneNumber: string | undefined;
     userEmail: string | undefined;
     catNationalityTitle: string | undefined;
