@@ -70,6 +70,8 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
   destinationAccount: string;
   uploadFileDepositReceipt = false;
 
+  platformBankAccount: any;
+
   constructor(
     injector: Injector,
     private fb: FormBuilder,
@@ -117,7 +119,7 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
 
   loadPlatformBankAccounts() {
     this.loadPlatformBankAccountsComplete = false;
-    this._serviceCommonProxy.getSelectSubtitleOptions('MntMemberFiat/GetAllBanksForSelect', null).subscribe((result) => {
+    this._serviceMemberProxy.getAllBanksForSelect().subscribe((result) => {
       console.log(result);
       if (result.totalCount > 0) {
         this.hasPlatformBankAccounts = true;
@@ -145,6 +147,8 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
 
   onChangePlatformBankAccount(event: any) {
     console.log(event);
+    this.platformBankAccount = this.platformBankAccounts.find(item => item.value === event.value);
+    console.log(this.platformBankAccount);
   }
 
   onChangeMemberAccountWithdraw(event: any) {
@@ -155,12 +159,30 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
     }
   }
 
+  copyInfoBankAaccount(text: string): void {
+    const elementoInput = document.createElement('input');
+    elementoInput.value = text
+    document.body.appendChild(elementoInput);
+    elementoInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(elementoInput);
+    this.notify.success(this.l('Copiado a portapapeles'));
+  }
+
   onCancel(){
     this.ref.close();
   }
 
-  onAccept(): void{
-    this.outAccept.emit(true);
+  saveDeposit(): void{
+    this.saving = true;
+    this._serviceMemberProxy.createFiatDepositByMember(this.fiatDeposit)
+      .pipe(finalize(() => {
+        this.saving = false;
+      }))
+      .subscribe((result) => {
+        this.notify.info(this.l('SavedSuccessfully'));
+        abp.message.success(this.l('OTCRequestCreatedSuccessfully'), this.l('RequestSuccessfully', result.folio));
+      });
   }
 
   onActiveItemChange(event: MenuItem) {
