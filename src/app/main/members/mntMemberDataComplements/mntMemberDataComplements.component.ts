@@ -194,19 +194,26 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         this.memberEconomicInfo = new CreateOrEditMntEconomicInfoDto();
 
         this._sessionServiceProxy.getCurrentLoignIsClientRole().subscribe((result) => {
+            console.log(result);
             this.isClientRole = result.hasClientRole;
 
             if (!result.hasClientRole) {
-                this.openMessageDialogVerifyAccount();
+                this.openMessageDialogRolAdministrador();
             }
 
             this._sessionServiceProxy.getCurrentLoginInformations().subscribe((session) => {
                 if (this.isClientRole) {
                     this._serviceMembersProxy.getStatus().subscribe((result) => {
+                        console.log(result);
                         this.memberStatus = result.status;
                         this.checkSessionAndComplemented = true;
                         if (this.memberStatus === MemberStatus.Register) {
+                            this.openMessageDialogVerifyAccount();
                             this.formInit();
+                        } else if (this.memberStatus === MemberStatus.Approved) {
+                            this.openMessageDialogApproveAccount();
+                        } else if (this.memberStatus === MemberStatus.Refused) {
+                            this.openMessageDialogRefusedAccount();
                         } else {
                             this.openMessageDialogSuccessAccount();
                         }
@@ -361,11 +368,11 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
             || this.identityForm.invalid
             || this.economicInfoForm.invalid
             || this.pepForm.invalid
-            || this.uploadFileAddressProof
-            || this.uploadFileIdentityBack
-            || this.uploadFileIdentityFront
-            || this.uploadFileIncomeProof
-            || this.uploadFileTaxReturn) {
+            || !this.uploadFileAddressProof
+            || !this.uploadFileIdentityBack
+            || !this.uploadFileIdentityFront
+            || !this.uploadFileIncomeProof
+            || !this.uploadFileTaxReturn) {
             this.validateForm(this.personalDataForm);
             this.validateForm(this.addressForm);
             this.validateForm(this.identityForm);
@@ -377,7 +384,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         } else {
             console.log(this.member);
             if (!this.isClientRole) {
-                abp.message.error('El formulario para complementar datos es de uso exclusivo para clientes de Monetae.<br><br> No es posible guardar la información.', 'Error', { isHtml: true });
+                this.openMessageDialogRolAdministrador();
             } else {
                 this.isValid = true;
                 this._serviceMembersProxy.createOrEdit(this.member).subscribe((result) => {
@@ -547,6 +554,25 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         }
     }
 
+    private openMessageDialogRolAdministrador(): void {
+        const ref = this._dialogService.open(DialogDefaultComponent, {
+            showHeader: false,
+            styleClass: 'ae-dialog ae-dialog--default ae-dialog--sm',
+            data: {
+                icon: 'pi pi-id-card',
+                title: 'El formulario es de uso exclusivo para clientes de Monetae.',
+                subtitle: 'El formulario será visible pero los datos no podrán ser guardados.',
+                titleAction: 'Aceptar'
+            }
+        });
+        const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
+        dialogRef?.changeDetectorRef.detectChanges();
+        const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
+        instance?.outAccept.subscribe(() => {
+            ref.close();
+        });
+    }
+
     private openMessageDialogVerifyAccount(): void {
         const ref = this._dialogService.open(DialogDefaultComponent, {
             showHeader: false,
@@ -575,6 +601,44 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
                 title: 'Gracias por completar el proceso de verificación',
                 subtitle: 'Actualmente, estamos analizando tus datos con diligencia. En breve, te informaremos los resultados. ¡Gracias por tu paciencia!"',
                 titleAction: this.l('Continue'),
+            }
+        });
+        const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
+        dialogRef?.changeDetectorRef.detectChanges();
+        const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
+        instance?.outAccept.subscribe(() => {
+            this._router.navigate(['app/main/dashboard']);
+            ref.close();
+        });
+    }
+
+    private openMessageDialogApproveAccount(): void {
+        const ref = this._dialogService.open(DialogDefaultComponent, {
+            showHeader: false,
+            styleClass: 'ae-dialog ae-dialog--default ae-dialog--sm',
+            data: {
+                icon: 'pi pi-id-card',
+                title: '"¡Felicidades! Tu verificación de identidad KYC ha sido exitosa',
+                titleAction: 'Depositar saldo'
+            }
+        });
+        const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
+        dialogRef?.changeDetectorRef.detectChanges();
+        const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
+        instance?.outAccept.subscribe(() => {
+            this._router.navigate(['app/main/members/mntMemberFiat']);
+            ref.close();
+        });
+    }
+
+    private openMessageDialogRefusedAccount(): void {
+        const ref = this._dialogService.open(DialogDefaultComponent, {
+            showHeader: false,
+            styleClass: 'ae-dialog ae-dialog--default ae-dialog--sm',
+            data: {
+                icon: 'pi pi-id-card',
+                title: '"¡Lo sentimos! Tu verificación de identidad KYC ha sido rechazada',
+                titleAction: 'Nueva solicitud'
             }
         });
         const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
