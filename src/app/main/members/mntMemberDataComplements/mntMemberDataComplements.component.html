@@ -1,5 +1,5 @@
 ﻿<div [@routerTransition]>
-    <div *ngIf="!completed && !isMemberComplemented && checkSessionAndComplemented">
+    <div *ngIf="!completed && (this.memberStatus === 0) && checkSessionAndComplemented">
         <div class="ae-container__kyc ae-container--sm" *ngIf="step0VerifyAccount">
             <div class="ae-container__header">
                 <div class="ae-header__title mb-5">

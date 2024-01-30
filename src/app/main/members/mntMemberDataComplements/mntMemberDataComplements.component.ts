@@ -32,6 +32,7 @@ import { isEmpty } from 'rxjs';
 import { DialogDefaultComponent } from '@app/shared/components/dialog/dialog-default/dialog-default.component';
 import { DialogService } from 'primeng/dynamicdialog';
 import { environment } from 'environments/environment';
+import { MemberStatus } from '@shared/service-proxies/enum/Members/MemberStatus.enum';
 
 @Component({
     templateUrl: './mntMemberDataComplements.component.html',
@@ -146,12 +147,12 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     });
 
     checkSessionAndComplemented = false;
-    isMemberComplemented = false;
     completed = false;
     isPep: boolean;
     saving = false;
     isValid = false;
     isClientRole = false;
+    memberStatus: number = 0;
 
     step0VerifyAccount: Boolean = true;
     step1VerifyAccount: Boolean = false;
@@ -201,10 +202,10 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
 
             this._sessionServiceProxy.getCurrentLoginInformations().subscribe((session) => {
                 if (this.isClientRole) {
-                    this._serviceMembersProxy.getIsMemberComplemented(session.user.id).subscribe((result) => {
-                        this.isMemberComplemented = result.isCompleted;
+                    this._serviceMembersProxy.getStatus().subscribe((result) => {
+                        this.memberStatus = result.status;
                         this.checkSessionAndComplemented = true;
-                        if (!this.isMemberComplemented) {
+                        if (this.memberStatus === MemberStatus.Register) {
                             this.formInit();
                         } else {
                             this.openMessageDialogSuccessAccount();
@@ -382,7 +383,6 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
                 this._serviceMembersProxy.createOrEdit(this.member).subscribe((result) => {
                     this.completed = true;
                     this.saving = false;
-                    this.isMemberComplemented = true;
                     this.openMessageDialogSuccessAccount();
                 });
             }
