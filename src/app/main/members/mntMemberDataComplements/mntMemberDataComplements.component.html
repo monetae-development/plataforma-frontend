@@ -146,7 +146,7 @@
                                 <p-dropdown
                                     #memberPhoneCode
                                     formControlName="memberPhoneCode"
-                                    [(ngModel)]="memberPhoneCodeId"
+                                    [(ngModel)]="memberPersonalData.phoneCodeId"
                                     [disabled]="true"
                                     [options]="personalDataPhones" 
                                     placeholder="{{ 'SelectAnItemDropdown' | localize }}"
@@ -243,7 +243,7 @@
                 <p-button class="ae-button ae-button--primary" label="Siguiente" (click)="nextStep(1)"></p-button>
             </div>
         </div>
-        <div class="ae-container__kyc ae-container--md" *ngIf="!step2VerifyAccount">
+        <div class="ae-container__kyc ae-container--md" *ngIf="step2VerifyAccount">
             <div class="ae-container__header">
                 <div class="ae-header__title flex align-items-center justify-content-between">
                     <div class="ae-text flex align-items-center">
@@ -535,7 +535,7 @@
                                     formControlName="identityIssuingCountry"
                                     [(ngModel)]="memberIdentity.issuingCountryId"
                                     [disabled]="true"
-                                    [options]="personalDataNationalities"
+                                    [options]="identityDataCountries"
                                     placeholder="{{ 'SelectAnItemDropdown' | localize }}"
                                     [showClear]="true"
                                     [filter]="true"

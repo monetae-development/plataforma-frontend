@@ -68,6 +68,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     residenceDataCountries: SelectItem[];
     personalDataNationalities: SelectItem[];
     personalDataCountries: SelectItem[];
+    identityDataCountries: SelectItem[];
     personalDataStates: SelectItem[];
     personalDataPhones: SelectItem[];
     addressCountries: SelectItem[];
@@ -81,7 +82,6 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     public memberPersonalDataCountryId: number;
     public memberAddress: CreateOrEditMntMemberAddressDto;
     public memberAddressCountryId: number;
-    public memberPhoneCodeId: number;
     public memberIdentity: CreateOrEditMntMemberIdentityDto;
     public memberEconomicInfo: CreateOrEditMntEconomicInfoDto;
 
@@ -230,6 +230,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
             this._serviceCommonProxy.getSelectOptions('MntMemberDataComplements/GetAllContriesForSelect', null).subscribe((result) => {
                 this.residenceDataCountries = result.items;
                 this.personalDataCountries = result.items;
+                this.identityDataCountries = result.items;
                 this.addressCountries = result.items;
                 this.residenceCountry.placeholder = this.l('SelectAnItemDropdown');
                 this.residenceCountry.disabled = false;

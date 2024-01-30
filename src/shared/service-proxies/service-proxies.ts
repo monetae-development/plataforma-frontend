@@ -32774,6 +32774,7 @@ export interface ICreateMntMemberWalletDto {
 export class CreateOrEditMntMemberDto implements ICreateOrEditMntMemberDto {
     name!: string | undefined;
     surname!: string | undefined;
+    phoneCodeId!: string | undefined;
     phone!: string | undefined;
     dayOfBirth!: DateTime | undefined;
     comments!: string | undefined;
@@ -32796,6 +32797,7 @@ export class CreateOrEditMntMemberDto implements ICreateOrEditMntMemberDto {
         if (_data) {
             this.name = _data["name"];
             this.surname = _data["surname"];
+            this.phoneCodeId = _data["phoneCodeId"];
             this.phone = _data["phone"];
             this.dayOfBirth = _data["dayOfBirth"] ? DateTime.fromISO(_data["dayOfBirth"].toString()) : <any>undefined;
             this.comments = _data["comments"];
@@ -32818,6 +32820,7 @@ export class CreateOrEditMntMemberDto implements ICreateOrEditMntMemberDto {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
         data["surname"] = this.surname;
+        data["phoneCodeId"] = this.phoneCodeId;
         data["phone"] = this.phone;
         data["dayOfBirth"] = this.dayOfBirth ? this.dayOfBirth.toString() : <any>undefined;
         data["comments"] = this.comments;
@@ -32833,6 +32836,7 @@ export class CreateOrEditMntMemberDto implements ICreateOrEditMntMemberDto {
 export interface ICreateOrEditMntMemberDto {
     name: string | undefined;
     surname: string | undefined;
+    phoneCodeId: string | undefined;
     phone: string | undefined;
     dayOfBirth: DateTime | undefined;
     comments: string | undefined;
