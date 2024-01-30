@@ -136,6 +136,7 @@
   <div class="ae-tabs__container--actions">
     <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
     <button
+      type="button"
       class="ae-button ae-button--component ae-button--primary" 
       [disabled]="sendForm.invalid" 
       (click)="onContinue()">
@@ -244,6 +245,13 @@
   </div>
   <div class="ae-tabs__container--actions mt-10">
     <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
-    <p-button *ngIf="actionsReceive" label="Generar QR" class="ae-button ae-button--primary" (click)="onReceive()"></p-button>
+    <button 
+      type="button"
+      *ngIf="actionsReceive" 
+      class="ae-button ae-button--component ae-button--primary" 
+      [disabled]="receiveForm.invalid" 
+      (click)="onReceive()">
+      Generar QR
+    </button>
   </div>
 </div>
