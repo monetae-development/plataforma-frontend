@@ -271,9 +271,6 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     // upload event
     onUploadFile(event, recordFiles, typeUpload: string): void {
         for (const file of event.files) {
-            recordFiles.push(file);
-            console.log(file.size);
-            console.log(this.maxFileSize);
             if (file.size > this.maxFileSize) {
                 if(typeUpload === 'UploadAddressProof'){
                     this.messageUploadFileAddressProof =  `El tamaño máximo permitido para la carga de archivos es de ${this.maxFileSize}`;

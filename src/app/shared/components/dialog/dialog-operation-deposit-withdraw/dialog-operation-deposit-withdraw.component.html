@@ -215,6 +215,7 @@
                 fileLimit="1"
                 [url]="uploadUrl"
                 (onSelect)="onUploadFile($event, uploadedOperationProof)"
+                (onRemove)="onRemoveFile()"
                 (onBeforeSend)="onBeforeSend($event)"
                 [showUploadButton]="false"
                 [showCancelButton]="false"
@@ -226,20 +227,8 @@
                     </div>
                 </ng-template>
             </p-fileUpload>
+            <span *ngIf="messageUploadFileOperationProof" class="error-message">{{ messageUploadFileOperationProof }}</span>
           </div>
-          <!-- <div class="ae-upload">
-            <p-fileUpload
-              customUpload="true"
-              name="ExcelFileUpload"
-              #ExcelFileUpload
-              maxFileSize="10000000"
-              auto="auto"
-              accept=".csv,.xls,.xlsx"
-              (uploadHandler)="uploadExcel($event)"
-              (onError)="onUploadExcelError()"
-              chooseLabel="{{ l('Adjuntar comprobante de operacion') }}"
-            ></p-fileUpload>
-          </div> -->
           <p class="ae-text-small ae-text-gris">El depósito puede tardar hasta 24 horas hábiles dependiendo de los tiempos de los bancos.</p>
         </div>
         <div class="ae-tabs__container--actions">

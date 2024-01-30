@@ -21,6 +21,7 @@ import { UtilsModule } from '@shared/utils/utils.module';
 import { ToastModule } from 'primeng/toast';
 import { FileParameter, MntMemberFilesServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreateMntMemberFiatDto } from '@shared/service-proxies/dto/members/mntMemberFiat/CreateMntMemberFiatDto';
+import { environment } from 'environments/environment';
 
 @Component({
   standalone: true,
@@ -71,6 +72,8 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
   uploadFileDepositReceipt = false;
 
   platformBankAccount: any;
+  messageUploadFileOperationProof: string = '';
+  maxFileSize = environment.uploadMaxFileSize;
 
   constructor(
     injector: Injector,
@@ -180,8 +183,12 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
         this.saving = false;
       }))
       .subscribe((result) => {
-        this.notify.info(this.l('SavedSuccessfully'));
-        abp.message.success(this.l('OTCRequestCreatedSuccessfully'), this.l('RequestSuccessfully', result.folio));
+        this._messageService
+        .add({ 
+          severity: 'success', 
+          summary: 'Solicitud de Deposito finalizada', 
+          detail: 'Su solicitud de deposito se ha realizado con éxito' 
+        });
       });
   }
 
@@ -222,45 +229,28 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
     });
   }
 
-  uploadExcel(data: { files: File }): void {
-    const formData: FormData = new FormData();
-    const file = data.files[0];
-    formData.append('file', file, file.name);
-    this._httpClient
-        .post<any>(this.uploadUrl, formData)
-        .pipe(finalize(() => this.excelFileUpload.clear()))
-        .subscribe((response) => {
-            if (response.success) {
-                this.notify.success(this.l('ImportUsersProcessStart'));
-            } else if (response.error != null) {
-                this.notify.error(this.l('ImportUsersUploadFailed'));
-            }
-        });
-  }
-
-  onUploadExcelError(): void {
-      this.notify.error(this.l('ImportUsersUploadFailed'));
-  }
-
-  // upload event
   onUploadFile(event, recordFiles): void {
     for (const file of event.files) {
-        recordFiles.push(file);
-        console.log(file);
-        console.log(recordFiles);
-        if(recordFiles){
-            console.log("entra al record")
-            const fileParameter: FileParameter = {
-                data: file,
-                fileName: file.name
-            };
-            this._mntMemberFilesServiceProxy.uploadDepositReceipt(fileParameter).subscribe((result) => {
-              this.uploadFileDepositReceipt = true;
-                console.log(result);
-            });
-        }
+      if (file.size > this.maxFileSize) {
+        this.messageUploadFileOperationProof =  `El tamaño máximo permitido para la carga de archivos es de ${this.maxFileSize}`;
+        return;
+      }
+      if(recordFiles){
+          const fileParameter: FileParameter = {
+              data: file,
+              fileName: file.name
+          };
+          this._mntMemberFilesServiceProxy.uploadDepositReceipt(fileParameter).subscribe((result) => {
+            this.uploadFileDepositReceipt = true;
+              console.log(result);
+          });
+      }
     }
-}
+  }
+
+  onRemoveFile(){
+    this.uploadFileDepositReceipt = false;
+  }
 
   onBeforeSend(event): void {
       event.xhr.setRequestHeader('Authorization', 'Bearer ' + abp.auth.getToken());
