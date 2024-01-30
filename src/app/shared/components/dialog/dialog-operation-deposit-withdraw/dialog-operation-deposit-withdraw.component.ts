@@ -49,10 +49,13 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
   fiatWithdrawal: CreateMntMemberFiatWithdrawalDto;
   memberBankAccount: GetMntMemberBankAccountForViewDto;
   memberBankAccounts: SelectItem[];
+  platformBankAccounts: SelectItem[];
   saving = false;
   hasBankAccounts = false;
+  hasPlatformBankAccounts = false;
   refreshMemberBankAccounts = false;
   loadBankAccountsComplete = false;
+  loadPlatformBankAccountsComplete = false;
   loadResume = false;
   excelFileUpload: FileUpload;
 
@@ -85,6 +88,7 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
 
   ngOnInit() {
     this.loadBankAccounts();
+    this.loadPlatformBankAccounts();
     this.menuItems = [
       { label: 'Depositar' },
       { label: 'Retirar' }
@@ -111,6 +115,20 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
     });
   }
 
+  loadPlatformBankAccounts() {
+    this.loadPlatformBankAccountsComplete = false;
+    this._serviceCommonProxy.getSelectSubtitleOptions('MntMemberFiat/GetAllBanksForSelect', null).subscribe((result) => {
+      console.log(result);
+      if (result.totalCount > 0) {
+        this.hasPlatformBankAccounts = true;
+      } else {
+        this.hasPlatformBankAccounts = false;
+      }
+      this.loadPlatformBankAccountsComplete = true;
+      this.platformBankAccounts = result.items;
+    });
+  }
+
   refreshBankAccounts() {
     this.loadBankAccounts();
   }
@@ -123,6 +141,10 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
         console.log(result);
       });
     }
+  }
+
+  onChangePlatformBankAccount(event: any) {
+    console.log(event);
   }
 
   onChangeMemberAccountWithdraw(event: any) {

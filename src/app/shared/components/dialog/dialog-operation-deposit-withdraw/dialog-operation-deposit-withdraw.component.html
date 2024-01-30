@@ -99,45 +99,52 @@
           </div>
           <h3 class="ae-text-xlarge ae-text-dark">2/2</h3>
         </div>
-        <!-- <p class="ae-text-default ae-text-dark">Elige uno de nuestros bancos disponibles para realizar el depósito</p>
+        <p class="ae-text-default ae-text-dark">Elige uno de nuestros bancos disponibles para realizar el depósito</p>
         <div class="ae-select">
           <p-dropdown
-            [hidden]="loadBankAccountsComplete && !hasBankAccounts"
-            [disabled]="!hasBankAccounts"
-            [options]="memberBankAccounts"
-            [formControl]="mntMemberBankAccountIdDepositControl"
+            #MntMemberFiatDeposit_PlatformBankAccount="ngModel"
+            id="MntMemberFiatDeposit_PlatformBankAccount"
+            name="MntMemberFiatDeposit_PlatformBankAccount"
+            [hidden]="loadPlatformBankAccountsComplete && !hasPlatformBankAccounts"
+            [disabled]="!hasPlatformBankAccounts"
+            [options]="platformBankAccounts"
+            [(ngModel)]="fiatDeposit.platformBankAccountId"
             placeholder="{{ l('SelectTreeDots') }}"
-            (onChange)="onChangeMemberAccount($event)"
+            (onChange)="onChangePlatformBankAccount($event)"
             required
           >
             <ng-template let-account pTemplate="selectedItem">
                 <div
                     class="flex align-items-center gap-2"
-                    *ngIf="mntMemberBankAccountIdDepositControl"
+                    *ngIf="fiatDeposit.platformBankAccountId"
                 >
                     <div class="d-flex align-items-center">
-                        <div class="ms-2">
-                            {{ account.label }}
-                            <span class="badge text-bg-secondary">
-                                {{ account.subtitle }}
-                            </span>
-                        </div>
+                      <div class="ae-text-dark ae-text-small">
+                        {{ account.label }}
+                        <span class="ae-text-dark ae-text-small">
+                            ({{ account.subtitle }})
+                        </span>
+                      </div>
                     </div>
                 </div>
             </ng-template>
             <ng-template let-account pTemplate="item">
                 <div class="d-flex align-items-center">
-                    <div class="ms-2">
-                        {{ account.label }}
-                        <span class="badge text-bg-secondary" *ngIf="account.subtitle">
-                            {{ account.subtitle }}
-                        </span>
-                    </div>
+                  <div class="ae-text-dark ae-text-small">
+                    {{ account.label }}
+                    <span class="ae-text-dark ae-text-small" *ngIf="account.subtitle">
+                        ({{ account.subtitle }})
+                    </span>
+                  </div>
                 </div>
             </ng-template>
           </p-dropdown>
         </div>
-        <div class="ae-card__bankaccount">
+        <validation-messages
+            [formCtrl]="MntMemberFiatDeposit_PlatformBankAccount"
+            [hidden]="loadPlatformBankAccountsComplete && !hasPlatformBankAccounts"
+        ></validation-messages>
+        <div class="ae-card__bankaccount" *ngIf="fiatDeposit.platformBankAccountId">
           <div class="ae-bankaccount__item flex align-items-center justify-content-between">
             <div class="ae-text">
               <small>Nombre del banco</small>
@@ -183,7 +190,7 @@
               <i class="pi pi-copy"></i>
             </div>
           </div>
-        </div> -->
+        </div>
         <p class="ae-text-default ae-text-dark">Una vez realizado el depósito para que se acredite en tu cuenta Monetae debes:</p>
         <div class="ae-input">
           <label>{{ l('ReferenceDepositAsk') }} *</label>
