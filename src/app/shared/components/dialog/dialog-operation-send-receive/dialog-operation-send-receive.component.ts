@@ -82,16 +82,16 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
     return this.fb.group({
       cryptoAssetId: [{ value: null, disabled: true}, [Validators.required]],
       address: [null, [Validators.required]],
-      blockchainNetworkId: [{ value: null, disabled: true},, [Validators.required]],
+      blockchainNetworkId: [{ value: null, disabled: true}, [Validators.required]],
       amount: [null, [Validators.required]],
     });
   }
 
   private _buildReceiveForm(): FormGroup {
     return this.fb.group({
-      cryptoAssetId: [null, [Validators.required]],
-      blockchainNetworkId: [null, [Validators.required]],
-      qr: [null, [Validators.required]],
+      cryptoAssetId: [{ value: null, disabled: true}, [Validators.required]],
+      blockchainNetworkId: [{ value: null, disabled: true}, [Validators.required]],
+      qr: [null],
     });
   }
 

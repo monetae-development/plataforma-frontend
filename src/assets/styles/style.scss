@@ -945,9 +945,11 @@
             .ae-tabs__container{
                 padding: 30px;
                 .ae-tabs__container--content{
-                    max-height: 500px;
-                    overflow: hidden;
-                    overflow-y: auto;
+                    &.scroll-auto{
+                        max-height: 500px;
+                        overflow: hidden;
+                        overflow-y: auto;
+                    }
                 }
                 .ae-tabs__container--actions{
                     display: grid;
