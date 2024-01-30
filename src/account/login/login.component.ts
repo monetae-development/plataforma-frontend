@@ -19,6 +19,7 @@ export class LoginComponent extends AppComponentBase implements OnInit {
     showPassword = false;
     passwordFieldType: string = "password";
     isMultiTenancyEnabled: boolean = this.multiTenancy.isEnabled;
+    fieldActive = false;
 
     constructor(
         injector: Injector,
@@ -122,6 +123,11 @@ export class LoginComponent extends AppComponentBase implements OnInit {
     togglePasswordVisibility(): void{
         this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
         this.showPassword = !this.showPassword;
+    }
+
+    validatePassword(event): void{
+        // console.log(userNameOrEmailAddressInput);
+        // console.log(event);
     }
 
 }

@@ -227,6 +227,13 @@
                 margin-right: 5px;
             }
         }
+        &[disabled]{
+            background-color: var(--ae-gris);
+            i{
+                color: #FFFFFF;
+                font-size: 16px;
+            }
+        }
     }
 }
 .ae-button--back{

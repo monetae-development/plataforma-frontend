@@ -135,7 +135,12 @@
   </div>
   <div class="ae-tabs__container--actions">
     <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
-    <p-button label="Continuar" class="ae-button ae-button--primary" [disabled]="!sendForm.valid" (click)="onContinue()"></p-button>
+    <button
+      class="ae-button ae-button--component ae-button--primary" 
+      [disabled]="sendForm.invalid" 
+      (click)="onContinue()">
+      Continuar
+    </button>
   </div>
 </div>
 <div class="ae-tabs__container" *ngIf="activeItem.label == 'Recibir'">

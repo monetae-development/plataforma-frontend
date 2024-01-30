@@ -58,6 +58,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
         }
 
         this._profileService.getPasswordComplexitySetting().subscribe((result) => {
+            console.log(result);
             this.passwordComplexitySetting = result.setting;
         });
     }

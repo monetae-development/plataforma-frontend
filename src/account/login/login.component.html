@@ -22,7 +22,8 @@
                 <input #passwordInput="ngModel" [(ngModel)]="loginService.authenticateModel.password" 
                     class="form-control" [type]="passwordFieldType"
                     autocomplete="new-password" placeholder="{{ 'Password' | localize }}" name="password" required
-                    maxlength="32" />
+                    maxlength="32"
+                    (keyup)="validatePassword($event)" />
                 <i (click)="togglePasswordVisibility()" class="pi" [ngClass]="{'pi-eye-slash' : !showPassword,'pi-eye' : showPassword}"></i>
             </div>
             <validation-messages [formCtrl]="passwordInput" *ngIf="!passwordInput.touched"></validation-messages>
@@ -37,7 +38,7 @@
 
         <!--begin::Action-->
         <div class="ae-login__actions">
-            <button type="submit" [disabled]="!loginForm.form.valid"
+            <button type="submit" [disabled]="!loginForm.valid"
                 class="ae-btn w-100 ae-btn--primary fw-bolder border-middle">
                 {{ 'Next2' | localize }}
             </button>

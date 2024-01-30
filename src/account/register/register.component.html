@@ -83,13 +83,19 @@
             </div>
             <validation-messages [formCtrl]="typeUserInput"></validation-messages>
         </div>
-        <div class="ae-checkbox">
+        <div class="ae-checkbox flex alig-items-center">
             <p-checkbox 
-                class="ae-text-dark ae-text-small"
-                value="val1" 
-                label="Al continuar estoy de acuerdo con los términos y condiciones de servicio y política de privacidad ."
-                [(ngModel)]="model.agree">
+                class="ae-text-dark ae-text-small mr-3"
+                value="val1"
+                [(ngModel)]="model.agree"
+                inputId="agree">
             </p-checkbox>
+            <label 
+                for="agree"
+                class="ae-text-dark ae-text-small"
+                >
+                Al continuar estoy de acuerdo con los <a href="https://www.site.monetae.io/terminos-y-condiciones" target="_blank">términos y condiciones</a> de servicio y <a href="https://www.site.monetae.io/politica-de-privacidad" target="_blank">política de privacidad.</a>
+            </label>
         </div>
         <div [hidden]="registerForm.form.valid || registerForm.form.pristine" class="mb-5">
             <ul class="form-text text-danger" *ngIf="Password.errors">
