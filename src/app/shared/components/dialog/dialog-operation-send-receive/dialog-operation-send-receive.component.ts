@@ -47,6 +47,7 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
   address: string = '';
   coinSubtitle: string = '';
   actionsReceive = true;
+  isDisabled = true;
 
 
   mntMemberWalletDto : CreateMntMemberWalletDto;
@@ -119,6 +120,7 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
         this.blockchainNetwortks = result.items;
         this.blockchainNetworkIdControl.enable();
         this.blockchainNetworkIdReceiveControl.enable();
+        this.isDisabled = false;
       });
   }
 

@@ -249,7 +249,7 @@
       type="button"
       *ngIf="actionsReceive" 
       class="ae-button ae-button--component ae-button--primary" 
-      [disabled]="receiveForm.invalid" 
+      [disabled]="receiveForm.invalid || isDisabled" 
       (click)="onReceive()">
       Generar QR
     </button>
