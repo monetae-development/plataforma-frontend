@@ -3,7 +3,7 @@ import { Component, Injector, ViewEncapsulation, ViewChild, OnInit } from '@angu
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
-import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
+import { SessionServiceProxy, TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
 import { NotifyService } from 'abp-ng2-module';
 import { Table } from 'primeng/table';
 import { Paginator } from 'primeng/paginator';
@@ -22,6 +22,7 @@ import { DialogOperationSendReceiveComponent } from '@app/shared/components/dial
 import { ServiceMembersProxy } from '@shared/service-proxies/service-members-proxies';
 import { MemberStatus } from '@shared/service-proxies/enum/Members/MemberStatus.enum';
 import { DialogDefaultComponent } from '@app/shared/components/dialog/dialog-default/dialog-default.component';
+import { MemberType } from '@shared/service-proxies/enum/Members/MemberType.enum';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -44,9 +45,9 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   responsiveOptionsCryptos: any[] | undefined;
   isInversionesCarousel: Boolean = true;
   filterInversiones: any;
-  memberStatus: number = 0;
   amount: number = 0;
   currency: string = '';
+  statusMember: MemberType;
 
   constructor(
     injector: Injector,
@@ -58,12 +59,14 @@ export class HomeComponent extends AppComponentBase implements OnInit {
     public dialogService: DialogService,
     private _serviceMembersProxy: ServiceMembersProxy,
     private _dialogService: DialogService,
+    private _sessionServiceProxy: SessionServiceProxy,
   ) {
     super(injector);
   }
 
   ngOnInit() {
     this.getBalance();
+    this.getStatusMember();
     this.menuItems = [
       { label: 'Inversiones' },
       { label: 'Portafolio' },
@@ -156,77 +159,90 @@ export class HomeComponent extends AppComponentBase implements OnInit {
     });
   }
 
-  get getStatusMember(){
-    let status = false;
-    this._serviceMembersProxy.getStatus().subscribe((result) => {
+  private getStatusMember(){
+    this._sessionServiceProxy.getCurrentLoignIsClientRole().subscribe((result) => {
       console.log(result);
-      if(result.status === MemberStatus.Register){
-        status = true;
+      if (result.hasClientRole) {
+        this._serviceMembersProxy.getStatus().subscribe((result) => {
+          if(result.status === MemberType.REGISTER){
+            this.statusMember = result.status;
+          } else {
+            this.statusMember = MemberType.CUSTOMER;
+          }
+        });
+      } else {
+        this.statusMember = MemberType.ADMINISTRATOR;
       }
     });
-    return status;
-  }
-
-  createMemberFiatDeposit() {
-    this.createMntMemberFiatDepositModal.show();
-  }
-
-  createMemberFiatWhitdrawal() {
-    this.createMntMemberFiatWithdrawalModal.show();
   }
 
   showDialogBuySell(index){
-    console.log(index);
-    const ref = this.dialogService.open(DialogOperationBuySellComponent, {
-      showHeader: false,
-      styleClass: 'ae-dialog ae-dialog--operations ae-dialog--sm',
-      data: {
-        activeIndex: index
-      },
-    });
-    const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
-    dialogRef?.changeDetectorRef.detectChanges();
-    const instance = dialogRef?.instance?.componentRef?.instance as DialogOperationBuySellComponent;
-    instance?.outAccept.subscribe((values) => {
-      console.log(values);
-      ref.close();
-    });
+    if(this.statusMember === MemberType.REGISTER){
+      this.openMessageDialogVerifyAccount();
+    } else if(this.statusMember === MemberType.ADMINISTRATOR) {
+      this.openMessageDialogRolAdministrador();
+    } else {
+      const ref = this.dialogService.open(DialogOperationBuySellComponent, {
+        showHeader: false,
+        styleClass: 'ae-dialog ae-dialog--operations ae-dialog--sm',
+        data: {
+          activeIndex: index
+        },
+      });
+      const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+      dialogRef?.changeDetectorRef.detectChanges();
+      const instance = dialogRef?.instance?.componentRef?.instance as DialogOperationBuySellComponent;
+      instance?.outAccept.subscribe((values) => {
+        console.log(values);
+        ref.close();
+      });
+    }
   }
 
   showDialogSendReceive(index){
-    console.log(index);
-    const ref = this.dialogService.open(DialogOperationSendReceiveComponent, {
-      showHeader: false,
-      styleClass: 'ae-dialog ae-dialog--operations ae-dialog--sm',
-      data: {
-        activeIndex: index
-      },
-    });
-    const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
-    dialogRef?.changeDetectorRef.detectChanges();
-    const instance = dialogRef?.instance?.componentRef?.instance as DialogOperationSendReceiveComponent;
-    instance?.outAccept.subscribe((values) => {
-      console.log(values);
-      ref.close();
-    });
+    if(this.statusMember === MemberType.REGISTER){
+      this.openMessageDialogVerifyAccount();
+    } else if(this.statusMember === MemberType.ADMINISTRATOR) {
+      this.openMessageDialogRolAdministrador();
+    } else {
+      const ref = this.dialogService.open(DialogOperationSendReceiveComponent, {
+        showHeader: false,
+        styleClass: 'ae-dialog ae-dialog--operations ae-dialog--sm',
+        data: {
+          activeIndex: index
+        },
+      });
+      const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+      dialogRef?.changeDetectorRef.detectChanges();
+      const instance = dialogRef?.instance?.componentRef?.instance as DialogOperationSendReceiveComponent;
+      instance?.outAccept.subscribe((values) => {
+        console.log(values);
+        ref.close();
+      });
+    }
   }
 
   showDialogDepositWithdraw(index){
-    console.log(index);
-    const ref = this.dialogService.open(DialogOperationDepositWithdrawComponent, {
-      showHeader: false,
-      styleClass: 'ae-dialog ae-dialog--operations ae-dialog--sm',
-      data: {
-        activeIndex: index
-      },
-    });
-    const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
-    dialogRef?.changeDetectorRef.detectChanges();
-    const instance = dialogRef?.instance?.componentRef?.instance as DialogOperationDepositWithdrawComponent;
-    instance?.outAccept.subscribe((values) => {
-      console.log(values);
-      ref.close();
-    });
+    if(this.statusMember === MemberType.REGISTER){
+      this.openMessageDialogVerifyAccount();
+    } else if(this.statusMember === MemberType.ADMINISTRATOR) {
+      this.openMessageDialogRolAdministrador();
+    } else {
+      const ref = this.dialogService.open(DialogOperationDepositWithdrawComponent, {
+        showHeader: false,
+        styleClass: 'ae-dialog ae-dialog--operations ae-dialog--sm',
+        data: {
+          activeIndex: index
+        },
+      });
+      const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+      dialogRef?.changeDetectorRef.detectChanges();
+      const instance = dialogRef?.instance?.componentRef?.instance as DialogOperationDepositWithdrawComponent;
+      instance?.outAccept.subscribe((values) => {
+        console.log(values);
+        ref.close();
+      });
+    }
   }
 
   goToProject(tokenId: string) {
@@ -262,6 +278,23 @@ export class HomeComponent extends AppComponentBase implements OnInit {
     instance?.outAccept.subscribe(() => {
         ref.close();
     });
-}
+  }
+  private openMessageDialogRolAdministrador(): void {
+    const ref = this._dialogService.open(DialogDefaultComponent, {
+        showHeader: false,
+        styleClass: 'ae-dialog ae-dialog--default ae-dialog--sm',
+        data: {
+            icon: 'pi pi-id-card',
+            title: 'Las operaciones son de uso exclusivo para clientes de Monetae.',
+            titleAction: 'Aceptar'
+        }
+    });
+    const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
+    dialogRef?.changeDetectorRef.detectChanges();
+    const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
+    instance?.outAccept.subscribe(() => {
+        ref.close();
+    });
+  }
 
 }
