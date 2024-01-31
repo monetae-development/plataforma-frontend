@@ -25,6 +25,10 @@ export class ResetPasswordComponent extends AppComponentBase implements OnInit {
     model: ResetPasswordModel = new ResetPasswordModel();
     passwordComplexitySetting: PasswordComplexitySetting = new PasswordComplexitySetting();
     saving = false;
+    showPassword = false;
+    passwordFieldType: string = "password";
+    showNewPassword = false;
+    newPasswordFieldType: string = "password";
 
     constructor(
         injector: Injector,
@@ -111,5 +115,15 @@ export class ResetPasswordComponent extends AppComponentBase implements OnInit {
         }
 
         return tenantId;
+    }
+
+    togglePasswordVisibility(): void{
+        this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+        this.showPassword = !this.showPassword;
+    }
+
+    toggleNewPasswordVisibility(): void{
+        this.newPasswordFieldType = this.newPasswordFieldType === 'password' ? 'text' : 'password';
+        this.showNewPassword = !this.showNewPassword;
     }
 }
