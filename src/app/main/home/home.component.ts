@@ -19,6 +19,9 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { DialogOperationDepositWithdrawComponent } from '@app/shared/components/dialog/dialog-operation-deposit-withdraw/dialog-operation-deposit-withdraw.component';
 import { DialogOperationBuySellComponent } from '@app/shared/components/dialog/dialog-operation-buy-sell/dialog-operation-buy-sell.component';
 import { DialogOperationSendReceiveComponent } from '@app/shared/components/dialog/dialog-operation-send-receive/dialog-operation-send-receive.component';
+import { ServiceMembersProxy } from '@shared/service-proxies/service-members-proxies';
+import { MemberStatus } from '@shared/service-proxies/enum/Members/MemberStatus.enum';
+import { DialogDefaultComponent } from '@app/shared/components/dialog/dialog-default/dialog-default.component';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -41,6 +44,9 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   responsiveOptionsCryptos: any[] | undefined;
   isInversionesCarousel: Boolean = true;
   filterInversiones: any;
+  memberStatus: number = 0;
+  amount: number = 0;
+  currency: string = '';
 
   constructor(
     injector: Injector,
@@ -50,12 +56,14 @@ export class HomeComponent extends AppComponentBase implements OnInit {
     private _activatedRoute: ActivatedRoute,
     private _dateTimeService: DateTimeService,
     public dialogService: DialogService,
+    private _serviceMembersProxy: ServiceMembersProxy,
+    private _dialogService: DialogService,
   ) {
     super(injector);
   }
 
   ngOnInit() {
-    console.log(this.cryptoRequests);
+    this.getBalance();
     this.menuItems = [
       { label: 'Inversiones' },
       { label: 'Portafolio' },
@@ -141,6 +149,24 @@ export class HomeComponent extends AppComponentBase implements OnInit {
     ]
   }
 
+  private getBalance(){
+    this._serviceMembersProxy.getBalance().subscribe((result) => {
+      this.amount = result.amount;
+      this.currency = result.currency;
+    });
+  }
+
+  get getStatusMember(){
+    let status = false;
+    this._serviceMembersProxy.getStatus().subscribe((result) => {
+      console.log(result);
+      if(result.status === MemberStatus.Register){
+        status = true;
+      }
+    });
+    return status;
+  }
+
   createMemberFiatDeposit() {
     this.createMntMemberFiatDepositModal.show();
   }
@@ -218,5 +244,24 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   goToInversionesCards(){
     this.isInversionesCarousel = false;
   }
+
+  private openMessageDialogVerifyAccount(): void {
+    const ref = this._dialogService.open(DialogDefaultComponent, {
+        showHeader: false,
+        styleClass: 'ae-dialog ae-dialog--default ae-dialog--sm',
+        data: {
+            icon: 'pi pi-id-card',
+            title: 'Verificar cuenta',
+            subtitle: 'Completa la verificación KYC para continuar con la operación',
+            titleAction: 'Empezar ahora'
+        }
+    });
+    const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
+    dialogRef?.changeDetectorRef.detectChanges();
+    const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
+    instance?.outAccept.subscribe(() => {
+        ref.close();
+    });
+}
 
 }
