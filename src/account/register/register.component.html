@@ -55,6 +55,25 @@
                 <i (click)="togglePasswordVisibility()" class="pi" [ngClass]="{'pi-eye-slash' : !showPassword,'pi-eye' : showPassword}"></i>
             </div>
         </div>
+        <div [hidden]="registerForm.form.valid || registerForm.form.pristine" class="mb-5">
+            <ul class="form-text text-danger" *ngIf="Password.errors">
+                <li [hidden]="!Password.errors.requireDigit">
+                    {{ 'PasswordComplexity_RequireDigit_Hint' | localize }}
+                </li>
+                <li [hidden]="!Password.errors.requireLowercase">
+                    {{ 'PasswordComplexity_RequireLowercase_Hint' | localize }}
+                </li>
+                <li [hidden]="!Password.errors.requireUppercase">
+                    {{ 'PasswordComplexity_RequireUppercase_Hint' | localize }}
+                </li>
+                <li [hidden]="!Password.errors.requireNonAlphanumeric">
+                    {{ 'PasswordComplexity_RequireNonAlphanumeric_Hint' | localize }}
+                </li>
+                <li [hidden]="!Password.errors.requiredLength">
+                    {{ 'PasswordComplexity_RequiredLength_Hint' | localize : passwordComplexitySetting.requiredLength }}
+                </li>
+            </ul>
+        </div>
         <div class="ae-radiobutton">
             <label>¿Qué tipo de registro? *</label>
             <div class="flex align-items-center">
@@ -96,25 +115,6 @@
                 >
                 Al continuar estoy de acuerdo con los <a href="https://www.site.monetae.io/terminos-y-condiciones" target="_blank">términos y condiciones</a> de servicio y <a href="https://www.site.monetae.io/politica-de-privacidad" target="_blank">política de privacidad.</a>
             </label>
-        </div>
-        <div [hidden]="registerForm.form.valid || registerForm.form.pristine" class="mb-5">
-            <ul class="form-text text-danger" *ngIf="Password.errors">
-                <li [hidden]="!Password.errors.requireDigit">
-                    {{ 'PasswordComplexity_RequireDigit_Hint' | localize }}
-                </li>
-                <li [hidden]="!Password.errors.requireLowercase">
-                    {{ 'PasswordComplexity_RequireLowercase_Hint' | localize }}
-                </li>
-                <li [hidden]="!Password.errors.requireUppercase">
-                    {{ 'PasswordComplexity_RequireUppercase_Hint' | localize }}
-                </li>
-                <li [hidden]="!Password.errors.requireNonAlphanumeric">
-                    {{ 'PasswordComplexity_RequireNonAlphanumeric_Hint' | localize }}
-                </li>
-                <li [hidden]="!Password.errors.requiredLength">
-                    {{ 'PasswordComplexity_RequiredLength_Hint' | localize : passwordComplexitySetting.requiredLength }}
-                </li>
-            </ul>
         </div>
         <div class="ae-login__actions pb-lg-0 pb-5">
             <button
