@@ -354,7 +354,6 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     onSave() {
         this.memberPersonalData.name = this.user.name;
         this.memberPersonalData.surname = this.user.surname;
-        this.memberPersonalData.phone = this.personalDataForm.value.memberPhoneCode + this.personalDataForm.value.memberPhone;
         this.memberPersonalData.dayOfBirth = this._dateTimeService.getEndOfDayForDate(this.memberPersonalData.dayOfBirth);
         this.memberPersonalData.isPep = this.isPep;
         this.member.MemberPersonalData = this.memberPersonalData;

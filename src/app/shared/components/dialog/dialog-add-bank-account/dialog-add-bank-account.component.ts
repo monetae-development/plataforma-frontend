@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, EventEmitter, Injector, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AppSharedModule } from '@app/shared/app-shared.module';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -27,6 +27,8 @@ import { finalize } from 'rxjs';
 })
 export class DialogAddBankAccountComponent extends AppComponentBase implements OnInit {
 
+
+  outAccept = new EventEmitter();
   active = true;
   saving = false;
   countries: SelectItem[];
@@ -99,6 +101,7 @@ export class DialogAddBankAccountComponent extends AppComponentBase implements O
         this.saving = false;
       }))
       .subscribe(() => {
+        this.outAccept.emit(true);
         this.notify.info(this.l('SavedSuccessfully'));
         this.ref.close();
       });

@@ -74,6 +74,7 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
   platformBankAccount: any;
   messageUploadFileOperationProof: string = '';
   maxFileSize = environment.uploadMaxFileSize;
+  memberUserName: string = '';
 
   constructor(
     injector: Injector,
@@ -94,6 +95,7 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
   ngOnInit() {
     this.loadBankAccounts();
     this.loadPlatformBankAccounts();
+    this.getMemberUserName();
     this.menuItems = [
       { label: 'Depositar' },
       { label: 'Retirar' }
@@ -104,11 +106,16 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
     this.memberBankAccount = new GetMntMemberBankAccountForViewDto();
   }
 
+  getMemberUserName(){
+    this._serviceMemberProxy.getGetMemberFullName().subscribe((result) => {
+      this.memberUserName = result || '';
+    });
+  }
+
   loadBankAccounts() {
     this.refreshMemberBankAccounts = true;
     this.loadBankAccountsComplete = false;
     this._serviceCommonProxy.getSelectSubtitleOptions('MntMemberBankAccounts/GetAllBankAccountsForSelect', null).subscribe((result) => {
-      console.log(result);
       if (result.totalCount > 0) {
         this.hasBankAccounts = true;
       } else {
@@ -123,7 +130,6 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
   loadPlatformBankAccounts() {
     this.loadPlatformBankAccountsComplete = false;
     this._serviceMemberProxy.getAllBanksForSelect().subscribe((result) => {
-      console.log(result);
       if (result.totalCount > 0) {
         this.hasPlatformBankAccounts = true;
       } else {
@@ -134,24 +140,16 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
     });
   }
 
-  refreshBankAccounts() {
-    this.loadBankAccounts();
-  }
-
   onChangeMemberAccount(event: any) {
-    console.log(event);
     if (event.value != null || event.value !== undefined) {
       this._serviceMemberProxy.getBankAccountByMemberForView(event.value).subscribe((result) => {
         this.memberBankAccount = result;
-        console.log(result);
       });
     }
   }
 
   onChangePlatformBankAccount(event: any) {
-    console.log(event);
     this.platformBankAccount = this.platformBankAccounts.find(item => item.value === event.value);
-    console.log(this.platformBankAccount);
   }
 
   onChangeMemberAccountWithdraw(event: any) {
@@ -260,6 +258,14 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
     const ref = this.dialogService.open(DialogAddBankAccountComponent, {
       showHeader: false,
       styleClass: 'ae-dialog ae-dialog--sm',
+    });
+    const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+    dialogRef?.changeDetectorRef.detectChanges();
+    const instance = dialogRef?.instance?.componentRef?.instance as DialogAddBankAccountComponent;
+    instance?.outAccept.subscribe((values) => {
+      if(values){
+        this.loadBankAccounts();
+      }
     });
   }
 
