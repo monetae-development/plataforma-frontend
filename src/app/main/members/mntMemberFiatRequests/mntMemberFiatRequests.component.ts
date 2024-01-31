@@ -52,7 +52,7 @@ export class MntMemberFiatRequestsComponent extends AppComponentBase implements 
     this.statusOptions = this.getSelectOptions(FiatStatus);
   }
 
-  getAllOtcRequests(event?: LazyLoadEvent) {
+  getAllFiatRequests(event?: LazyLoadEvent) {
     if (this.primengTableHelper.shouldResetPaging(event)) {
       this.paginator.changePage(0);
       if (this.primengTableHelper.records &&
@@ -103,7 +103,7 @@ export class MntMemberFiatRequestsComponent extends AppComponentBase implements 
   cleanFilters() {
     this.folioFilter = '';
     this.typeFilter = -1;
-    this.getAllOtcRequests();
+    this.getAllFiatRequests();
   }
 
   //TODO:Unificar en un helper
@@ -112,7 +112,7 @@ export class MntMemberFiatRequestsComponent extends AppComponentBase implements 
     return dateTime[index];
   }
 
-  changeStatus(requestId: number) {
-    this.changeStatusMntMemberFiatRequestModal.show(requestId);
+  changeStatus(requestId: number, status: FiatStatus) {
+    this.changeStatusMntMemberFiatRequestModal.show(requestId, status);
   }
 }

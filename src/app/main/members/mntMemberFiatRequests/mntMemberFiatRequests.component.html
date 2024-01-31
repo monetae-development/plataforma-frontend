@@ -34,31 +34,54 @@
                                                 <label htmlFor="folio">{{ l('Folio') }}</label>
                                                 <span class="p-input-icon-left">
                                                     <i class="pi pi-search"></i>
-                                                    <input #folio="ngModel" id="folio" name="folio" type="text"
-                                                        class="form-control m-input" pInputText
-                                                        [(ngModel)]="folioFilter" placeholder="Folio" />
+                                                    <input
+                                                        #folio="ngModel"
+                                                        id="folio"
+                                                        name="folio"
+                                                        type="text"
+                                                        class="form-control m-input"
+                                                        pInputText
+                                                        [(ngModel)]="folioFilter"
+                                                        placeholder="Folio"
+                                                    />
                                                 </span>
                                             </div>
 
                                             <div class="col-md-2 col-xl-3">
                                                 <label htmlFor="type">{{ l('Kind') }}</label>
-                                                <p-dropdown #type="ngModel" id="type" name="type" [disabled]="!started"
-                                                    [options]="typeOptions" [(ngModel)]="typeFilter"
-                                                    placeholder="{{ l('SelectAll') }}" [showClear]="true"
-                                                    (onClear)="getAllOtcRequests()"></p-dropdown>
+                                                <p-dropdown
+                                                    #type="ngModel"
+                                                    id="type"
+                                                    name="type"
+                                                    [disabled]="!started"
+                                                    [options]="typeOptions"
+                                                    [(ngModel)]="typeFilter"
+                                                    placeholder="{{ l('SelectAll') }}"
+                                                    [showClear]="true"
+                                                    (onClear)="getAllFiatRequests()"
+                                                ></p-dropdown>
                                             </div>
 
                                             <div class="col-md-2 col-xl-2">
                                                 <div
-                                                    class="d-flex d-block justify-content-center justify-content-md-start d-sm-flex d-sm-block d-grid gap-2 mt-7">
-                                                    <button class="btn btn-primary" type="button"
-                                                        (click)="getAllOtcRequests()"
-                                                        pTooltip="{{ l('SearchByFilters') }}" tooltipPosition="top">
+                                                    class="d-flex d-block justify-content-center justify-content-md-start d-sm-flex d-sm-block d-grid gap-2 mt-7"
+                                                >
+                                                    <button
+                                                        class="btn btn-primary"
+                                                        type="button"
+                                                        (click)="getAllFiatRequests()"
+                                                        pTooltip="{{ l('SearchByFilters') }}"
+                                                        tooltipPosition="top"
+                                                    >
                                                         <i class="fa fa-search fs-4"></i>
                                                     </button>
-                                                    <button class="btn btn-secondary" type="button"
-                                                        (click)="cleanFilters()" pTooltip="{{ l('CleanFilters') }}"
-                                                        tooltipPosition="top">
+                                                    <button
+                                                        class="btn btn-secondary"
+                                                        type="button"
+                                                        (click)="cleanFilters()"
+                                                        pTooltip="{{ l('CleanFilters') }}"
+                                                        tooltipPosition="top"
+                                                    >
                                                         <i class="fa fa-eraser fs-4"></i>
                                                     </button>
                                                 </div>
@@ -69,13 +92,19 @@
                             </div>
                             <!--<Primeng-Datatable-Start>-->
                             <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
-                                <p-table #dataTable (onLazyLoad)="getAllOtcRequests($event)"
+                                <p-table
+                                    #dataTable
+                                    (onLazyLoad)="getAllFiatRequests($event)"
                                     [value]="primengTableHelper.records"
-                                    rows="{{ primengTableHelper.defaultRecordsCountPerPage }}" [paginator]="false"
-                                    [lazy]="true" [scrollable]="true" ScrollWidth="100%"
+                                    rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                                    [paginator]="false"
+                                    [lazy]="true"
+                                    [scrollable]="true"
+                                    ScrollWidth="100%"
                                     [responsive]="primengTableHelper.isResponsive"
                                     [resizableColumns]="primengTableHelper.resizableColumns"
-                                    styleClass="p-datatable-striped">
+                                    styleClass="p-datatable-striped"
+                                >
                                     <ng-template pTemplate="header">
                                         <tr>
                                             <th style="width: 100px" pSortableColumn="creationTime">
@@ -90,8 +119,10 @@
                                                 {{ l('Name') }}
                                                 <p-sortIcon field="mntMemberFiat.userFk.name"></p-sortIcon>
                                             </th>
-                                            <th style="width: 100px"
-                                                pSortableColumn="mntMemberFiat.userFk.emailAddress">
+                                            <th
+                                                style="width: 100px"
+                                                pSortableColumn="mntMemberFiat.userFk.emailAddress"
+                                            >
                                                 {{ l('Email') }}
                                                 <p-sortIcon field="mntMemberFiat.userFk.emailAddress"></p-sortIcon>
                                             </th>
@@ -111,12 +142,15 @@
                                                 {{ l('Status') }}
                                                 <p-sortIcon field="mntMemberFiat.status"></p-sortIcon>
                                             </th>
-                                            <th style="width: 100px" [hidden]="
+                                            <th
+                                                style="width: 100px"
+                                                [hidden]="
                                                     !isGrantedAny(
                                                         'Pages.Administration.MntMemberFiatRequests.Edit',
                                                         'Pages.Administration.MntMemberFiatRequests.Delete'
                                                     )
-                                                ">
+                                                "
+                                            >
                                                 {{ l('Actions') }}
                                             </th>
                                         </tr>
@@ -126,21 +160,21 @@
                                             <td style="width: 100px" class="text-center lh-1">
                                                 <span class="fs-6">
                                                     {{
-                                                    getDateTimeFormat(
-                                                    record.mntMemberFiat.creationTime
-                                                    | luxonFormat : 'dd/MM/yyyy HH:mm:ss',
-                                                    0
-                                                    )
+                                                        getDateTimeFormat(
+                                                            record.mntMemberFiat.creationTime
+                                                                | luxonFormat : 'dd/MM/yyyy HH:mm:ss',
+                                                            0
+                                                        )
                                                     }}
                                                 </span>
                                                 <br />
                                                 <span class="fs-7">
                                                     {{
-                                                    getDateTimeFormat(
-                                                    record.mntMemberFiat.creationTime
-                                                    | luxonFormat : 'dd/MM/yyyy HH:mm:ss',
-                                                    1
-                                                    )
+                                                        getDateTimeFormat(
+                                                            record.mntMemberFiat.creationTime
+                                                                | luxonFormat : 'dd/MM/yyyy HH:mm:ss',
+                                                            1
+                                                        )
                                                     }}
                                                 </span>
                                             </td>
@@ -165,8 +199,8 @@
                                             </td>
                                             <td style="width: 100px">
                                                 {{
-                                                record.mntMemberFiat.amount
-                                                | currency : 'USD' : 'symbol' : '1.2-5' : 'en'
+                                                    record.mntMemberFiat.amount
+                                                        | currency : 'USD' : 'symbol' : '1.2-5' : 'en'
                                                 }}
                                             </td>
                                             <td style="width: 80px">
@@ -174,23 +208,40 @@
                                                     {{ l(status[record.mntMemberFiat.status]) }}
                                                 </span>
                                             </td>
-                                            <td style="width: 100px" [hidden]="
+                                            <td
+                                                style="width: 100px"
+                                                [hidden]="
                                                     !isGrantedAny(
                                                         'Pages.Administration.MntMemberFiatRequests.Edit',
                                                         'Pages.Administration.MntMemberFiatRequests.Delete'
                                                     )
-                                                ">
-                                                <button class="btn btn-actions" pTooltip="{{ l('View') }}"
-                                                    tooltipPosition="top">
+                                                "
+                                            >
+                                                <button
+                                                    class="btn btn-actions"
+                                                    pTooltip="{{ l('View') }}"
+                                                    tooltipPosition="top"
+                                                >
                                                     <i class="flaticon-search text-dark"></i>
                                                 </button>
-                                                <button class="btn btn-actions" pTooltip="{{ l('StatusChange') }}"
+                                                <button
+                                                    class="btn btn-actions"
+                                                    pTooltip="{{ l('StatusChange') }}"
                                                     tooltipPosition="top"
-                                                    (click)="changeStatus(record.mntMemberFiat.id)">
+                                                    (click)="
+                                                        changeStatus(
+                                                            record.mntMemberFiat.id,
+                                                            record.mntMemberFiat.status
+                                                        )
+                                                    "
+                                                >
                                                     <i class="flaticon2-console text-info"></i>
                                                 </button>
-                                                <button class="btn btn-actions" pTooltip="{{ l('Delete') }}"
-                                                    tooltipPosition="top">
+                                                <button
+                                                    class="btn btn-actions"
+                                                    pTooltip="{{ l('Delete') }}"
+                                                    tooltipPosition="top"
+                                                >
                                                     <i class="flaticon-delete text-danger"></i>
                                                 </button>
                                             </td>
@@ -201,13 +252,17 @@
                                     {{ l('NoData') }}
                                 </div>
                                 <div class="primeng-paging-container">
-                                    <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
-                                        (onPageChange)="getAllOtcRequests($event)"
+                                    <p-paginator
+                                        [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                        #paginator
+                                        (onPageChange)="getAllFiatRequests($event)"
                                         [totalRecords]="primengTableHelper.totalRecordsCount"
                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
-                                        [showCurrentPageReport]="true" [currentPageReportTemplate]="
+                                        [showCurrentPageReport]="true"
+                                        [currentPageReportTemplate]="
                                             'TotalRecordsCount' | localize : primengTableHelper.totalRecordsCount
-                                        "></p-paginator>
+                                        "
+                                    ></p-paginator>
                                 </div>
                             </div>
                             <!--<Primeng-Datatable-End>-->
@@ -216,7 +271,9 @@
                 </div>
             </div>
         </div>
-        <member-fiat-request-changeStatus #changeStatusMntMemberFiatRequestModal
-            (onSave)="getAllOtcRequests()"></member-fiat-request-changeStatus>
+        <member-fiat-request-changeStatus
+            #changeStatusMntMemberFiatRequestModal
+            (onSave)="getAllFiatRequests()"
+        ></member-fiat-request-changeStatus>
     </div>
 </div>

@@ -990,7 +990,7 @@ export class ServiceMembersProxy {
             })
         };
 
-        return this.http.request('post', url_, options_).pipe(_observableMergeMap((response_: any) => this.processUpdateFiatStatus(response_))).pipe(_observableCatch((response_: any) => {
+        return this.http.request('put', url_, options_).pipe(_observableMergeMap((response_: any) => this.processUpdateFiatStatus(response_))).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
                     return this.processUpdateFiatStatus(response_ as any);

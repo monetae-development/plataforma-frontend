@@ -1,50 +1,71 @@
-<div bsModal #memberFiatChangeStatusModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-  aria-labelledby="memberFiatChangeStatusModa" aria-hidden="true" [config]="{ backdrop: 'static' }">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <form *ngIf="active" #mntMemberFiatChangeStatusForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
-        <div class="modal-header">
-          <h4 class="modal-title">
-            <span>{{ l('MakeDeposit') }}</span>
-          </h4>
+<div
+    bsModal
+    #memberFiatChangeStatusModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="memberFiatChangeStatusModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form
+                *ngIf="active"
+                #mntMemberFiatChangeStatusForm="ngForm"
+                novalidate
+                (ngSubmit)="save()"
+                autocomplete="off"
+            >
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{ l('StatusChange') }}</span>
+                    </h4>
 
-          <button class="btn btn-secondary rounded-circle btn-sm close" (click)="close()">
-            <i class="fa fa-close"></i>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="form-group mb-5">
-            <label class="mb-3">{{ l('BankAccountOriginAsk') }} *</label>
-            <div class="row">
-              <div class="col-8">
-                <p-dropdown #MntMemberFiatDeposit_BankAccount="ngModel" id="MntMemberFiatDeposit_BankAccount"
-                  name="MntMemberFiatDeposit_BankAccount" [options]="statusOptions" [(ngModel)]="fiatRequest.status"
-                  placeholder="{{ l('SelectTreeDots') }}" required>
-                </p-dropdown>
-                <validation-messages [formCtrl]="MntMemberFiatDeposit_BankAccount"></validation-messages>
-              </div>
-            </div>
-          </div>
+                    <button class="btn btn-secondary rounded-circle btn-sm close" (click)="close()">
+                        <i class="fa fa-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group mb-5">
+                        <label class="mb-3">{{ l('StatusChangeAsk') }} *</label>
+                        <div class="row">
+                            <div class="col-8">
+                                <p-dropdown
+                                    #MntMemberFiatStatus="ngModel"
+                                    id="MntMemberFiatStatus"
+                                    name="MntMemberFiatStatus"
+                                    [options]="statusOptions"
+                                    [(ngModel)]="fiatRequest.status"
+                                    placeholder="{{ l('SelectTreeDots') }}"
+                                    required
+                                ></p-dropdown>
+                                <validation-messages [formCtrl]="MntMemberFiatStatus"></validation-messages>
+                            </div>
+                        </div>
+                    </div>
 
-          <div class="row p-2 mt-4">
-            <div class="col-sm-8 offset-sm-2">
-              <button type="submit" class="btn btn-primary w-100" [disabled]="!mntMemberFiatChangeStatusForm.form.valid"
-                [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')">
-                <span>{{ l('FiatDepositSave') }}</span>
-              </button>
-              <div class="mt-2 text-center">
-                {{ l('FiatDepositDisclaimer') }}
-              </div>
-            </div>
-          </div>
-        </div>
+                    <div class="row p-2 mt-4">
+                        <div class="col-sm-8 offset-sm-2">
+                            <button
+                                type="submit"
+                                class="btn btn-primary w-100"
+                                [disabled]="!mntMemberFiatChangeStatusForm.form.valid"
+                                [buttonBusy]="saving"
+                                [busyText]="l('SavingWithThreeDot')"
+                            >
+                                <span>{{ l('Save') }}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="modal-footer">
-          <button [disabled]="saving" type="button" class="btn btn-secondary" (click)="close()">
-            {{ l('Cancel') }}
-          </button>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-secondary" (click)="close()">
+                        {{ l('Cancel') }}
+                    </button>
+                </div>
+            </form>
         </div>
-      </form>
     </div>
-  </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, Injector, ViewEncapsulation, ViewChild, OnInit } from '@angular/core';
+import { Component, Injector, EventEmitter, ViewEncapsulation, ViewChild, OnInit, Input, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap/modal';
@@ -10,6 +10,7 @@ import { UpdateMntMemberFiatRequestStatusInput } from '@shared/service-proxies/d
 import { FiatStatus } from '@shared/service-proxies/enum/Members/FiatStatus.enum';
 import { GetSelectDto } from '@shared/service-proxies/dto/Common/SelectInput/GetSelectDto';
 import { SelectItem } from 'primeng/api';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'member-fiat-request-changeStatus',
@@ -17,12 +18,12 @@ import { SelectItem } from 'primeng/api';
 })
 
 export class MntMemberFiatRequestsChangeStatusComponent extends AppComponentBase implements OnInit {
+  @Output() onSave: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('memberFiatChangeStatusModal', { static: true }) modal: ModalDirective;
 
   fiatRequest: UpdateMntMemberFiatRequestStatusInput;
   statusOptions: SelectItem[];
   status = FiatStatus;
-
   active = false;
   saving = false;
 
@@ -39,11 +40,15 @@ export class MntMemberFiatRequestsChangeStatusComponent extends AppComponentBase
 
   ngOnInit() {
     this.fiatRequest = new UpdateMntMemberFiatRequestStatusInput();
+    this.statusOptions = this.getSelectOptions(this.status);
   }
 
-  show(requestId: number): void {
+  show(requestId: number, status: FiatStatus): void {
     this.active = true;
     this.modal.show();
+    this.fiatRequest.id = requestId;
+    this.fiatRequest.status = status;
+
   }
 
   //TODO: Unificar en un helper
@@ -66,12 +71,20 @@ export class MntMemberFiatRequestsChangeStatusComponent extends AppComponentBase
   }
 
   save(): void {
-
+    this.saving = true;
+    this._serviceMemberProxy.updateFiatStatus(this.fiatRequest)
+      .pipe(finalize(() => {
+        this.saving = false;
+      }))
+      .subscribe(result => {
+        this.notify.info(this.l('SavedSuccessfully'));
+        this.onSave.emit(null);
+        this.close();
+      });
   }
 
   close(): void {
     this.active = false;
     this.modal.hide();
   }
-
 }
