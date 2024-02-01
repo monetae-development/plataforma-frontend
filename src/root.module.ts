@@ -23,6 +23,7 @@ import {
 import {API_BASE_URL as API_BASE_URL_CATALOGS} from '@shared/service-proxies/service-catalogs-proxies';
 import {API_BASE_URL as API_BASE_URL_COMMON} from '@shared/service-proxies/service-common-proxies';
 import {API_BASE_URL as API_BASE_URL_MEMBERS} from '@shared/service-proxies/service-members-proxies';
+import {API_BASE_URL as API_BASE_URL_TRADING} from '@shared/service-proxies/service-trading-proxies';
 import {API_BASE_URL as API_BASE_URL_OTC} from '@shared/service-proxies/service-otc-proxies';
 import {API_BASE_URL as API_BASE_URL_SETTINGS_PLATFORM} from '@shared/service-proxies/service-settings-platform-proxies';
 import { ServiceProxyModule } from '@shared/service-proxies/service-proxy.module';
@@ -280,6 +281,7 @@ function handleLogoutRequest(authService: AppAuthService) {
         { provide: API_BASE_URL_CATALOGS, useFactory: getRemoteServiceBaseUrl },
         { provide: API_BASE_URL_COMMON, useFactory: getRemoteServiceBaseUrl },
         { provide: API_BASE_URL_MEMBERS, useFactory: getRemoteServiceBaseUrl },
+        { provide: API_BASE_URL_TRADING, useFactory: getRemoteServiceBaseUrl },
         { provide: API_BASE_URL_OTC, useFactory: getRemoteServiceBaseUrl },
         { provide: API_BASE_URL_SETTINGS_PLATFORM, useFactory: getRemoteServiceBaseUrl },
         {

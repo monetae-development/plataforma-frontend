@@ -10,6 +10,7 @@ import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dy
 import { InputNumberModule } from 'primeng/inputnumber';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { DialogResumenBuySellComponent } from '../dialog-resumen-buy-sell/dialog-resumen-buy-sell.component';
+import { ServiceTradingProxy } from '@shared/service-proxies/service-trading-proxies';
 
 @Component({
   standalone: true,
@@ -48,6 +49,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
     public config: DynamicDialogConfig,
     public dialogService: DialogService,
     private _serviceCommonProxy: ServiceCommonProxy,
+    private _serviceTradingProxy: ServiceTradingProxy,
   ) { 
     super(injector);
     this.activeIndex = config.data?.activeIndex;
@@ -61,6 +63,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
       { label: 'Vender' }
     ];
     this.activeItem = this.menuItems[Number(this.activeIndex)];
+    this.loadBalance();
     this.loadCryptoAssets();
   }
 
@@ -83,6 +86,13 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
 
   get cryptoAssetIdSaleControl() { return this.saleForm.controls['cryptoAssetId'] as FormControl; }
   get amountSaleControl() { return this.saleForm.controls['amount'] as FormControl; }
+
+  loadBalance(){
+    this._serviceTradingProxy.getFiatBalance()
+      .subscribe((result) => {
+        this.amount = result.amount;
+      });
+  }
 
   loadCryptoAssets(){
     this._serviceCommonProxy.getSelectOptions('OTCTrading/GetAllCryptoCoins', null)

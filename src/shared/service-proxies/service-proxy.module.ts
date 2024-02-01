@@ -5,6 +5,7 @@ import * as ApiServiceProxies from './service-proxies';
 import * as CatalogsServiceProxies from './service-catalogs-proxies';
 import * as CommonServiceProxies from './service-common-proxies';
 import * as MembersServiceProxies from './service-members-proxies';
+import * as TradingServiceProxy from './service-trading-proxies';
 import * as OTCServiceProxies from './service-otc-proxies';
 import * as SettingsPlatformServiceProxies from './service-settings-platform-proxies';
 import { ZeroRefreshTokenService } from '@account/auth/zero-refresh-token.service';
@@ -36,6 +37,7 @@ import { ZeroTemplateHttpConfigurationService } from './zero-template-http-confi
         CatalogsServiceProxies.CatActivityEconomicsServiceProxy,
         CatalogsServiceProxies.CatSourceFoundsesServiceProxy,
         MembersServiceProxies.ServiceMembersProxy,
+        TradingServiceProxy.ServiceTradingProxy,
         ApiServiceProxies.MntMemberDataComplementsServiceProxy,
         ApiServiceProxies.MntMemberIdentitiesServiceProxy,
         ApiServiceProxies.MntEconomicInfosServiceProxy,
