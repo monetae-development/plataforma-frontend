@@ -481,6 +481,26 @@
         }
     }
 }
+.ae-selectinput__grid{
+    .ae-selectinput__grid--fields{
+        display: grid;
+        grid-template-columns: 122px 1fr;
+        gap: 10px;
+        .ae-select{
+            margin-top: 5px;
+        }
+        .ae-inputnumber{
+            margin-top: 5px;
+            .p-inputwrapper{
+                .p-inputnumber{
+                    .p-inputnumber-input{
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
 .ae-radiobutton,
 .ae-inputcamera,
 .ae-calendar,
