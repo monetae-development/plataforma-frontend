@@ -887,6 +887,13 @@
         &.ae-dialog--sm{
             max-width: 470px;
         }
+        &.ae-text-danger{
+            .ae-dialog__message{
+                h2{
+                    color: #FF2000 !important;
+                }
+            }
+        }
         .ae-dialog__message{
             text-align: center;
             padding: 0 20px;

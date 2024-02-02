@@ -47,11 +47,11 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   filterInversiones: any;
   amount: number = 0;
   currency: string = '';
-  statusMember: MemberType;
+  statusMember: number;
 
   constructor(
     injector: Injector,
-    private router: Router,
+    private _router: Router,
     private _notifyService: NotifyService,
     private _tokenAuth: TokenAuthServiceProxy,
     private _activatedRoute: ActivatedRoute,
@@ -164,22 +164,23 @@ export class HomeComponent extends AppComponentBase implements OnInit {
       console.log(result);
       if (result.hasClientRole) {
         this._serviceMembersProxy.getStatus().subscribe((result) => {
-          if(result.status === MemberType.REGISTER){
-            this.statusMember = result.status;
-          } else {
-            this.statusMember = MemberType.CUSTOMER;
-          }
+          console.log(result);
+          this.statusMember = result.status;
         });
       } else {
-        this.statusMember = MemberType.ADMINISTRATOR;
+        this.statusMember = MemberType.Administrador;
       }
     });
   }
 
   showDialogBuySell(index){
-    if(this.statusMember === MemberType.REGISTER){
+    if (this.statusMember === MemberStatus.Register){
       this.openMessageDialogVerifyAccount();
-    } else if(this.statusMember === MemberType.ADMINISTRATOR) {
+    } else if (this.statusMember === MemberStatus.Pending || this.statusMember === MemberStatus.Review){
+      this.openMessageDialogSuccessAccount();
+    } else if (this.statusMember === MemberStatus.Refused){
+      this.openMessageDialogRefusedAccount();
+    } else if(this.statusMember === MemberType.Administrador) {
       this.openMessageDialogRolAdministrador();
     } else {
       const ref = this.dialogService.open(DialogOperationBuySellComponent, {
@@ -200,9 +201,13 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   }
 
   showDialogSendReceive(index){
-    if(this.statusMember === MemberType.REGISTER){
+    if (this.statusMember === MemberStatus.Register){
       this.openMessageDialogVerifyAccount();
-    } else if(this.statusMember === MemberType.ADMINISTRATOR) {
+    } else if (this.statusMember === MemberStatus.Pending || this.statusMember === MemberStatus.Review){
+      this.openMessageDialogSuccessAccount();
+    } else if (this.statusMember === MemberStatus.Refused){
+      this.openMessageDialogRefusedAccount();
+    } else if(this.statusMember === MemberType.Administrador) {
       this.openMessageDialogRolAdministrador();
     } else {
       const ref = this.dialogService.open(DialogOperationSendReceiveComponent, {
@@ -223,9 +228,13 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   }
 
   showDialogDepositWithdraw(index){
-    if(this.statusMember === MemberType.REGISTER){
+    if (this.statusMember === MemberStatus.Register){
       this.openMessageDialogVerifyAccount();
-    } else if(this.statusMember === MemberType.ADMINISTRATOR) {
+    } else if (this.statusMember === MemberStatus.Pending || this.statusMember === MemberStatus.Review){
+      this.openMessageDialogSuccessAccount();
+    } else if (this.statusMember === MemberStatus.Refused){
+      this.openMessageDialogRefusedAccount();
+    } else if(this.statusMember === MemberType.Administrador) {
       this.openMessageDialogRolAdministrador();
     } else {
       const ref = this.dialogService.open(DialogOperationDepositWithdrawComponent, {
@@ -246,7 +255,7 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   }
 
   goToProject(tokenId: string) {
-    this.router.navigate(['/app/main/projects/project-' + tokenId]);
+    this._router.navigate(['/app/main/projects/project-' + tokenId]);
   }
 
   onActiveItemChange(event: MenuItem) {
@@ -279,6 +288,46 @@ export class HomeComponent extends AppComponentBase implements OnInit {
         ref.close();
     });
   }
+
+  private openMessageDialogSuccessAccount(): void {
+    const ref = this._dialogService.open(DialogDefaultComponent, {
+        showHeader: false,
+        styleClass: 'ae-dialog ae-dialog--default',
+        data: {
+            icon: 'pi pi-id-card',
+            title: 'Gracias por completar el proceso de verificación',
+            subtitle: 'Actualmente, estamos analizando tus datos con diligencia. En breve, te informaremos los resultados. ¡Gracias por tu paciencia!"',
+            titleAction: this.l('Continue'),
+        }
+    });
+    const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
+    dialogRef?.changeDetectorRef.detectChanges();
+    const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
+    instance?.outAccept.subscribe(() => {
+        ref.close();
+    });
+  }
+
+  private openMessageDialogRefusedAccount(): void {
+    const ref = this._dialogService.open(DialogDefaultComponent, {
+        showHeader: false,
+        styleClass: 'ae-dialog ae-dialog--default ae-text-danger ae-dialog--sm',
+        data: {
+            icon: 'pi pi-id-card',
+            title: '"¡Lo sentimos! <br> Tu verificación de identidad KYC <br> ha sido rechazada',
+            subtitle: 'Para generar una nueva solicitud contacte a nuestro equipo de soporte en info@monetae.io.',
+            titleAction: 'Aceptar'
+        }
+    });
+    const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
+    dialogRef?.changeDetectorRef.detectChanges();
+    const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
+    instance?.outAccept.subscribe(() => {
+        this._router.navigate(['app/main/dashboard']);
+        ref.close();
+    });
+}
+
   private openMessageDialogRolAdministrador(): void {
     const ref = this._dialogService.open(DialogDefaultComponent, {
         showHeader: false,

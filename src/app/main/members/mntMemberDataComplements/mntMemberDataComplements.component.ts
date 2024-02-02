@@ -633,11 +633,12 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     private openMessageDialogRefusedAccount(): void {
         const ref = this._dialogService.open(DialogDefaultComponent, {
             showHeader: false,
-            styleClass: 'ae-dialog ae-dialog--default ae-dialog--sm',
+            styleClass: 'ae-dialog ae-dialog--default ae-text-danger ae-dialog--sm',
             data: {
                 icon: 'pi pi-id-card',
-                title: '"¡Lo sentimos! Tu verificación de identidad KYC ha sido rechazada',
-                titleAction: 'Nueva solicitud'
+                title: '"¡Lo sentimos! <br> Tu verificación de identidad KYC <br> ha sido rechazada',
+                subtitle: 'Para generar una nueva solicitud contacte a nuestro equipo de soporte en info@monetae.io.',
+                titleAction: 'Aceptar'
             }
         });
         const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);

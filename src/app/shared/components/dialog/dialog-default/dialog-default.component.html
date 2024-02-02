@@ -1,6 +1,6 @@
 <div class="ae-dialog__content ae-dialog__message">
   <i class="flex align-items-center justify-content-center ae-text-gris" [class]="icon"></i>
-  <h2 class="ae-text-primary">{{ title }}</h2>
+  <h2 class="ae-text-primary" [innerHTML]="title"></h2>
   <p class="ae-text-black ae-text-default" *ngIf="subtitle">{{ subtitle }}</p>
   <p class="ae-text-gris-dark ae-text-default" *ngIf="info">{{ info }}</p>
 </div>
