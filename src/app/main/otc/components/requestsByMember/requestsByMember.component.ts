@@ -1,4 +1,4 @@
-import { Component, Injector, EventEmitter, OnInit, Input, Output, ViewEncapsulation, ViewChild} from '@angular/core';
+import { Component, Injector, EventEmitter, OnInit, Input, Output, ViewEncapsulation, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { finalize } from 'rxjs/operators';
@@ -45,12 +45,12 @@ export class OTCRequestsByMemberComponent extends AppComponentBase implements On
   ngOnInit() {
   }
 
-  getAllOtcRequestsByMember(event?: LazyLoadEvent){
+  getAllOtcRequestsByMember(event?: LazyLoadEvent) {
     if (this.primengTableHelper.shouldResetPaging(event)) {
       this.paginator.changePage(0);
       if (this.primengTableHelper.records &&
-          this.primengTableHelper.records.length > 0) {
-          return;
+        this.primengTableHelper.records.length > 0) {
+        return;
       }
     }
 
@@ -72,7 +72,7 @@ export class OTCRequestsByMemberComponent extends AppComponentBase implements On
   }
 
   //TODO:Unificar en un helper
-  getDateTimeFormat(input: string, index: number): string{
+  getDateTimeFormat(input: string, index: number): string {
     let dateTime = input.split(' ');
     return dateTime[index];
   }

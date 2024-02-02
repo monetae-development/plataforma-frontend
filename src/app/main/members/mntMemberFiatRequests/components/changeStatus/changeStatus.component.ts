@@ -8,7 +8,7 @@ import { ServiceMembersProxy } from '@shared/service-proxies/service-members-pro
 import { ServiceCommonProxy } from '@shared/service-proxies/service-common-proxies';
 import { UpdateMntMemberFiatRequestStatusInput } from '@shared/service-proxies/dto/members/mntMemberFiat/UpdateMntMemberFiatRequestStatusInput';
 import { FiatStatus } from '@shared/service-proxies/enum/Members/FiatStatus.enum';
-import { GetSelectDto } from '@shared/service-proxies/dto/Common/SelectInput/GetSelectDto';
+import { GetSelectIntDto } from '@shared/service-proxies/dto/Common/SelectInput/GetSelectIntDto';
 import { SelectItem } from 'primeng/api';
 import { finalize } from 'rxjs/operators';
 
@@ -48,7 +48,6 @@ export class MntMemberFiatRequestsChangeStatusComponent extends AppComponentBase
     this.modal.show();
     this.fiatRequest.id = requestId;
     this.fiatRequest.status = status;
-
   }
 
   //TODO: Unificar en un helper
@@ -56,8 +55,8 @@ export class MntMemberFiatRequestsChangeStatusComponent extends AppComponentBase
     let options = [];
     for (const status of Object.values(enumObj)) {
       if (!isNaN(Number(status))) {
-        let temp = new GetSelectDto();
-        temp.value = status.toString();
+        let temp = new GetSelectIntDto();
+        temp.value = Number(status);
         temp.label = this.l(this.getKeyEnum(enumObj, Number(status)));
         options.push(temp);
       }

@@ -16,6 +16,7 @@ import { MntMemberFiatDepositComponent } from './members/mntMemberFiat/component
 import { MntMemberFiatWithdrawalComponent } from './members/mntMemberFiat/components/withdrawal/withdrawal.component';
 import { MntMemberFiatRequestsComponent } from './members/mntMemberFiatRequests/mntMemberFiatRequests.component';
 import { MntMemberFiatRequestsChangeStatusComponent } from './members/mntMemberFiatRequests/components/changeStatus/changeStatus.component';
+import { ViewMemberFiatRequestModalComponent } from './members/mntMemberFiatRequests/view-memberFiatRequest-modal.component';
 
 import { ViewOTCRequestModalComponent } from './otc/otcRequests/view-otcRequest-modal.component';
 
@@ -209,6 +210,7 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 		MntMemberFiatWithdrawalComponent,
 		MntMemberFiatRequestsComponent,
 		MntMemberFiatRequestsChangeStatusComponent,
+		ViewMemberFiatRequestModalComponent,
 
 		ViewOTCRequestModalComponent,
 		MntMemberBankAccountsComponent,

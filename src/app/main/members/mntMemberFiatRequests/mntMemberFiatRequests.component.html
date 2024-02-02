@@ -272,8 +272,10 @@
             </div>
         </div>
         <member-fiat-request-changeStatus
-            #changeStatusMntMemberFiatRequestModal
+            #changeStatusRequestModal
             (onSave)="getAllFiatRequests()"
         ></member-fiat-request-changeStatus>
+
+        <member-fiat-request-modal #viewRequestModal></member-fiat-request-modal>
     </div>
 </div>

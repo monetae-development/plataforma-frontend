@@ -16,6 +16,7 @@ import { FiatType } from '@shared/service-proxies/enum/Members/FiatType.enum';
 import { FiatStatus } from '@shared/service-proxies/enum/Members/FiatStatus.enum';
 import { GetSelectDto } from '@shared/service-proxies/dto/Common/SelectInput/GetSelectDto';
 import { MntMemberFiatRequestsChangeStatusComponent } from './components/changeStatus/changeStatus.component';
+import { ViewMemberFiatRequestModalComponent } from './view-memberFiatRequest-modal.component';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -23,7 +24,9 @@ import { MntMemberFiatRequestsChangeStatusComponent } from './components/changeS
   animations: [appModuleAnimation()]
 })
 export class MntMemberFiatRequestsComponent extends AppComponentBase implements OnInit {
-  @ViewChild('changeStatusMntMemberFiatRequestModal', { static: true }) changeStatusMntMemberFiatRequestModal: MntMemberFiatRequestsChangeStatusComponent;
+  @ViewChild('changeStatusRequestModal', { static: true }) changeStatusRequestModal: MntMemberFiatRequestsChangeStatusComponent;
+  @ViewChild('viewRequestModal', { static: true }) viewRequestModal: ViewMemberFiatRequestModalComponent;
+
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
 
@@ -113,6 +116,6 @@ export class MntMemberFiatRequestsComponent extends AppComponentBase implements 
   }
 
   changeStatus(requestId: number, status: FiatStatus) {
-    this.changeStatusMntMemberFiatRequestModal.show(requestId, status);
+    this.changeStatusRequestModal.show(requestId, status);
   }
 }

@@ -2,6 +2,7 @@ import { IMntMemberFiatFullDto } from './IMntMemberFiatFullDto';
 import { MntMemberBankAccountDto } from '../mntMemberBankAccount/MntMemberBankAccountDto';
 import { PlatformBankAccountForViewMemberDto } from '../../Platform/PlatformBankAccount/PlatformBankAccountForViewMemberDto';
 import { UserInfoDto } from '../../Authorization/Users/UserInfoDto';
+import { MntMemberFileDto } from '../mntMemberFile/MntMemberFileDto';
 import { FiatType } from '@shared/service-proxies/enum/Members/FiatType.enum';
 import { FiatStatus } from '@shared/service-proxies/enum/Members/FiatStatus.enum';
 import { DateTime } from 'luxon';
@@ -13,6 +14,8 @@ export class MntMemberFiatFullDto implements IMntMemberFiatFullDto {
     platformBankAccountId!: number;
     platformBankAccountFk!: PlatformBankAccountForViewMemberDto;
     userFk!: UserInfoDto;
+    mntMemberFileId: number;
+    mntMemberFileFk: MntMemberFileDto;
     type!: FiatType;
     amount!: number;
     reference!: string;
@@ -50,6 +53,8 @@ export class MntMemberFiatFullDto implements IMntMemberFiatFullDto {
             this.platformBankAccountFk = platformBankAccountFk ? PlatformBankAccountForViewMemberDto.fromJS(platformBankAccountFk) : new PlatformBankAccountForViewMemberDto();
             let userFk = _data['userFk'];
             this.userFk = userFk ? UserInfoDto.fromJS(userFk) : <any>undefined;
+            this.mntMemberFileId = _data['fileId'];
+            this.mntMemberFileFk = _data['mntMemberFileFk'];
             this.type = _data['type'];
             this.amount = _data['amount'];
             this.reference = _data['reference'];
@@ -69,6 +74,8 @@ export class MntMemberFiatFullDto implements IMntMemberFiatFullDto {
         data['platformBankAccountId'] = this.platformBankAccountId;
         data['platformBankAccountFk'] = this.platformBankAccountFk;
         data['userFk'] = this.userFk;
+        data['mntMemberFileId'] = this.mntMemberFileId;
+        data['mntMemberFileFk'] = this.mntMemberFileFk;
         data['type'] = this.type;
         data['amount'] = this.amount;
         data['reference'] = this.reference;
