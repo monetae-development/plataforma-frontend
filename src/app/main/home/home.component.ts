@@ -56,7 +56,6 @@ export class HomeComponent extends AppComponentBase implements OnInit {
     private _tokenAuth: TokenAuthServiceProxy,
     private _activatedRoute: ActivatedRoute,
     private _dateTimeService: DateTimeService,
-    public dialogService: DialogService,
     private _serviceMembersProxy: ServiceMembersProxy,
     private _dialogService: DialogService,
     private _sessionServiceProxy: SessionServiceProxy,
@@ -183,14 +182,14 @@ export class HomeComponent extends AppComponentBase implements OnInit {
     } else if(this.statusMember === MemberType.Administrador) {
       this.openMessageDialogRolAdministrador();
     } else {
-      const ref = this.dialogService.open(DialogOperationBuySellComponent, {
+      const ref = this._dialogService.open(DialogOperationBuySellComponent, {
         showHeader: false,
         styleClass: 'ae-dialog ae-dialog--operations ae-dialog--sm',
         data: {
           activeIndex: index
         },
       });
-      const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+      const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
       dialogRef?.changeDetectorRef.detectChanges();
       const instance = dialogRef?.instance?.componentRef?.instance as DialogOperationBuySellComponent;
       instance?.outAccept.subscribe((values) => {
@@ -210,14 +209,14 @@ export class HomeComponent extends AppComponentBase implements OnInit {
     } else if(this.statusMember === MemberType.Administrador) {
       this.openMessageDialogRolAdministrador();
     } else {
-      const ref = this.dialogService.open(DialogOperationSendReceiveComponent, {
+      const ref = this._dialogService.open(DialogOperationSendReceiveComponent, {
         showHeader: false,
         styleClass: 'ae-dialog ae-dialog--operations ae-dialog--sm',
         data: {
           activeIndex: index
         },
       });
-      const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+      const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
       dialogRef?.changeDetectorRef.detectChanges();
       const instance = dialogRef?.instance?.componentRef?.instance as DialogOperationSendReceiveComponent;
       instance?.outAccept.subscribe((values) => {
@@ -237,14 +236,14 @@ export class HomeComponent extends AppComponentBase implements OnInit {
     } else if(this.statusMember === MemberType.Administrador) {
       this.openMessageDialogRolAdministrador();
     } else {
-      const ref = this.dialogService.open(DialogOperationDepositWithdrawComponent, {
+      const ref = this._dialogService.open(DialogOperationDepositWithdrawComponent, {
         showHeader: false,
         styleClass: 'ae-dialog ae-dialog--operations ae-dialog--sm',
         data: {
           activeIndex: index
         },
       });
-      const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+      const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
       dialogRef?.changeDetectorRef.detectChanges();
       const instance = dialogRef?.instance?.componentRef?.instance as DialogOperationDepositWithdrawComponent;
       instance?.outAccept.subscribe((values) => {
@@ -285,6 +284,7 @@ export class HomeComponent extends AppComponentBase implements OnInit {
     dialogRef?.changeDetectorRef.detectChanges();
     const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
     instance?.outAccept.subscribe(() => {
+      this._router.navigate(['app/main/members/mntMemberDataComplements']);
         ref.close();
     });
   }
