@@ -156,17 +156,23 @@
                     </div>
                 </ng-template>
                 <ng-template let-coin pTemplate="item">
-                    <div class="flex align-items-center">
-                        <div class="mr-3">
-                            <img 
-                              src="/assets/crypto-icons/{{ coin.subtitle.toLowerCase() }}.png" 
-                              style="width: 25px"/>
-                        </div>
-                        <div class="flex flex-column">
-                            <span class="ae-text-dark ae-text-default fw-semibold">{{ coin.label }}</span>
-                            <span class="ae-text-gris-dark ae-text-default">{{ coin.subtitle }}</span>
-                        </div>
+                  <div class="flex align-items-center justify-content-between w-full">
+                    <div class="flex align-items-center mr-8">
+                      <div class="mr-3">
+                        <img 
+                          src="/assets/crypto-icons/{{ coin.subtitle.toLowerCase() }}.png" 
+                          style="width: 25px"/>
+                      </div>
+                      <div class="flex flex-column">
+                          <span class="ae-text-dark ae-text-default fw-semibold">{{ coin.label }}</span>
+                          <span class="ae-text-gris-dark ae-text-default">{{ coin.subtitle }}</span>
+                      </div>
                     </div>
+                    <div class="flex flex-column align-items-end">
+                      <span class="ae-text-dark ae-text-default">{{ coin.salePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}</span>
+                      <span class="ae-text-default" [ngClass]="{'ae-text-success': coin.percent24H > 0, 'ae-text-danger': coin.percent24H < 0 }">{{ coin.percent24H }}</span>
+                    </div>
+                  </div>
                 </ng-template>
             </p-dropdown>
           </div>
