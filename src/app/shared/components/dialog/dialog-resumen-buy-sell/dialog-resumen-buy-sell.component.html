@@ -10,7 +10,7 @@
             style="width: 50px"
         />
         <p class="mb-1 ae-text-dark ae-text-medium fw-bold">{{ resumenSend.amountCrypto }} {{ resumenSend.cryptoCurrencyId.subtitle }}</p>
-        <p class="m-0 ae-text-small ae-text-gris">{{ purchasePrice | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }} USD</p>
+        <p class="m-0 ae-text-small ae-text-gris">{{ amountPrice | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }} USD</p>
     </div>
     <div class="ae-table__resumen">
         <div class="ae-resumen__item flex align-items-center justify-content-between">
@@ -26,7 +26,7 @@
                 <p class="ae-text-dark ae-text-default w-full">Precio {{ resumenSend.cryptoCurrencyId.subtitle }}</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-gris-network ae-text-default w-full">{{ purchasePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}</span>
+                <span class="ae-text-gris-network ae-text-default w-full">{{ amountPrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}</span>
             </div>
         </div>
         <div class="ae-resumen__item flex align-items-center justify-content-between">

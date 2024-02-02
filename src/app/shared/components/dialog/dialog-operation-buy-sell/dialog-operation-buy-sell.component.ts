@@ -174,9 +174,10 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
       this.amountSaleControl.setValue(null);
       return;
     }
-    if(this.cryptoAssetIdPurchaseControl.value){
+    if(this.cryptoAssetIdSaleControl.value){
       this.amountCryptoSaleControl.setValue(event.value);
-      this.calculatePurchaseCost(event.value);
+      this.calculateSaleCost(event.value);
+      console.log("entra");
     }
   }
 
@@ -187,9 +188,9 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
       this.amountCryptoSaleControl.setValue(null);
       return;
     }
-    if(this.cryptoAssetIdPurchaseControl.value){
+    if(this.cryptoAssetIdSaleControl.value){
       this.amountSaleControl.setValue(event.value);
-      this.calculateCryptoPurchaseCost(event.value);
+      this.calculateCryptoSaleCost(event.value);
     }
   }
 
@@ -222,6 +223,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
 
   calculateCryptoSaleCost(amount) {
     if (amount) {
+      this.amountCryptoSaleControl.setValue(amount/this.salePrice);
       this.amountSaleCommision = (this.amountSaleControl.value * this.comissionSale) / 100;
     } else {
       this.amountSaleCommision = undefined;
@@ -243,7 +245,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
         titleAction: 'Comprar',
         resumenSend: this.purchaseForm.value,
         amountCommision: this.amountPurchaseCommision,
-        purchasePrice: this.purchasePrice,
+        amountPrice: this.purchasePrice,
         type: RequestType.Purchase
       }
     });
@@ -265,6 +267,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
         titleAction: 'Vender',
         resumenSend: this.saleForm.value,
         amountCommision: this.amountSaleCommision,
+        amountPrice: this.salePrice,
         type: RequestType.Sale
       }
     });

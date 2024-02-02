@@ -23,7 +23,7 @@ export class DialogResumenBuySellComponent extends AppComponentBase implements O
   title: string = '';
   titleAction: string = '';
   resumenSend: any;
-  purchasePrice: number = 0;
+  amountPrice: number = 0;
   amountCommision: number = 0;
   amountTotal: number = 0;
   type: RequestType;
@@ -43,7 +43,7 @@ export class DialogResumenBuySellComponent extends AppComponentBase implements O
     this.title = config.data.title;
     this.titleAction = config.data.titleAction;
     this.resumenSend = config.data.resumenSend;
-    this.purchasePrice = config.data.purchasePrice;
+    this.amountPrice = config.data.amountPrice;
     this.type = config.data.type;
     this.amountCommision = config.data.amountCommision;
     this.amountTotal = this.resumenSend.amount + this.amountCommision;
