@@ -53,7 +53,7 @@
                     </div>
                     <div class="flex flex-column align-items-end">
                       <span class="ae-text-dark ae-text-default">{{ coin.purchasePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}</span>
-                      <span class="ae-text-default" [ngClass]="{'ae-text-success': coin.percent24H > 0, 'ae-text-danger': coin.percent24H < 0 }">{{ coin.percent24H }}</span>
+                      <span class="ae-text-default" [ngClass]="{'ae-text-success': coin.percent24H > 0, 'ae-text-danger': coin.percent24H < 0 }">{{ coin.percent24H }}%</span>
                     </div>
                   </div>
                 </ng-template>
@@ -82,7 +82,7 @@
       <div class="ae-inputnumber">
         <div class="flex align-items-center justify-content-between">
           <label htmlFor="amount">Método de pago</label>
-          <small class="ae-text-gris-dark ae-text-small">{{ l('Saldo disponible:') }} {{ amount | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }} </small>
+          <small class="ae-text-gris-dark ae-text-small">{{ l('Saldo disponible:') }} {{ amountPurchase | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }} </small>
         </div>
         <div class="ae-inputnumber__group">
           <div class="ae-inputnumber__coin flex align-items-center">
@@ -103,7 +103,7 @@
             required
           >
           </p-inputNumber>
-          <div class="ae-inputnumber__max flex align-items-center" (click)="setMaxAmount()">
+          <div class="ae-inputnumber__max flex align-items-center" (click)="setMaxAmountPurchase()">
             <span class="mr-3 ae-text-gris ae-text-default">MAX</span>
             <i class="pi pi-arrow-right-arrow-left ae-text-gris"></i>
           </div>
@@ -170,7 +170,7 @@
                     </div>
                     <div class="flex flex-column align-items-end">
                       <span class="ae-text-dark ae-text-default">{{ coin.salePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}</span>
-                      <span class="ae-text-default" [ngClass]="{'ae-text-success': coin.percent24H > 0, 'ae-text-danger': coin.percent24H < 0 }">{{ coin.percent24H }}</span>
+                      <span class="ae-text-default" [ngClass]="{'ae-text-success': coin.percent24H > 0, 'ae-text-danger': coin.percent24H < 0 }">{{ coin.percent24H }}%</span>
                     </div>
                   </div>
                 </ng-template>
@@ -192,7 +192,7 @@
                 required
               >
               </p-inputNumber>
-              <div class="ae-inputnumber__max flex align-items-center" (click)="setMaxAmount()">
+              <div class="ae-inputnumber__max flex align-items-center" (click)="setMaxAmountSale()">
                 <span class="mr-3 ae-text-gris ae-text-default">MAX</span>
                 <i class="pi pi-arrow-right-arrow-left ae-text-gris"></i>
               </div>
@@ -220,10 +220,6 @@
               required
             >
             </p-inputNumber>
-            <div class="ae-inputnumber__max flex align-items-center" (click)="setMaxAmount()">
-              <span class="mr-3 ae-text-gris ae-text-default">MAX</span>
-              <i class="pi pi-arrow-right-arrow-left ae-text-gris"></i>
-            </div>
           </div>
         </div>
       </div>

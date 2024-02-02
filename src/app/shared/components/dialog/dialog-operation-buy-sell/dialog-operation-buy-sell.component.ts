@@ -46,7 +46,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   cryptoAssets: SelectItem[] = undefined;
   purchasePrice: number = 0;
   salePrice: number = 0;
-  amount: number = 0;
+  amountPurchase: number = 0;
   amountSale: number = 0;
   amountPurchaseCommision: number = 0;
   amountSaleCommision: number = 0;
@@ -106,7 +106,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   loadBalance(){
     this._serviceTradingProxy.getFiatBalance()
     .subscribe((result) => {
-      this.amount = result.amount;
+      this.amountPurchase = result.amount;
     });
   }
 
@@ -280,8 +280,12 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
     });
   }
 
-  setMaxAmount(): void {
-    this.amountPurchaseControl.setValue(this.amount);
+  setMaxAmountPurchase(): void {
+    this.amountPurchaseControl.setValue(this.amountPurchase);
+  }
+
+  setMaxAmountSale(): void {
+    this.amountCryptoSaleControl.setValue(this.amountSale);
   }
 
   private getCryptoBalance(cryptoCurrencyId){
