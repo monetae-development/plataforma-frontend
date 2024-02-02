@@ -36,11 +36,13 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   activeItem: MenuItem | undefined;
   activeIndex: Number = 0;
   cryptoAssets: SelectItem[] = undefined;
+  purchasePrice: number = 0;
+  salePrice: number = 0;
   amount: number = 0;
   amountPurchaseCommision: number = 0;
   amountSaleCommision: number = 0;
-  comission: number = 0;
-  coinSubtitle: string = '';
+  comissionPurchase: number = 0;
+  comissionSale: number = 0;
 
   constructor(
     injector: Injector,
@@ -48,7 +50,6 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
     public dialogService: DialogService,
-    private _serviceCommonProxy: ServiceCommonProxy,
     private _serviceTradingProxy: ServiceTradingProxy,
   ) { 
     super(injector);
@@ -69,38 +70,48 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
 
   private _buildPurchaseForm(): FormGroup {
     return this.fb.group({
-      cryptoAssetId: [{ value: null, disabled: true}, [Validators.required]],
+      cryptoCurrencyId: [{ value: null, disabled: true}, [Validators.required]],
+      amountCrypto: [null, [Validators.required]],
       amount: [null, [Validators.required]],
     });
   }
 
   private _buildSaleForm(): FormGroup {
     return this.fb.group({
-      cryptoAssetId: [{ value: null, disabled: true}, [Validators.required]],
+      cryptoCurrencyId: [{ value: null, disabled: true}, [Validators.required]],
+      amountCrypto: [null, [Validators.required]],
       amount: [null, [Validators.required]],
     });
   }
 
-  get cryptoAssetIdPurchaseControl() { return this.purchaseForm.controls['cryptoAssetId'] as FormControl; }
+  get cryptoAssetIdPurchaseControl() { return this.purchaseForm.controls['cryptoCurrencyId'] as FormControl; }
+  get amountCryptoPurchaseControl() { return this.purchaseForm.controls['amountCrypto'] as FormControl; }
   get amountPurchaseControl() { return this.purchaseForm.controls['amount'] as FormControl; }
 
-  get cryptoAssetIdSaleControl() { return this.saleForm.controls['cryptoAssetId'] as FormControl; }
+  get cryptoAssetIdSaleControl() { return this.saleForm.controls['cryptoCurrencyId'] as FormControl; }
+  get amountCryptoSaleControl() { return this.saleForm.controls['amountCrypto'] as FormControl; }
   get amountSaleControl() { return this.saleForm.controls['amount'] as FormControl; }
 
   loadBalance(){
     this._serviceTradingProxy.getFiatBalance()
-      .subscribe((result) => {
-        this.amount = result.amount;
-      });
+    .subscribe((result) => {
+      this.amount = result.amount;
+    });
   }
 
   loadCryptoAssets(){
-    this._serviceCommonProxy.getSelectOptions('OTCTrading/GetAllCryptoCoins', null)
-      .subscribe((result) => {
-        this.cryptoAssets = result.items;
-        this.cryptoAssetIdPurchaseControl.enable();
-        this.cryptoAssetIdSaleControl.enable();
-      });
+    this._serviceTradingProxy.getAllCryptoCurrencies()
+    .subscribe((result) => {
+      this.cryptoAssets = result.items;
+      this.cryptoAssetIdPurchaseControl.enable();
+      this.cryptoAssetIdSaleControl.enable();
+    });
+    // this._serviceCommonProxy.getSelectOptions('OTCTrading/GetAllCryptoCoins', null)
+    //   .subscribe((result) => {
+    //     this.cryptoAssets = result.items;
+    //     this.cryptoAssetIdPurchaseControl.enable();
+    //     this.cryptoAssetIdSaleControl.enable();
+    //   });
   }
 
   onCancel(){
@@ -108,11 +119,32 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   }
 
   onChangeCurrencyPurchase(event: any) {
+    console.log(event);
     if (event.value == null) {
-      this.coinSubtitle = null;
+      this.purchasePrice = null;
       return;
     }
-    this.coinSubtitle = event.value.subtitle;
+    this.purchasePrice = event.value.purchasePrice;
+    this.comissionPurchase = event.value.fee;
+  }
+
+  onChangeCurrencySale(event: any) {
+    if (event.value == null) {
+      this.salePrice = null;
+      return;
+    }
+    this.salePrice = event.value.salePrice;
+    this.comissionSale = event.value.fee;
+  }
+  
+
+  amountCryptoPurchaseOnChange(event: any) {
+    if (event.value == null) {
+      this.amountPurchaseCommision = null;
+      return;
+    }
+    this.amountCryptoPurchaseControl.setValue(event.value);
+    this.calculatePurchaseCost(event.value);
   }
 
   amountPurchaseOnChange(event: any) {
@@ -121,21 +153,33 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
       return;
     }
     this.amountPurchaseControl.setValue(event.value);
-    this.calculatePurchaseCost();
+    this.calculateCryptoPurchaseCost(event.value);
   }
 
   amountSaleOnChange(event: any) {
+    console.log(event);
     if (event.value == null) {
       this.amountSaleCommision = null;
       return;
     }
     this.amountSaleControl.setValue(event.value);
-    this.calculateSaleCost();
+    // this.calculateSaleCost(event.value);
   }
 
-  calculatePurchaseCost() {
+  calculatePurchaseCost(amount) {
+    console.log(amount)
     if (this.amount) {
-      this.amountPurchaseCommision = (this.amountPurchaseControl.value * this.comission) / 100;
+      this.amountPurchaseControl.setValue(amount*this.purchasePrice);
+      this.amountPurchaseCommision = (this.amountPurchaseControl.value * this.comissionPurchase) / 100;
+    } else {
+      this.amountPurchaseCommision = undefined;
+    }
+  }
+
+  calculateCryptoPurchaseCost(amount) {
+    if (this.amount) {
+      this.amountCryptoPurchaseControl.setValue(amount/this.purchasePrice);
+      this.amountPurchaseCommision = (this.amountPurchaseControl.value * this.comissionPurchase) / 100;
     } else {
       this.amountPurchaseCommision = undefined;
     }
@@ -143,7 +187,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
 
   calculateSaleCost() {
     if (this.amount) {
-      this.amountSaleCommision = (this.amountSaleControl.value * this.comission) / 100;
+      this.amountSaleCommision = (this.amountSaleControl.value * this.comissionSale) / 100;
     } else {
       this.amountSaleCommision = undefined;
     }
@@ -154,6 +198,8 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   }
 
   onContinuePurchase(): void {
+    console.log(this.purchaseForm.value);
+    // return;
     const ref = this.dialogService.open(DialogResumenBuySellComponent, {
       showHeader: false,
       styleClass: 'ae-dialog ae-dialog--sm',
@@ -161,7 +207,8 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
         title: 'Resumen de compra',
         titleAction: 'Comprar',
         resumenSend: this.purchaseForm.value,
-        amountCommision: this.amountPurchaseCommision
+        amountCommision: this.amountPurchaseCommision,
+        purchasePrice: this.purchasePrice
       }
     });
     const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);

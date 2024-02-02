@@ -20,6 +20,7 @@ export class DialogResumenBuySellComponent extends AppComponentBase implements O
   title: string = '';
   titleAction: string = '';
   resumenSend: any;
+  purchasePrice: number = 0;
   amountCommision: number = 0;
   amountTotal: number = 0;
   dateNow: Date = new Date();
@@ -34,9 +35,11 @@ export class DialogResumenBuySellComponent extends AppComponentBase implements O
     public config: DynamicDialogConfig
   ) { 
     super(injector);
+    console.log(config.data);
     this.title = config.data.title;
     this.titleAction = config.data.titleAction;
     this.resumenSend = config.data.resumenSend;
+    this.purchasePrice = config.data.purchasePrice;
     this.amountCommision = config.data.amountCommision;
     this.amountTotal = this.resumenSend.amount + this.amountCommision;
   }
@@ -47,8 +50,8 @@ export class DialogResumenBuySellComponent extends AppComponentBase implements O
 
   get dateTime() {
     const months = [
-      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+      'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+      'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
     ];
     const day = this.dateNow.getDate();
     const month = months[this.dateNow.getMonth()];
@@ -57,7 +60,7 @@ export class DialogResumenBuySellComponent extends AppComponentBase implements O
     const minutes = this.dateNow.getMinutes();
     const seconds = this.dateNow.getSeconds();
     const ampm = hour >= 12 ? 'pm' : 'am';
-    return  `${day} ${month} ${year}, ${hour}:${minutes}:${seconds} ${ampm}`;
+    return  `${day} ${month} ${year}`;
   }
 
   onCancel(){

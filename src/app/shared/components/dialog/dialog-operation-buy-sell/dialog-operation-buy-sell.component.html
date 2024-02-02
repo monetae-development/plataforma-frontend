@@ -11,7 +11,7 @@
       <div class="ae-selectinput__grid">
         <div class="ae-selectinput__grid--title flex align-items-center justify-content-between">
           <label class="ae-text-dark ae-text-default">Comprar</label>
-          <small class="ae-text-gris-dark ae-text-small">Precio: {{ amount }} </small>
+          <small class="ae-text-gris-dark ae-text-small">Precio: {{ purchasePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }} </small>
         </div>
         <div class="ae-selectinput__grid--fields">
           <div class="ae-select">
@@ -27,7 +27,7 @@
             >
                 <ng-template pTemplate="selectedItem">
                     <div class="flex align-items-center" *ngIf="cryptoAssetIdPurchaseControl">
-                        <div class="mr-3">
+                        <div class="mr-2">
                             <img
                               src="/assets/crypto-icons/{{ cryptoAssetIdPurchaseControl.value?.subtitle.toLowerCase() }}.png" 
                               style="width: 28px"
@@ -57,7 +57,7 @@
             <div class="ae-inputnumber__group">
               <p-inputNumber
                 name="amount"
-                [formControl]="amountPurchaseControl"
+                [formControl]="amountCryptoPurchaseControl"
                 inputmode="decimal"
                 mode="decimal"
                 locale="en-US"
@@ -65,7 +65,7 @@
                 [maxFractionDigits]="9"
                 [min]="0"
                 [max]="30"
-                (onInput)="amountPurchaseOnChange($event)"
+                (onInput)="amountCryptoPurchaseOnChange($event)"
                 required
               >
               </p-inputNumber>
@@ -85,7 +85,7 @@
           <p-inputNumber
             class="p-inputNumber--space"
             name="amount"
-            [formControl]="amountSaleControl"
+            [formControl]="amountPurchaseControl"
             inputmode="decimal"
             mode="decimal"
             locale="en-US"
@@ -93,7 +93,7 @@
             [maxFractionDigits]="9"
             [min]="0"
             [max]="30"
-            (onInput)="amountSaleOnChange($event)"
+            (onInput)="amountPurchaseOnChange($event)"
             required
           >
           </p-inputNumber>
@@ -133,19 +133,18 @@
                 placeholder="{{ l('SelectTreeDots') }}"
                 [showClear]="true"
                 [filter]="true"
-                (onChange)="onChangeCurrencyPurchase($event)"
+                (onChange)="onChangeCurrencySale($event)"
                 required
             >
                 <ng-template pTemplate="selectedItem">
                     <div class="flex align-items-center" *ngIf="cryptoAssetIdSaleControl">
-                        <div class="mr-3">
+                        <div class="mr-2">
                             <img
                               src="/assets/crypto-icons/{{ cryptoAssetIdSaleControl.value?.subtitle.toLowerCase() }}.png" 
                               style="width: 28px"
                             />
                         </div>
                         <div class="flex align-items-center">
-                            <span class="mr-2 ae-text-dark ae-text-default fw-semibold">{{ cryptoAssetIdSaleControl.value?.label }}</span>
                             <span class=" ae-text-gris-dark ae-text-default fw-semibold">{{ cryptoAssetIdSaleControl.value?.subtitle }}</span>
                         </div>
                     </div>

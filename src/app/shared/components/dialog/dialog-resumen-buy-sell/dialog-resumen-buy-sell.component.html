@@ -3,23 +3,16 @@
     <h2 class="ae-text-dark fw-bold">{{ title }}</h2>
   </div>
   <div class="ae-dialog__content">
-    <div class="ae-resumen__title flex align-items-center justify-content-center">
+    <div class="ae-resumen__title flex flex-column align-items-center jus">
         <img
-            class="mr-3"
-            src="/assets/crypto-icons/{{ resumenSend.cryptoAssetId.subtitle.toLowerCase() }}.png" 
-            style="width: 30px"
+            class="mb-3"
+            src="/assets/crypto-icons/{{ resumenSend.cryptoCurrencyId.subtitle.toLowerCase() }}.png" 
+            style="width: 50px"
         />
-        <p class="m-0 ae-text-dark ae-text-default fw-bold">{{ amountTotal}}</p>
+        <p class="mb-1 ae-text-dark ae-text-medium fw-bold">{{ resumenSend.amountCrypto }} {{ resumenSend.cryptoCurrencyId.subtitle }}</p>
+        <p class="m-0 ae-text-small ae-text-gris">{{ purchasePrice | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }} USD</p>
     </div>
     <div class="ae-table__resumen">
-        <div class="ae-resumen__item flex align-items-center justify-content-between">
-            <div class="ae-description">
-                <p class="ae-text-dark ae-text-default w-full">Precio {{ resumenSend.cryptoAssetId.subtitle }}</p>
-            </div>
-            <div class="ae-content">
-                <span class="ae-text-gris-network ae-text-default w-full">$18.905,52</span>
-            </div>
-        </div>
         <div class="ae-resumen__item flex align-items-center justify-content-between">
             <div class="ae-description">
                 <p class="ae-text-dark ae-text-default w-full">Fecha</p>
@@ -30,10 +23,18 @@
         </div>
         <div class="ae-resumen__item flex align-items-center justify-content-between">
             <div class="ae-description">
-                <p class="ae-text-dark ae-text-default w-full">Monto {{ resumenSend.cryptoAssetId.subtitle }}</p>
+                <p class="ae-text-dark ae-text-default w-full">Precio {{ resumenSend.cryptoCurrencyId.subtitle }}</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-gris-dark ae-text-default w-full">{{ resumenSend.amount }} {{ resumenSend.cryptoAssetId.subtitle }}</span>
+                <span class="ae-text-gris-network ae-text-default w-full">{{ purchasePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}</span>
+            </div>
+        </div>
+        <div class="ae-resumen__item flex align-items-center justify-content-between">
+            <div class="ae-description">
+                <p class="ae-text-dark ae-text-default w-full">Moneda Fiat</p>
+            </div>
+            <div class="ae-content">
+                <span class="ae-text-gris-dark ae-text-default w-full">Dolar USD</span>
             </div>
         </div>
         <div class="ae-resumen__item flex align-items-center justify-content-between">
@@ -41,7 +42,7 @@
                 <p class="ae-text-dark ae-text-default w-full">Subtotal</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-gris-dark ae-text-default w-full">{{ resumenSend.amount }} {{ resumenSend.cryptoAssetId.subtitle }}</span>
+                <span class="ae-text-gris-dark ae-text-default w-full">{{ resumenSend.amount | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }} USD</span>
             </div>
         </div>
         <div class="ae-resumen__item flex align-items-center justify-content-between">
@@ -49,7 +50,7 @@
                 <p class="ae-text-dark ae-text-default w-full">Comisión</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-gris-dark ae-text-default w-full">{{ amountCommision }} {{ resumenSend.cryptoAssetId.subtitle }}</span>
+                <span class="ae-text-gris-dark ae-text-default w-full">{{ amountCommision | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }} USD</span>
             </div>            
         </div>
         <div class="ae-resumen__item flex align-items-center justify-content-between">
@@ -57,7 +58,7 @@
                 <p class="ae-text-dark ae-text-default w-full">Total</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-primary ae-text-default w-full">{{ amountTotal}} {{ resumenSend.cryptoAssetId.subtitle }}</span>
+                <span class="ae-text-primary ae-text-default w-full">{{ amountTotal | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }} USD</span>
             </div>
         </div>
     </div>
