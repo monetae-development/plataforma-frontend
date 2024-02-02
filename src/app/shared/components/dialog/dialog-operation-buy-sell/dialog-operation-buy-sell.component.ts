@@ -163,8 +163,14 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
       return;
     }
     if(this.cryptoAssetIdPurchaseControl.value){
-      this.amountPurchaseControl.setValue(event.value);
-      this.calculateCryptoPurchaseCost(event.value);
+      if(event.value >= this.amountPurchase){
+        console.log("entra");
+        this.amountPurchaseControl.setValue(this.amountPurchase);
+        this.calculateCryptoPurchaseCost(this.amountPurchase);
+      } else {
+        this.amountPurchaseControl.setValue(event.value);
+        this.calculateCryptoPurchaseCost(event.value);
+      }
     }
   }
 
@@ -302,7 +308,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
         showHeader: false,
         styleClass: 'ae-dialog ae-dialog--default ae-dialog--sm',
         data: {
-            icon: 'pi pi-id-card',
+            icon: 'pi pi-chart-bar',
             title: this.l('OTCRequestCreatedSuccessfully'),
             subtitle: this.l('RequestSuccessfully', folio),
             titleAction: 'Aceptar'

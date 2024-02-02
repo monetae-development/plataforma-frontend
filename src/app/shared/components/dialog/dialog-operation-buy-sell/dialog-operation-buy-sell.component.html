@@ -70,7 +70,6 @@
                 [minFractionDigits]="0"
                 [maxFractionDigits]="9"
                 [min]="0"
-                [max]="30"
                 (onInput)="amountCryptoPurchaseOnChange($event)"
                 required
               >
@@ -98,7 +97,7 @@
             [minFractionDigits]="0"
             [maxFractionDigits]="9"
             [min]="0"
-            [max]="30"
+            [max]="amountPurchase"
             (onInput)="amountPurchaseOnChange($event)"
             required
           >
@@ -187,7 +186,6 @@
                 [minFractionDigits]="0"
                 [maxFractionDigits]="9"
                 [min]="0"
-                [max]="30"
                 (onInput)="amountCryptoSaleOnChange($event)"
                 required
               >
@@ -215,7 +213,6 @@
               [minFractionDigits]="0"
               [maxFractionDigits]="9"
               [min]="0"
-              [max]="30"
               (onInput)="amountSaleOnChange($event)"
               required
             >
