@@ -1,7 +1,10 @@
 import { Component, EventEmitter, Injector, OnInit } from '@angular/core';
 import { AppSharedModule } from '@app/shared/app-shared.module';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { CreateMntMemberWalletDto, MntMemberWalletServiceProxy } from '@shared/service-proxies/service-proxies';
+import { MntMemberTradingRequestDto } from '@shared/service-proxies/dto/mntMemberTrading/MntMemberTradingRequestDto';
+import { AmountType } from '@shared/service-proxies/enum/MemberTrading/AmountType.enum';
+import { ModeType } from '@shared/service-proxies/enum/MemberTrading/ModeType.enum';
+import { ServiceTradingProxy } from '@shared/service-proxies/service-trading-proxies';
 import { ButtonModule } from 'primeng/button';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
@@ -23,6 +26,7 @@ export class DialogResumenBuySellComponent extends AppComponentBase implements O
   purchasePrice: number = 0;
   amountCommision: number = 0;
   amountTotal: number = 0;
+  modeType: ModeType;
   dateNow: Date = new Date();
   sending = false;
 
@@ -30,9 +34,9 @@ export class DialogResumenBuySellComponent extends AppComponentBase implements O
 
   constructor(
     injector: Injector,
-    private _mntMemberWalletServiceProxy: MntMemberWalletServiceProxy,
     public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig
+    public config: DynamicDialogConfig,
+    private _serviceTradingProxy: ServiceTradingProxy,
   ) { 
     super(injector);
     console.log(config.data);
@@ -40,6 +44,7 @@ export class DialogResumenBuySellComponent extends AppComponentBase implements O
     this.titleAction = config.data.titleAction;
     this.resumenSend = config.data.resumenSend;
     this.purchasePrice = config.data.purchasePrice;
+    this.modeType = config.data.modeType;
     this.amountCommision = config.data.amountCommision;
     this.amountTotal = this.resumenSend.amount + this.amountCommision;
   }
@@ -69,16 +74,16 @@ export class DialogResumenBuySellComponent extends AppComponentBase implements O
 
   onRequestSend(): void {
     this.sending = true;
-    const receiveBody = new CreateMntMemberWalletDto();
-    receiveBody.cryptoAssetId = this.resumenSend.cryptoAssetId.value;
-    receiveBody.address = this.resumenSend.address;
-    receiveBody.blockchainNetworkId = this.resumenSend.blockchainNetworkId.value;
+    const receiveBody = new MntMemberTradingRequestDto();
+    receiveBody.cryptoCurrencyId = this.resumenSend.cryptoCurrencyId.value;
     receiveBody.amount = this.resumenSend.amount;
-    this._mntMemberWalletServiceProxy.create(receiveBody)
+    receiveBody.amountType = AmountType.Dollar;
+    receiveBody.modeType = this.modeType;
+    this._serviceTradingProxy.create(receiveBody)
       .subscribe({
         next: (response) => {
           this.sending = false;
-          this.outAccept.emit(true);
+          this.outAccept.emit(this.modeType);
           this.ref.close();
         },
         error: (err) => {

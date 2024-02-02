@@ -3,10 +3,10 @@ import { IMntMemberTradingRequestDto } from './IMntMemberTradingRequestDto';
 import { ModeType } from '@shared/service-proxies/enum/MemberTrading/ModeType.enum';
 
 export class MntMemberTradingRequestDto implements IMntMemberTradingRequestDto {
-    cryptoCurrencyId: number;
-    amount: number;
-    amountType: AmountType;
-    modeType: ModeType;
+    cryptoCurrencyId: number| undefined;
+    amount: number| undefined;
+    amountType: AmountType | undefined;
+    modeType: ModeType | undefined;
 
     constructor(data?: IMntMemberTradingRequestDto) {
         if (data) {
@@ -35,6 +35,7 @@ export class MntMemberTradingRequestDto implements IMntMemberTradingRequestDto {
     }
 
     toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
         data['cryptoCurrencyId'] = this.cryptoCurrencyId;
         data['amount'] = this.amount;
         data['amountType'] = this.amountType;
