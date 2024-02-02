@@ -349,6 +349,12 @@
             display: -webkit-flex;
             align-items: center;
         }
+        .p-dropdown-clear-icon{
+            right: 28px;
+        }
+        .p-dropdown-trigger{
+            width: 32px !important;
+        }
     }
     small{
         display: block;
