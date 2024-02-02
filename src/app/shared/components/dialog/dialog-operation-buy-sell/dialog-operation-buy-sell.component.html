@@ -11,7 +11,7 @@
       <div class="ae-selectinput__grid">
         <div class="ae-selectinput__grid--title flex align-items-center justify-content-between">
           <label class="ae-text-dark ae-text-default">Comprar</label>
-          <small class="ae-text-gris-dark ae-text-small">Precio: {{ purchasePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }} </small>
+          <small class="ae-text-gris-dark ae-text-small" *ngIf="cryptoAssetIdPurchaseControl.value">Precio: {{ purchasePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }} </small>
         </div>
         <div class="ae-selectinput__grid--fields">
           <div class="ae-select">
@@ -26,7 +26,7 @@
                 required
             >
                 <ng-template pTemplate="selectedItem">
-                    <div class="flex align-items-center" *ngIf="cryptoAssetIdPurchaseControl">
+                    <div class="flex align-items-center" *ngIf="cryptoAssetIdPurchaseControl.value">
                         <div class="mr-2">
                             <img
                               src="/assets/crypto-icons/{{ cryptoAssetIdPurchaseControl.value?.subtitle.toLowerCase() }}.png" 
@@ -122,7 +122,7 @@
       <div class="ae-selectinput__grid">
         <div class="ae-selectinput__grid--title flex align-items-center justify-content-between">
           <label class="ae-text-dark ae-text-default">Vender</label>
-          <small class="ae-text-gris-dark ae-text-small">{{ l('Saldo disponible:') }} {{ amount | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }} </small>
+          <small class="ae-text-gris-dark ae-text-small" *ngIf="cryptoAssetIdSaleControl.value">{{ l('Saldo disponible:') }} {{ amountSale }} </small>
         </div>
         <div class="ae-selectinput__grid--fields">
           <div class="ae-select">
@@ -137,7 +137,7 @@
                 required
             >
                 <ng-template pTemplate="selectedItem">
-                    <div class="flex align-items-center" *ngIf="cryptoAssetIdSaleControl">
+                    <div class="flex align-items-center" *ngIf="cryptoAssetIdSaleControl.value">
                         <div class="mr-2">
                             <img
                               src="/assets/crypto-icons/{{ cryptoAssetIdSaleControl.value?.subtitle.toLowerCase() }}.png" 
@@ -176,7 +176,7 @@
                 [maxFractionDigits]="9"
                 [min]="0"
                 [max]="30"
-                (onInput)="amountSaleOnChange($event)"
+                (onInput)="amountCryptoSaleOnChange($event)"
                 required
               >
               </p-inputNumber>

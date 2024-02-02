@@ -1,12 +1,12 @@
 import { AmountType } from '@shared/service-proxies/enum/MemberTrading/AmountType.enum';
 import { IMntMemberTradingRequestDto } from './IMntMemberTradingRequestDto';
-import { ModeType } from '@shared/service-proxies/enum/MemberTrading/ModeType.enum';
+import { RequestType } from '@shared/service-proxies/enum/MemberTrading/RequestType.enum';
 
 export class MntMemberTradingRequestDto implements IMntMemberTradingRequestDto {
     cryptoCurrencyId: number| undefined;
     amount: number| undefined;
     amountType: AmountType | undefined;
-    modeType: ModeType | undefined;
+    type: RequestType | undefined;
 
     constructor(data?: IMntMemberTradingRequestDto) {
         if (data) {
@@ -30,7 +30,7 @@ export class MntMemberTradingRequestDto implements IMntMemberTradingRequestDto {
             this.cryptoCurrencyId = _data['cryptoCurrencyId'];
             this.amount = _data['amount'];
             this.amountType = _data['amountType'];
-            this.modeType = _data['modeType'];
+            this.type = _data['type'];
         }
     }
 
@@ -39,7 +39,7 @@ export class MntMemberTradingRequestDto implements IMntMemberTradingRequestDto {
         data['cryptoCurrencyId'] = this.cryptoCurrencyId;
         data['amount'] = this.amount;
         data['amountType'] = this.amountType;
-        data['modeType'] = this.modeType;
+        data['type'] = this.type;
         return data;
     }
 }

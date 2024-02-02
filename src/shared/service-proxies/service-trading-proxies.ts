@@ -7,6 +7,8 @@ import { Helpers } from './service-helpers';
 import { BalanceFiatDto } from './dto/Common/Balance/BalanceFiatDto';
 import { PagedResultDtoGetAllCryptoCurrencies } from './dto/mntMemberTrading/PagedResultDtoGetAllCryptoCurrencies';
 import { MntMemberTradingRequestDto } from './dto/mntMemberTrading/MntMemberTradingRequestDto';
+import { GetCryptoBalanceDto } from './dto/mntMemberTrading/GetCryptoBalanceDto';
+import { MntMemberTradingResponseDto } from './dto/mntMemberTrading/MntMemberTradingResponseDto';
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
@@ -124,11 +126,66 @@ export class ServiceTradingProxy {
         return _observableOf(null as any);
     }
 
+    getCryptoBalance(cryptoCurrencyId: number | undefined): Observable<GetCryptoBalanceDto> {
+        let url_ = this.baseUrl + '/api/services/app/MntMemberTrading/GetCryptoBalance?';
+        if (cryptoCurrencyId === null) {
+            throw new Error('The parameter \'cryptoCurrencyId\' cannot be null.');
+        } else if (cryptoCurrencyId !== undefined) {
+            url_ += 'cryptoCurrencyId=' + encodeURIComponent('' + cryptoCurrencyId) + '&';
+        }
+        url_ = url_.replace(/[?&]$/, '');
+
+        let options_: any = {
+            observe: 'response',
+            responseType: 'blob',
+            headers: new HttpHeaders({
+                'Accept': 'text/plain'
+            })
+        };
+
+        return this.http.request('get', url_, options_).pipe(_observableMergeMap((response_: any) => this.processGetCryptoBalance(response_))).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCryptoBalance(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetCryptoBalanceDto>;
+                }
+            } else {
+                return _observableThrow(response_) as any as Observable<GetCryptoBalanceDto>;
+            }
+        }));
+    }
+
+    protected processGetCryptoBalance(response: HttpResponseBase): Observable<GetCryptoBalanceDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {};
+        if (response.headers) {
+            for (let key of response.headers.keys()) {
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        if (status === 200) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = GetCryptoBalanceDto.fromJS(resultData200);
+                return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers)));
+        }
+        return _observableOf(null as any);
+    }
+
     /**
      * @param body (optional)
      * @return Success
      */
-    create(body: MntMemberTradingRequestDto | undefined): Observable<MntMemberTradingRequestDto> {
+    create(body: MntMemberTradingRequestDto | undefined): Observable<MntMemberTradingResponseDto> {
         let url_ = this.baseUrl + '/api/services/app/MntMemberTrading/Create';
         url_ = url_.replace(/[?&]$/, '');
 
@@ -148,15 +205,15 @@ export class ServiceTradingProxy {
                 try {
                     return this.processCreate(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<MntMemberTradingRequestDto>;
+                    return _observableThrow(e) as any as Observable<MntMemberTradingResponseDto>;
                 }
             } else {
-                return _observableThrow(response_) as any as Observable<MntMemberTradingRequestDto>;
+                return _observableThrow(response_) as any as Observable<MntMemberTradingResponseDto>;
             }
         }));
     }
 
-    protected processCreate(response: HttpResponseBase): Observable<MntMemberTradingRequestDto> {
+    protected processCreate(response: HttpResponseBase): Observable<MntMemberTradingResponseDto> {
         const status = response.status;
         const responseBlob = response instanceof HttpResponse ? response.body : (response as any).error instanceof Blob ? (response as any).error : undefined;
 
@@ -170,7 +227,7 @@ export class ServiceTradingProxy {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
                 let result200: any = null;
                 let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = MntMemberTradingRequestDto.fromJS(resultData200);
+                result200 = MntMemberTradingResponseDto.fromJS(resultData200);
                 return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -178,5 +235,4 @@ export class ServiceTradingProxy {
         }
         return _observableOf(null as any);
     }
-
 }

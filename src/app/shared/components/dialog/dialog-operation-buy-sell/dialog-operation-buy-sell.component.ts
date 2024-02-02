@@ -12,7 +12,8 @@ import { TabMenuModule } from 'primeng/tabmenu';
 import { DialogResumenBuySellComponent } from '../dialog-resumen-buy-sell/dialog-resumen-buy-sell.component';
 import { ServiceTradingProxy } from '@shared/service-proxies/service-trading-proxies';
 import { ToastModule } from 'primeng/toast';
-import { ModeType } from '@shared/service-proxies/enum/MemberTrading/ModeType.enum';
+import { RequestType } from '@shared/service-proxies/enum/MemberTrading/RequestType.enum';
+import { DialogDefaultComponent } from '../dialog-default/dialog-default.component';
 
 @Component({
   standalone: true,
@@ -28,7 +29,10 @@ import { ModeType } from '@shared/service-proxies/enum/MemberTrading/ModeType.en
     InputNumberModule,
     ToastModule
   ],
-  providers: [MessageService]
+  providers: [
+    MessageService,
+    DialogService
+  ]
 })
 export class DialogOperationBuySellComponent extends AppComponentBase implements OnInit {
 
@@ -43,6 +47,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   purchasePrice: number = 0;
   salePrice: number = 0;
   amount: number = 0;
+  amountSale: number = 0;
   amountPurchaseCommision: number = 0;
   amountSaleCommision: number = 0;
   comissionPurchase: number = 0;
@@ -56,6 +61,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
     public dialogService: DialogService,
     private _serviceTradingProxy: ServiceTradingProxy,
     private _messageService: MessageService,
+    private _dialogService: DialogService,
   ) { 
     super(injector);
     this.activeIndex = config.data?.activeIndex;
@@ -132,42 +138,63 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
       this.salePrice = null;
       return;
     }
+    this.getCryptoBalance(event.value.value);
     this.salePrice = event.value.salePrice;
     this.comissionSale = event.value.fee;
   }
-  
 
   amountCryptoPurchaseOnChange(event: any) {
     if (event.value == null) {
+      console.log("entra");
       this.amountPurchaseCommision = null;
+      this.amountPurchaseControl.setValue(null);
       return;
     }
-    this.amountCryptoPurchaseControl.setValue(event.value);
-    this.calculatePurchaseCost(event.value);
+    if(this.cryptoAssetIdPurchaseControl.value){
+      this.amountCryptoPurchaseControl.setValue(event.value);
+      this.calculatePurchaseCost(event.value);
+    }
   }
 
   amountPurchaseOnChange(event: any) {
     if (event.value == null) {
       this.amountPurchaseCommision = null;
+      this.amountCryptoPurchaseControl.setValue(null);
       return;
     }
-    this.amountPurchaseControl.setValue(event.value);
-    this.calculateCryptoPurchaseCost(event.value);
+    if(this.cryptoAssetIdPurchaseControl.value){
+      this.amountPurchaseControl.setValue(event.value);
+      this.calculateCryptoPurchaseCost(event.value);
+    }
+  }
+
+  amountCryptoSaleOnChange(event: any) {
+    if (event.value == null) {
+      this.amountSaleCommision = null;
+      this.amountSaleControl.setValue(null);
+      return;
+    }
+    if(this.cryptoAssetIdPurchaseControl.value){
+      this.amountCryptoSaleControl.setValue(event.value);
+      this.calculatePurchaseCost(event.value);
+    }
   }
 
   amountSaleOnChange(event: any) {
     console.log(event);
     if (event.value == null) {
       this.amountSaleCommision = null;
+      this.amountCryptoSaleControl.setValue(null);
       return;
     }
-    this.amountSaleControl.setValue(event.value);
-    // this.calculateSaleCost(event.value);
+    if(this.cryptoAssetIdPurchaseControl.value){
+      this.amountSaleControl.setValue(event.value);
+      this.calculateCryptoPurchaseCost(event.value);
+    }
   }
 
   calculatePurchaseCost(amount) {
-    console.log(amount)
-    if (this.amount) {
+    if (amount) {
       this.amountPurchaseControl.setValue(amount*this.purchasePrice);
       this.amountPurchaseCommision = (this.amountPurchaseControl.value * this.comissionPurchase) / 100;
     } else {
@@ -176,7 +203,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   }
 
   calculateCryptoPurchaseCost(amount) {
-    if (this.amount) {
+    if (amount) {
       this.amountCryptoPurchaseControl.setValue(amount/this.purchasePrice);
       this.amountPurchaseCommision = (this.amountPurchaseControl.value * this.comissionPurchase) / 100;
     } else {
@@ -184,8 +211,17 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
     }
   }
 
-  calculateSaleCost() {
-    if (this.amount) {
+  calculateSaleCost(amount) {
+    if (amount) {
+      this.amountSaleControl.setValue(amount*this.salePrice);
+      this.amountSaleCommision = (this.amountSaleControl.value * this.comissionSale) / 100;
+    } else {
+      this.amountSaleCommision = undefined;
+    }
+  }
+
+  calculateCryptoSaleCost(amount) {
+    if (amount) {
       this.amountSaleCommision = (this.amountSaleControl.value * this.comissionSale) / 100;
     } else {
       this.amountSaleCommision = undefined;
@@ -208,7 +244,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
         resumenSend: this.purchaseForm.value,
         amountCommision: this.amountPurchaseCommision,
         purchasePrice: this.purchasePrice,
-        modeType: ModeType.Purchase
+        type: RequestType.Purchase
       }
     });
     const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
@@ -216,17 +252,10 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
 
     const instance = dialogRef?.instance?.componentRef?.instance as DialogResumenBuySellComponent;
     instance?.outAccept.subscribe((values) => {
-      console.log(values);
-      if(values === ModeType.Purchase){
-        this._messageService
-        .add({ 
-          severity: 'success', 
-          summary: 'Solicitud de compra finalizada', 
-          detail: 'Su solicitud de compra se ha realizado con éxito' 
-        });
-      }
+      this.openSuccessDialogFolio(values);
     });
   }
+
   onContinueSale(): void {
     const ref = this.dialogService.open(DialogResumenBuySellComponent, {
       showHeader: false,
@@ -236,7 +265,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
         titleAction: 'Vender',
         resumenSend: this.saleForm.value,
         amountCommision: this.amountSaleCommision,
-        modeType: ModeType.Sell
+        type: RequestType.Sale
       }
     });
     const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
@@ -244,19 +273,40 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
 
     const instance = dialogRef?.instance?.componentRef?.instance as DialogResumenBuySellComponent;
     instance?.outAccept.subscribe((values) => {
-      if(values === ModeType.Sell){
-        this._messageService
-        .add({ 
-          severity: 'success', 
-          summary: 'Solicitud de venta finalizada', 
-          detail: 'Su solicitud de venta se ha realizado con éxito' 
-        });
-      }
+      this.openSuccessDialogFolio(values);
     });
   }
 
   setMaxAmount(): void {
     this.amountPurchaseControl.setValue(this.amount);
+  }
+
+  private getCryptoBalance(cryptoCurrencyId){
+    console.log(cryptoCurrencyId);
+    this._serviceTradingProxy.getCryptoBalance(cryptoCurrencyId)
+    .subscribe((result) => {
+      console.log(result.amount);
+      this.amountSale = result.amount;
+    });
+  }
+
+  private openSuccessDialogFolio(folio): void {
+    const ref = this._dialogService.open(DialogDefaultComponent, {
+        showHeader: false,
+        styleClass: 'ae-dialog ae-dialog--default ae-dialog--sm',
+        data: {
+            icon: 'pi pi-id-card',
+            title: this.l('OTCRequestCreatedSuccessfully'),
+            subtitle: this.l('RequestSuccessfully', folio),
+            titleAction: 'Aceptar'
+        }
+    });
+    const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
+    dialogRef?.changeDetectorRef.detectChanges();
+    const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
+    instance?.outAccept.subscribe(() => {
+        ref.close();
+    });
   }
 
 }

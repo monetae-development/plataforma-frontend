@@ -3,7 +3,7 @@ import { AppSharedModule } from '@app/shared/app-shared.module';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { MntMemberTradingRequestDto } from '@shared/service-proxies/dto/mntMemberTrading/MntMemberTradingRequestDto';
 import { AmountType } from '@shared/service-proxies/enum/MemberTrading/AmountType.enum';
-import { ModeType } from '@shared/service-proxies/enum/MemberTrading/ModeType.enum';
+import { RequestType } from '@shared/service-proxies/enum/MemberTrading/RequestType.enum';
 import { ServiceTradingProxy } from '@shared/service-proxies/service-trading-proxies';
 import { ButtonModule } from 'primeng/button';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -26,7 +26,7 @@ export class DialogResumenBuySellComponent extends AppComponentBase implements O
   purchasePrice: number = 0;
   amountCommision: number = 0;
   amountTotal: number = 0;
-  modeType: ModeType;
+  type: RequestType;
   dateNow: Date = new Date();
   sending = false;
 
@@ -44,7 +44,7 @@ export class DialogResumenBuySellComponent extends AppComponentBase implements O
     this.titleAction = config.data.titleAction;
     this.resumenSend = config.data.resumenSend;
     this.purchasePrice = config.data.purchasePrice;
-    this.modeType = config.data.modeType;
+    this.type = config.data.type;
     this.amountCommision = config.data.amountCommision;
     this.amountTotal = this.resumenSend.amount + this.amountCommision;
   }
@@ -78,12 +78,12 @@ export class DialogResumenBuySellComponent extends AppComponentBase implements O
     receiveBody.cryptoCurrencyId = this.resumenSend.cryptoCurrencyId.value;
     receiveBody.amount = this.resumenSend.amount;
     receiveBody.amountType = AmountType.Dollar;
-    receiveBody.modeType = this.modeType;
+    receiveBody.type = this.type;
     this._serviceTradingProxy.create(receiveBody)
       .subscribe({
         next: (response) => {
           this.sending = false;
-          this.outAccept.emit(this.modeType);
+          this.outAccept.emit(response.folio);
           this.ref.close();
         },
         error: (err) => {
