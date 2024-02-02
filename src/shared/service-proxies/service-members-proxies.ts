@@ -1145,7 +1145,7 @@ export class ServiceMembersProxy {
     downloadDepositFile(userId: number | undefined, fileId: number | undefined): void {
         let url_ = this.baseUrl + '/api/services/app/MntMemberFiles/DownloadDepositFile?';
         url_ += 'userId=' + encodeURIComponent('' + ((userId === null || userId === undefined) ? '' : userId)) + '&';
-        url_ += 'type=' + encodeURIComponent('' + ((fileId === null || fileId === undefined) ? '' : fileId)) + '&';
+        url_ += 'fileId=' + encodeURIComponent('' + ((fileId === null || fileId === undefined) ? '' : fileId)) + '&';
         url_ = url_.replace(/[?&]$/, '');
         location.href = url_;
     }

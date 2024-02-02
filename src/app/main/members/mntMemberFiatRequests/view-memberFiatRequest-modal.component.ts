@@ -52,6 +52,6 @@ export class ViewMemberFiatRequestModalComponent extends AppComponentBase implem
   }
 
   downloadFile(fileId: number): void {
-    this._mntMembersProxy.downloadMemberFile(this.record.userFk.id, fileId);
+    this._mntMembersProxy.downloadDepositFile(this.record.userFk.id, fileId);
   }
 }
