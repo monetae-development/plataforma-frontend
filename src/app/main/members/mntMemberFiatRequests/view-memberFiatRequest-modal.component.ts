@@ -3,7 +3,7 @@ import { Component, ViewChild, Injector, Output, EventEmitter, OnInit } from '@a
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { RequestType } from '@shared/service-proxies/enum/OTC/RequestType.enum';
 import { RequestStatus } from '@shared/service-proxies/enum/OTC/RequestStatus.enum';
-import { GetMntMemberFiatForFullViewDto } from '@shared/service-proxies/dto/members/mntMemberFiat/GetMntMemberFiatForFullViewDto';
+import { MntMemberFiatFullDto } from '@shared/service-proxies/dto/members/mntMemberFiat/MntMemberFiatFullDto';
 import { AppComponentBase } from '@shared/common/app-component-base';
 
 @Component({
@@ -23,7 +23,7 @@ export class ViewMemberFiatRequestModalComponent extends AppComponentBase implem
   }
   ngOnInit() {
   }
-  show(record: GetMntMemberFiatForFullViewDto): void {
+  show(record: MntMemberFiatFullDto): void {
     console.log(record);
     this.active = true;
     this.modal.show();

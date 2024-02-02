@@ -221,6 +221,7 @@
                                                     class="btn btn-actions"
                                                     pTooltip="{{ l('View') }}"
                                                     tooltipPosition="top"
+                                                    (click)="viewRequestModal.show(record.mntMemberFiat)"
                                                 >
                                                     <i class="flaticon-search text-dark"></i>
                                                 </button>
@@ -275,7 +276,6 @@
             #changeStatusRequestModal
             (onSave)="getAllFiatRequests()"
         ></member-fiat-request-changeStatus>
-
         <member-fiat-request-modal #viewRequestModal></member-fiat-request-modal>
     </div>
 </div>
