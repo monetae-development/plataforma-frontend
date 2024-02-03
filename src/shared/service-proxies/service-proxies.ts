@@ -14,6 +14,7 @@ import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
 
 import { DateTime, Duration } from "luxon";
+import { Helpers } from './service-helpers';
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
@@ -16395,7 +16396,7 @@ export class MntMemberFilesServiceProxy {
      * @param file (optional) 
      * @return Success
      */
-    uploadDepositReceipt(file: FileParameter | undefined): Observable<void> {
+    uploadDepositReceipt(file: FileParameter | undefined): Observable<UploadDepositReceiptDto> {
         let url_ = this.baseUrl + "/api/services/app/MntMemberFiles/UploadDepositReceipt";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -16413,35 +16414,38 @@ export class MntMemberFilesServiceProxy {
             })
         };
 
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_: any) => {
-            return this.processUploadDepositReceipt(response_);
-        })).pipe(_observableCatch((response_: any) => {
+        return this.http.request('post', url_, options_).pipe(_observableMergeMap((response_: any) => this.processUploadDepositReceipt(response_))).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
                     return this.processUploadDepositReceipt(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
+                    return _observableThrow(e) as any as Observable<UploadDepositReceiptDto>;
                 }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
+            } else {
+                return _observableThrow(response_) as any as Observable<UploadDepositReceiptDto>;
+            }
         }));
     }
 
-    protected processUploadDepositReceipt(response: HttpResponseBase): Observable<void> {
+    protected processUploadDepositReceipt(response: HttpResponseBase): Observable<UploadDepositReceiptDto> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-                (response as any).error instanceof Blob ? (response as any).error : undefined;
+        const responseBlob = response instanceof HttpResponse ? response.body : (response as any).error instanceof Blob ? (response as any).error : undefined;
 
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); } }
+        let _headers: any = {};
+        if (response.headers) {
+            for (let key of response.headers.keys()) {
+                _headers[key] = response.headers.get(key);
+            }
+        }
         if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-                return _observableOf(null as any);
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = UploadDepositReceiptDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers)));
         }
         return _observableOf(null as any);
     }
@@ -47690,6 +47694,43 @@ export class PagedResultDtoOfMntMemberCatStateLookupTableDto implements IPagedRe
             for (let item of this.items)
                 data["items"].push(item.toJSON());
         }
+        return data;
+    }
+}
+
+export interface IUploadDepositReceiptDto {
+    fileGuid: string;
+}
+
+export class UploadDepositReceiptDto implements IUploadDepositReceiptDto {
+    fileGuid: string| undefined;
+
+    constructor(data?: IUploadDepositReceiptDto) {
+        if (data) {
+            for (let property in data) {
+                if (data.hasOwnProperty(property)) {
+                    (<any>this)[property] = (<any>data)[property];
+                }
+            }
+        }
+    }
+
+    static fromJS(data: any): UploadDepositReceiptDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UploadDepositReceiptDto();
+        result.init(data);
+        return result;
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fileGuid = _data['fileGuid'];
+        }
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data['fileGuid'] = this.fileGuid;
         return data;
     }
 }

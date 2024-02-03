@@ -5,4 +5,5 @@ export interface ICreateMntMemberFiatDto {
     type: FiatType;
     amount: number;
     reference: string;
+    fileGuid: string;
 }

@@ -7,6 +7,7 @@ export class CreateMntMemberFiatDto implements ICreateMntMemberFiatDto {
     type!: FiatType;
     amount!: number;
     reference!: string;
+    fileGuid!: string;
 
     constructor(data?: ICreateMntMemberFiatDto) {
         if (data) {
@@ -32,6 +33,7 @@ export class CreateMntMemberFiatDto implements ICreateMntMemberFiatDto {
             this.type = _data['type'];
             this.amount = _data['amount'];
             this.reference = _data['reference'];
+            this.fileGuid = _data['fileGuid'];
         }
     }
 
@@ -42,6 +44,7 @@ export class CreateMntMemberFiatDto implements ICreateMntMemberFiatDto {
         data['type'] = this.type;
         data['amount'] = this.amount;
         data['reference'] = this.reference;
+        data['fileGuid'] = this.fileGuid;
         return data;
     }
 }

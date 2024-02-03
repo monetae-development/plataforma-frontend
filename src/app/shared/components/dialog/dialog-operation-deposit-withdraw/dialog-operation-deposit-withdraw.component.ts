@@ -59,6 +59,7 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
   loadPlatformBankAccountsComplete = false;
   loadResume = false;
   excelFileUpload: FileUpload;
+  fileGuid: string;
 
   menuItems: MenuItem[] | undefined;
   activeItem: MenuItem | undefined;
@@ -176,6 +177,9 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
 
   saveDeposit(): void{
     this.saving = true;
+    this.fiatDeposit.fileGuid = this.fileGuid;
+    console.log(this.fileGuid);
+    console.log(this.fiatDeposit);
     this._serviceMemberProxy.createFiatDepositByMember(this.fiatDeposit)
       .pipe(finalize(() => {
         this.saving = false;
@@ -239,8 +243,8 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
               fileName: file.name
           };
           this._mntMemberFilesServiceProxy.uploadDepositReceipt(fileParameter).subscribe((result) => {
+            this.fileGuid = result.fileGuid;
             this.uploadFileDepositReceipt = true;
-              console.log(result);
           });
       }
     }
