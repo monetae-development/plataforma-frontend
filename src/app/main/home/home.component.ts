@@ -193,8 +193,9 @@ export class HomeComponent extends AppComponentBase implements OnInit {
       dialogRef?.changeDetectorRef.detectChanges();
       const instance = dialogRef?.instance?.componentRef?.instance as DialogOperationBuySellComponent;
       instance?.outAccept.subscribe((values) => {
-        console.log(values);
-        ref.close();
+        if(values){
+          ref.close();
+        }
       });
     }
   }

@@ -131,6 +131,11 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
     }
     this.purchasePrice = event.value.purchasePrice;
     this.comissionPurchase = event.value.fee;
+    if(this.amountCryptoPurchaseControl.value !== null && this.amountCryptoPurchaseControl.value >= 0){
+      this.calculatePurchaseCost(this.amountCryptoPurchaseControl.value);
+    } else if(this.amountPurchaseControl.value !== null && this.amountPurchaseControl.value >= 0){
+      this.calculateCryptoPurchaseCost(this.amountPurchaseControl.value);
+    }
   }
 
   onChangeCurrencySale(event: any) {
@@ -141,6 +146,11 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
     this.getCryptoBalance(event.value.value);
     this.salePrice = event.value.salePrice;
     this.comissionSale = event.value.fee;
+    if(this.amountCryptoSaleControl.value !== null && this.amountCryptoSaleControl.value >= 0){
+      this.calculateSaleCost(this.amountCryptoSaleControl.value);
+    } else if(this.amountSaleControl.value !== null && this.amountSaleControl.value >= 0){
+      this.calculateCryptoSaleCost(this.amountSaleControl.value);
+    }
   }
 
   amountCryptoPurchaseOnChange(event: any) {
@@ -201,8 +211,11 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   }
 
   calculatePurchaseCost(amount) {
-    if (amount) {
-      this.amountPurchaseControl.setValue(amount*this.purchasePrice);
+    console.log(amount);
+    if (amount >= 0) {
+      console.log(this.purchasePrice);
+      console.log(amount * this.purchasePrice);
+      this.amountPurchaseControl.setValue(amount * this.purchasePrice);
       this.amountPurchaseCommision = (this.amountPurchaseControl.value * this.comissionPurchase) / 100;
     } else {
       this.amountPurchaseCommision = undefined;
@@ -210,7 +223,9 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   }
 
   calculateCryptoPurchaseCost(amount) {
-    if (amount) {
+    console.log(amount);
+    if (amount >= 0) {
+      console.log(amount);
       this.amountCryptoPurchaseControl.setValue(amount/this.purchasePrice);
       this.amountPurchaseCommision = (this.amountPurchaseControl.value * this.comissionPurchase) / 100;
     } else {
@@ -219,7 +234,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   }
 
   calculateSaleCost(amount) {
-    if (amount) {
+    if (amount >= 0) {
       this.amountSaleControl.setValue(amount*this.salePrice);
       this.amountSaleCommision = (this.amountSaleControl.value * this.comissionSale) / 100;
     } else {
@@ -228,7 +243,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   }
 
   calculateCryptoSaleCost(amount) {
-    if (amount) {
+    if (amount >= 0) {
       this.amountCryptoSaleControl.setValue(amount/this.salePrice);
       this.amountSaleCommision = (this.amountSaleControl.value * this.comissionSale) / 100;
     } else {
@@ -261,6 +276,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
     const instance = dialogRef?.instance?.componentRef?.instance as DialogResumenBuySellComponent;
     instance?.outAccept.subscribe((values) => {
       this.openSuccessDialogFolio(values);
+      ref.close();
     });
   }
 
@@ -283,6 +299,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
     const instance = dialogRef?.instance?.componentRef?.instance as DialogResumenBuySellComponent;
     instance?.outAccept.subscribe((values) => {
       this.openSuccessDialogFolio(values);
+      ref.close();
     });
   }
 
@@ -318,6 +335,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
     dialogRef?.changeDetectorRef.detectChanges();
     const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
     instance?.outAccept.subscribe(() => {
+        this.outAccept.emit(true);
         ref.close();
     });
   }
