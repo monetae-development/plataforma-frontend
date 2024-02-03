@@ -29,7 +29,7 @@ import { SessionServiceProxy } from '@shared/service-proxies/service-proxies';
   encapsulation: ViewEncapsulation.None,
   templateUrl: './mntMemberFiat.component.html',
   animations: [appModuleAnimation()],
-  providers: [ DialogService ]
+  providers: [DialogService]
 })
 export class MntMemberFiatComponent extends AppComponentBase implements OnInit {
   @ViewChild('createMntMemberFiatDepositModal', { static: true }) createMntMemberFiatDepositModal: MntMemberFiatDepositComponent;
@@ -65,21 +65,7 @@ export class MntMemberFiatComponent extends AppComponentBase implements OnInit {
   ngOnInit() {
     this.typeOptions = this.getSelectOptions(FiatType);
     this.statusOptions = this.getSelectOptions(FiatStatus);
-    this.getStatusMember();
-  }
-
-  private getStatusMember(){
-    this._sessionServiceProxy.getCurrentLoignIsClientRole().subscribe((result) => {
-      console.log(result);
-      if (result.hasClientRole) {
-        this._serviceMemberProxy.getStatus().subscribe((result) => {
-          console.log(result);
-          this.statusMember = result.status;
-        });
-      } else {
-        this.statusMember = MemberType.Administrador;
-      }
-    });
+    //this.getStatusMember();
   }
 
   getAllOtcRequestsByMember(event?: LazyLoadEvent) {
@@ -150,14 +136,14 @@ export class MntMemberFiatComponent extends AppComponentBase implements OnInit {
     return dateTime[index];
   }
 
-  showDialogDepositWithdraw(index){
-    if (this.statusMember === MemberStatus.Register){
+  showDialogDepositWithdraw(index) {
+    if (this.statusMember === MemberStatus.Register) {
       this.openMessageDialogVerifyAccount();
-    } else if (this.statusMember === MemberStatus.Pending || this.statusMember === MemberStatus.Review){
+    } else if (this.statusMember === MemberStatus.Pending || this.statusMember === MemberStatus.Review) {
       this.openMessageDialogSuccessAccount();
-    } else if (this.statusMember === MemberStatus.Refused){
+    } else if (this.statusMember === MemberStatus.Refused) {
       this.openMessageDialogRefusedAccount();
-    } else if(this.statusMember === MemberType.Administrador) {
+    } else if (this.statusMember === MemberType.Administrador) {
       this.openMessageDialogRolAdministrador();
     } else {
       const ref = this._dialogService.open(DialogOperationDepositWithdrawComponent, {
@@ -176,80 +162,95 @@ export class MntMemberFiatComponent extends AppComponentBase implements OnInit {
       });
     }
   }
+
   private openMessageDialogVerifyAccount(): void {
     const ref = this._dialogService.open(DialogDefaultComponent, {
-        showHeader: false,
-        styleClass: 'ae-dialog ae-dialog--default ae-dialog--sm',
-        data: {
-            icon: 'pi pi-id-card',
-            title: 'Verificar cuenta',
-            subtitle: 'Completa la verificación KYC para continuar con la operación',
-            titleAction: 'Empezar ahora'
-        }
+      showHeader: false,
+      styleClass: 'ae-dialog ae-dialog--default ae-dialog--sm',
+      data: {
+        icon: 'pi pi-id-card',
+        title: 'Verificar cuenta',
+        subtitle: 'Completa la verificación KYC para continuar con la operación',
+        titleAction: 'Empezar ahora'
+      }
     });
     const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
     dialogRef?.changeDetectorRef.detectChanges();
     const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
     instance?.outAccept.subscribe(() => {
       this._router.navigate(['app/main/members/mntMemberDataComplements']);
-        ref.close();
+      ref.close();
+    });
+  }
+
+  private getStatusMember() {
+    this._sessionServiceProxy.getCurrentLoignIsClientRole().subscribe((result) => {
+      console.log(result);
+      if (result.hasClientRole) {
+        this._serviceMemberProxy.getStatus().subscribe((result) => {
+          console.log(result);
+          this.statusMember = result.status;
+        });
+      } else {
+        this.statusMember = MemberType.Administrador;
+      }
     });
   }
 
   private openMessageDialogSuccessAccount(): void {
     const ref = this._dialogService.open(DialogDefaultComponent, {
-        showHeader: false,
-        styleClass: 'ae-dialog ae-dialog--default',
-        data: {
-            icon: 'pi pi-id-card',
-            title: 'Gracias por completar el proceso de verificación',
-            subtitle: 'Actualmente, estamos analizando tus datos con diligencia. En breve, te informaremos los resultados. ¡Gracias por tu paciencia!"',
-            titleAction: this.l('Continue'),
-        }
+      showHeader: false,
+      styleClass: 'ae-dialog ae-dialog--default',
+      data: {
+        icon: 'pi pi-id-card',
+        title: 'Gracias por completar el proceso de verificación',
+        subtitle: 'Actualmente, estamos analizando tus datos con diligencia. En breve, te informaremos los resultados. ¡Gracias por tu paciencia!"',
+        titleAction: this.l('Continue'),
+      }
     });
     const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
     dialogRef?.changeDetectorRef.detectChanges();
     const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
     instance?.outAccept.subscribe(() => {
-        ref.close();
+      ref.close();
     });
   }
 
   private openMessageDialogRefusedAccount(): void {
     const ref = this._dialogService.open(DialogDefaultComponent, {
-        showHeader: false,
-        styleClass: 'ae-dialog ae-dialog--default ae-text-danger ae-dialog--sm',
-        data: {
-            icon: 'pi pi-id-card',
-            title: '"¡Lo sentimos! <br> Tu verificación de identidad KYC <br> ha sido rechazada',
-            subtitle: 'Para generar una nueva solicitud contacte a nuestro equipo de soporte en info@monetae.io.',
-            titleAction: 'Aceptar'
-        }
+      showHeader: false,
+      styleClass: 'ae-dialog ae-dialog--default ae-text-danger ae-dialog--sm',
+      data: {
+        icon: 'pi pi-id-card',
+        title: '"¡Lo sentimos! <br> Tu verificación de identidad KYC <br> ha sido rechazada',
+        subtitle: 'Para generar una nueva solicitud contacte a nuestro equipo de soporte en info@monetae.io.',
+        titleAction: 'Aceptar'
+      }
     });
     const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
     dialogRef?.changeDetectorRef.detectChanges();
     const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
     instance?.outAccept.subscribe(() => {
-        this._router.navigate(['app/main/dashboard']);
-        ref.close();
+      this._router.navigate(['app/main/dashboard']);
+      ref.close();
     });
-}
+  }
 
   private openMessageDialogRolAdministrador(): void {
     const ref = this._dialogService.open(DialogDefaultComponent, {
-        showHeader: false,
-        styleClass: 'ae-dialog ae-dialog--default ae-dialog--sm',
-        data: {
-            icon: 'pi pi-id-card',
-            title: 'Las operaciones son de uso exclusivo para clientes de Monetae.',
-            titleAction: 'Aceptar'
-        }
+      showHeader: false,
+      styleClass: 'ae-dialog ae-dialog--default ae-dialog--sm',
+      data: {
+        icon: 'pi pi-id-card',
+        title: 'Las operaciones son de uso exclusivo para clientes de Monetae.',
+        titleAction: 'Aceptar'
+      }
     });
     const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
     dialogRef?.changeDetectorRef.detectChanges();
     const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
     instance?.outAccept.subscribe(() => {
-        ref.close();
+      ref.close();
     });
   }
 }

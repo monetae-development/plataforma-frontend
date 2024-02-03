@@ -1,6 +1,6 @@
-﻿import {AppConsts} from '@shared/AppConsts';
+﻿import { AppConsts } from '@shared/AppConsts';
 import { Component, Injector, ViewEncapsulation, ViewChild } from '@angular/core';
-import { ActivatedRoute , Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MntMembersServiceProxy, MntMemberDto, UpdateStatusDto } from '@shared/service-proxies/service-proxies';
 import { NotifyService } from 'abp-ng2-module';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -23,7 +23,7 @@ import { DialogChangeStatusComponent } from '@app/shared/components/dialog/dialo
     templateUrl: './mntMembers.component.html',
     encapsulation: ViewEncapsulation.None,
     animations: [appModuleAnimation()],
-    providers: [ DialogService ]
+    providers: [DialogService]
 })
 export class MntMembersComponent extends AppComponentBase {
     @ViewChild('createOrEditMntMemberModal', { static: true }) createOrEditMntMemberModal: CreateOrEditMntMemberModalComponent;
@@ -33,7 +33,7 @@ export class MntMembersComponent extends AppComponentBase {
     advancedFiltersAreShown = false;
     filterText = '';
     maxDayOfBirthFilter: DateTime;
-	minDayOfBirthFilter: DateTime;
+    minDayOfBirthFilter: DateTime;
     cityFilter = '';
     commentsFilter = '';
     userNameFilter = '';
@@ -96,31 +96,31 @@ export class MntMembersComponent extends AppComponentBase {
             showHeader: false,
             styleClass: 'ae-dialog ae-dialog--sm',
             data: {
-              transfer: {
-      
-              },
+                transfer: {
+
+                },
             },
-          });
-      
-          const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
-          dialogRef?.changeDetectorRef.detectChanges();
-      
-          const instance = dialogRef?.instance?.componentRef?.instance as DialogChangeStatusComponent;
-          instance?.outAccept.subscribe((values) => {
+        });
+
+        const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+        dialogRef?.changeDetectorRef.detectChanges();
+
+        const instance = dialogRef?.instance?.componentRef?.instance as DialogChangeStatusComponent;
+        instance?.outAccept.subscribe((values) => {
             const statusBody = new UpdateStatusDto();
             statusBody.id = mntMember.id;
             statusBody.status = values;
-            if(values){
+            if (values) {
                 this._mntMembersServiceProxy.updateStatus(statusBody)
-                .subscribe(() => {
-                    this.reloadPage();
-                    ref.close();
-                },
-                (err) => {
-                    ref.close();
-                });
+                    .subscribe(() => {
+                        this.reloadPage();
+                        ref.close();
+                    },
+                        (err) => {
+                            ref.close();
+                        });
             }
-          });
+        });
     }
 
     deleteMntMember(mntMember: MntMemberDto): void {
@@ -141,15 +141,15 @@ export class MntMembersComponent extends AppComponentBase {
 
     exportToExcel(): void {
         this._mntMembersServiceProxy.getMntMembersToExcel(
-        this.filterText,
-        this.maxDayOfBirthFilter === undefined ? this.maxDayOfBirthFilter : this._dateTimeService.getEndOfDayForDate(this.maxDayOfBirthFilter),
-        this.minDayOfBirthFilter === undefined ? this.minDayOfBirthFilter : this._dateTimeService.getStartOfDayForDate(this.minDayOfBirthFilter),
-        this.commentsFilter,
-        this.userNameFilter,
-        this.catNationalityTitleFilter,
+            this.filterText,
+            this.maxDayOfBirthFilter === undefined ? this.maxDayOfBirthFilter : this._dateTimeService.getEndOfDayForDate(this.maxDayOfBirthFilter),
+            this.minDayOfBirthFilter === undefined ? this.minDayOfBirthFilter : this._dateTimeService.getStartOfDayForDate(this.minDayOfBirthFilter),
+            this.commentsFilter,
+            this.userNameFilter,
+            this.catNationalityTitleFilter,
         )
-        .subscribe(result => {
-            this._fileDownloadService.downloadTempFile(result);
-        });
+            .subscribe(result => {
+                this._fileDownloadService.downloadTempFile(result);
+            });
     }
 }

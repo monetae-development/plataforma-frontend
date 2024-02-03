@@ -544,7 +544,7 @@ export class ServiceMembersProxy {
      * @return Success
      */
     getAllFiatRequestsByMemmber(userEmailFilter: string | undefined, destinationAddressFilter: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PRGetAllMntMemberFiatForViewDto> {
-        let url_ = this.baseUrl + '/api/services/app/MntMemberFiat/GetAllRequestsByMember?';
+        let url_ = this.baseUrl + '/api/services/app/MntMemberFiat/GetAllMemberRequests?';
         url_ += 'userEmailFilter=' + encodeURIComponent('' + ((userEmailFilter === null || userEmailFilter === undefined) ? '' : userEmailFilter)) + '&';
         url_ += 'destinationAddressFilter=' + encodeURIComponent('' + ((destinationAddressFilter === null || destinationAddressFilter === undefined) ? '' : destinationAddressFilter)) + '&';
         url_ += 'Sorting=' + encodeURIComponent('' + ((sorting === null || sorting === undefined) ? '' : sorting)) + '&';
