@@ -11,7 +11,7 @@ import { CatAccountStatusesComponent } from './catalogs/catAccountStatuses/catAc
 import { CatAccountTypesComponent } from './catalogs/catAccountTypes/catAccountTypes.component';
 import { CatCurrenciesComponent } from './catalogs/catCurrencies/catCurrencies.component';
 import { CatBanksComponent } from './catalogs/catBanks/catBanks.component';
-import { OTCRequestsComponent } from './otc/otcRequests/otcRequests.component';
+import { TradingRequestsComponent } from './tradingRequests/tradingRequests.component';
 import { OTCCoinsComponent } from './otc/otcCoins/otcCoins.component';
 import { OTCTradingComponent } from './otc/otcTrading/otcTrading.component';
 import { CatControlFilesComponent } from './catalogs/catControlFiles/catControlFiles.component';
@@ -50,7 +50,7 @@ import { LogoutComponent } from './components/logout/logout.component';
                     { path: 'catalogs/catAccountTypes', component: CatAccountTypesComponent, data: { permission: 'Pages.CatAccountTypes' } },
                     { path: 'catalogs/catCurrencies', component: CatCurrenciesComponent, data: { permission: 'Pages.CatCurrencies' } },
                     { path: 'catalogs/catBanks', component: CatBanksComponent, data: { permission: 'Pages.CatBanks' } },
-                    { path: 'otc/otcRequests', component: OTCRequestsComponent, data: { permission: 'Pages.OTCRequests' } },
+                    { path: 'trading/requests', component: TradingRequestsComponent, data: { permission: 'Pages.Administration.TradingRequests' } },
                     { path: 'otc/trading', component: OTCTradingComponent, data: { permission: 'Pages.OTCTrading' } },
                     { path: 'otc/otcCoins', component: OTCCoinsComponent, data: { permission: 'Pages.OTCCoins' } },
                     { path: 'catalogs/catControlFiles', component: CatControlFilesComponent, data: { permission: 'Pages.CatControlFiles' } },

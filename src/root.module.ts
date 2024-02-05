@@ -20,12 +20,13 @@ import {
     ThemeFooterSettingsDto,
     ApplicationInfoDto,
 } from '@shared/service-proxies/service-proxies';
-import {API_BASE_URL as API_BASE_URL_CATALOGS} from '@shared/service-proxies/service-catalogs-proxies';
-import {API_BASE_URL as API_BASE_URL_COMMON} from '@shared/service-proxies/service-common-proxies';
-import {API_BASE_URL as API_BASE_URL_MEMBERS} from '@shared/service-proxies/service-members-proxies';
-import {API_BASE_URL as API_BASE_URL_TRADING} from '@shared/service-proxies/service-trading-proxies';
-import {API_BASE_URL as API_BASE_URL_OTC} from '@shared/service-proxies/service-otc-proxies';
-import {API_BASE_URL as API_BASE_URL_SETTINGS_PLATFORM} from '@shared/service-proxies/service-settings-platform-proxies';
+import { API_BASE_URL as API_BASE_URL_CATALOGS } from '@shared/service-proxies/service-catalogs-proxies';
+import { API_BASE_URL as API_BASE_URL_COMMON } from '@shared/service-proxies/service-common-proxies';
+import { API_BASE_URL as API_BASE_URL_MEMBERS } from '@shared/service-proxies/service-members-proxies';
+import { API_BASE_URL as API_BASE_URL_TRADING } from '@shared/service-proxies/service-trading-proxies';
+import { API_BASE_URL as API_BASE_URL_OTC } from '@shared/service-proxies/service-otc-proxies';
+import { API_BASE_URL as API_BASE_URL_TRADING_REQUEST } from '@shared/service-proxies/service-trading-requests-proxies';
+import { API_BASE_URL as API_BASE_URL_SETTINGS_PLATFORM } from '@shared/service-proxies/service-settings-platform-proxies';
 import { ServiceProxyModule } from '@shared/service-proxies/service-proxy.module';
 import * as localForage from 'localforage';
 import { AppPreBootstrap } from './AppPreBootstrap';
@@ -171,11 +172,11 @@ function initializeTenantResources(injector: Injector) {
             metaImage.setAttribute(
                 'content',
                 window.location.origin +
-                    '/assets/common/images/app-logo-on-' +
-                    abp.setting.get(
-                        appSessionService.theme.baseSettings.theme + '.' + 'App.UiManagement.Left.AsideSkin'
-                    ) +
-                    '.svg'
+                '/assets/common/images/app-logo-on-' +
+                abp.setting.get(
+                    appSessionService.theme.baseSettings.theme + '.' + 'App.UiManagement.Left.AsideSkin'
+                ) +
+                '.svg'
             );
         } else {
             metaImage.setAttribute(
@@ -283,6 +284,7 @@ function handleLogoutRequest(authService: AppAuthService) {
         { provide: API_BASE_URL_MEMBERS, useFactory: getRemoteServiceBaseUrl },
         { provide: API_BASE_URL_TRADING, useFactory: getRemoteServiceBaseUrl },
         { provide: API_BASE_URL_OTC, useFactory: getRemoteServiceBaseUrl },
+        { provide: API_BASE_URL_TRADING_REQUEST, useFactory: getRemoteServiceBaseUrl },
         { provide: API_BASE_URL_SETTINGS_PLATFORM, useFactory: getRemoteServiceBaseUrl },
         {
             provide: APP_INITIALIZER,
@@ -302,4 +304,4 @@ function handleLogoutRequest(authService: AppAuthService) {
     ],
     bootstrap: [RootComponent],
 })
-export class RootModule {}
+export class RootModule { }

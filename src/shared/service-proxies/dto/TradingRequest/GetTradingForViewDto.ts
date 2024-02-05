@@ -1,10 +1,10 @@
-import { IGetOTCRequestForViewDto } from './IGetOTCRequestForViewDto';
-import { OTCRequestDto } from './OTCRequestDto';
+import { IGetTradingRequestForViewDto } from './IGetTradingRequestForViewDto';
+import { TradingRequestDto } from './TradingRequestDto';
 
-export class GetOTCRequestForViewDto implements IGetOTCRequestForViewDto {
-    request!: OTCRequestDto | undefined;
+export class GetTradingRequestForViewDto implements IGetTradingRequestForViewDto {
+    request!: TradingRequestDto | undefined;
 
-    constructor(data?: IGetOTCRequestForViewDto) {
+    constructor(data?: IGetTradingRequestForViewDto) {
         if (data) {
             for (let property in data) {
                 if (data.hasOwnProperty(property)) {
@@ -14,9 +14,9 @@ export class GetOTCRequestForViewDto implements IGetOTCRequestForViewDto {
         }
     }
 
-    static fromJS(data: any): GetOTCRequestForViewDto {
+    static fromJS(data: any): GetTradingRequestForViewDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GetOTCRequestForViewDto();
+        let result = new GetTradingRequestForViewDto();
         result.init(data);
         return result;
     }
@@ -24,7 +24,7 @@ export class GetOTCRequestForViewDto implements IGetOTCRequestForViewDto {
     init(_data?: any) {
         if (_data) {
             let item = _data['request'] ?? _data['request'];
-            this.request = item ? OTCRequestDto.fromJS(item) : <any>undefined;
+            this.request = item ? TradingRequestDto.fromJS(item) : <any>undefined;
         }
     }
 

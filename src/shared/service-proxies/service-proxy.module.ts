@@ -7,6 +7,7 @@ import * as CommonServiceProxies from './service-common-proxies';
 import * as MembersServiceProxies from './service-members-proxies';
 import * as TradingServiceProxy from './service-trading-proxies';
 import * as OTCServiceProxies from './service-otc-proxies';
+import * as TradingRequestsServiceProxy from './service-trading-requests-proxies';
 import * as SettingsPlatformServiceProxies from './service-settings-platform-proxies';
 import { ZeroRefreshTokenService } from '@account/auth/zero-refresh-token.service';
 import { ZeroTemplateHttpConfigurationService } from './zero-template-http-configuration.service';
@@ -21,6 +22,7 @@ import { ZeroTemplateHttpConfigurationService } from './zero-template-http-confi
         ApiServiceProxies.CatBanksServiceProxy,
         ApiServiceProxies.OTCRequestsServiceProxy,
         OTCServiceProxies.OTCServiceProxy,
+        TradingRequestsServiceProxy.TradingRequestsServiceProxy,
         SettingsPlatformServiceProxies.SettingsPlatformServiceProxy,
         ApiServiceProxies.DcSendGridWebHooksServiceProxy,
         ApiServiceProxies.OTCCoinsServiceProxy,

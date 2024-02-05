@@ -1,41 +1,41 @@
 ﻿import { AppConsts } from '@shared/AppConsts';
 import { Component, Injector, ViewEncapsulation, ViewChild, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { OTCServiceProxy } from '@shared/service-proxies/service-otc-proxies';
+import { TradingRequestsServiceProxy } from '@shared/service-proxies/service-trading-requests-proxies';
 import { ServiceCommonProxy } from '@shared/service-proxies/service-common-proxies';
-import { OTCRequestDto } from '@shared/service-proxies/dto/Otc/OTCRequest/OTCRequestDto';
-import { RequestType } from '@shared/service-proxies/enum/OTC/RequestType.enum';
-import { RequestStatus } from '@shared/service-proxies/enum/OTC/RequestStatus.enum';
+import { TradingRequestDto } from '@shared/service-proxies/dto/tradingRequest/TradingRequestDto';
+import { RequestType } from '@shared/service-proxies/enum/Trading/RequestType.enum';
+import { RequestStatus } from '@shared/service-proxies/enum/Trading/RequestStatus.enum';
 import { NotifyService } from 'abp-ng2-module';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
-import { ViewOTCRequestModalComponent } from './view-otcRequest-modal.component';
+import { ViewTradingRequestModalComponent } from './view-tradingRequest-modal.component';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { Table } from 'primeng/table';
 import { Paginator } from 'primeng/paginator';
 import { LazyLoadEvent } from 'primeng/api';
 import { FileDownloadService } from '@shared/utils/file-download.service';
 import { SelectItem } from 'primeng/api';
-import { OTCCryptoDto } from '@shared/service-proxies/dto/Otc/OTCCryptoDto';
+import { TradingCryptoCurrencyForRequestDto } from '@shared/service-proxies/dto/Trading/TradingCryptoCurrency/TradingCryptoCurrencyForRequestDto';
 import { GetSelectDto } from '@shared/service-proxies/dto/Common/SelectInput/GetSelectDto';
 import * as _ from 'lodash';
 import { DateTime } from 'luxon';
 
 
 @Component({
-    templateUrl: './otcRequests.component.html',
+    templateUrl: './tradingRequests.component.html',
     encapsulation: ViewEncapsulation.None,
     animations: [appModuleAnimation()]
 })
-export class OTCRequestsComponent extends AppComponentBase implements OnInit {
-    @ViewChild('viewOTCRequestModalComponent', { static: true }) viewOTCRequestModal: ViewOTCRequestModalComponent;
+export class TradingRequestsComponent extends AppComponentBase implements OnInit {
+    @ViewChild('viewTradingRequestModalComponent', { static: true }) viewTradingRequestModal: ViewTradingRequestModalComponent;
     @ViewChild('dataTable', { static: true }) dataTable: Table;
     @ViewChild('paginator', { static: true }) paginator: Paginator;
 
     cryptoCurrencies: SelectItem[] = [];
     statusOptions: SelectItem[] = [];
     typeOptions: SelectItem[] = [];
-    cryptoKeys: OTCCryptoDto[] = [];
+    cryptoKeys: TradingCryptoCurrencyForRequestDto[] = [];
 
     advancedFiltersAreShown = false;
     started = false;
@@ -50,7 +50,7 @@ export class OTCRequestsComponent extends AppComponentBase implements OnInit {
 
     constructor(
         injector: Injector,
-        private _otcRequestsServiceProxy: OTCServiceProxy,
+        private _tradingRequestsServiceProxy: TradingRequestsServiceProxy,
         private _serviceCommonProxy: ServiceCommonProxy,
         private _notifyService: NotifyService,
         private _tokenAuth: TokenAuthServiceProxy,
@@ -65,7 +65,7 @@ export class OTCRequestsComponent extends AppComponentBase implements OnInit {
             this.cryptoCurrencies = result.items;
             this.cryptoKeys = [];
             for (const record of result.items) {
-                let temp = new OTCCryptoDto();
+                let temp = new TradingCryptoCurrencyForRequestDto();
                 temp.id = record.value;
                 temp.name = record.label;
                 temp.key = record.subtitle;
@@ -96,7 +96,7 @@ export class OTCRequestsComponent extends AppComponentBase implements OnInit {
         return keys.length > 0 ? keys[0] : undefined;
     }
 
-    getOTCRequests(event?: LazyLoadEvent) {
+    getRequests(event?: LazyLoadEvent) {
         if (this.primengTableHelper.shouldResetPaging(event)) {
             this.paginator.changePage(0);
             if (this.primengTableHelper.records &&
@@ -107,7 +107,7 @@ export class OTCRequestsComponent extends AppComponentBase implements OnInit {
 
         this.primengTableHelper.showLoadingIndicator();
 
-        this._otcRequestsServiceProxy.getAllRequests(
+        this._tradingRequestsServiceProxy.getAllRequests(
             this.folioFilter,
             this.userNameFilter,
             this.cryptoFilter,
@@ -140,16 +140,16 @@ export class OTCRequestsComponent extends AppComponentBase implements OnInit {
         this.cryptoFilter = undefined;
         this.typeFilter = -1;
         this.statusFilter = -1;
-        this.getOTCRequests();
+        this.getRequests();
     }
 
-    deleteOTCRequest(otcRequest: OTCRequestDto): void {
+    deleteRequest(TradingRequest: TradingRequestDto): void {
         this.message.confirm(
             '',
-            this.l('AreYouSureDeleteRequest', otcRequest.folio),
+            this.l('AreYouSureDeleteRequest', TradingRequest.folio),
             (isConfirmed) => {
                 if (isConfirmed) {
-                    this._otcRequestsServiceProxy.deleteRequest(otcRequest.id)
+                    this._tradingRequestsServiceProxy.deleteRequest(TradingRequest.id)
                         .subscribe(() => {
                             this.reloadPage();
                             this.notify.success(this.l('SuccessfullyDeleted'));
