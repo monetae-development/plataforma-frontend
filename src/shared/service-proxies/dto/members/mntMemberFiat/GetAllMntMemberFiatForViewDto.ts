@@ -1,8 +1,10 @@
+import { CurrencyDto } from './CurrencyDto';
 import { IGetAllMntMemberFiatForViewDto } from './IGetAllMntMemberFiatForViewDto';
 import { MntMemberFiatDto } from './MntMemberFiatDto';
 
 export class GetAllMntMemberFiatForViewDto implements IGetAllMntMemberFiatForViewDto {
-    mntMemberFiatDto!: MntMemberFiatDto;
+    request!: MntMemberFiatDto;
+    currency!: CurrencyDto;
 
     constructor(data?: IGetAllMntMemberFiatForViewDto) {
         if (data) {
@@ -23,13 +25,15 @@ export class GetAllMntMemberFiatForViewDto implements IGetAllMntMemberFiatForVie
 
     init(_data?: any) {
         if (_data) {
-            this.mntMemberFiatDto = _data['mntMemberFiatDto'] ? MntMemberFiatDto.fromJS(_data['mntMemberFiatDto']) : <any>undefined;
+            this.request = _data['request'] ? MntMemberFiatDto.fromJS(_data['request']) : <any>undefined;
+            this.currency = _data['currency'] ? MntMemberFiatDto.fromJS(_data['currency']) : <any>undefined;
         }
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data['mntMemberFiatDto'] = this.mntMemberFiatDto ? this.mntMemberFiatDto.toJSON() : <any>undefined;
+        data['request'] = this.request ? this.request.toJSON() : <any>undefined;
+        data['currency'] = this.currency ? this.currency.toJSON() : <any>undefined;
         return data;
     }
 }

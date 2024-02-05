@@ -1,5 +1,7 @@
+import { CurrencyDto } from './CurrencyDto';
 import { MntMemberFiatDto } from './MntMemberFiatDto';
 
 export interface IGetAllMntMemberFiatForViewDto {
-    mntMemberFiatDto: MntMemberFiatDto;
+    request: MntMemberFiatDto;
+    currency: CurrencyDto;
 }
