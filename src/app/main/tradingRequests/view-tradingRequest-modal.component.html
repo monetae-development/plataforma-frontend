@@ -42,18 +42,18 @@
                                 <div class="d-flex flex-row">
                                     <div class="">
                                         <img
-                                            *ngIf="record.request.otcCoinFk.key != undefined"
+                                            *ngIf="record.request.tradingCryptoCurrencyFk.key != undefined"
                                             src="/assets/crypto-icons/{{
-                                                record.request.otcCoinFk.key.toLowerCase()
+                                                record.request.tradingCryptoCurrencyFk.key.toLowerCase()
                                             }}.png"
                                             style="width: 28px"
                                         />
                                     </div>
                                     <div class="ml-2">
                                         <h5 class="card-title px-3 pt-2">
-                                            {{ record.request.otcCoinFk.name }}
+                                            {{ record.request.tradingCryptoCurrencyFk.name }}
                                             <span class="badge text-bg-secondary">
-                                                {{ record.request.otcCoinFk.key }}
+                                                {{ record.request.tradingCryptoCurrencyFk.key }}
                                             </span>
                                         </h5>
                                     </div>
@@ -74,7 +74,7 @@
                                     </div>
                                     <div>
                                         {{ record.request.amount | number : '1.0-6' : 'en' }}
-                                        {{ record.request.otcCoinFk.key }}
+                                        {{ record.request.tradingCryptoCurrencyFk.key }}
                                     </div>
                                 </div>
                                 <div class="d-flex flex-row card-text pt-2">

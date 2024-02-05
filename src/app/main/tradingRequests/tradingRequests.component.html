@@ -6,8 +6,8 @@
                     <div class="d-flex flex-row">
                         <div class="d-flex">
                             <h4>
-                                {{ l('OTCRequests') }}
-                                <small class="text-body-secondary">{{ l('OTCRequestsHeaderInfo') }}</small>
+                                {{ l('TradingRequests') }}
+                                <small class="text-body-secondary">{{ l('TradingRequestsHeaderInfo') }}</small>
                             </h4>
                         </div>
                     </div>
@@ -71,7 +71,7 @@
                                                     placeholder="{{ l('SelectAll') }}"
                                                     [showClear]="true"
                                                     [filter]="true"
-                                                    (onClear)="getOTCRequests()"
+                                                    (onClear)="getRequests()"
                                                 >
                                                     <ng-template pTemplate="selectedItem">
                                                         <div class="d-flex align-items-center" *ngIf="cryptoFilter">
@@ -121,7 +121,7 @@
                                                     <button
                                                         class="btn btn-primary"
                                                         type="button"
-                                                        (click)="getOTCRequests()"
+                                                        (click)="getRequests()"
                                                         pTooltip="{{ l('SearchByFilters') }}"
                                                         tooltipPosition="top"
                                                     >
@@ -169,7 +169,7 @@
                                                     [(ngModel)]="typeFilter"
                                                     placeholder="{{ l('SelectAll') }}"
                                                     [showClear]="true"
-                                                    (onClear)="getOTCRequests()"
+                                                    (onClear)="getRequests()"
                                                 ></p-dropdown>
                                             </div>
                                             <div class="col-md-4 col-xl-2">
@@ -183,7 +183,7 @@
                                                     [(ngModel)]="statusFilter"
                                                     placeholder="{{ l('SelectAll') }}"
                                                     [showClear]="true"
-                                                    (onClear)="getOTCRequests()"
+                                                    (onClear)="getRequests()"
                                                 ></p-dropdown>
                                             </div>
                                         </div>
@@ -194,7 +194,7 @@
                             <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
                                 <p-table
                                     #dataTable
-                                    (onLazyLoad)="getOTCRequests($event)"
+                                    (onLazyLoad)="getRequests($event)"
                                     [value]="primengTableHelper.records"
                                     rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
                                     [paginator]="false"
@@ -227,9 +227,11 @@
                                                 {{ l('OTCTypeRequest') }}
                                                 <p-sortIcon field="otcRequest.type"></p-sortIcon>
                                             </th>
-                                            <th style="width: 180px" pSortableColumn="otcCoinFk.name">
+                                            <th style="width: 180px" pSortableColumn="tradingCryptoCurrencyFk.name">
                                                 {{ l('Product') }}
-                                                <p-sortIcon field="otcRequest.otcCoinFk.name"></p-sortIcon>
+                                                <p-sortIcon
+                                                    field="otcRequest.tradingCryptoCurrencyFk.name"
+                                                ></p-sortIcon>
                                             </th>
                                             <th style="width: 100px" pSortableColumn="price">
                                                 {{ l('Price') }}
@@ -302,13 +304,13 @@
                                             <td style="width: 180px">
                                                 <img
                                                     src="/assets/crypto-icons/{{
-                                                        record.request.otcCoinFk.key.toLowerCase()
+                                                        record.request.tradingCryptoCurrencyFk.key.toLowerCase()
                                                     }}.png"
                                                     style="width: 28px"
                                                 />
-                                                {{ record.request.otcCoinFk.name }}
+                                                {{ record.request.tradingCryptoCurrencyFk.name }}
                                                 <span class="badge text-bg-secondary">
-                                                    {{ record.request.otcCoinFk.key }}
+                                                    {{ record.request.tradingCryptoCurrencyFk.key }}
                                                 </span>
                                             </td>
                                             <td style="width: 100px">
@@ -324,6 +326,12 @@
                                             </td>
                                             <td style="width: 150px">
                                                 {{ record.request.mntMemberBankAccountFk.account }}
+                                                <span
+                                                    class="badge text-bg-secondary"
+                                                    *ngIf="record.request.mntMemberBankAccountFk.account == null"
+                                                >
+                                                    {{ l('N/A') }}
+                                                </span>
                                             </td>
                                             <td style="width: 130px">
                                                 <span class="badge text-bg-secondary">
@@ -348,7 +356,7 @@
                                                     class="btn btn-actions"
                                                     pTooltip="{{ l('Delete') }}"
                                                     tooltipPosition="top"
-                                                    (click)="deleteOTCRequest(record.request)"
+                                                    (click)="deleteRequest(record.request)"
                                                 >
                                                     <i class="flaticon-delete text-danger"></i>
                                                 </button>
@@ -363,7 +371,7 @@
                                     <p-paginator
                                         [rows]="primengTableHelper.defaultRecordsCountPerPage"
                                         #paginator
-                                        (onPageChange)="getOTCRequests($event)"
+                                        (onPageChange)="getRequests($event)"
                                         [totalRecords]="primengTableHelper.totalRecordsCount"
                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
                                         [showCurrentPageReport]="true"

@@ -55,7 +55,7 @@ export class OTCServiceProxy {
         }));
     }
 
-    getAllTradingSocket(_responseText: any): PagedResultDtoOfGetAllOTCTradingForViewDto{
+    getAllTradingSocket(_responseText: any): PagedResultDtoOfGetAllOTCTradingForViewDto {
         let resultData = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
         let result = PagedResultDtoOfGetAllOTCTradingForViewDto.fromJS(resultData);
         return result;
@@ -65,24 +65,24 @@ export class OTCServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
             for (let key of response.headers.keys()) {
-            _headers[key] = response.headers.get(key);
+                _headers[key] = response.headers.get(key);
             }
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfGetAllOTCTradingForViewDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = PagedResultDtoOfGetAllOTCTradingForViewDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -116,7 +116,7 @@ export class OTCServiceProxy {
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<CreateOTCRequestOutput>;
                 }
-            }else{
+            } else {
                 return _observableThrow(response_) as any as Observable<CreateOTCRequestOutput>;
             }
         }));
@@ -134,14 +134,14 @@ export class OTCServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = CreateOTCRequestOutput.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = CreateOTCRequestOutput.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -191,39 +191,39 @@ export class OTCServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
             for (let key of response.headers.keys()) {
-            _headers[key] = response.headers.get(key);
+                _headers[key] = response.headers.get(key);
             }
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfGetOTCRequestByMemberDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = PagedResultDtoOfGetOTCRequestByMemberDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
     }
 
-    getAllRequests(folioFilter: string | undefined, userNameFilter: string | undefined, cryptoFilter: number | undefined, typeFilter: number | undefined, statusFilter: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetAllOTCRequestForViewDto > {
-        let url_ = this.baseUrl + '/api/services/app/OTCRequests/GetAll?';
-        url_ += 'FolioFilter=' + encodeURIComponent('' + ( (folioFilter === null || folioFilter === undefined) ? '' : folioFilter)) + '&';
-        url_ += 'UserNameFilter=' + encodeURIComponent('' + ( (userNameFilter === null || userNameFilter === undefined) ? '' : userNameFilter)) + '&';
-        url_ += 'CryptoFilter=' + encodeURIComponent('' + ( (cryptoFilter === null || cryptoFilter === undefined) ? '' : cryptoFilter)) + '&';
-        url_ += 'TypeFilter=' + encodeURIComponent('' + ( (typeFilter === null || typeFilter === undefined) ? -1 : typeFilter)) + '&';
-        url_ += 'StatusFilter=' + encodeURIComponent('' + ( (statusFilter === null || statusFilter === undefined) ? -1 : statusFilter)) + '&';
-        url_ += 'Sorting=' + encodeURIComponent('' + ( (sorting === null || sorting === undefined) ? '' : sorting)) + '&';
-        url_ += 'SkipCount=' + encodeURIComponent('' + ( (skipCount === null || skipCount === undefined) ? '' : skipCount)) + '&';
-        url_ += 'MaxResultCount=' + encodeURIComponent('' + ( (maxResultCount === null || maxResultCount === undefined) ? '' : maxResultCount)) + '&';
+    getAllRequests(folioFilter: string | undefined, userNameFilter: string | undefined, cryptoFilter: number | undefined, typeFilter: number | undefined, statusFilter: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetAllOTCRequestForViewDto> {
+        let url_ = this.baseUrl + '/api/services/app/TradingRequests/GetAll?';
+        url_ += 'FolioFilter=' + encodeURIComponent('' + ((folioFilter === null || folioFilter === undefined) ? '' : folioFilter)) + '&';
+        url_ += 'UserNameFilter=' + encodeURIComponent('' + ((userNameFilter === null || userNameFilter === undefined) ? '' : userNameFilter)) + '&';
+        url_ += 'CryptoFilter=' + encodeURIComponent('' + ((cryptoFilter === null || cryptoFilter === undefined) ? '' : cryptoFilter)) + '&';
+        url_ += 'TypeFilter=' + encodeURIComponent('' + ((typeFilter === null || typeFilter === undefined) ? -1 : typeFilter)) + '&';
+        url_ += 'StatusFilter=' + encodeURIComponent('' + ((statusFilter === null || statusFilter === undefined) ? -1 : statusFilter)) + '&';
+        url_ += 'Sorting=' + encodeURIComponent('' + ((sorting === null || sorting === undefined) ? '' : sorting)) + '&';
+        url_ += 'SkipCount=' + encodeURIComponent('' + ((skipCount === null || skipCount === undefined) ? '' : skipCount)) + '&';
+        url_ += 'MaxResultCount=' + encodeURIComponent('' + ((maxResultCount === null || maxResultCount === undefined) ? '' : maxResultCount)) + '&';
         url_ = url_.replace(/[?&]$/, '');
 
         let options_: any = {
@@ -251,24 +251,24 @@ export class OTCServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
             for (let key of response.headers.keys()) {
-            _headers[key] = response.headers.get(key);
+                _headers[key] = response.headers.get(key);
             }
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfGetAllOTCRequestForViewDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = PagedResultDtoOfGetAllOTCRequestForViewDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -280,7 +280,7 @@ export class OTCServiceProxy {
      */
     deleteRequest(id: number | undefined): Observable<void> {
         let url_ = this.baseUrl + '/api/services/app/OTCRequests/Delete?';
-        url_ += 'Id=' + encodeURIComponent('' + ( (id === null || id === undefined) ? '' : id)) + '&';
+        url_ += 'Id=' + encodeURIComponent('' + ((id === null || id === undefined) ? '' : id)) + '&';
         url_ = url_.replace(/[?&]$/, '');
 
         let options_: any = {
@@ -309,20 +309,20 @@ export class OTCServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) {
             for (let key of response.headers.keys()) {
-            _headers[key] = response.headers.get(key);
+                _headers[key] = response.headers.get(key);
             }
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+                return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
