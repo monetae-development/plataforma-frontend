@@ -1,6 +1,6 @@
-<div class="ae-table">
+<div class="ae-table mt-8">
     <div class="ae-table__title">
-        <h6 class="ae-text-dark fw-bold m-0">{{ l('Aquí tienes el registro de todas tus activos digitales') }}</h6>
+        <!-- <h6 class="ae-text-dark fw-bold m-0">{{ l('Aquí tienes el registro de todas tus activos digitales') }}</h6> -->
         <!-- <h6 class="card-title mb-0">{{ l('MarketsOverview') }}</h6> -->
     </div>
     <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
@@ -25,6 +25,7 @@
         >
             <ng-template pTemplate="caption">
                 <div class="flex align-items-center justify-content-end mb-4">
+                    <h6 class="ae-text-dark fw-bold m-0">{{ l('Aquí tienes el registro de todas tus activos digitales') }}</h6>
                     <span class="p-input-icon-right ml-auto">
                         <i class="pi pi-search"></i>
                         <input pInputText type="text" (input)="dataTable.filterGlobal($event.target.value, 'contains')" placeholder="" />
@@ -93,17 +94,13 @@
                             </div> -->
                         </div>
                     </td>
-                    <td
-                        
-                        [class.text-success]="record.otcCoin.behavior == getBehavior().Up"
-                        [class.text-danger]="record.otcCoin.behavior == getBehavior().Down"
-                    >
-                        <i
-                            class="la la-line-chart fs-2x"
-                            [class.text-success]="record.otcCoin.change24h > 0"
-                            [class.text-danger]="record.otcCoin.change24h < 0"
-                            [class.rotate-180]="record.otcCoin.change24h < 0"
-                        ></i>
+                    <td>
+                        <div *ngIf="record.otcCoin.change24h > 0; else isDown">
+                            <img src="/assets/common/images/icon-line-up.png" alt="Monetae">
+                          </div>
+                          <ng-template #isDown>
+                            <img src="/assets/common/images/icon-line-down.png" alt="Monetae">
+                          </ng-template>
                         <!-- {{ record.otcCoin.salePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }} -->
                     </td>
                     <td
@@ -125,10 +122,10 @@
                     <td>
                         <span class="ae-text-gris-dark">{{ record.otcCoin.purchasePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}</span>
                     </td>
-                    <td style="width: 100px;">
-                        <div style="position: relative;">
-                            <p-menu #menu [model]="itemsMenu" [popup]="true"></p-menu>
+                    <td>
+                        <div class="flex">
                             <i class="pi pi-ellipsis-v" (click)="menu.toggle($event)"></i>
+                            <p-menu #menu [model]="itemsMenu" [popup]="true" class="ae-menuoptions"></p-menu>
                         </div>
                         <!-- <button class="btn btn-sm btn-light" (click)="onSelectRow(record.otcCoin)">
                             {{

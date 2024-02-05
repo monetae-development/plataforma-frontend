@@ -38,7 +38,9 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   @ViewChild('cryptoRequests') cryptoRequests: OTCRequestsByMemberComponent;
 
   menuItems: MenuItem[] | undefined;
+  menuItemsHistory: MenuItem[] | undefined;
   activeItem: MenuItem | undefined;
+  activeItemHistory: MenuItem | undefined;
   products: any[] | undefined;
   cryptos: any[] | undefined;
   responsiveOptions: any[] | undefined;
@@ -71,7 +73,13 @@ export class HomeComponent extends AppComponentBase implements OnInit {
       { label: 'Portafolio' },
       { label: 'Historial' }
     ];
+    this.menuItemsHistory = [
+      { label: 'Compra/Venta' },
+      { label: 'Depósito/Retiro' },
+      { label: 'Envio/Retiro' }
+    ];
     this.activeItem = this.menuItems[0];
+    this.activeItemHistory = this.menuItemsHistory[0];
     this.products = [
       {
         category: 'Inmobiliario',
@@ -260,6 +268,10 @@ export class HomeComponent extends AppComponentBase implements OnInit {
 
   onActiveItemChange(event: MenuItem) {
     this.activeItem = event;
+  }
+
+  onActiveItemHistoryChange(event: MenuItem) {
+    this.activeItemHistory = event;
   }
 
   reloadRequests() {

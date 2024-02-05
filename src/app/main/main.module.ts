@@ -153,6 +153,7 @@ import { CarouselModule } from 'primeng/carousel';
 import { MenuModule } from 'primeng/menu';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
+import { OtcBriefcaseComponent } from './otc/otcBriefcase/otcBriefcase.component';
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 
@@ -248,6 +249,7 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 		OTCCoinsComponent,
 		OtcWrapperComponent,
 		OTCTradingComponent,
+		OtcBriefcaseComponent,
 		ViewOTCCoinModalComponent,
 		CreateOrEditOTCCoinModalComponent,
 		CatControlFilesComponent,

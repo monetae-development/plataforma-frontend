@@ -224,10 +224,30 @@
                             </ng-template>
                         </div>
                         <div class="ae-tabs__container" *ngIf="activeItem.label == 'Portafolio'">
+                            <!-- <otc-otcBriefcase></otc-otcBriefcase> -->
                             <otc-wrapper></otc-wrapper>
                         </div>
                         <div class="ae-tabs__container" *ngIf="activeItem.label == 'Historial'">
-                            <otc-requests-crypto #cryptoRequests></otc-requests-crypto>
+                            <div class="ae-tabs__container--title">
+                                <h2 class="m-0 ae-text-medium ae-text-dark fw-bold">Consulta todas las transacciones que hayas realizado en nuestra plataforma</h2>
+                            </div>
+                            <div class="ae-tabs ae-tabs--circle">
+                                <p-tabMenu
+                                    [model]="menuItemsHistory"
+                                    [activeItem]="activeItemHistory"
+                                    (activeItemChange)="onActiveItemHistoryChange($event)"
+                                ></p-tabMenu>
+                            </div>
+                            <div class="ae-tabs__container" *ngIf="activeItemHistory.label == 'Compra/Venta'">
+
+                            </div>
+                            <div class="ae-tabs__container" *ngIf="activeItemHistory.label == 'Depósito/Retiro'">
+
+                            </div>
+                            <div class="ae-tabs__container" *ngIf="activeItemHistory.label == 'Envio/Retiro'">
+
+                            </div>
+                            <!-- <otc-requests-crypto #cryptoRequests></otc-requests-crypto> -->
                         </div>
                     </div>
                 </div>
