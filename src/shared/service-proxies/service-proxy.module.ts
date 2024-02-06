@@ -6,6 +6,7 @@ import * as CatalogsServiceProxies from './service-catalogs-proxies';
 import * as CommonServiceProxies from './service-common-proxies';
 import * as MembersServiceProxies from './service-members-proxies';
 import * as TradingServiceProxy from './service-trading-proxies';
+import * as TransactionServiceProxy from './service-transaction-proxies';
 import * as OTCServiceProxies from './service-otc-proxies';
 import * as TradingRequestsServiceProxy from './service-trading-requests-proxies';
 import * as SettingsPlatformServiceProxies from './service-settings-platform-proxies';
@@ -40,6 +41,7 @@ import { ZeroTemplateHttpConfigurationService } from './zero-template-http-confi
         CatalogsServiceProxies.CatSourceFoundsesServiceProxy,
         MembersServiceProxies.ServiceMembersProxy,
         TradingServiceProxy.ServiceTradingProxy,
+        TransactionServiceProxy.ServiceTransactionProxy,
         ApiServiceProxies.MntMemberDataComplementsServiceProxy,
         ApiServiceProxies.MntMemberIdentitiesServiceProxy,
         ApiServiceProxies.MntEconomicInfosServiceProxy,
