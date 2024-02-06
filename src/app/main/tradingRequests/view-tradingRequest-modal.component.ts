@@ -38,7 +38,6 @@ export class ViewTradingRequestModalComponent extends AppComponentBase {
         this.record.request.tradingCryptoCurrencyFk = new TradingCryptoCurrencyForRequestDto();
         this.record.request.mntMemberFk = new MntMemberForRequestDto();
         this.record.request.userFk = new UserInfoDto();
-        this.record.request.mntMemberBankAccountFk = new MntMemberBankAccountForRequestDto();
     }
 
     show(record: GetTradingRequestForViewDto): void {

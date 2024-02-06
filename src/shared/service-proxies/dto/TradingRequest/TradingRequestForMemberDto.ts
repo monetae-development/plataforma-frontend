@@ -12,7 +12,6 @@ export class TradingRequestForMemberDto implements ITradingRequestForMemberDto {
     folio!: string | undefined;
     otcCoinId!: number;
     mntMemberId!: number;
-    mntMemberBankAccountId!: number;
     creationTime!: DateTime;
     lastModificationTime!: DateTime | undefined;
     id!: number;
@@ -44,7 +43,6 @@ export class TradingRequestForMemberDto implements ITradingRequestForMemberDto {
             this.folio = _data['folio'];
             this.otcCoinId = _data['otcCoinId'];
             this.mntMemberId = _data['mntMemberId'];
-            this.mntMemberBankAccountId = _data['mntMemberBankAccountId'];
             this.creationTime = _data['creationTime'] ? DateTime.fromISO(_data['creationTime'].toString()) : <any>undefined;
             this.lastModificationTime = _data['lastModificationTime'] ? DateTime.fromISO(_data['lastModificationTime'].toString()) : <any>undefined;
             this.id = _data['id'];
@@ -61,7 +59,6 @@ export class TradingRequestForMemberDto implements ITradingRequestForMemberDto {
         data['folio'] = this.folio;
         data['otcCoinId'] = this.otcCoinId;
         data['mntMemberId'] = this.mntMemberId;
-        data['mntMemberBankAccountId'] = this.mntMemberBankAccountId;
         data['creationTime'] = this.creationTime ? this.creationTime.toString() : <any>undefined;
         data['lastModificationTime'] = this.lastModificationTime ? this.lastModificationTime.toString() : <any>undefined;
         data['id'] = this.id;

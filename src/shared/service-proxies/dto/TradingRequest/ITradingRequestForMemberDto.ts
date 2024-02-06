@@ -11,7 +11,6 @@ export interface ITradingRequestForMemberDto {
     folio: string | undefined;
     otcCoinId: number;
     mntMemberId: number;
-    mntMemberBankAccountId: number | undefined;
     creationTime: DateTime;
     lastModificationTime: DateTime | undefined;
     id: number;
