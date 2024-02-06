@@ -158,6 +158,9 @@ import { MenuModule } from 'primeng/menu';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { OtcBriefcaseComponent } from './otc/otcBriefcase/otcBriefcase.component';
+import { HistoryPurchaseSaleComponent } from './history/history-purchase-sale/history-purchase-sale.component';
+import { HistoryDepositWithdrawalComponent } from './history/history-deposit-withdrawal/history-deposit-withdrawal.component';
+import { HistorySendReceiveComponent } from './history/history-send-receive/history-send-receive.component';
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 
@@ -257,6 +260,9 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 		OtcWrapperComponent,
 		OTCTradingComponent,
 		OtcBriefcaseComponent,
+		HistoryPurchaseSaleComponent,
+		HistoryDepositWithdrawalComponent,
+		HistorySendReceiveComponent,
 		ViewOTCCoinModalComponent,
 		CreateOrEditOTCCoinModalComponent,
 		CatControlFilesComponent,

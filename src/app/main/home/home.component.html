@@ -239,13 +239,13 @@
                                 ></p-tabMenu>
                             </div>
                             <div class="ae-tabs__container" *ngIf="activeItemHistory.label == 'Compra/Venta'">
-
+                                <history-purchase-sale></history-purchase-sale>
                             </div>
                             <div class="ae-tabs__container" *ngIf="activeItemHistory.label == 'Depósito/Retiro'">
-
+                                <history-deposit-withdrawal></history-deposit-withdrawal>
                             </div>
                             <div class="ae-tabs__container" *ngIf="activeItemHistory.label == 'Envio/Retiro'">
-
+                                <history-send-receive></history-send-receive>
                             </div>
                             <!-- <otc-requests-crypto #cryptoRequests></otc-requests-crypto> -->
                         </div>

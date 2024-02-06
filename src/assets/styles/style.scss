@@ -807,6 +807,23 @@
             font-size: 16px;
         }
     }
+    .p-datatable{
+        .p-datatable-thead, 
+        .p-datatable-tbody {
+            & > tr{
+                & > td,
+                & > th{
+                    border: none;
+                }
+                & > th{
+                    background-color: #F4F4F4;
+                    color: var(--ae-gris-dark);
+                    font-size: 14px;
+                    font-weight: 500;
+                }
+            }    
+        }
+    }   
 }
 .ae-modal{
     background-color: rgba(0,0,0,0.5);
@@ -1027,6 +1044,7 @@
         }
     }
     &--circle{
+        margin: 20px 0;
         .p-tabmenu-nav{
             border: none !important;
             .p-tabmenuitem{

@@ -10,6 +10,7 @@ import { MntMemberTradingRequestDto } from './dto/mntMemberTrading/MntMemberTrad
 import { GetCryptoBalanceDto } from './dto/mntMemberTrading/GetCryptoBalanceDto';
 import { MntMemberTradingResponseDto } from './dto/mntMemberTrading/MntMemberTradingResponseDto';
 import { PRGetAllMntMemberFiatForViewDto } from './dto/members/mntMemberFiat/PRGetAllMntMemberFiatForViewDto';
+import { PRGetAllMntMemberTradingForViewDto } from './dto/mntMemberTrading/PRGetAllMntMemberTradingForViewDto';
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
@@ -26,17 +27,15 @@ export class ServiceTradingProxy {
     }
 
     /**
-     * @param userEmailFilter (optional)
-     * @param destinationAddressFilter (optional)
+     * @param falseilter (optional)
      * @param sorting (optional)
      * @param skipCount (optional)
      * @param maxResultCount (optional)
      * @return Success
      */
-    getAllMemberRequests(userEmailFilter: string | undefined, destinationAddressFilter: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PRGetAllMntMemberFiatForViewDto> {
+    getAllMemberRequests(filter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PRGetAllMntMemberTradingForViewDto> {
         let url_ = this.baseUrl + '/api/services/app/MntMemberTrading/GetAllMemberRequests?';
-        url_ += 'userEmailFilter=' + encodeURIComponent('' + ((userEmailFilter === null || userEmailFilter === undefined) ? '' : userEmailFilter)) + '&';
-        url_ += 'destinationAddressFilter=' + encodeURIComponent('' + ((destinationAddressFilter === null || destinationAddressFilter === undefined) ? '' : destinationAddressFilter)) + '&';
+        url_ += 'Filter=' + encodeURIComponent('' + ((filter === null || filter === undefined) ? '' : filter)) + '&';
         url_ += 'Sorting=' + encodeURIComponent('' + ((sorting === null || sorting === undefined) ? '' : sorting)) + '&';
         url_ += 'SkipCount=' + encodeURIComponent('' + ((skipCount === null || skipCount === undefined) ? '' : skipCount)) + '&';
         url_ += 'MaxResultCount=' + encodeURIComponent('' + ((maxResultCount === null || maxResultCount === undefined) ? '' : maxResultCount)) + '&';
@@ -56,15 +55,15 @@ export class ServiceTradingProxy {
                 try {
                     return this.processGetAllMemberRequests(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<PRGetAllMntMemberFiatForViewDto>;
+                    return _observableThrow(e) as any as Observable<PRGetAllMntMemberTradingForViewDto>;
                 }
             } else {
-                return _observableThrow(response_) as any as Observable<PRGetAllMntMemberFiatForViewDto>;
+                return _observableThrow(response_) as any as Observable<PRGetAllMntMemberTradingForViewDto>;
             }
         }));
     }
 
-    protected processGetAllMemberRequests(response: HttpResponseBase): Observable<PRGetAllMntMemberFiatForViewDto> {
+    protected processGetAllMemberRequests(response: HttpResponseBase): Observable<PRGetAllMntMemberTradingForViewDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -79,7 +78,7 @@ export class ServiceTradingProxy {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
                 let result200: any = null;
                 let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = PRGetAllMntMemberFiatForViewDto.fromJS(resultData200);
+                result200 = PRGetAllMntMemberTradingForViewDto.fromJS(resultData200);
                 return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {

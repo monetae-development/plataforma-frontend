@@ -543,10 +543,10 @@ export class ServiceMembersProxy {
      * @param maxResultCount (optional)
      * @return Success
      */
-    getAllFiatRequestsByMemmber(userEmailFilter: string | undefined, destinationAddressFilter: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PRGetAllMntMemberFiatForViewDto> {
+    getAllFiatRequestsByMemmber(folioFilter: string | undefined, typeFilter: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PRGetAllMntMemberFiatForViewDto> {
         let url_ = this.baseUrl + '/api/services/app/MntMemberFiat/GetAllMemberRequests?';
-        url_ += 'userEmailFilter=' + encodeURIComponent('' + ((userEmailFilter === null || userEmailFilter === undefined) ? '' : userEmailFilter)) + '&';
-        url_ += 'destinationAddressFilter=' + encodeURIComponent('' + ((destinationAddressFilter === null || destinationAddressFilter === undefined) ? '' : destinationAddressFilter)) + '&';
+        url_ += 'FolioFilter=' + encodeURIComponent('' + ((folioFilter === null || folioFilter === undefined) ? '' : folioFilter)) + '&';
+        url_ += 'TypeFilter=' + encodeURIComponent('' + ((typeFilter === null || typeFilter === undefined) ? '' : typeFilter)) + '&';
         url_ += 'Sorting=' + encodeURIComponent('' + ((sorting === null || sorting === undefined) ? '' : sorting)) + '&';
         url_ += 'SkipCount=' + encodeURIComponent('' + ((skipCount === null || skipCount === undefined) ? '' : skipCount)) + '&';
         url_ += 'MaxResultCount=' + encodeURIComponent('' + ((maxResultCount === null || maxResultCount === undefined) ? '' : maxResultCount)) + '&';
