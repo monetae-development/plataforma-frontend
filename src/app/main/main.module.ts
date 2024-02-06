@@ -50,6 +50,7 @@ import { CatBankCatCountryLookupTableModalComponent } from './catalogs/catBanks/
 
 import { TradingRequestsComponent } from './tradingRequests/tradingRequests.component';
 import { ViewTradingRequestModalComponent } from './tradingRequests/view-tradingRequest-modal.component';
+import { TradingRequestsChangeStatusComponent } from './tradingRequests/components/changeStatus/changeStatus.component';
 
 /*TODO Se removeran componentes de OTC*/
 import { OTCRequestsComponent } from './otc/otcRequests/otcRequests.component';
@@ -247,6 +248,7 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 
 		TradingRequestsComponent,
 		ViewTradingRequestModalComponent,
+		TradingRequestsChangeStatusComponent,
 
 		ViewCatBankModalComponent,
 		CreateOrEditCatBankModalComponent,

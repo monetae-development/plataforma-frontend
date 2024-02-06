@@ -19,8 +19,6 @@ export class TradingRequestDto implements ITradingRequestDto {
     mntMemberId!: number;
     mntMemberFk!: MntMemberForRequestDto;
     userFk!: UserInfoDto;
-    mntMemberBankAccountId!: number | undefined;
-    mntMemberBankAccountFk!: MntMemberBankAccountForRequestDto | undefined;
     creationTime!: DateTime;
     creatorUserId!: number;
     id!: number;
@@ -58,9 +56,6 @@ export class TradingRequestDto implements ITradingRequestDto {
             this.mntMemberFk = mntMemberFk ? MntMemberForRequestDto.fromJS(mntMemberFk) : <any>undefined;
             let userFk = _data['userFk'];
             this.userFk = userFk ? UserInfoDto.fromJS(userFk) : <any>undefined;
-            this.mntMemberBankAccountId = _data['mntMemberBankAccountId'];
-            let mntMemberBankAccountFk = _data['mntMemberBankAccountFk'];
-            this.mntMemberBankAccountFk = mntMemberBankAccountFk ? MntMemberBankAccountForRequestDto.fromJS(mntMemberBankAccountFk) : new MntMemberBankAccountForRequestDto();
             this.creationTime = _data['creationTime'] ? DateTime.fromISO(_data['creationTime'].toString()) : <any>undefined;
             this.creatorUserId = _data['creatorUserId'];
             this.id = _data['id'];
@@ -78,11 +73,8 @@ export class TradingRequestDto implements ITradingRequestDto {
         data['tradingCryptoCurrencyId'] = this.tradingCryptoCurrencyId;
         data['tradingCryptoCurrencyFk'] = this.tradingCryptoCurrencyFk;
         data['mntMemberId'] = this.mntMemberId;
-        data['mntMemberBankAccountId'] = this.mntMemberBankAccountId;
         data['mntMemberFk'] = this.mntMemberFk;
         data['userFk'] = this.userFk;
-        data['mntMemberBankAccountId'] = this.mntMemberBankAccountId;
-        data['mntMemberBankAccountForRequestDto'] = this.mntMemberBankAccountFk;
         data['creationTime'] = this.creationTime ? this.creationTime.toString() : <any>undefined;
         data['creatorUserId'] = this.creatorUserId;
         data['id'] = this.id;

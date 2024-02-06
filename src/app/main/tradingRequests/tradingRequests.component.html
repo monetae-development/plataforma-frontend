@@ -71,7 +71,7 @@
                                                     placeholder="{{ l('SelectAll') }}"
                                                     [showClear]="true"
                                                     [filter]="true"
-                                                    (onClear)="getRequests()"
+                                                    (onClear)="getAllRequests()"
                                                 >
                                                     <ng-template pTemplate="selectedItem">
                                                         <div class="d-flex align-items-center" *ngIf="cryptoFilter">
@@ -121,7 +121,7 @@
                                                     <button
                                                         class="btn btn-primary"
                                                         type="button"
-                                                        (click)="getRequests()"
+                                                        (click)="getAllRequests()"
                                                         pTooltip="{{ l('SearchByFilters') }}"
                                                         tooltipPosition="top"
                                                     >
@@ -169,7 +169,7 @@
                                                     [(ngModel)]="typeFilter"
                                                     placeholder="{{ l('SelectAll') }}"
                                                     [showClear]="true"
-                                                    (onClear)="getRequests()"
+                                                    (onClear)="getAllRequests()"
                                                 ></p-dropdown>
                                             </div>
                                             <div class="col-md-4 col-xl-2">
@@ -183,7 +183,7 @@
                                                     [(ngModel)]="statusFilter"
                                                     placeholder="{{ l('SelectAll') }}"
                                                     [showClear]="true"
-                                                    (onClear)="getRequests()"
+                                                    (onClear)="getAllRequests()"
                                                 ></p-dropdown>
                                             </div>
                                         </div>
@@ -194,7 +194,7 @@
                             <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
                                 <p-table
                                     #dataTable
-                                    (onLazyLoad)="getRequests($event)"
+                                    (onLazyLoad)="getAllRequests($event)"
                                     [value]="primengTableHelper.records"
                                     rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
                                     [paginator]="false"
@@ -244,12 +244,6 @@
                                             <th style="width: 100px" pSortableColumn="cost">
                                                 {{ l('Cost') }}
                                                 <p-sortIcon field="otcRequest.cost"></p-sortIcon>
-                                            </th>
-                                            <th style="width: 150px" pSortableColumn="mntMemberBankAccountFk.account">
-                                                {{ l('AccountNo') }}
-                                                <p-sortIcon
-                                                    field="otcRequest.mntMemberBankAccountFk.account"
-                                                ></p-sortIcon>
                                             </th>
                                             <th style="width: 130px" pSortableColumn="status">
                                                 {{ l('Status') }}
@@ -324,15 +318,6 @@
                                             <td style="width: 100px">
                                                 {{ record.request.cost | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}
                                             </td>
-                                            <td style="width: 150px">
-                                                {{ record.request.mntMemberBankAccountFk.account }}
-                                                <span
-                                                    class="badge text-bg-secondary"
-                                                    *ngIf="record.request.mntMemberBankAccountFk.account == null"
-                                                >
-                                                    {{ l('N/A') }}
-                                                </span>
-                                            </td>
                                             <td style="width: 130px">
                                                 <span class="badge text-bg-secondary">
                                                     {{ l(requestStatus[record.request.status]) }}
@@ -348,9 +333,23 @@
                                                     class="btn btn-actions"
                                                     pTooltip="{{ l('View') }}"
                                                     tooltipPosition="top"
-                                                    (click)="viewOTCRequestModal.show(record)"
+                                                    (click)="viewRequestModal.show(record)"
                                                 >
                                                     <i class="flaticon-search text-dark"></i>
+                                                </button>
+                                                <button
+                                                    class="btn btn-actions"
+                                                    pTooltip="{{ l('StatusChange') }}"
+                                                    tooltipPosition="top"
+                                                    (click)="
+                                                        changeStatus(
+                                                            record.request.userFk.id,
+                                                            record.request.id,
+                                                            record.request.status
+                                                        )
+                                                    "
+                                                >
+                                                    <i class="flaticon2-console text-info"></i>
                                                 </button>
                                                 <button
                                                     class="btn btn-actions"
@@ -371,7 +370,7 @@
                                     <p-paginator
                                         [rows]="primengTableHelper.defaultRecordsCountPerPage"
                                         #paginator
-                                        (onPageChange)="getRequests($event)"
+                                        (onPageChange)="getAllRequests($event)"
                                         [totalRecords]="primengTableHelper.totalRecordsCount"
                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
                                         [showCurrentPageReport]="true"
@@ -388,5 +387,6 @@
             </div>
         </div>
     </div>
-    <viewOTCRequestModal #viewOTCRequestModal></viewOTCRequestModal>
+    <trading-request-changeStatus #changeStatusRequestModal (onSave)="getAllRequests()"></trading-request-changeStatus>
+    <viewTradingRequestModal #viewRequestModal></viewTradingRequestModal>
 </div>

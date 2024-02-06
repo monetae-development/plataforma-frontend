@@ -18,6 +18,7 @@ import { CreateMntMemberFiatWithdrawalDto } from './dto/members/mntMemberFiat/Cr
 import { PRGetPlatformBankAccountForViewMemberDto } from './dto/Platform/PlatformBankAccount/PRGetPlatformBankAccountForViewMemberDto';
 import { PRGetAllMntMemberFiatForFullViewDto } from './dto/members/mntMemberFiat/PRGetAllMntMemberFiatForFullViewDto';
 import { UpdateMntMemberFiatRequestStatusInput } from './dto/members/mntMemberFiat/UpdateMntMemberFiatRequestStatusInput';
+import { UpdateTradingRequestStatusInput } from './dto/TradingRequest/UpdateTradingRequestStatusInput';
 import { PRGetAllMntMemberTransactionRequestForViewDto } from './dto/members/mntMemberTransactionRequest/PRGetAllMntMemberTransactionRequestForViewDto';
 import { Helpers } from './service-helpers';
 import { DateTime, Duration } from 'luxon';
@@ -864,14 +865,14 @@ export class ServiceMembersProxy {
      * @return Success
      */
     getBalance(): Observable<BalanceFiatDto> {
-        let url_ = this.baseUrl + "/api/services/app/MntMemberFiat/GetBalance";
-        url_ = url_.replace(/[?&]$/, "");
+        let url_ = this.baseUrl + '/api/services/app/MntMemberFiat/GetBalance';
+        url_ = url_.replace(/[?&]$/, '');
 
         let options_: any = {
-            observe: "response",
-            responseType: "blob",
+            observe: 'response',
+            responseType: 'blob',
             headers: new HttpHeaders({
-                "Accept": "text/plain"
+                'Accept': 'text/plain'
             })
         };
 
@@ -1057,6 +1058,56 @@ export class ServiceMembersProxy {
     }
 
     protected processUpdateFiatStatus(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = response instanceof HttpResponse ? response.body : (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {};
+        if (response.headers) {
+            for (let key of response.headers.keys()) {
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        if (status === 200) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => _observableOf(null as any)));
+        } else if (status !== 200 && status !== 204) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers)));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional)
+     * @return Success
+     */
+    updateTradingStatus(body: UpdateTradingRequestStatusInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + '/api/services/app/TradingRequests/UpdateStatus';
+        url_ = url_.replace(/[?&]$/, '');
+
+        const content_ = JSON.stringify(body);
+
+        let options_: any = {
+            body: content_,
+            observe: 'response',
+            responseType: 'blob',
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json-patch+json',
+            })
+        };
+
+        return this.http.request('put', url_, options_).pipe(_observableMergeMap((response_: any) => this.processUpdateTradingStatus(response_))).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateTradingStatus(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else {
+                return _observableThrow(response_) as any as Observable<void>;
+            }
+        }));
+    }
+
+    protected processUpdateTradingStatus(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob = response instanceof HttpResponse ? response.body : (response as any).error instanceof Blob ? (response as any).error : undefined;
 

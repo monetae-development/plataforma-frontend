@@ -18,6 +18,7 @@ import { FileDownloadService } from '@shared/utils/file-download.service';
 import { SelectItem } from 'primeng/api';
 import { TradingCryptoCurrencyForRequestDto } from '@shared/service-proxies/dto/Trading/TradingCryptoCurrency/TradingCryptoCurrencyForRequestDto';
 import { GetSelectDto } from '@shared/service-proxies/dto/Common/SelectInput/GetSelectDto';
+import { TradingRequestsChangeStatusComponent } from './components/changeStatus/changeStatus.component';
 import * as _ from 'lodash';
 import { DateTime } from 'luxon';
 
@@ -28,7 +29,8 @@ import { DateTime } from 'luxon';
     animations: [appModuleAnimation()]
 })
 export class TradingRequestsComponent extends AppComponentBase implements OnInit {
-    @ViewChild('viewTradingRequestModalComponent', { static: true }) viewTradingRequestModal: ViewTradingRequestModalComponent;
+    @ViewChild('changeStatusRequestModal', { static: true }) changeStatusRequestModal: TradingRequestsChangeStatusComponent;
+    @ViewChild('viewRequestModal', { static: true }) viewRequestModal: ViewTradingRequestModalComponent;
     @ViewChild('dataTable', { static: true }) dataTable: Table;
     @ViewChild('paginator', { static: true }) paginator: Paginator;
 
@@ -96,7 +98,7 @@ export class TradingRequestsComponent extends AppComponentBase implements OnInit
         return keys.length > 0 ? keys[0] : undefined;
     }
 
-    getRequests(event?: LazyLoadEvent) {
+    getAllRequests(event?: LazyLoadEvent) {
         if (this.primengTableHelper.shouldResetPaging(event)) {
             this.paginator.changePage(0);
             if (this.primengTableHelper.records &&
@@ -140,7 +142,11 @@ export class TradingRequestsComponent extends AppComponentBase implements OnInit
         this.cryptoFilter = undefined;
         this.typeFilter = -1;
         this.statusFilter = -1;
-        this.getRequests();
+        this.getAllRequests();
+    }
+
+    changeStatus(userId: number, requestId: number, status: RequestStatus) {
+        this.changeStatusRequestModal.show(userId, requestId, status);
     }
 
     deleteRequest(TradingRequest: TradingRequestDto): void {

@@ -18,8 +18,6 @@ export interface ITradingRequestDto {
     mntMemberId: number;
     mntMemberFk: MntMemberForRequestDto;
     userFk: UserInfoDto;
-    mntMemberBankAccountId: number | undefined;
-    mntMemberBankAccountFk: MntMemberBankAccountForRequestDto | undefined;
     creationTime: DateTime;
     creatorUserId: number;
     id: number;
