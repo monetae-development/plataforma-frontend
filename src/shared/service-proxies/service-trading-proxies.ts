@@ -11,6 +11,7 @@ import { GetCryptoBalanceDto } from './dto/mntMemberTrading/GetCryptoBalanceDto'
 import { MntMemberTradingResponseDto } from './dto/mntMemberTrading/MntMemberTradingResponseDto';
 import { PRGetAllMntMemberFiatForViewDto } from './dto/members/mntMemberFiat/PRGetAllMntMemberFiatForViewDto';
 import { PRGetAllMntMemberTradingForViewDto } from './dto/mntMemberTrading/PRGetAllMntMemberTradingForViewDto';
+import { PRGetAllMntMemberTradingPortfolioForViewDto } from './dto/mntMemberTrading/PRGetAllMntMemberTradingPortfolioForViewDto';
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
@@ -27,7 +28,7 @@ export class ServiceTradingProxy {
     }
 
     /**
-     * @param falseilter (optional)
+     * @param filter (optional)
      * @param sorting (optional)
      * @param skipCount (optional)
      * @param maxResultCount (optional)
@@ -79,6 +80,67 @@ export class ServiceTradingProxy {
                 let result200: any = null;
                 let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
                 result200 = PRGetAllMntMemberTradingForViewDto.fromJS(resultData200);
+                return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers)));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param filter (optional)
+     * @param sorting (optional)
+     * @param skipCount (optional)
+     * @param maxResultCount (optional)
+     * @return Success
+     */
+    getAllMemberPortfolioRequests(filter: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PRGetAllMntMemberTradingPortfolioForViewDto> {
+        let url_ = this.baseUrl + '/api/services/app/MntMemberTrading/GetAllMemberPortfolioRequests?';
+        url_ += 'Filter=' + encodeURIComponent('' + ((filter === null || filter === undefined) ? '' : filter)) + '&';
+        url_ += 'Sorting=' + encodeURIComponent('' + ((sorting === null || sorting === undefined) ? '' : sorting)) + '&';
+        url_ += 'SkipCount=' + encodeURIComponent('' + ((skipCount === null || skipCount === undefined) ? '' : skipCount)) + '&';
+        url_ += 'MaxResultCount=' + encodeURIComponent('' + ((maxResultCount === null || maxResultCount === undefined) ? '' : maxResultCount)) + '&';
+
+        url_ = url_.replace(/[?&]$/, '');
+
+        let options_: any = {
+            observe: 'response',
+            responseType: 'blob',
+            headers: new HttpHeaders({
+                'Accept': 'text/plain'
+            })
+        };
+
+        return this.http.request('get', url_, options_).pipe(_observableMergeMap((response_: any) => this.processGetAllMemberPortfolioRequests(response_))).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllMemberPortfolioRequests(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PRGetAllMntMemberTradingPortfolioForViewDto>;
+                }
+            } else {
+                return _observableThrow(response_) as any as Observable<PRGetAllMntMemberTradingPortfolioForViewDto>;
+            }
+        }));
+    }
+
+    protected processGetAllMemberPortfolioRequests(response: HttpResponseBase): Observable<PRGetAllMntMemberTradingPortfolioForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) {
+            for (let key of response.headers.keys()) {
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        if (status === 200) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = PRGetAllMntMemberTradingPortfolioForViewDto.fromJS(resultData200);
                 return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
