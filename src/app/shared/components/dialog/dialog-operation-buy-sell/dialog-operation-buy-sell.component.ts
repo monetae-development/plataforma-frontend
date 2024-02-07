@@ -305,10 +305,12 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
 
   setMaxAmountPurchase(): void {
     this.amountPurchaseControl.setValue(this.amountPurchase);
+    this.calculateCryptoPurchaseCost(this.amountPurchase);
   }
 
   setMaxAmountSale(): void {
     this.amountCryptoSaleControl.setValue(this.amountSale);
+    this.calculateSaleCost(this.amountSale);
   }
 
   private getCryptoBalance(cryptoCurrencyId){
