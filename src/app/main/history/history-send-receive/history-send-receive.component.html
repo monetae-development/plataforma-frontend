@@ -107,9 +107,9 @@
         </div>
         <div class="ae-content">
             <span 
-              class="ae-text-default ae-text-gris-dark fw-semibold w-full" 
-              [class.ae-text-success]="detailHistory.requestStatus === 2"
-              [class.ae-text-danger]="detailHistory.requestStatus === 3"
+              class="ae-text-default ae-text-primary fw-semibold w-full" 
+              [class.ae-text-success]="detailHistory.requestStatus === 3"
+              [class.ae-text-danger]="detailHistory.requestStatus === 4"
             >
               {{ l(requestStatus[detailHistory.requestStatus]) }}
             </span>

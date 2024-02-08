@@ -131,9 +131,9 @@
         </div>
         <div class="ae-content">
             <span 
-              class="ae-text-default ae-text-gris-dark fw-semibold w-full" 
-              [class.ae-text-success]="detailHistory.status === 2"
-              [class.ae-text-danger]="detailHistory.status === 3"
+              class="ae-text-default ae-text-primary fw-semibold w-full" 
+              [class.ae-text-success]="detailHistory.status === 3"
+              [class.ae-text-danger]="detailHistory.status === 4"
             >
               {{ l(requestStatus[detailHistory.status]) }}
             </span>
