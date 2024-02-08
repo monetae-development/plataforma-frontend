@@ -9,6 +9,7 @@ import { LazyLoadEvent } from 'primeng/api';
 import { finalize } from 'rxjs';
 import { RequestStatus } from '@shared/service-proxies/enum/Trading/RequestStatus.enum';
 import { DateTime } from 'luxon';
+import { TradingRequestMemberDto } from '@shared/service-proxies/dto/mntMemberTrading/TradingRequestMemberDto';
 
 @Component({
   selector: 'history-purchase-sale',
@@ -24,6 +25,8 @@ export class HistoryPurchaseSaleComponent extends AppComponentBase implements On
   requestType = RequestType;
   requestStatus = RequestStatus;
 
+  detailHistory: TradingRequestMemberDto;
+
   primengTableHelper = new PrimengTableHelper();
 
   constructor(
@@ -34,6 +37,16 @@ export class HistoryPurchaseSaleComponent extends AppComponentBase implements On
   }
 
   ngOnInit() {
+  }
+
+  private getMemberDetailRequest(requestId){
+    this._serviceTradingProxy
+    .getMemberDetailRequest(
+      requestId
+    )
+    .subscribe(result => {
+        this.detailHistory = result.tradingRequestMemberDto;
+    });
   }
 
   getAllMemberRequests(event?: LazyLoadEvent): void {
@@ -64,6 +77,11 @@ export class HistoryPurchaseSaleComponent extends AppComponentBase implements On
   getDateTimeFormat(input: string,): string {
     const parsedDate = DateTime.fromISO(input);
     return parsedDate.toFormat('dd/MM/yy');
+  }
+
+  onRowSelect(event){
+    this.getMemberDetailRequest(event.data.request.id);
+    console.log(event);
   }
 
 }

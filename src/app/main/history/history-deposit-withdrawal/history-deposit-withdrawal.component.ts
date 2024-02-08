@@ -68,4 +68,8 @@ export class HistoryDepositWithdrawalComponent extends AppComponentBase implemen
     return parsedDate.toFormat('dd/MM/yy');
   }
 
+  onRowSelect(event){
+    console.log(event);
+  }
+
 }

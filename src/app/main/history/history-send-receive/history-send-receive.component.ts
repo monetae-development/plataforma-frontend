@@ -61,4 +61,8 @@ export class HistorySendReceiveComponent extends AppComponentBase implements OnI
     return parsedDate.toFormat('dd/MM/yy');
   }
 
+  onRowSelect(event){
+    console.log(event);
+  }
+
 }

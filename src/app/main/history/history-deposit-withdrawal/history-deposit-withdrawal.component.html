@@ -5,6 +5,8 @@
       (onLazyLoad)="getAllMemberRequests($event)"
       [value]="primengTableHelper.records"
       rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+      selectionMode="single" 
+      (onRowSelect)="onRowSelect($event)"
       [paginator]="false"
       [lazy]="true"
       [scrollable]="true"

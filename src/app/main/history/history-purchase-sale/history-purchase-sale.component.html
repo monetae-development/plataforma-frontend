@@ -5,6 +5,8 @@
       (onLazyLoad)="getAllMemberRequests($event)"
       [value]="primengTableHelper.records"
       rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+      selectionMode="single" 
+      (onRowSelect)="onRowSelect($event)"
       [paginator]="false"
       [lazy]="true"
       [scrollable]="true"
@@ -35,7 +37,7 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-record="$implicit" let-i="rowIndex">
-        <tr>
+        <tr [pSelectableRow]="record">
           <td>
             <div class="flex align-items-center">
               <div class="mr-4">
@@ -73,6 +75,56 @@
     </p-table>
     <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
       {{ l('NoData') }}
+    </div>
+    <div class="ae-resumen__history" *ngIf="detailHistory">
+      <div class="ae-resumen__item flex align-items-center justify-content-between">
+          <div class="ae-description">
+              <p class="ae-text-dark ae-text-default w-full">Código de referencia</p>
+          </div>
+          <div class="ae-content">
+              <span class="ae-text-gris-network ae-text-default w-full">{{ detailHistory.folio }}</span>
+          </div>
+      </div>
+      <div class="ae-resumen__item flex align-items-center justify-content-between">
+          <div class="ae-description">
+              <p class="ae-text-dark ae-text-default w-full">Precio por moneda</p>
+          </div>
+          <div class="ae-content">
+              <span class="ae-text-gris-dark ae-text-default w-full">{{ detailHistory.price }}</span>
+          </div>
+      </div>
+      <div class="ae-resumen__item flex align-items-center justify-content-between">
+          <div class="ae-description">
+              <p class="ae-text-dark ae-text-default w-full">Compra</p>
+          </div>
+          <div class="ae-content">
+              <span class="ae-text-gris-dark ae-text-default w-full">{{ detailHistory.amount }}</span>
+          </div>
+      </div>
+      <div class="ae-resumen__item flex align-items-center justify-content-between">
+          <div class="ae-description">
+              <p class="ae-text-dark ae-text-default w-full">Subtotal</p>
+          </div>
+          <div class="ae-content">
+              <span class="ae-text-gris-dark ae-text-default w-full">{{ detailHistory.amount }}</span>
+          </div>
+      </div>
+      <div class="ae-resumen__item flex align-items-center justify-content-between">
+          <div class="ae-description">
+              <p class="ae-text-dark ae-text-default w-full">Comisión</p>
+          </div>
+          <div class="ae-content">
+              <span class="ae-text-gris-dark ae-text-default w-full">{{ detailHistory.amount }}</span>
+          </div>            
+      </div>
+      <div class="ae-resumen__item flex align-items-center justify-content-between">
+          <div class="ae-description">
+              <p class="ae-text-dark ae-text-default w-full">Total</p>
+          </div>
+          <div class="ae-content">
+              <span class="ae-text-primary ae-text-default w-full">{{ detailHistory.amount }}</span>
+          </div>
+      </div>
     </div>
     <div class="primeng-paging-container">
         <p-paginator
