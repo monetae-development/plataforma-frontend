@@ -76,7 +76,7 @@ export class HomeComponent extends AppComponentBase implements OnInit {
     this.menuItemsHistory = [
       { label: 'Compra/Venta' },
       { label: 'Depósito/Retiro' },
-      { label: 'Envio/Retiro' }
+      { label: 'Envío/Recepción' }
     ];
     this.activeItem = this.menuItems[0];
     this.activeItemHistory = this.menuItemsHistory[0];
