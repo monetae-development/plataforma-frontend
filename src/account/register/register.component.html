@@ -104,10 +104,13 @@
         </div>
         <div class="ae-checkbox flex alig-items-center">
             <p-checkbox 
+                #agreeInput="ngModel"
                 class="ae-text-dark ae-text-small mr-3"
                 value="val1"
+                name="agree"
                 [(ngModel)]="model.agree"
-                inputId="agree">
+                inputId="agree"
+                required>
             </p-checkbox>
             <label 
                 for="agree"
@@ -116,6 +119,7 @@
                 Al continuar estoy de acuerdo con los <a href="https://www.site.monetae.io/terminos-y-condiciones" target="_blank">términos y condiciones</a> de servicio y <a href="https://www.site.monetae.io/politica-de-privacidad" target="_blank">política de privacidad.</a>
             </label>
         </div>
+        <validation-messages [formCtrl]="agreeInput"></validation-messages>
         <div class="ae-login__actions pb-lg-0 pb-5">
             <button
                 type="submit"
