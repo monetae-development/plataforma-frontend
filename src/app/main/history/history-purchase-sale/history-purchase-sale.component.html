@@ -65,9 +65,9 @@
           <td class="ae-text-gris-dark ae-text-default">
             {{  getDateTimeFormat(record.request.creationTime) }} </td>
           <td
-            class="ae-text-gris-dark"
-            [class.ae-text-success]="record.request.status === 2"
-            [class.ae-text-danger]="record.request.status === 3">
+            class="ae-text-default ae-text-primary" 
+            [class.ae-text-success]="record.request.status === 3"
+            [class.ae-text-danger]="record.request.status === 4">
             {{ l(requestStatus[record.request.status]) }}
           </td>
         </tr>
