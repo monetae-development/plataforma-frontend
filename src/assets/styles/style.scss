@@ -71,6 +71,9 @@
 .ae-text-center{
     text-align: center;
 }
+.ae-cursor-pointer{
+    cursor: pointer;
+}
 
 .ae-container{
     width: 100%;
@@ -827,7 +830,7 @@
     &--overflow{
         .p-datatable{
             .p-datatable-wrapper{
-                padding-bottom: 45px;
+                padding-bottom: 55px;
             }
         }
     }   

@@ -45913,7 +45913,7 @@ body,
 
 @media (min-width: 992px) {
   .app-header {
-    background-color: var(--kt-app-header-base-bg-color);
+    background-color: var(--ae-gris-sidebar);
     box-shadow: var(--kt-app-header-base-box-shadow);
     border-bottom: var(--kt-app-header-base-border-bottom);
   }
@@ -45987,7 +45987,7 @@ body,
 }
 @media (max-width: 991.98px) {
   .app-header {
-    background-color: var(--kt-app-header-base-bg-color-mobile);
+    background-color: var(--ae-gris-sidebar);
     box-shadow: var(--kt-app-header-base-box-shadow-mobile);
     border-bottom: var(--kt-app-header-base-border-bottom-mobile);
   }
@@ -47820,7 +47820,7 @@ html:not([data-theme=dark]) {
 }
 
 [data-kt-app-layout=light-sidebar] .app-sidebar {
-  background-color: var(--kt-app-sidebar-light-bg-color);
+  background-color: var(--ae-gris-sidebar);
   border-right: 0 !important;
 }
 [data-kt-app-layout=light-sidebar] .app-sidebar .hover-scroll-overlay-y {

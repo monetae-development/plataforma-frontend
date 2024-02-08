@@ -22,7 +22,7 @@ export class HistoryDepositWithdrawalComponent extends AppComponentBase implemen
   @ViewChild('paginator', { static: true }) paginator: Paginator;
 
   folioFilter: string = '';
-  typeFilter: number = 0;
+  typeFilter: number = undefined;
   requestType = FiatType;
   fiatStatus = FiatStatus;
 

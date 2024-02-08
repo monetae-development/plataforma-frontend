@@ -42,14 +42,14 @@
             <div class="flex align-items-center">
               <div class="mr-4">
                   <img
-                      src="/assets/crypto-icons/{{ record.cryptoCurrency.key | lowercase }}.png"
+                      src="/assets/crypto-icons/{{ record.currency.symbol | lowercase }}.png"
                       class="crypto-icon-table"
-                      alt="{{ record.cryptoCurrency.key }}"
+                      alt="{{ record.currency.symbol }}"
                   />
               </div>
               <div class="ae-text__coin">
-                  <p class="m-0 ae-text-dark ae-text-default">{{ record.cryptoCurrency.name }}</p>
-                  <span class="ae-text-gris-dark ae-text-default">{{ record.cryptoCurrency.key }}</span>
+                  <p class="m-0 ae-text-dark ae-text-default">{{ record.currency.title }}</p>
+                  <span class="ae-text-gris-dark ae-text-default">{{ record.currency.symbol }}</span>
               </div>
           </div>
           </td>
@@ -57,7 +57,7 @@
             {{ l(requestType[record.request.type]) }}
           </td>
           <td class="ae-text-gris-dark ae-text-default">
-            {{ record.request.cost | number : '1.0-6' : 'en' }}
+            {{ record.request.amount | number : '1.0-6' : 'en' }}
           </td>
           <td class="ae-text-gris-dark ae-text-default">
             {{ record.request.amount | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}
@@ -65,9 +65,10 @@
           <td class="ae-text-gris-dark ae-text-default">
             {{  getDateTimeFormat(record.request.creationTime) }} </td>
           <td
-            class="ae-text-grisdark"
+            class="ae-text-primary"
             [class.ae-text-success]="record.request.status === 2"
-            [class.ae-text-danger]="record.request.status === 3">
+            [class.ae-text-danger]="record.request.status === 3"
+            [class.ae-text-danger]="record.request.status === 4">
             {{ l(fiatStatus[record.request.status]) }}
           </td>
         </tr>
@@ -79,7 +80,7 @@
     <div class="ae-resumen__history" *ngIf="detailHistory">
       <div class="ae-resumen__item flex align-items-center justify-content-between">
           <div class="ae-description">
-              <p class="ae-text-gris-dark ae-text-default fw-semibold w-full">Código de referencia</p>
+              <p class="ae-text-gris-dark ae-text-default fw-semibold w-full">Folio</p>
           </div>
           <div class="ae-content">
               <span class="ae-text-gris-network ae-text-default fw-semibold w-full">{{ detailHistory.folio }}</span>
@@ -116,7 +117,8 @@
         <div class="ae-content">
             <span 
               class="ae-text-default ae-text-primary fw-semibold w-full" 
-              [class.ae-text-success]="detailHistory.status === 3"
+              [class.ae-text-success]="detailHistory.status === 2"
+              [class.ae-text-danger]="detailHistory.status === 3"
               [class.ae-text-danger]="detailHistory.status === 4"
             >
               {{ l(fiatStatus[detailHistory.status]) }}

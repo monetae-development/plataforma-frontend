@@ -1,4 +1,5 @@
-<div class="ae-table ae-table--overflow">
+<div class="ae-table"
+    [class.ae-table--overflow]="primengTableHelper.totalRecordsCount != 0">
     <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
       <p-table
         #dataTable
@@ -11,11 +12,11 @@
         ScrollWidth="100%"
         [responsive]="primengTableHelper.isResponsive"
         [resizableColumns]="primengTableHelper.resizableColumns"
-        [globalFilterFields]="['cryptoCurrency.name', 'request.cost', 'request.totalPercent']"
+        [globalFilterFields]="['cryptoCurrency.name', 'cryptoCurrency.key', 'request.cost', 'request.totalPercent']"
       >
         <ng-template pTemplate="caption">
           <div class="ae-table__title--column flex align-items-center justify-content-end mb-4">
-              <h6 class="ae-text-dark ae-text-medium fw-bold m-0">{{ l('Aquí tienes el registro de todas tus activos digitales') }}</h6>
+              <h6 class="ae-text-dark ae-text-medium fw-bold m-0">{{ l('Aquí tienes el registro de todos tus activos digitales') }}</h6>
               <span class="p-input-icon-right ml-auto">
                   <i class="pi pi-search"></i>
                   <input pInputText type="text" (input)="dataTable.filterGlobal($event.target.value, 'contains')" placeholder="" />
@@ -34,13 +35,13 @@
                 {{ l('Change24h') }}
             </th>
             <th>
-                {{ l('% del total') }}
+                {{ l('% rent.') }}
             </th>
             <th>
                 {{ l('Cantidad') }}
             </th>
             <th style="width: 100px;">
-
+              {{ l('Actions') }}
             </th>
         </tr>
         </ng-template>
@@ -73,7 +74,7 @@
               [class.text-success]="record.request.percent24H > 0"
               [class.text-danger]="record.request.percent24H < 0"
             >
-              <span class="ae-text-gris-dark">{{ record.request.percent24H }}%</span>
+              <span class="ae-text-gris-dark">{{ record.request.percent24H | number : '1.2' : 'en'  }}%</span>
             </td>
             <td class="ae-text-gris-dark ae-text-default">
               {{ record.request.totalPercent }}%
@@ -81,9 +82,9 @@
             <td class="ae-text-gris-dark ae-text-default">
               {{ record.request.cost | number : '1.0-6' : 'en' }}
             </td>
-            <td>
-                <div class="flex">
-                    <i class="pi pi-ellipsis-v" (click)="menu.toggle($event)"></i>
+            <td class="text-center">
+                <div class="flex align-items-center justify-content-center">
+                    <i class="pi pi-ellipsis-v ae-cursor-pointer" (click)="menu.toggle($event)"></i>
                     <p-menu #menu [model]="itemsMenu" [popup]="true" class="ae-menuoptions"></p-menu>
                 </div>
             </td>
@@ -93,7 +94,8 @@
       <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
         {{ l('NoData') }}
       </div>
-      <div class="ae-paginator ae-paginator--top primeng-paging-container flex align-items-center justify-content-center">
+      <div class="ae-paginator primeng-paging-container flex align-items-center justify-content-center"
+          [class.ae-paginator--top]="primengTableHelper.totalRecordsCount != 0">
           <p-paginator
               [rows]="primengTableHelper.defaultRecordsCountPerPage"
               #paginator

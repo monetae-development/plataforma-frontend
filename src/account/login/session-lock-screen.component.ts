@@ -16,6 +16,8 @@ export class SessionLockScreenComponent extends AppComponentBase {
     
     userInfo: any;
     submitting = false;
+    showPassword = false;
+    passwordFieldType: string = "password";
 
     constructor(
         injector: Injector,
@@ -84,6 +86,11 @@ export class SessionLockScreenComponent extends AppComponentBase {
         } else {
             recaptchaCallback(null);
         }
+    }
+
+    togglePasswordVisibility(): void{
+        this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+        this.showPassword = !this.showPassword;
     }
 
 }
