@@ -11,7 +11,17 @@
         ScrollWidth="100%"
         [responsive]="primengTableHelper.isResponsive"
         [resizableColumns]="primengTableHelper.resizableColumns"
+        [globalFilterFields]="['cryptoCurrency.name', 'request.cost', 'request.totalPercent']"
       >
+        <ng-template pTemplate="caption">
+          <div class="ae-table__title--column flex align-items-center justify-content-end mb-4">
+              <h6 class="ae-text-dark ae-text-medium fw-bold m-0">{{ l('Aquí tienes el registro de todas tus activos digitales') }}</h6>
+              <span class="p-input-icon-right ml-auto">
+                  <i class="pi pi-search"></i>
+                  <input pInputText type="text" (input)="dataTable.filterGlobal($event.target.value, 'contains')" placeholder="" />
+              </span>
+          </div>
+        </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th>
@@ -83,17 +93,13 @@
       <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
         {{ l('NoData') }}
       </div>
-      <div class="primeng-paging-container">
+      <div class="ae-paginator primeng-paging-container flex align-items-center justify-content-center">
           <p-paginator
               [rows]="primengTableHelper.defaultRecordsCountPerPage"
               #paginator
               (onPageChange)="getAllMemberPortfolioRequests($event)"
               [totalRecords]="primengTableHelper.totalRecordsCount"
-              [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
-              [showCurrentPageReport]="true"
-              [currentPageReportTemplate]="
-                  'TotalRecordsCount' | localize : primengTableHelper.totalRecordsCount
-              "
+              [showCurrentPageReport]="false"
           ></p-paginator>
       </div>
     </div>

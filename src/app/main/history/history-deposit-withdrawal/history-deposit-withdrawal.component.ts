@@ -1,14 +1,15 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { RequestType } from '@shared/service-proxies/enum/Trading/RequestType.enum';
 import { Table } from 'primeng/table';
 import { Paginator } from 'primeng/paginator';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { PrimengTableHelper } from 'shared/helpers/PrimengTableHelper';
 import { LazyLoadEvent } from 'primeng/api';
 import { finalize } from 'rxjs';
-import { RequestStatus } from '@shared/service-proxies/enum/Trading/RequestStatus.enum';
 import { DateTime } from 'luxon';
 import { ServiceMembersProxy } from '@shared/service-proxies/service-members-proxies';
+import { MntMemberFiatRequestDto } from '@shared/service-proxies/dto/members/mntMemberFiat/MntMemberFiatRequestDto';
+import { FiatStatus } from '@shared/service-proxies/enum/Members/FiatStatus.enum';
+import { FiatType } from '@shared/service-proxies/enum/Members/FiatType.enum';
 
 @Component({
   selector: 'history-deposit-withdrawal',
@@ -22,8 +23,10 @@ export class HistoryDepositWithdrawalComponent extends AppComponentBase implemen
 
   folioFilter: string = '';
   typeFilter: number = 0;
-  requestType = RequestType;
-  requestStatus = RequestStatus;
+  requestType = FiatType;
+  fiatStatus = FiatStatus;
+
+  detailHistory: MntMemberFiatRequestDto
 
   primengTableHelper = new PrimengTableHelper();
 
@@ -35,6 +38,16 @@ export class HistoryDepositWithdrawalComponent extends AppComponentBase implemen
   }
 
   ngOnInit() {
+  }
+
+  private getMemberDetailRequest(requestId){
+    this._serviceMembersProxy
+    .getMemberDetailRequest(
+      requestId
+    )
+    .subscribe(result => {
+        this.detailHistory = result.request;
+    });
   }
 
   getAllMemberRequests(event?: LazyLoadEvent): void {
@@ -69,6 +82,7 @@ export class HistoryDepositWithdrawalComponent extends AppComponentBase implemen
   }
 
   onRowSelect(event){
+    this.getMemberDetailRequest(event.data.request.id)
     console.log(event);
   }
 

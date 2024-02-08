@@ -80,8 +80,8 @@ export class HistoryPurchaseSaleComponent extends AppComponentBase implements On
   }
 
   onRowSelect(event){
-    this.getMemberDetailRequest(event.data.request.id);
     console.log(event);
+    this.getMemberDetailRequest(event.data.request.id);
   }
 
 }

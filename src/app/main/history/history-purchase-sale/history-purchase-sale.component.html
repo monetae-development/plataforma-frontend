@@ -65,7 +65,7 @@
           <td class="ae-text-gris-dark ae-text-default">
             {{  getDateTimeFormat(record.request.creationTime) }} </td>
           <td
-            class="ae-text-grisdark"
+            class="ae-text-gris-dark"
             [class.ae-text-success]="record.request.status === 2"
             [class.ae-text-danger]="record.request.status === 3">
             {{ l(requestStatus[record.request.status]) }}
@@ -79,64 +79,74 @@
     <div class="ae-resumen__history" *ngIf="detailHistory">
       <div class="ae-resumen__item flex align-items-center justify-content-between">
           <div class="ae-description">
-              <p class="ae-text-dark ae-text-default w-full">Código de referencia</p>
+              <p class="ae-text-gris-dark ae-text-default fw-semibold w-full">Código de referencia</p>
           </div>
           <div class="ae-content">
-              <span class="ae-text-gris-network ae-text-default w-full">{{ detailHistory.folio }}</span>
+              <span class="ae-text-gris-network ae-text-default fw-semibold w-full">{{ detailHistory.folio }}</span>
           </div>
       </div>
       <div class="ae-resumen__item flex align-items-center justify-content-between">
           <div class="ae-description">
-              <p class="ae-text-dark ae-text-default w-full">Precio por moneda</p>
+              <p class="ae-text-gris-dark ae-text-default fw-semibold w-full">Precio por moneda</p>
           </div>
           <div class="ae-content">
-              <span class="ae-text-gris-dark ae-text-default w-full">{{ detailHistory.price }}</span>
+              <span class="ae-text-gris-dark ae-text-default fw-semibold w-full">{{ detailHistory.price | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }}</span>
           </div>
       </div>
       <div class="ae-resumen__item flex align-items-center justify-content-between">
           <div class="ae-description">
-              <p class="ae-text-dark ae-text-default w-full">Compra</p>
+              <p class="ae-text-gris-dark ae-text-default fw-semibold w-full">Compra</p>
           </div>
           <div class="ae-content">
-              <span class="ae-text-gris-dark ae-text-default w-full">{{ detailHistory.amount }}</span>
+              <span class="ae-text-gris-dark ae-text-default fw-semibold w-full">{{ detailHistory.cost }} {{ detailHistory.key }}</span>
           </div>
       </div>
       <div class="ae-resumen__item flex align-items-center justify-content-between">
           <div class="ae-description">
-              <p class="ae-text-dark ae-text-default w-full">Subtotal</p>
+              <p class="ae-text-gris-dark ae-text-default fw-semibold w-full">Subtotal</p>
           </div>
           <div class="ae-content">
-              <span class="ae-text-gris-dark ae-text-default w-full">{{ detailHistory.amount }}</span>
+              <span class="ae-text-gris-dark ae-text-default fw-semibold w-full">{{ detailHistory.amount | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }}</span>
           </div>
       </div>
       <div class="ae-resumen__item flex align-items-center justify-content-between">
           <div class="ae-description">
-              <p class="ae-text-dark ae-text-default w-full">Comisión</p>
+              <p class="ae-text-gris-dark ae-text-default fw-semibold w-full">Comisión</p>
           </div>
           <div class="ae-content">
-              <span class="ae-text-gris-dark ae-text-default w-full">{{ detailHistory.amount }}</span>
+              <span class="ae-text-gris-dark ae-text-default fw-semibold w-full">{{ detailHistory.feeAmount | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }}</span>
           </div>            
       </div>
       <div class="ae-resumen__item flex align-items-center justify-content-between">
           <div class="ae-description">
-              <p class="ae-text-dark ae-text-default w-full">Total</p>
+              <p class="ae-text-gris-dark ae-text-default fw-semibold w-full">Total</p>
           </div>
           <div class="ae-content">
-              <span class="ae-text-primary ae-text-default w-full">{{ detailHistory.amount }}</span>
+              <span class="ae-text-gris-dark ae-text-default fw-semibold w-full">{{ (detailHistory.amount + detailHistory.feeAmount) | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }}</span>
           </div>
       </div>
+      <div class="ae-resumen__item flex align-items-center justify-content-between">
+        <div class="ae-description">
+            <p class="ae-text-gris-dark ae-text-default fw-semibold w-full">{{  getDateTimeFormat(detailHistory.creationTime) }}</p>
+        </div>
+        <div class="ae-content">
+            <span 
+              class="ae-text-default ae-text-gris-dark fw-semibold w-full" 
+              [class.ae-text-success]="detailHistory.status === 2"
+              [class.ae-text-danger]="detailHistory.status === 3"
+            >
+              {{ l(requestStatus[detailHistory.status]) }}
+            </span>
+        </div>            
+      </div>
     </div>
-    <div class="primeng-paging-container">
+    <div class="ae-paginator primeng-paging-container flex align-items-center justify-content-center">
         <p-paginator
             [rows]="primengTableHelper.defaultRecordsCountPerPage"
             #paginator
             (onPageChange)="getAllMemberRequests($event)"
             [totalRecords]="primengTableHelper.totalRecordsCount"
-            [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
-            [showCurrentPageReport]="true"
-            [currentPageReportTemplate]="
-                'TotalRecordsCount' | localize : primengTableHelper.totalRecordsCount
-            "
+            [showCurrentPageReport]="false"
         ></p-paginator>
     </div>
   </div>

@@ -1,12 +1,13 @@
 import { CurrencyDto } from './CurrencyDto';
-import { IGetAllMntMemberFiatForViewDto } from './IGetAllMntMemberFiatForViewDto';
+import { IGetMemberDetailRequestDto } from './IGetMemberDetailRequestDto';
 import { MntMemberFiatDto } from './MntMemberFiatDto';
+import { MntMemberFiatRequestDto } from './MntMemberFiatRequestDto';
 
-export class GetAllMntMemberFiatForViewDto implements IGetAllMntMemberFiatForViewDto {
-    request!: MntMemberFiatDto;
+export class GetMemberDetailRequestDto implements IGetMemberDetailRequestDto {
+    request!: MntMemberFiatRequestDto;
     currency!: CurrencyDto;
 
-    constructor(data?: IGetAllMntMemberFiatForViewDto) {
+    constructor(data?: IGetMemberDetailRequestDto) {
         if (data) {
             for (let property in data) {
                 if (data.hasOwnProperty(property)) {
@@ -16,9 +17,9 @@ export class GetAllMntMemberFiatForViewDto implements IGetAllMntMemberFiatForVie
         }
     }
 
-    static fromJS(data: any): GetAllMntMemberFiatForViewDto {
+    static fromJS(data: any): GetMemberDetailRequestDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GetAllMntMemberFiatForViewDto();
+        let result = new GetMemberDetailRequestDto();
         result.init(data);
         return result;
     }

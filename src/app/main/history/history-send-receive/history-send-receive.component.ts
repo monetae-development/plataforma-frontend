@@ -9,6 +9,7 @@ import { finalize } from 'rxjs';
 import { RequestStatus } from '@shared/service-proxies/enum/Trading/RequestStatus.enum';
 import { DateTime } from 'luxon';
 import { ServiceTransactionProxy } from '@shared/service-proxies/service-transaction-proxies';
+import { TransactionRequestForMemberDetailDto } from '@shared/service-proxies/dto/mntMemberTransaction/TransactionRequestForMemberDetailDto';
 
 @Component({
   selector: 'history-send-receive',
@@ -24,6 +25,8 @@ export class HistorySendReceiveComponent extends AppComponentBase implements OnI
   requestType = RequestType;
   requestStatus = RequestStatus;
 
+  detailHistory: TransactionRequestForMemberDetailDto;
+
   primengTableHelper = new PrimengTableHelper();
 
   constructor(
@@ -34,6 +37,16 @@ export class HistorySendReceiveComponent extends AppComponentBase implements OnI
   }
 
   ngOnInit() {
+  }
+
+  private getMemberDetailRequest(requestId){
+    this._serviceTransactionProxy
+    .getMemberDetailRequest(
+      requestId
+    )
+    .subscribe(result => {
+        this.detailHistory = result.request;
+    });
   }
 
   getAllMemberRequests(event?: LazyLoadEvent): void {
@@ -63,6 +76,7 @@ export class HistorySendReceiveComponent extends AppComponentBase implements OnI
 
   onRowSelect(event){
     console.log(event);
+    this.getMemberDetailRequest(event.data.request.id);
   }
 
 }
