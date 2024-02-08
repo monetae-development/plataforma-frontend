@@ -169,10 +169,10 @@ export class OtcBriefcaseComponent extends AppComponentBase implements OnInit {
     .pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator()))
     .subscribe(result => {
         console.log(result);
-        // this.primengTableHelper.totalRecordsCount = this.total;
-        // this.primengTableHelper.records = this.items;
-        this.primengTableHelper.totalRecordsCount = result.totalCount;
-        this.primengTableHelper.records = result.items;
+        this.primengTableHelper.totalRecordsCount = this.total;
+        this.primengTableHelper.records = this.items;
+        // this.primengTableHelper.totalRecordsCount = result.totalCount;
+        // this.primengTableHelper.records = result.items;
         this.primengTableHelper.hideLoadingIndicator();
     });
   }

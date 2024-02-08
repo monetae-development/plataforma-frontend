@@ -1,4 +1,4 @@
-<div class="ae-table">
+<div class="ae-table ae-table--overflow">
     <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
       <p-table
         #dataTable
@@ -93,7 +93,7 @@
       <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
         {{ l('NoData') }}
       </div>
-      <div class="ae-paginator primeng-paging-container flex align-items-center justify-content-center">
+      <div class="ae-paginator ae-paginator--top primeng-paging-container flex align-items-center justify-content-center">
           <p-paginator
               [rows]="primengTableHelper.defaultRecordsCountPerPage"
               #paginator
