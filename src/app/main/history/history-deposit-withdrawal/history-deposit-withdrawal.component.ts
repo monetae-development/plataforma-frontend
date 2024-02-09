@@ -10,6 +10,8 @@ import { ServiceMembersProxy } from '@shared/service-proxies/service-members-pro
 import { MntMemberFiatRequestDto } from '@shared/service-proxies/dto/members/mntMemberFiat/MntMemberFiatRequestDto';
 import { FiatStatus } from '@shared/service-proxies/enum/Members/FiatStatus.enum';
 import { FiatType } from '@shared/service-proxies/enum/Members/FiatType.enum';
+import { DialogDetailDepositWithdrawComponent } from '@app/shared/components/dialog/dialog-detail-deposit-withdraw/dialog-detail-deposit-withdraw.component';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'history-deposit-withdrawal',
@@ -26,13 +28,12 @@ export class HistoryDepositWithdrawalComponent extends AppComponentBase implemen
   requestType = FiatType;
   fiatStatus = FiatStatus;
 
-  detailHistory: MntMemberFiatRequestDto
-
   primengTableHelper = new PrimengTableHelper();
 
   constructor(
     injector: Injector,
-    private _serviceMembersProxy: ServiceMembersProxy
+    private _serviceMembersProxy: ServiceMembersProxy,
+    public _dialogService: DialogService,
   ) {
     super(injector);
   }
@@ -40,13 +41,24 @@ export class HistoryDepositWithdrawalComponent extends AppComponentBase implemen
   ngOnInit() {
   }
 
-  private getMemberDetailRequest(requestId){
+  private getMemberDetailRequest(data){
     this._serviceMembersProxy
     .getMemberDetailRequest(
-      requestId
+      data.id
     )
     .subscribe(result => {
-        this.detailHistory = result.request;
+        this.openDialogDetailDepositWithdraw(result, data.type)
+    });
+  }
+
+  private openDialogDetailDepositWithdraw(dataDetail, type): void {
+    const ref = this._dialogService.open(DialogDetailDepositWithdrawComponent, {
+      showHeader: false,
+      styleClass: 'ae-dialog ae-dialog--sm',
+      data: {
+        detail: dataDetail,
+        type: type
+      }
     });
   }
 
@@ -81,9 +93,8 @@ export class HistoryDepositWithdrawalComponent extends AppComponentBase implemen
     return parsedDate.toFormat('dd/MM/yy');
   }
 
-  onRowSelect(event){
-    this.getMemberDetailRequest(event.data.request.id)
-    console.log(event);
+  selectRow(data){
+    this.getMemberDetailRequest(data);
   }
 
 }

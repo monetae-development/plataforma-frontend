@@ -6,10 +6,9 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { PrimengTableHelper } from 'shared/helpers/PrimengTableHelper';
 import { LazyLoadEvent } from 'primeng/api';
 import { finalize } from 'rxjs';
-import { RequestStatus } from '@shared/service-proxies/enum/Trading/RequestStatus.enum';
 import { DateTime } from 'luxon';
 import { ServiceTransactionProxy } from '@shared/service-proxies/service-transaction-proxies';
-import { TransactionRequestForMemberDetailDto } from '@shared/service-proxies/dto/mntMemberTransaction/TransactionRequestForMemberDetailDto';
+import { TransactionStatus } from '@shared/service-proxies/enum/MemberTransaction/TransactionStatus.enum';
 
 @Component({
   selector: 'history-send-receive',
@@ -23,9 +22,7 @@ export class HistorySendReceiveComponent extends AppComponentBase implements OnI
 
   filter: string = '';
   requestType = RequestType;
-  requestStatus = RequestStatus;
-
-  detailHistory: TransactionRequestForMemberDetailDto;
+  requestStatus = TransactionStatus;
 
   primengTableHelper = new PrimengTableHelper();
 
@@ -39,13 +36,13 @@ export class HistorySendReceiveComponent extends AppComponentBase implements OnI
   ngOnInit() {
   }
 
-  private getMemberDetailRequest(requestId){
+  private getMemberDetailRequest(data){
     this._serviceTransactionProxy
     .getMemberDetailRequest(
-      requestId
+      data.id
     )
     .subscribe(result => {
-        this.detailHistory = result.request;
+        this.getMemberDetailRequest(result);
     });
   }
 
@@ -74,9 +71,8 @@ export class HistorySendReceiveComponent extends AppComponentBase implements OnI
     return parsedDate.toFormat('dd/MM/yy');
   }
 
-  onRowSelect(event){
-    console.log(event);
-    this.getMemberDetailRequest(event.data.request.id);
+  selectRow(data){
+    this.getMemberDetailRequest(data);
   }
 
 }

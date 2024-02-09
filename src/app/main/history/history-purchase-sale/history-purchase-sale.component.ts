@@ -10,6 +10,8 @@ import { finalize } from 'rxjs';
 import { RequestStatus } from '@shared/service-proxies/enum/Trading/RequestStatus.enum';
 import { DateTime } from 'luxon';
 import { TradingRequestMemberDto } from '@shared/service-proxies/dto/mntMemberTrading/TradingRequestMemberDto';
+import { DialogDetailPurchaseSaleComponent } from '@app/shared/components/dialog/dialog-detail-purchase-sale/dialog-detail-purchase-sale.component';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'history-purchase-sale',
@@ -25,27 +27,38 @@ export class HistoryPurchaseSaleComponent extends AppComponentBase implements On
   requestType = RequestType;
   requestStatus = RequestStatus;
 
-  detailHistory: TradingRequestMemberDto;
-
   primengTableHelper = new PrimengTableHelper();
 
   constructor(
     injector: Injector,
-    private _serviceTradingProxy: ServiceTradingProxy
+    private _serviceTradingProxy: ServiceTradingProxy,
+    public _dialogService: DialogService,
   ) {
     super(injector);
   }
 
   ngOnInit() {
+
   }
 
-  private getMemberDetailRequest(requestId){
+  private getMemberDetailRequest(data){
     this._serviceTradingProxy
     .getMemberDetailRequest(
-      requestId
+      data.id
     )
     .subscribe(result => {
-        this.detailHistory = result.tradingRequestMemberDto;
+        this.openDialogDetailPurchaseSale(result.tradingRequestMemberDto, data.type);
+    });
+  }
+
+  private openDialogDetailPurchaseSale(dataDetail, type): void {
+    const ref = this._dialogService.open(DialogDetailPurchaseSaleComponent, {
+      showHeader: false,
+      styleClass: 'ae-dialog ae-dialog--sm',
+      data: {
+        detail: dataDetail,
+        type: type
+      }
     });
   }
 
@@ -79,9 +92,8 @@ export class HistoryPurchaseSaleComponent extends AppComponentBase implements On
     return parsedDate.toFormat('dd/MM/yy');
   }
 
-  onRowSelect(event){
-    console.log(event);
-    this.getMemberDetailRequest(event.data.request.id);
+  selectRow(data){
+    this.getMemberDetailRequest(data);
   }
 
 }

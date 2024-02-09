@@ -1,0 +1,73 @@
+<div class="ae-dialog__header flex align-items-center justify-content-center">
+  <i class="pi pi-arrow-left ae-text-dark mr-3" (click)="onCancel()"></i>
+  <h2 class="ae-text-dark fw-bold">Detalle de transacción</h2>
+</div>
+<div class="ae-dialog__content">
+  <div class="ae-table__resumen mb-8">
+      <div class="ae-resumen__item flex align-items-center justify-content-between">
+          <div class="ae-description">
+              <p class="ae-text-dark ae-text-default w-full">Folio</p>
+          </div>
+          <div class="ae-content">
+              <span class="ae-text-gris-dark ae-text-default w-full">{{ detailHistory.folio }}</span>
+          </div>
+      </div>
+      <div class="ae-resumen__item flex align-items-center justify-content-between">
+          <div class="ae-description">
+              <p class="ae-text-dark ae-text-default w-full">Precio por moneda</p>
+          </div>
+          <div class="ae-content">
+              <span class="ae-text-gris-network ae-text-default w-full">{{ detailHistory.price | currency : 'USD' : 'symbol-narrow' : '1.2' : 'en' }}</span>
+          </div>
+      </div>
+      <div class="ae-resumen__item flex align-items-center justify-content-between">
+          <div class="ae-description">
+              <p class="ae-text-dark ae-text-default w-full">{{ l(requestType[type]) }}</p>
+          </div>
+          <div class="ae-content">
+              <span class="ae-text-gris-dark ae-text-default w-full">{{ detailHistory.amount | number : '1.0-6' : 'en' }} {{ detailHistory.key }}</span>
+          </div>
+      </div>
+      <div class="ae-resumen__item flex align-items-center justify-content-between">
+          <div class="ae-description">
+              <p class="ae-text-dark ae-text-default w-full">Subtotal</p>
+          </div>
+          <div class="ae-content">
+              <span class="ae-text-gris-dark ae-text-default w-full">{{ detailHistory.cost | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }}</span>
+          </div>
+      </div>
+      <div class="ae-resumen__item flex align-items-center justify-content-between">
+          <div class="ae-description">
+              <p class="ae-text-dark ae-text-default w-full">Comisión</p>
+          </div>
+          <div class="ae-content">
+              <span class="ae-text-gris-dark ae-text-default w-full">{{ detailHistory.feeAmount | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }}</span>
+          </div>            
+      </div>
+      <div class="ae-resumen__item flex align-items-center justify-content-between">
+          <div class="ae-description">
+              <p class="ae-text-dark ae-text-default w-full">Total</p>
+          </div>
+          <div class="ae-content">
+              <span class="ae-text-gris-dark ae-text-default fw-bold w-full">{{ (detailHistory.cost + detailHistory.feeAmount) | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }}</span>
+          </div>
+      </div>
+      <div class="ae-resumen__item flex align-items-center justify-content-between">
+        <div class="ae-description">
+          <p class="ae-text-gris-dark ae-text-default fw-semibold w-full">{{  getDateTimeFormat(detailHistory.creationTime) }}</p>
+      </div>
+      <div class="ae-content">
+          <span 
+            class="ae-text-default ae-text-primary fw-semibold w-full" 
+            [class.ae-text-success]="detailHistory.status === 3"
+            [class.ae-text-danger]="detailHistory.status === 4"
+          >
+            {{ l(requestStatus[detailHistory.status]) }}
+          </span>
+      </div>  
+    </div>
+  </div>
+</div>
+<div class="ae-dialog__actions">
+  <p-button class="ae-button ae-button--primary w-full" label="Aceptar" (click)="onContinue()"></p-button>
+</div>
