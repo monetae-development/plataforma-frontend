@@ -13,6 +13,8 @@ export class FooterComponent extends AppComponentBase implements OnInit {
     releaseDate: string;
     webAppGuiVersion: string;
     footerStyle = 'footer py-4 d-flex flex-lg-column';
+    date: Date = new Date();
+    year: number = null;
 
     constructor(injector: Injector) {
         super(injector);
@@ -26,5 +28,6 @@ export class FooterComponent extends AppComponentBase implements OnInit {
         if (themeAssetContributor) {
             this.footerStyle = themeAssetContributor.getFooterStyle();
         }
+        this.year = this.date.getFullYear();
     }
 }
