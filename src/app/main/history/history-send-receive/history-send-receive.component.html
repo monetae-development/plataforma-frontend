@@ -73,7 +73,7 @@
             {{ l(requestStatus[record.request.requestStatus]) }}
           </td>
           <td class="text-center">
-            <i class="pi pi-search ae-cursor-pointer" (click)="selectRow(record.request)"></i>
+            <i class="pi pi-search ae-cursor-pointer" tooltip="{{ 'View' | localize }}" (click)="selectRow(record.request)"></i>
           </td>
         </tr>
       </ng-template>

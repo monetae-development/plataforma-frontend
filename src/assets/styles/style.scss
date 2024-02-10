@@ -1271,6 +1271,21 @@
             }
         }
     }
+    .ae-tabs{
+        .p-tabmenu-nav {
+            .p-tabmenuitem{
+                width: 100%;
+                .p-menuitem-link{
+                    padding: 13px 20px !important;
+                    font-size: 14px;
+                    display: flex;
+                    display: -webkit-flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+        }
+    }
     .ae-tabs__container{
         &--title{
             &.flex-column-mobile{
