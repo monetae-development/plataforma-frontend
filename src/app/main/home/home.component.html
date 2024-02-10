@@ -21,12 +21,12 @@
             <div class="ae-balance__primary">
                 <div class="ae-balance__item flex align-items center justify-content-between">
                     <div class="ae-item__title">
-                        <h2 class="fw-bold">Balance</h2>
-                        <p class="fw-semibold ae-text-gris">{{ currency }}</p>
+                        <h2 class="font-bold">Balance</h2>
+                        <p class="font-medium ae-text-default ae-text-gris">{{ currency }}</p>
                     </div>
                     <div class="ae-item__content">
-                        <h2 class="fw-bold">{{ amount | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}</h2>
-                        <p class="fw-semibold ae-text-gris">0,581854 BTC</p>
+                        <h2 class="ae-text-dark fw-bold">{{ amount | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}</h2>
+                        <p class="font-medium ae-text-gris">0,581854 BTC</p>
                     </div>
                 </div>
             </div>
