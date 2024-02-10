@@ -66,6 +66,8 @@
                                 />
                                 <validation-messages [formCtrl]="emailAddressInput"></validation-messages>
                             </div>
+                            <span>{{ user.phoneCodeId }}</span>
+                            <span>{{ user.phoneNumber }}</span>
                             <div *ngIf="smsEnabled">
                                 <div class="mb-10">
                                     <div class="flex align-items-end">
@@ -73,10 +75,13 @@
                                             <label>{{ 'PhoneNumber' | localize }} *</label>
                                             <div class="flex align-items-start">
                                                 <p-dropdown
+                                                    #phoneCodeId="ngModel"
+                                                    id="phoneCodeId"
                                                     name="phoneCodeId"
                                                     [(ngModel)]="user.phoneCodeId"
                                                     [options]="personalDataPhones" 
                                                     optionLabel="label"
+                                                    dataKey="user.phoneCodeId"
                                                     placeholder="{{ 'Loading' | localize }}"
                                                     [filter]="true"
                                                     (onChange)="onChangePhoneNumber()"

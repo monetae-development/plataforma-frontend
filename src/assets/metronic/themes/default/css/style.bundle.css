@@ -41374,18 +41374,18 @@ p-calendar.ng-dirty.ng-invalid .p-calendar{
 
 .scrolltop {
   position: fixed;
-  display: none;
+  display: flex;
   cursor: pointer;
   z-index: 105;
   justify-content: center;
   align-items: center;
   width: 36px;
   height: 36px;
-  bottom: 43px;
-  right: 7px;
+  bottom: 25px;
+  right: 25px;
   background-color: var(--kt-primary);
   box-shadow: var(--kt-scrolltop-box-shadow);
-  opacity: 0;
+  opacity: 0.3;
   transition: color 0.2s ease;
   border-radius: 0.475rem;
 }
@@ -41402,6 +41402,7 @@ p-calendar.ng-dirty.ng-invalid .p-calendar{
 }
 .scrolltop:hover {
   background-color: var(--kt-primary);
+  opacity: 1;
 }
 .scrolltop:hover .svg-icon,
 .scrolltop:hover i {

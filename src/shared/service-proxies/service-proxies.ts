@@ -49684,6 +49684,7 @@ export interface ISendTwoFactorAuthCodeModel {
 }
 
 export class SendVerificationSmsInputDto implements ISendVerificationSmsInputDto {
+    phoneCodeId!: number | undefined;
     phoneNumber!: string | undefined;
 
     constructor(data?: ISendVerificationSmsInputDto) {
@@ -49697,6 +49698,7 @@ export class SendVerificationSmsInputDto implements ISendVerificationSmsInputDto
 
     init(_data?: any) {
         if (_data) {
+            this.phoneCodeId = _data["phoneCodeId"];
             this.phoneNumber = _data["phoneNumber"];
         }
     }
@@ -49710,12 +49712,14 @@ export class SendVerificationSmsInputDto implements ISendVerificationSmsInputDto
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["phoneCodeId"] = this.phoneCodeId;
         data["phoneNumber"] = this.phoneNumber;
         return data;
     }
 }
 
 export interface ISendVerificationSmsInputDto {
+    phoneCodeId: number | undefined;
     phoneNumber: string | undefined;
 }
 
