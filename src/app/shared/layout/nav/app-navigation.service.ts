@@ -33,6 +33,9 @@ export class AppNavigationService {
                 '',
                 [],
                 [
+                    new AppMenuItem('CatCompanySectors', 'Pages.Administration.Catalogs.CompanySectors', 'flaticon-more', '/app/main/catalogs/company-sectors'),
+                    new AppMenuItem('CatCompanyTypes', 'Pages.Administration.Catalogs.CompanyTypes', 'flaticon-more', '/app/main/catalogs/company-types'),
+                    new AppMenuItem('CatDocumentTypes', 'Pages.Administration.Catalogs.DocumentTypes', 'flaticon-more', '/app/main/catalogs/document-types'),
                     new AppMenuItem('CatCountries', 'Pages.CatCountries', 'flaticon-more', '/app/main/catalogs/catCountries'),
                     new AppMenuItem('CatCountryPhoneCodes', 'Pages.CatCountryPhoneCodes', 'flaticon-more', '/app/main/catalogs/catCountryPhoneCodes'),
                     new AppMenuItem('CatStates', 'Pages.CatStates', 'flaticon-more', '/app/main/catalogs/catStates'),
@@ -45,15 +48,10 @@ export class AppNavigationService {
                     new AppMenuItem('CatControlFiles', 'Pages.CatControlFiles', 'flaticon-more', '/app/main/catalogs/catControlFiles'),
                     new AppMenuItem('OTCCoins', 'Pages.OTCCoins', 'flaticon-more', '/app/main/otc/otcCoins'),
                     new AppMenuItem('CatBanks', 'Pages.CatBanks', 'flaticon-more', '/app/main/catalogs/catBanks'),
-
                     new AppMenuItem('CatCurrencies', 'Pages.CatCurrencies', 'flaticon-more', '/app/main/catalogs/catCurrencies'),
-
                     new AppMenuItem('CatAccountTypes', 'Pages.CatAccountTypes', 'flaticon-more', '/app/main/catalogs/catAccountTypes'),
-
                     new AppMenuItem('CatAccountStatuses', 'Pages.CatAccountStatuses', 'flaticon-more', '/app/main/catalogs/catAccountStatuses'),
-
                     new AppMenuItem('CatStatuses', 'Pages.CatStatuses', 'flaticon-more', '/app/main/catalogs/catStatuses'),
-
                     new AppMenuItem('CatTransactionTypes', 'Pages.CatTransactionTypes', 'flaticon-more', '/app/main/catalogs/catTransactionTypes'),
                 ]
             ),

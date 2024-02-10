@@ -68,7 +68,7 @@ export class MntMemberFiatComponent extends AppComponentBase implements OnInit {
     //this.getStatusMember();
   }
 
-  getAllOtcRequestsByMember(event?: LazyLoadEvent) {
+  getAllRequestsByMember(event?: LazyLoadEvent) {
     if (this.primengTableHelper.shouldResetPaging(event)) {
       this.paginator.changePage(0);
       if (this.primengTableHelper.records &&
@@ -76,9 +76,7 @@ export class MntMemberFiatComponent extends AppComponentBase implements OnInit {
         return;
       }
     }
-
     this.primengTableHelper.showLoadingIndicator();
-
     this._serviceMemberProxy.getAllFiatRequestsByMemmber(
       this.folioFilter,
       this.typeFilter,
@@ -87,6 +85,7 @@ export class MntMemberFiatComponent extends AppComponentBase implements OnInit {
       this.primengTableHelper.getMaxResultCount(this.paginator, event)
     ).subscribe(result => {
       this.primengTableHelper.totalRecordsCount = result.totalCount;
+      console.log(result);
       this.primengTableHelper.records = result.items;
       this.primengTableHelper.hideLoadingIndicator();
       this.started = true;
@@ -127,7 +126,7 @@ export class MntMemberFiatComponent extends AppComponentBase implements OnInit {
   cleanFilters() {
     this.folioFilter = '';
     this.typeFilter = -1;
-    this.getAllOtcRequestsByMember();
+    this.getAllRequestsByMember();
   }
 
   //TODO:Unificar en un helper

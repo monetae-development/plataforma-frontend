@@ -58,7 +58,7 @@
                                                     [(ngModel)]="typeFilter"
                                                     placeholder="{{ l('SelectAll') }}"
                                                     [showClear]="true"
-                                                    (onClear)="getAllOtcRequestsByMember()"
+                                                    (onClear)="getAllRequestsByMember()"
                                                 ></p-dropdown>
                                             </div>
 
@@ -69,7 +69,7 @@
                                                     <button
                                                         class="btn btn-primary"
                                                         type="button"
-                                                        (click)="getAllOtcRequestsByMember()"
+                                                        (click)="getAllRequestsByMember()"
                                                         pTooltip="{{ l('SearchByFilters') }}"
                                                         tooltipPosition="top"
                                                     >
@@ -118,7 +118,7 @@
                             <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
                                 <p-table
                                     #dataTable
-                                    (onLazyLoad)="getAllOtcRequestsByMember($event)"
+                                    (onLazyLoad)="getAllRequestsByMember($event)"
                                     [value]="primengTableHelper.records"
                                     rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
                                     [paginator]="false"
@@ -133,37 +133,29 @@
                                         <tr>
                                             <th style="width: 100px" pSortableColumn="creationTime">
                                                 {{ l('Date') }}
-                                                <p-sortIcon field="mntMemberFiatDto.creationTime"></p-sortIcon>
+                                                <p-sortIcon field="request.creationTime"></p-sortIcon>
                                             </th>
                                             <th style="width: 100px" pSortableColumn="folio">
                                                 {{ l('Folio') }}
-                                                <p-sortIcon field="mntMemberFiatDto.folio"></p-sortIcon>
+                                                <p-sortIcon field="request.folio"></p-sortIcon>
                                             </th>
                                             <th style="width: 100px" pSortableColumn="reference">
                                                 {{ l('Reference') }}
-                                                <p-sortIcon field="mntMemberFiatDto.refrence"></p-sortIcon>
+                                                <p-sortIcon field="request.refrence"></p-sortIcon>
                                             </th>
                                             <th style="width: 80px" pSortableColumn="type">
                                                 {{ l('Kind') }}
-                                                <p-sortIcon field="mntMemberFiatDto.type"></p-sortIcon>
+                                                <p-sortIcon field="request.type"></p-sortIcon>
                                             </th>
                                             <th style="width: 100px" pSortableColumn="amount">
                                                 {{ l('Amount') }}
-                                                <p-sortIcon field="mntMemberFiatDto.amount"></p-sortIcon>
+                                                <p-sortIcon field="request.amount"></p-sortIcon>
                                             </th>
                                             <th style="width: 130px" pSortableColumn="status">
                                                 {{ l('Status') }}
-                                                <p-sortIcon field="mntMemberFiatDto.status"></p-sortIcon>
+                                                <p-sortIcon field="request.status"></p-sortIcon>
                                             </th>
-                                            <th
-                                                style="width: 100px"
-                                                [hidden]="
-                                                    !isGrantedAny(
-                                                        'Pages.MntMemberFiat.Edit',
-                                                        'Pages.MntMemberFiat.Delete'
-                                                    )
-                                                "
-                                            >
+                                            <th style="width: 100px">
                                                 {{ l('Actions') }}
                                             </th>
                                         </tr>
@@ -174,7 +166,7 @@
                                                 <span class="fs-6">
                                                     {{
                                                         getDateTimeFormat(
-                                                            record.mntMemberFiatDto.creationTime
+                                                            record.request.creationTime
                                                                 | luxonFormat : 'dd/MM/yyyy HH:mm:ss',
                                                             0
                                                         )
@@ -184,7 +176,7 @@
                                                 <span class="fs-7">
                                                     {{
                                                         getDateTimeFormat(
-                                                            record.mntMemberFiatDto.creationTime
+                                                            record.request.creationTime
                                                                 | luxonFormat : 'dd/MM/yyyy HH:mm:ss',
                                                             1
                                                         )
@@ -192,50 +184,34 @@
                                                 </span>
                                             </td>
                                             <td style="width: 100px">
-                                                {{ record.mntMemberFiatDto.folio }}
+                                                {{ record.request.folio }}
                                             </td>
                                             <td style="width: 100px">
-                                                {{ record.mntMemberFiatDto.reference }}
-                                                <span *ngIf="!record.mntMemberFiatDto.reference">N/A</span>
+                                                {{ record.request.reference }}
+                                                <span *ngIf="!record.request.reference">N/A</span>
                                             </td>
                                             <td style="width: 80px">
                                                 <span class="badge text-bg-secondary">
-                                                    {{ l(typeS[record.mntMemberFiatDto.type]) }}
+                                                    {{ l(typeS[record.request.type]) }}
                                                 </span>
                                             </td>
                                             <td style="width: 100px">
                                                 {{
-                                                    record.mntMemberFiatDto.amount
-                                                        | currency : 'USD' : 'symbol' : '1.2-5' : 'en'
+                                                    record.request.amount | currency : 'USD' : 'symbol' : '1.2-5' : 'en'
                                                 }}
                                             </td>
                                             <td style="width: 80px">
                                                 <span class="badge text-bg-warning">
-                                                    {{ l(status[record.mntMemberFiatDto.status]) }}
+                                                    {{ l(status[record.request.status]) }}
                                                 </span>
                                             </td>
-                                            <td
-                                                style="width: 100px"
-                                                [hidden]="
-                                                    !isGrantedAny(
-                                                        'Pages.MntMemberFiat.Edit',
-                                                        'Pages.MntMemberFiat.Delete'
-                                                    )
-                                                "
-                                            >
+                                            <td style="width: 100px">
                                                 <button
                                                     class="btn btn-actions"
                                                     pTooltip="{{ l('View') }}"
                                                     tooltipPosition="top"
                                                 >
                                                     <i class="flaticon-search text-dark"></i>
-                                                </button>
-                                                <button
-                                                    class="btn btn-actions"
-                                                    pTooltip="{{ l('Delete') }}"
-                                                    tooltipPosition="top"
-                                                >
-                                                    <i class="flaticon-delete text-danger"></i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -248,7 +224,7 @@
                                     <p-paginator
                                         [rows]="primengTableHelper.defaultRecordsCountPerPage"
                                         #paginator
-                                        (onPageChange)="getAllOtcRequestsByMember($event)"
+                                        (onPageChange)="getAllRequestsByMember($event)"
                                         [totalRecords]="primengTableHelper.totalRecordsCount"
                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
                                         [showCurrentPageReport]="true"
@@ -264,13 +240,10 @@
                 </div>
             </div>
         </div>
-        <member-fiat-deposit
-            #createMntMemberFiatDepositModal
-            (onSave)="getAllOtcRequestsByMember()"
-        ></member-fiat-deposit>
+        <member-fiat-deposit #createMntMemberFiatDepositModal (onSave)="getAllRequestsByMember()"></member-fiat-deposit>
         <member-fiat-withdrawal
             #createMntMemberFiatWithdrawalModal
-            (onSave)="getAllOtcRequestsByMember()"
+            (onSave)="getAllRequestsByMember()"
         ></member-fiat-withdrawal>
     </div>
 </div>

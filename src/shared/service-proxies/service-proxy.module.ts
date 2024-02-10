@@ -31,6 +31,7 @@ import { ZeroTemplateHttpConfigurationService } from './zero-template-http-confi
         ApiServiceProxies.MntMemberPepsServiceProxy,
         ApiServiceProxies.CatCountryPhoneCodesServiceProxy,
         CommonServiceProxies.ServiceCommonProxy,
+        CatalogsServiceProxies.CatDefaultServiceProxy,
         CatalogsServiceProxies.CatNationalitiesServiceProxy,
         CatalogsServiceProxies.CatCountriesServiceProxy,
         CatalogsServiceProxies.CatStatesServiceProxy,
