@@ -899,6 +899,11 @@ body{
             }
         }
     }
+    &.modal-dialog{
+        .modal-content{
+            padding: 40px;
+        }
+    }
     &__content{
         .ae-dialog__description{
             background-color: #E6E6E6;

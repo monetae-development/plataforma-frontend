@@ -22,6 +22,13 @@ export class ChangePasswordModalComponent extends AppComponentBase {
     password: string;
     confirmPassword: string;
 
+    showPassword = false;
+    passwordFieldType: string = "password";
+    showNewPassword = false;
+    newPasswordFieldType: string = "password";
+    showRepeatPassword = false;
+    repeatPasswordFieldType: string = "password";
+
     saving = false;
     active = false;
 
@@ -67,5 +74,20 @@ export class ChangePasswordModalComponent extends AppComponentBase {
                 this.notify.info(this.l('YourPasswordHasChangedSuccessfully'));
                 this.close();
             });
+    }
+
+    togglePasswordVisibility(): void{
+        this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+        this.showPassword = !this.showPassword;
+    }
+
+    toggleNewPasswordVisibility(): void{
+        this.newPasswordFieldType = this.newPasswordFieldType === 'password' ? 'text' : 'password';
+        this.showNewPassword = !this.showNewPassword;
+    }
+
+    toggleRepeatPasswordVisibility(): void{
+        this.repeatPasswordFieldType = this.repeatPasswordFieldType === 'password' ? 'text' : 'password';
+        this.showRepeatPassword = !this.showRepeatPassword;
     }
 }

@@ -71,7 +71,6 @@ export class MySettingsModalComponent extends AppComponentBase implements OnInit
     show(): void {
         this.active = true;
         this._profileService.getCurrentUserProfileForEdit().subscribe((result) => {
-            console.log(result);
             this.smsEnabled = this.setting.getBoolean('App.UserManagement.SmsVerificationEnabled');
             this.user = result;
             this._initialTimezone = result.timezone;
@@ -119,7 +118,8 @@ export class MySettingsModalComponent extends AppComponentBase implements OnInit
             this.activeMessagePhone = true;
         } else {
             let input = new SendVerificationSmsInputDto();
-            input.phoneNumber = this.user.phoneCodeId['label'] + this.user.phoneNumber;
+            input.phoneCodeId = this.user.phoneCodeId;
+            input.phoneNumber = this.user.phoneNumber;
             this._profileService.sendVerificationSms(input).subscribe(() => {
                 this.smsVerificationModal.show();
             });
