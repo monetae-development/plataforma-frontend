@@ -50,6 +50,7 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   amount: number = 0;
   currency: string = '';
   statusMember: number;
+  showFadeDialogOperations: Boolean = false;
 
   constructor(
     injector: Injector,
@@ -318,6 +319,7 @@ export class HomeComponent extends AppComponentBase implements OnInit {
     const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
     instance?.outAccept.subscribe(() => {
         ref.close();
+        this.showFadeDialogOperations = false;
     });
   }
 
@@ -338,6 +340,7 @@ export class HomeComponent extends AppComponentBase implements OnInit {
     instance?.outAccept.subscribe(() => {
         this._router.navigate(['app/main/dashboard']);
         ref.close();
+        this.showFadeDialogOperations = false;
     });
 }
 
@@ -356,7 +359,13 @@ export class HomeComponent extends AppComponentBase implements OnInit {
     const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
     instance?.outAccept.subscribe(() => {
         ref.close();
+        this.showFadeDialogOperations = false;
     });
+  }
+
+  showDialogOperations(){
+    console.log("entra");
+    this.showFadeDialogOperations = !this.showFadeDialogOperations;
   }
 
 }

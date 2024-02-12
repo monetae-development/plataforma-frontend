@@ -39,7 +39,7 @@
                         <p class="fw-semibold">{{ 'PurchaseContinue' | localize }}</p>
                     </div>
                 </div>
-                <div class="ae-balance__item flex align-items-center" (click)="showDialogSendReceive(0)">
+                <div class="ae-balance__item flex align-items-center ae-item__desktop" (click)="showDialogSendReceive(0)">
                     <div class="ae-item__icon ae-bg-primary flex align-items-center justify-content-center">
                         <i class="pi pi-arrow-right"></i>
                     </div>
@@ -47,7 +47,7 @@
                         <p class="fw-semibold">{{ 'Send' | localize }}</p>
                     </div>
                 </div>
-                <div class="ae-balance__item flex align-items-center" (click)="showDialogDepositWithdraw(0)">
+                <div class="ae-balance__item flex align-items-center ae-item__desktop" (click)="showDialogDepositWithdraw(0)">
                     <div class="ae-item__icon ae-bg-secondary flex align-items-center justify-content-center">
                         <i class="pi pi-download ae-text-primary"></i>
                     </div>
@@ -63,7 +63,7 @@
                         <p class="fw-semibold">{{ 'SaleContinue' | localize }}</p>
                     </div>
                 </div>
-                <div class="ae-balance__item flex align-items-center" (click)="showDialogSendReceive(1)">
+                <div class="ae-balance__item flex align-items-center ae-item__desktop" (click)="showDialogSendReceive(1)">
                     <div class="ae-item__icon ae-bg-primary flex align-items-center justify-content-center">
                         <i class="pi pi-arrow-left"></i>
                     </div>
@@ -71,12 +71,20 @@
                         <p class="fw-semibold">{{ 'Receive' | localize }}</p>
                     </div>
                 </div>
-                <div class="ae-balance__item flex align-items-center" (click)="showDialogDepositWithdraw(1)">
+                <div class="ae-balance__item flex align-items-center ae-item__desktop" (click)="showDialogDepositWithdraw(1)">
                     <div class="ae-item__icon ae-bg-secondary flex align-items-center justify-content-center">
                         <i class="pi pi-upload ae-text-primary"></i>
                     </div>
                     <div class="ae-item__text">
                         <p class="fw-semibold">{{ 'MakeWithdrawal' | localize }}</p>
+                    </div>
+                </div>
+                <div class="ae-balance__item flex align-items-center ae-item__mobile" (click)="showDialogOperations()">
+                    <div class="ae-item__icon ae-bg-secondary flex align-items-center justify-content-center">
+                        <i class="pi pi-ellipsis-v ae-text-primary"></i>
+                    </div>
+                    <div class="ae-item__text">
+                        <p class="fw-semibold">{{ 'Más' | localize }}</p>
                     </div>
                 </div>
             </div>
@@ -289,6 +297,60 @@
                         </div>
                     </ng-template>
                 </p-carousel>
+            </div>
+        </div>
+    </div>
+    <div class="ae-container__operations"[ngClass]="{'ae-active' : showFadeDialogOperations}">
+        <div class="ae-operations__bg" (click)="showDialogOperations()"></div>
+        <div class="ae-operations__mobile">
+            <span class="ae-operation__line" (click)="showDialogOperations()"></span>
+            <div class="ae-balance__item" (click)="showDialogBuySell(0)">
+                <div class="ae-item__icon ae-bg-primary flex align-items-center justify-content-center">
+                    <i class="pi pi-plus"></i>
+                </div>
+                <div class="ae-item__text">
+                    <p class="fw-semibold">{{ 'PurchaseContinue' | localize }}</p>
+                </div>
+            </div>
+            <div class="ae-balance__item" (click)="showDialogBuySell(1)">
+                <div class="ae-item__icon ae-bg-primary flex align-items-center justify-content-center">
+                    <i class="pi pi-minus"></i>
+                </div>
+                <div class="ae-item__text">
+                    <p class="fw-semibold">{{ 'SaleContinue' | localize }}</p>
+                </div>
+            </div>
+            <div class="ae-balance__item" (click)="showDialogSendReceive(0)">
+                <div class="ae-item__icon ae-bg-primary flex align-items-center justify-content-center">
+                    <i class="pi pi-arrow-right"></i>
+                </div>
+                <div class="ae-item__text">
+                    <p class="fw-semibold">{{ 'Send' | localize }}</p>
+                </div>
+            </div>
+            <div class="ae-balance__item" (click)="showDialogSendReceive(1)">
+                <div class="ae-item__icon ae-bg-primary flex align-items-center justify-content-center">
+                    <i class="pi pi-arrow-left"></i>
+                </div>
+                <div class="ae-item__text">
+                    <p class="fw-semibold">{{ 'Receive' | localize }}</p>
+                </div>
+            </div>
+            <div class="ae-balance__item" (click)="showDialogDepositWithdraw(0)">
+                <div class="ae-item__icon ae-bg-secondary flex align-items-center justify-content-center">
+                    <i class="pi pi-download ae-text-primary"></i>
+                </div>
+                <div class="ae-item__text">
+                    <p class="fw-semibold">{{ 'MakeDeposit' | localize }}</p>
+                </div>
+            </div>
+            <div class="ae-balance__item" (click)="showDialogDepositWithdraw(1)">
+                <div class="ae-item__icon ae-bg-secondary flex align-items-center justify-content-center">
+                    <i class="pi pi-upload ae-text-primary"></i>
+                </div>
+                <div class="ae-item__text">
+                    <p class="fw-semibold">{{ 'MakeWithdrawal' | localize }}</p>
+                </div>
             </div>
         </div>
     </div>
