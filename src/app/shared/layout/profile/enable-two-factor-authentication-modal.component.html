@@ -8,15 +8,13 @@
     aria-hidden="true"
     [config]="{ backdrop: 'static' }"
 >
-    <div class="modal-dialog modal-lg">
+    <div class="ae-dialog ae-dialog--md modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">
-                    <span>{{ 'TwoFactorAuthentication' | localize }}</span>
-                </h5>
-                <button type="button" class="btn-close" [attr.aria-label]="l('Close')" (click)="close()"></button>
+            <div class="ae-dialog__header flex align-items-center justify-content-center">
+                <i class="pi pi-arrow-left ae-text-dark mr-3" (click)="close()"></i>
+                <h2 class="ae-text-dark fw-bold">{{ 'TwoFactorAuthentication' | localize }}</h2>
             </div>
-            <div class="modal-body">
+            <div class="ae-dialog__content pt-8">
                 <div>
                     <!--begin::Stepper-->
                     <div
@@ -105,7 +103,7 @@
                             <!--begin::Form-->
                             <form class="form mx-auto" novalidate="novalidate" name="AuthenticationForm">
                                 <!--begin::Group-->
-                                <div class="mb-5">
+                                <div class="mb-10">
                                     <!--begin::Step 1-->
                                     <div class="flex-column current" data-kt-stepper-element="content">
                                         <div class="google-authenticator-enable">
@@ -198,7 +196,7 @@
                                             type="button"
                                             id="btnContinue"
                                             disabled
-                                            class="btn btn-primary btn-sm"
+                                            class="ae-btn ae-btn--primary btn-sm"
                                             data-kt-stepper-action="next"
                                         >
                                             <span class="indicator-label">{{ 'Continue' | localize }}</span>

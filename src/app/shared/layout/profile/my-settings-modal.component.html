@@ -14,7 +14,7 @@
             <form *ngIf="active" #mySettingsModalForm="ngForm" (ngSubmit)="save()">
                 <div class="ae-dialog__header flex align-items-center justify-content-center">
                     <i class="pi pi-arrow-left ae-text-dark mr-3" (click)="close()"></i>
-                    <h2 class="ae-text-dark fw-bold">{{ 'ChangePassword' | localize }}</h2>
+                    <h2 class="ae-text-dark fw-bold">{{ 'MySettings' | localize }}</h2>
                 </div>
                 <div class="ae-dialog__content" *ngIf="user">
                     <div class="ae-form__grid">
@@ -99,11 +99,11 @@
                                         [disabled]="
                                             isPhoneNumberConfirmed && savedPhoneNumber == user.phoneNumber
                                         "
-                                        class="btn btn-primary"
+                                        class="ae-btn ae-btn--primary"
                                         type="button"
                                         tooltip="{{ 'YourPhoneNumberIsNotVerified' | localize }}"
                                     >
-                                        <i class="fa fa-exclamation-triangle"></i>
+                                        <!-- <i class="fa fa-exclamation-triangle"></i> -->
                                         {{ 'Verify' | localize }}
                                     </button>
                                 </span>
@@ -229,7 +229,7 @@
                                         <button
                                             type="button"
                                             (click)="enableTwoFactorAuthentication()"
-                                            class="btn btn-primary px-6 align-self-center text-nowrap"
+                                            class="ae-btn ae-btn--primary"
                                             id="enableTwoFactorAuthenticationButton"
                                         >
                                             {{ 'Enable' | localize }}

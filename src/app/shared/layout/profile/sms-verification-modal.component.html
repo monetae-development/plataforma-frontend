@@ -8,18 +8,15 @@
     aria-hidden="true"
     [config]="{ backdrop: 'static' }"
 >
-    <div class="modal-dialog modal-lg">
+    <div class="ae-dialog ae-dialog--sm modal-dialog">
         <div class="modal-content">
             <form *ngIf="active" #smsVerificationModalForm="ngForm" (ngSubmit)="save()">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <span>{{ 'VerifyYourCode' | localize }}</span>
-                    </h5>
-                    <button type="button" class="btn-close" [attr.aria-label]="l('Close')" (click)="close()">
-                    </button>
+                <div class="ae-dialog__header flex align-items-center justify-content-center">
+                    <i class="pi pi-arrow-left ae-text-dark mr-3" (click)="close()"></i>
+                    <h2 class="ae-text-dark fw-bold">{{ 'VerifyYourCode' | localize }}</h2>
                 </div>
-                <div class="modal-body">
-                    <div id="inputDiv" class="mb-5">
+                <div class="ae-dialog__content">
+                    <div id="inputDiv" class="ae-input">
                         <label for="YourCode">{{ 'YourCode' | localize }} *</label>
                         <input
                             id="YourCode"
@@ -36,14 +33,12 @@
                         <validation-messages [formCtrl]="codeInput"></validation-messages>
                     </div>
                 </div>
-
-                <div class="modal-footer">
+                <div class="ae-dialog__actions text-right mt-10">
                     <button
                         type="submit"
-                        class="btn btn-primary"
+                        class="ae-btn ae-btn--primary"
                         [disabled]="!smsVerificationModalForm.form.valid || saving"
                     >
-                        <i class="fa fa-save"></i>
                         <span>{{ 'Verify' | localize }}</span>
                     </button>
                 </div>
