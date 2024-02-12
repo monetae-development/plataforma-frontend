@@ -71,6 +71,7 @@ export class MySettingsModalComponent extends AppComponentBase implements OnInit
     show(): void {
         this.active = true;
         this._profileService.getCurrentUserProfileForEdit().subscribe((result) => {
+            console.log(result);
             this.smsEnabled = this.setting.getBoolean('App.UserManagement.SmsVerificationEnabled');
             this.user = result;
             this._initialTimezone = result.timezone;
