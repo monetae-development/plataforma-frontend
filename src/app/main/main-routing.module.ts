@@ -6,6 +6,9 @@ import { MntMemberFiatComponent } from './members/mntMemberFiat/mntMemberFiat.co
 import { MntMemberFiatRequestsComponent } from './members/mntMemberFiatRequests/mntMemberFiatRequests.component';
 import { MntMemberBankAccountsComponent } from './members/mntMemberBankAccounts/mntMemberBankAccounts.component';
 import { CatTransactionTypesComponent } from './catalogs/catTransactionTypes/catTransactionTypes.component';
+import { CatCompanySectorsComponent } from './catalogs/catCompanySectors/catCompanySectors.component';
+import { CatCompanyTypesComponent } from './catalogs/catCompanyTypes/catCompanyTypes.component';
+import { CatDocumentTypesComponent } from './catalogs/catDocumentTypes/catDocumentTypes.component';
 import { CatStatusesComponent } from './catalogs/catStatuses/catStatuses.component';
 import { CatAccountStatusesComponent } from './catalogs/catAccountStatuses/catAccountStatuses.component';
 import { CatAccountTypesComponent } from './catalogs/catAccountTypes/catAccountTypes.component';
@@ -44,6 +47,9 @@ import { LogoutComponent } from './components/logout/logout.component';
                     { path: 'members/mntMemberFiat', component: MntMemberFiatComponent, data: { permission: 'Pages.MntMemberFiat' } },
                     { path: 'members/mntMemberFiatRequests', component: MntMemberFiatRequestsComponent, data: { permission: 'Pages.Administration.MntMemberFiatRequests' } },
                     { path: 'members/mntMemberBankAccounts', component: MntMemberBankAccountsComponent, data: { permission: 'Pages.MntMemberBankAccounts' } },
+                    { path: 'catalogs/company-sectors', component: CatCompanySectorsComponent, data: { permission: 'Pages.Administration.Catalogs.CompanySectors' } },
+                    { path: 'catalogs/company-types', component: CatCompanyTypesComponent, data: { permission: 'Pages.Administration.Catalogs.CompanyTypes' } },
+                    { path: 'catalogs/document-types', component: CatDocumentTypesComponent, data: { permission: 'Pages.Administration.Catalogs.DocumentTypes' } },
                     { path: 'catalogs/catTransactionTypes', component: CatTransactionTypesComponent, data: { permission: 'Pages.CatTransactionTypes' } },
                     { path: 'catalogs/catStatuses', component: CatStatusesComponent, data: { permission: 'Pages.CatStatuses' } },
                     { path: 'catalogs/catAccountStatuses', component: CatAccountStatusesComponent, data: { permission: 'Pages.CatAccountStatuses' } },

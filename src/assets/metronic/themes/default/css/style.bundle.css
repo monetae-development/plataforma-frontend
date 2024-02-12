@@ -7051,8 +7051,8 @@ ul.form-text.text-danger {
 }
 
 .text-bg-primary {
-  color: #000000 !important;
-  background-color: RGBA(0, 158, 247, var(--bs-bg-opacity, 1)) !important;
+  color: #FFFFFF !important;
+  background-color: RGBA(0, 206, 209, var(--bs-bg-opacity, 1)) !important;
 }
 
 .text-bg-secondary {

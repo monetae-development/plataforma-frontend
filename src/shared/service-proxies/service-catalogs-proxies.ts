@@ -6,6 +6,10 @@ import { Observable, throwError as _observableThrow, of as _observableOf } from 
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
 import { Helpers } from './service-helpers';
+import { PRDtoGetCatDefaultForViewDto } from './dto/Catalogs/CatDefault/PRDtoGetCatDefaultForViewDto';
+import { GetCatDefaultForViewDto } from './dto/Catalogs/CatDefault/GetCatDefaultForViewDto';
+import { CreateOrEditCatDefaultDto } from './dto/Catalogs/CatDefault/CreateOrEditCatDefaultDto';
+import { GetCatDefaultForEditOutput } from './dto/Catalogs/CatDefault/GetCatDefaultForEditOutput';
 import { CreateOrEditCatNationalityDto } from './dto/Catalogs/CatNationalities/CreateOrEditCatNationalityDto';
 import { PagedResultDtoOfGetCatNationalityForViewDto } from './dto/Catalogs/CatNationalities/PagedResultDtoOfGetCatNationalityForViewDto';
 import { GetCatNationalityForViewDto } from './dto/Catalogs/CatNationalities/GetCatNationalityForViewDto';
@@ -46,6 +50,328 @@ import { DateTime, Duration } from 'luxon';
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 @Injectable()
+export class CatDefaultServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : '';
+    }
+
+    /**
+     * @param filter (optional)
+     * @param titleFilter (optional)
+     * @param publishFilter (optional)
+     * @param sorting (optional)
+     * @param skipCount (optional)
+     * @param maxResultCount (optional)
+     * @return Success
+     */
+    getAll(catalog: string | undefined, filter: string | undefined, titleFilter: string | undefined, publishFilter: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PRDtoGetCatDefaultForViewDto> {
+        let url_ = this.baseUrl + '/api/services/app/' + catalog + '/GetAll?';
+        url_ += 'Filter=' + encodeURIComponent('' + ((filter === null || filter === undefined) ? '' : filter)) + '&';
+        url_ += 'TitleFilter=' + encodeURIComponent('' + ((titleFilter === null || titleFilter === undefined) ? '' : titleFilter)) + '&';
+        url_ += 'PublishFilter=' + encodeURIComponent('' + ((publishFilter === null || publishFilter === undefined) ? '' : publishFilter)) + '&';
+        url_ += 'Sorting=' + encodeURIComponent('' + ((sorting === null || sorting === undefined) ? '' : sorting)) + '&';
+        url_ += 'SkipCount=' + encodeURIComponent('' + ((skipCount === null || skipCount === undefined) ? '' : skipCount)) + '&';
+        url_ += 'MaxResultCount=' + encodeURIComponent('' + ((maxResultCount === null || maxResultCount === undefined) ? '' : maxResultCount)) + '&';
+        url_ = url_.replace(/[?&]$/, '');
+
+        let options_: any = {
+            observe: 'response',
+            responseType: 'blob',
+            headers: new HttpHeaders({
+                'Accept': 'text/plain'
+            })
+        };
+
+        return this.http.request('get', url_, options_).pipe(_observableMergeMap((response_: any) => this.processGetAll(response_))).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PRDtoGetCatDefaultForViewDto>;
+                }
+            } else {
+                return _observableThrow(response_) as any as Observable<PRDtoGetCatDefaultForViewDto>;
+            }
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PRDtoGetCatDefaultForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {};
+        if (response.headers) {
+            for (let key of response.headers.keys()) {
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        if (status === 200) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = PRDtoGetCatDefaultForViewDto.fromJS(resultData200);
+                return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional)
+     * @return Success
+     */
+    getForView(catalog: string | undefined, id: number | undefined): Observable<GetCatDefaultForViewDto> {
+        let url_ = this.baseUrl + '/api/services/app/' + catalog + '/GetForView?';
+        if (id === null) {
+            throw new Error('The parameter \'id\' cannot be null.');
+        } else if (id !== undefined) {
+            url_ += 'id=' + encodeURIComponent('' + id) + '&';
+        }
+        url_ = url_.replace(/[?&]$/, '');
+
+        let options_: any = {
+            observe: 'response',
+            responseType: 'blob',
+            headers: new HttpHeaders({
+                'Accept': 'text/plain'
+            })
+        };
+
+        return this.http.request('get', url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processGetForView(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetForView(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetCatDefaultForViewDto>;
+                }
+            } else {
+                return _observableThrow(response_) as any as Observable<GetCatDefaultForViewDto>;
+            }
+        }));
+    }
+
+    protected processGetForView(response: HttpResponseBase): Observable<GetCatDefaultForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {};
+        if (response.headers) {
+            for (let key of response.headers.keys()) {
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        if (status === 200) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = GetCatDefaultForViewDto.fromJS(resultData200);
+                return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional)
+     * @return Success
+     */
+    getForEdit(catalog: string | undefined, id: number | undefined): Observable<GetCatDefaultForEditOutput> {
+        let url_ = this.baseUrl + '/api/services/app/' + catalog + '/GetForEdit?';
+        if (id === null) {
+            throw new Error('The parameter \'id\' cannot be null.');
+        } else if (id !== undefined) {
+            url_ += 'Id=' + encodeURIComponent('' + id) + '&';
+        }
+        url_ = url_.replace(/[?&]$/, '');
+
+        let options_: any = {
+            observe: 'response',
+            responseType: 'blob',
+            headers: new HttpHeaders({
+                'Accept': 'text/plain'
+            })
+        };
+
+        return this.http.request('get', url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processGetForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetCatDefaultForEditOutput>;
+                }
+            } else {
+                return _observableThrow(response_) as any as Observable<GetCatDefaultForEditOutput>;
+            }
+        }));
+    }
+
+    protected processGetForEdit(response: HttpResponseBase): Observable<GetCatDefaultForEditOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {};
+        if (response.headers) {
+            for (let key of response.headers.keys()) {
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        if (status === 200) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = GetCatDefaultForEditOutput.fromJS(resultData200);
+                return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional)
+     * @return Success
+     */
+    createOrEdit(catalog: string | undefined, body: CreateOrEditCatDefaultDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + '/api/services/app/' + catalog + '/CreateOrEdit';
+        url_ = url_.replace(/[?&]$/, '');
+
+        const content_ = JSON.stringify(body);
+
+        let options_: any = {
+            body: content_,
+            observe: 'response',
+            responseType: 'blob',
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json-patch+json',
+            })
+        };
+
+        return this.http.request('post', url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else {
+                return _observableThrow(response_) as any as Observable<void>;
+            }
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {};
+        if (response.headers) {
+            for (let key of response.headers.keys()) {
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        if (status === 200) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional)
+     * @return Success
+     */
+    delete(catalog: string | undefined, id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + '/api/services/app/' + catalog + '/Delete?';
+        if (id === null) {
+            throw new Error('The parameter \'id\' cannot be null.');
+        } else if (id !== undefined) {
+            url_ += 'Id=' + encodeURIComponent('' + id) + '&';
+        }
+        url_ = url_.replace(/[?&]$/, '');
+
+        let options_: any = {
+            observe: 'response',
+            responseType: 'blob',
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request('delete', url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else {
+                return _observableThrow(response_) as any as Observable<void>;
+            }
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) {
+            for (let key of response.headers.keys()) {
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        if (status === 200) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+
+@Injectable()
 export class CatNationalitiesServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -68,34 +394,34 @@ export class CatNationalitiesServiceProxy {
     getAll(filter: string | undefined, titleFilter: string | undefined, publishFilter: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetCatNationalityForViewDto> {
         let url_ = this.baseUrl + '/api/services/app/CatNationalities/GetAll?';
         if (filter === null) {
-        throw new Error('The parameter \'filter\' cannot be null.');
+            throw new Error('The parameter \'filter\' cannot be null.');
         } else if (filter !== undefined) {
-        url_ += 'Filter=' + encodeURIComponent('' + filter) + '&';
+            url_ += 'Filter=' + encodeURIComponent('' + filter) + '&';
         }
-                if (titleFilter === null) {
-        throw new Error('The parameter \'titleFilter\' cannot be null.');
+        if (titleFilter === null) {
+            throw new Error('The parameter \'titleFilter\' cannot be null.');
         } else if (titleFilter !== undefined) {
-        url_ += 'TitleFilter=' + encodeURIComponent('' + titleFilter) + '&';
+            url_ += 'TitleFilter=' + encodeURIComponent('' + titleFilter) + '&';
         }
-                if (publishFilter === null) {
-        throw new Error('The parameter \'publishFilter\' cannot be null.');
+        if (publishFilter === null) {
+            throw new Error('The parameter \'publishFilter\' cannot be null.');
         } else if (publishFilter !== undefined) {
-        url_ += 'PublishFilter=' + encodeURIComponent('' + publishFilter) + '&';
+            url_ += 'PublishFilter=' + encodeURIComponent('' + publishFilter) + '&';
         }
-                if (sorting === null) {
-        throw new Error('The parameter \'sorting\' cannot be null.');
+        if (sorting === null) {
+            throw new Error('The parameter \'sorting\' cannot be null.');
         } else if (sorting !== undefined) {
-        url_ += 'Sorting=' + encodeURIComponent('' + sorting) + '&';
+            url_ += 'Sorting=' + encodeURIComponent('' + sorting) + '&';
         }
-                if (skipCount === null) {
-        throw new Error('The parameter \'skipCount\' cannot be null.');
+        if (skipCount === null) {
+            throw new Error('The parameter \'skipCount\' cannot be null.');
         } else if (skipCount !== undefined) {
-        url_ += 'SkipCount=' + encodeURIComponent('' + skipCount) + '&';
+            url_ += 'SkipCount=' + encodeURIComponent('' + skipCount) + '&';
         }
-                if (maxResultCount === null) {
-        throw new Error('The parameter \'maxResultCount\' cannot be null.');
+        if (maxResultCount === null) {
+            throw new Error('The parameter \'maxResultCount\' cannot be null.');
         } else if (maxResultCount !== undefined) {
-        url_ += 'MaxResultCount=' + encodeURIComponent('' + maxResultCount) + '&';
+            url_ += 'MaxResultCount=' + encodeURIComponent('' + maxResultCount) + '&';
         }
         url_ = url_.replace(/[?&]$/, '');
 
@@ -124,24 +450,24 @@ export class CatNationalitiesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
             for (let key of response.headers.keys()) {
-            _headers[key] = response.headers.get(key);
+                _headers[key] = response.headers.get(key);
             }
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfGetCatNationalityForViewDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = PagedResultDtoOfGetCatNationalityForViewDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -155,7 +481,7 @@ export class CatNationalitiesServiceProxy {
         let url_ = this.baseUrl + '/api/services/app/CatNationalities/GetCatNationalityForView?';
         if (id === null) {
             throw new Error('The parameter \'id\' cannot be null.');
-        }else if (id !== undefined) {
+        } else if (id !== undefined) {
             url_ += 'id=' + encodeURIComponent('' + id) + '&';
         }
         url_ = url_.replace(/[?&]$/, '');
@@ -187,24 +513,24 @@ export class CatNationalitiesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
             for (let key of response.headers.keys()) {
                 _headers[key] = response.headers.get(key);
-        }
+            }
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetCatNationalityForViewDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = GetCatNationalityForViewDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -250,24 +576,24 @@ export class CatNationalitiesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
             for (let key of response.headers.keys()) {
-            _headers[key] = response.headers.get(key);
+                _headers[key] = response.headers.get(key);
             }
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetCatNationalityForEditOutput.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = GetCatNationalityForEditOutput.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -311,21 +637,21 @@ export class CatNationalitiesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
             for (let key of response.headers.keys()) {
-            _headers[key] = response.headers.get(key);
+                _headers[key] = response.headers.get(key);
             }
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+                return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -370,20 +696,20 @@ export class CatNationalitiesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) {
             for (let key of response.headers.keys()) {
-            _headers[key] = response.headers.get(key);
+                _headers[key] = response.headers.get(key);
             }
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+                return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -441,7 +767,7 @@ export class CatNationalitiesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -451,14 +777,14 @@ export class CatNationalitiesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FileDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = FileDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -490,18 +816,18 @@ export class CatCountriesServiceProxy {
      */
     getAll(filter: string | undefined, titleFilter: string | undefined, maxOrderFilter: number | undefined, minOrderFilter: number | undefined, publishFilter: number | undefined, restrictedFilter: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetCatCountryForViewDto> {
         let url_ = this.baseUrl + '/api/services/app/CatCountries/GetAll?';
-        if (filter === null){
+        if (filter === null) {
             throw new Error('The parameter \'filter\' cannot be null.');
-        }else if (filter !== undefined){
+        } else if (filter !== undefined) {
             url_ += 'Filter=' + encodeURIComponent('' + filter) + '&';
         }
-        if (titleFilter === null){
+        if (titleFilter === null) {
             throw new Error('The parameter \'titleFilter\' cannot be null.');
-        }else if (titleFilter !== undefined){
+        } else if (titleFilter !== undefined) {
             url_ += 'TitleFilter=' + encodeURIComponent('' + titleFilter) + '&';
-        }if (maxOrderFilter === null){
+        } if (maxOrderFilter === null) {
             throw new Error('The parameter \'maxOrderFilter\' cannot be null.');
-        }else if (maxOrderFilter !== undefined){
+        } else if (maxOrderFilter !== undefined) {
             url_ += 'MaxOrderFilter=' + encodeURIComponent('' + maxOrderFilter) + '&';
         }
         if (minOrderFilter === null) {
@@ -563,7 +889,7 @@ export class CatCountriesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -573,14 +899,14 @@ export class CatCountriesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfGetCatCountryForViewDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = PagedResultDtoOfGetCatCountryForViewDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -626,7 +952,7 @@ export class CatCountriesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -636,14 +962,14 @@ export class CatCountriesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetCatCountryForViewDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = GetCatCountryForViewDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -689,7 +1015,7 @@ export class CatCountriesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -699,14 +1025,14 @@ export class CatCountriesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetCatCountryForEditOutput.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = GetCatCountryForEditOutput.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -750,7 +1076,7 @@ export class CatCountriesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -760,11 +1086,11 @@ export class CatCountriesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+                return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -809,7 +1135,7 @@ export class CatCountriesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -819,11 +1145,11 @@ export class CatCountriesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+                return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -899,7 +1225,7 @@ export class CatCountriesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -909,14 +1235,14 @@ export class CatCountriesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FileDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = FileDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -1022,24 +1348,24 @@ export class CatStatesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
             for (let key of response.headers.keys()) {
-            _headers[key] = response.headers.get(key);
+                _headers[key] = response.headers.get(key);
             }
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfGetCatStateForViewDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = PagedResultDtoOfGetCatStateForViewDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -1085,7 +1411,7 @@ export class CatStatesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -1095,14 +1421,14 @@ export class CatStatesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetCatStateForViewDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = GetCatStateForViewDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -1148,7 +1474,7 @@ export class CatStatesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -1158,14 +1484,14 @@ export class CatStatesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetCatStateForEditOutput.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = GetCatStateForEditOutput.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -1209,7 +1535,7 @@ export class CatStatesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -1219,11 +1545,11 @@ export class CatStatesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+                return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -1268,7 +1594,7 @@ export class CatStatesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -1278,11 +1604,11 @@ export class CatStatesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+                return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -1358,7 +1684,7 @@ export class CatStatesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -1368,14 +1694,14 @@ export class CatStatesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FileDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = FileDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -1415,7 +1741,7 @@ export class CatStatesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -1425,21 +1751,21 @@ export class CatStatesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200) {
-                    result200!.push(CatStateCatCountryLookupTableDto.fromJS(item));
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                if (Array.isArray(resultData200)) {
+                    result200 = [] as any;
+                    for (let item of resultData200) {
+                        result200!.push(CatStateCatCountryLookupTableDto.fromJS(item));
+                    }
+                } else {
+                    result200 = <any>null;
                 }
-            } else {
-                result200 = <any>null;
-            }
-            return _observableOf(result200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -1518,8 +1844,8 @@ export class CatIdentityTypesServiceProxy {
                     return _observableThrow(e) as any as Observable<PagedResultDtoOfGetCatIdentityTypeForViewDto>;
                 }
             } else {
-return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatIdentityTypeForViewDto>;
-}
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatIdentityTypeForViewDto>;
+            }
         }));
     }
 
@@ -1527,7 +1853,7 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatId
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -1537,14 +1863,14 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatId
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfGetCatIdentityTypeForViewDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = PagedResultDtoOfGetCatIdentityTypeForViewDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -1561,7 +1887,7 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatId
         } else if (id !== undefined) {
             url_ += 'id=' + encodeURIComponent('' + id) + '&';
         }
-                url_ = url_.replace(/[?&]$/, '');
+        url_ = url_.replace(/[?&]$/, '');
 
         let options_: any = {
             observe: 'response',
@@ -1590,7 +1916,7 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatId
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -1600,14 +1926,14 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatId
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetCatIdentityTypeForViewDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = GetCatIdentityTypeForViewDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -1653,7 +1979,7 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatId
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -1663,14 +1989,14 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatId
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetCatIdentityTypeForEditOutput.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = GetCatIdentityTypeForEditOutput.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -1714,7 +2040,7 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatId
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -1724,11 +2050,11 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatId
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+                return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -1773,7 +2099,7 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatId
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) {
             for (let key of response.headers.keys()) {
@@ -1782,11 +2108,11 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatId
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+                return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -1844,7 +2170,7 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatId
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) {
             for (let key of response.headers.keys()) {
@@ -1853,14 +2179,14 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatId
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FileDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = FileDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -1963,8 +2289,8 @@ export class CatProfessionsServiceProxy {
                     return _observableThrow(e) as any as Observable<PagedResultDtoOfGetCatProfessionForViewDto>;
                 }
             } else {
-return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatProfessionForViewDto>;
-}
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatProfessionForViewDto>;
+            }
         }));
     }
 
@@ -1972,7 +2298,7 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatPr
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -1982,14 +2308,14 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatPr
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfGetCatProfessionForViewDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = PagedResultDtoOfGetCatProfessionForViewDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -2035,7 +2361,7 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatPr
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -2045,14 +2371,14 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatPr
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetCatProfessionForViewDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = GetCatProfessionForViewDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -2098,7 +2424,7 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatPr
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -2108,14 +2434,14 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatPr
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetCatProfessionForEditOutput.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = GetCatProfessionForEditOutput.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -2159,7 +2485,7 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatPr
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -2169,11 +2495,11 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatPr
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+                return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -2209,8 +2535,8 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatPr
                     return _observableThrow(e) as any as Observable<void>;
                 }
             } else {
-            return _observableThrow(response_) as any as Observable<void>;
-        }
+                return _observableThrow(response_) as any as Observable<void>;
+            }
         }));
     }
 
@@ -2218,7 +2544,7 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatPr
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -2228,11 +2554,11 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatPr
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+                return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -2314,7 +2640,7 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatPr
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -2324,14 +2650,14 @@ return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetCatPr
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FileDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = FileDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -2419,7 +2745,7 @@ export class CatActivityEconomicCategoriesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -2429,14 +2755,14 @@ export class CatActivityEconomicCategoriesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfGetCatActivityEconomicCategoryForViewDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = PagedResultDtoOfGetCatActivityEconomicCategoryForViewDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -2482,7 +2808,7 @@ export class CatActivityEconomicCategoriesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -2492,14 +2818,14 @@ export class CatActivityEconomicCategoriesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetCatActivityEconomicCategoryForViewDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = GetCatActivityEconomicCategoryForViewDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -2545,7 +2871,7 @@ export class CatActivityEconomicCategoriesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -2555,14 +2881,14 @@ export class CatActivityEconomicCategoriesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetCatActivityEconomicCategoryForEditOutput.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = GetCatActivityEconomicCategoryForEditOutput.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -2606,7 +2932,7 @@ export class CatActivityEconomicCategoriesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) {
             for (let key of response.headers.keys()) {
@@ -2615,11 +2941,11 @@ export class CatActivityEconomicCategoriesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+                return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -2664,7 +2990,7 @@ export class CatActivityEconomicCategoriesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -2674,11 +3000,11 @@ export class CatActivityEconomicCategoriesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+                return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -2736,7 +3062,7 @@ export class CatActivityEconomicCategoriesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) {
             for (let key of response.headers.keys()) {
@@ -2745,14 +3071,14 @@ export class CatActivityEconomicCategoriesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FileDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = FileDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -2846,7 +3172,7 @@ export class CatActivityEconomicsServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -2856,14 +3182,14 @@ export class CatActivityEconomicsServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfGetCatActivityEconomicForViewDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = PagedResultDtoOfGetCatActivityEconomicForViewDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -2909,7 +3235,7 @@ export class CatActivityEconomicsServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -2919,14 +3245,14 @@ export class CatActivityEconomicsServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetCatActivityEconomicForViewDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = GetCatActivityEconomicForViewDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -2972,7 +3298,7 @@ export class CatActivityEconomicsServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -2982,14 +3308,14 @@ export class CatActivityEconomicsServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetCatActivityEconomicForEditOutput.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = GetCatActivityEconomicForEditOutput.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -3033,7 +3359,7 @@ export class CatActivityEconomicsServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -3043,11 +3369,11 @@ export class CatActivityEconomicsServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+                return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -3092,7 +3418,7 @@ export class CatActivityEconomicsServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -3102,11 +3428,11 @@ export class CatActivityEconomicsServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+                return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -3170,7 +3496,7 @@ export class CatActivityEconomicsServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -3180,14 +3506,14 @@ export class CatActivityEconomicsServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FileDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = FileDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -3251,7 +3577,7 @@ export class CatActivityEconomicsServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -3261,14 +3587,14 @@ export class CatActivityEconomicsServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfCatActivityEconomicCatActivityEconomicCategoryLookupTableDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = PagedResultDtoOfCatActivityEconomicCatActivityEconomicCategoryLookupTableDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -3356,7 +3682,7 @@ export class CatSourceFoundsesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -3366,14 +3692,14 @@ export class CatSourceFoundsesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfGetCatSourceFoundsForViewDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = PagedResultDtoOfGetCatSourceFoundsForViewDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -3419,7 +3745,7 @@ export class CatSourceFoundsesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -3429,14 +3755,14 @@ export class CatSourceFoundsesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetCatSourceFoundsForViewDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = GetCatSourceFoundsForViewDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -3482,7 +3808,7 @@ export class CatSourceFoundsesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -3492,14 +3818,14 @@ export class CatSourceFoundsesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetCatSourceFoundsForEditOutput.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = GetCatSourceFoundsForEditOutput.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -3543,7 +3869,7 @@ export class CatSourceFoundsesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -3553,11 +3879,11 @@ export class CatSourceFoundsesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+                return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -3602,7 +3928,7 @@ export class CatSourceFoundsesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -3612,11 +3938,11 @@ export class CatSourceFoundsesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+                return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);
@@ -3674,7 +4000,7 @@ export class CatSourceFoundsesServiceProxy {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {};
         if (response.headers) {
@@ -3684,14 +4010,14 @@ export class CatSourceFoundsesServiceProxy {
         }
         if (status === 200) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FileDto.fromJS(resultData200);
-            return _observableOf(result200);
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = FileDto.fromJS(resultData200);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
             }));
         }
         return _observableOf(null as any);

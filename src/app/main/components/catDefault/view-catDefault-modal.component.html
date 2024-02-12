@@ -1,0 +1,47 @@
+﻿<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content mb-5">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <h4 class="modal-title">
+                        <span>{{ l('Rercord') }}</span>
+                    </h4>
+                </div>
+                <button class="btn btn-secondary rounded-circle btn-sm close" (click)="close()">
+                    <i class="fa fa-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{ l('Title') }} :</h6>
+                        {{ item.record.title }}
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h6>{{ l('Publish') }} :</h6>
+                        <div *ngIf="item.record.publish" class="text-left">
+                            <span class="badge text-bg-primary">{{ l('Yes') }}</span>
+                        </div>
+                        <div *ngIf="!item.record.publish" class="text-left">
+                            <span class="badge text-bg-secondary">{{ l('No') }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">
+                    {{ l('Close') }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+<div
+    bsModal
+    #viewRequestModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="viewRequestModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    {{ l('Folio') }}:
+                    <span class="text-gray">{{ record.folio }}</span>
+                    / {{ l(typeRequest[record.type]) }}
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <h6>{{ l('Name') }} :</h6>
+                        {{ record.userFk.name }} {{ record.userFk.surname }}
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <h6>{{ l('Email') }} :</h6>
+                        {{ record.userFk.emailAddress }}
+                    </div>
+                </div>
+
+                <div class="row mb-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>{{ l('InfoRequestTitle') }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <h6>{{ l('Amount') }} :</h6>
+                                    {{ record.amount | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}
+                                </div>
+
+                                <div class="col-6 mb-3">
+                                    <h6>{{ l('Reference') }} :</h6>
+                                    {{ record.reference }}
+                                </div>
+
+                                <div class="col-6 mb-3">
+                                    <button
+                                        class="btn btn-sm btn-primary"
+                                        (click)="downloadFile(record.mntMemberFileFk.id)"
+                                    >
+                                        {{ l('DownloadDepositReceipt') }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary blue" (click)="close()">
+                    {{ l('Close') }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -23,6 +23,13 @@ import { ViewOTCRequestModalComponent } from './otc/otcRequests/view-otcRequest-
 import { MntMemberBankAccountsComponent } from './members/mntMemberBankAccounts/mntMemberBankAccounts.component';
 import { CreateOrEditMntMemberBankAccountModalComponent } from './members/mntMemberBankAccounts/create-or-edit-mntMemberBankAccount-modal.component';
 
+import { CatDefaultComponent } from './components/catDefault/catDefault.component';
+import { CreateOrEditCatDefaultModalComponent } from './components/catDefault/create-or-edit-catDefault-modal.component';
+import { ViewCatDefaultModalComponent } from './components/catDefault/view-catDefault-modal.component';
+import { CatCompanySectorsComponent } from './catalogs/catCompanySectors/catCompanySectors.component';
+import { CatCompanyTypesComponent } from './catalogs/catCompanyTypes/catCompanyTypes.component';
+import { CatDocumentTypesComponent } from './catalogs/catDocumentTypes/catDocumentTypes.component';
+
 import { CatTransactionTypesComponent } from './catalogs/catTransactionTypes/catTransactionTypes.component';
 import { ViewCatTransactionTypeModalComponent } from './catalogs/catTransactionTypes/view-catTransactionType-modal.component';
 import { CreateOrEditCatTransactionTypeModalComponent } from './catalogs/catTransactionTypes/create-or-edit-catTransactionType-modal.component';
@@ -225,6 +232,13 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 		MntMemberBankAccountsComponent,
 		CreateOrEditMntMemberBankAccountModalComponent,
 		CatTransactionTypesComponent,
+
+		CatDefaultComponent,
+		CreateOrEditCatDefaultModalComponent,
+		ViewCatDefaultModalComponent,
+		CatCompanySectorsComponent,
+		CatCompanyTypesComponent,
+		CatDocumentTypesComponent,
 
 		ViewCatTransactionTypeModalComponent,
 		CreateOrEditCatTransactionTypeModalComponent,
