@@ -7,7 +7,7 @@ import { SessionServiceProxy, TokenAuthServiceProxy } from '@shared/service-prox
 import { NotifyService } from 'abp-ng2-module';
 import { Table } from 'primeng/table';
 import { Paginator } from 'primeng/paginator';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, SelectItem } from 'primeng/api';
 import { LazyLoadEvent } from 'primeng/api';
 import { MntMemberFiatDepositComponent } from '../members/mntMemberFiat/components/deposit/deposit.component';
 import { MntMemberFiatWithdrawalComponent } from '../members/mntMemberFiat/components/withdrawal/withdrawal.component';
@@ -46,7 +46,7 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   responsiveOptions: any[] | undefined;
   responsiveOptionsCryptos: any[] | undefined;
   isInversionesCarousel: Boolean = true;
-  filterInversiones: any;
+  filterInversiones: SelectItem[];
   amount: number = 0;
   currency: string = '';
   statusMember: number;
@@ -79,6 +79,12 @@ export class HomeComponent extends AppComponentBase implements OnInit {
       { label: 'Depósito/Retiro' },
       { label: 'Envío/Recepción' }
     ];
+    this.filterInversiones = [
+      {
+        label: 'Todos',
+        value: 0
+      }
+    ]
     this.activeItem = this.menuItems[0];
     this.activeItemHistory = this.menuItemsHistory[0];
     this.products = [
