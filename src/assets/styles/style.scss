@@ -144,6 +144,10 @@ body{
         }
     }
 }
+.ae-alert__primary{
+    border: 1px solid var(--ae-primary) !important;
+    background-color: var(--ae-secondary) !important;
+}
 .ae-button{
     .p-button{
         box-shadow: none !important;

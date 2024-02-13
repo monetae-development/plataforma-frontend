@@ -158,8 +158,7 @@
                             <div *ngIf="isGoogleAuthenticatorEnabled; else googleAuthenticatorEnabled">
                                 <div class="mb-3 fw-semibold">
                                     <h4
-                                        class="fw-bold fs-3 d-flex align-items-center"
-                                        style="color: #2b9348 !important"
+                                        class="ae-text-primary fw-bold fs-3 d-flex align-items-center"
                                     >
                                         <i class="fa-solid fa-lock me-2"></i>
                                         {{ 'AuthenticatorAppEnabled' | localize }}
@@ -172,7 +171,7 @@
                                     (click)="viewRecoveryCodesModal.show()"
                                     type="button"
                                     id="btnViewRecoveryCodes"
-                                    class="btn btn-primary btn-sm"
+                                    class="ae-btn ae-btn--primary btn-sm mr-3"
                                 >
                                     {{ 'ViewRecoveryCodes' | localize }}
                                 </button>
@@ -180,7 +179,7 @@
                                     (click)="verifyCodeModal.show()"
                                     type="button"
                                     id="btnRemoveAuthenticator"
-                                    class="btn btn-danger btn-sm"
+                                    class="ae-btn ae-btn--secondary btn-sm"
                                 >
                                     {{ 'DisableAuthenticatorApp' | localize }}
                                 </button>
