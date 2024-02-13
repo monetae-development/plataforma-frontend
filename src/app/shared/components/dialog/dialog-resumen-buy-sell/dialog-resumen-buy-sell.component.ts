@@ -76,7 +76,7 @@ export class DialogResumenBuySellComponent extends AppComponentBase implements O
     this.sending = true;
     const receiveBody = new MntMemberTradingRequestDto();
     receiveBody.cryptoCurrencyId = this.resumenSend.cryptoCurrencyId.value;
-    receiveBody.amount = this.resumenSend.amount;
+    receiveBody.amount = this.resumenSend.amountCrypto;
     receiveBody.amountType = AmountType.Dollar;
     receiveBody.type = this.type;
     this._serviceTradingProxy.create(receiveBody)
