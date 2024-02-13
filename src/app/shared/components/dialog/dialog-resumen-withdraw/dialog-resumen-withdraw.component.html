@@ -25,7 +25,7 @@
                 <p class="ae-text-dark ae-text-default w-full">Total</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-primary ae-text-default w-full">$ {{ resumenWithdraw.amount }}</span>
+                <span class="ae-text-primary ae-text-default w-full">{{ resumenWithdraw.amount | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}</span>
             </div>
         </div>
     </div>
@@ -36,6 +36,6 @@
         class="ae-button ae-button--component ae-button--primary w-full"
         [disabled]="saving" 
         (click)="onRequestSend()">
-        Solicitar retiro
+        Solicitar Retiro
     </button>
   </div>

@@ -188,8 +188,8 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
         this._messageService
         .add({ 
           severity: 'success', 
-          summary: 'Solicitud de Deposito finalizada', 
-          detail: 'Su solicitud de deposito se ha realizado con éxito' 
+          summary: 'Solicitud de Depósito finalizada', 
+          detail: 'Su solicitud de depósito se ha realizado con éxito' 
         });
       });
   }
