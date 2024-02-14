@@ -66,91 +66,15 @@ export class OtcBriefcaseComponent extends AppComponentBase implements OnInit {
       }
       }
     ]
-    this.items = [
-          {
-              "request": {
-                  "totalPercent": 38441.28,
-                  "cost": 36837.34,
-                  "percent24H": -0.39,
-                  "id": 1
-              },
-              "cryptoCurrency": {
-                "name": "Bitcoin",
-                "key": "BTC",
-                "id": 0
-              }
-          },
-          {
-              "request": {
-                  "totalPercent": 2062.82,
-                  "cost": 1979.51,
-                  "percent24H": -1.3,
-                  "id": 2
-              },
-              "cryptoCurrency": {
-                "name": "Ethereum",
-                "key": "ETH",
-                "id": 0
-              }
-          },
-          {
-              "request": {
-                  "totalPercent": 1.02,
-                  "cost": 0.98,
-                  "percent24H": -0.01,
-                  "id": 3
-              },
-              "cryptoCurrency": {
-                "name": "Tether",
-                "key": "USDT",
-                "id": 0
-              }
-          },
-          {
-              "request": {
-                  "totalPercent": 0.62,
-                  "cost": 0.59,
-                  "percent24H": -0.99,
-                  "id": 4
-              },
-              "cryptoCurrency": {
-                "name": "XRP",
-                "key": "XRP",
-                "id": 0
-              }
-          },
-          {
-              "request": {
-                  "name": "USD Coin",
-                  "key": "USDC",
-                  "totalPercent": 1.02,
-                  "cost": 0.98,
-                  "percent24H": 0.0,
-                  "id": 5
-              },
-              "cryptoCurrency": {
-                "name": "USD Coin",
-                "key": "USDC",
-                "id": 0
-              }
-          },
-          {
-              "request": {
-                  "totalPercent": 0.76,
-                  "cost": 0.73,
-                  "percent24H": -0.49,
-                  "id": 6
-              },
-              "cryptoCurrency": {
-                "name": "Polygon",
-                "key": "MATIC",
-                "id": 0
-              }
-          }
-      ]
+  }
+
+  applyFilterGlobal(event: any) {
+    console.log(event.target.value);
+    return event.target.value;
   }
 
   getAllMemberPortfolioRequests(event?: LazyLoadEvent): void {
+    console.log(event);
     if (this.primengTableHelper.shouldResetPaging(event)) {
       this.paginator.changePage(0);
 
@@ -169,8 +93,6 @@ export class OtcBriefcaseComponent extends AppComponentBase implements OnInit {
     .pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator()))
     .subscribe(result => {
         console.log(result);
-        // this.primengTableHelper.totalRecordsCount = this.total;
-        // this.primengTableHelper.records = this.items;
         this.primengTableHelper.totalRecordsCount = result.totalCount;
         this.primengTableHelper.records = result.items;
         this.primengTableHelper.hideLoadingIndicator();
