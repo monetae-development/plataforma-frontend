@@ -12,8 +12,8 @@ export class SmsVerificationModalComponent extends AppComponentBase{
     @ViewChild('nameInput', { static: true }) nameInput: ElementRef;
     @ViewChild('smsVerificationModal', { static: true }) modal: ModalDirective;
 
+    @Input() newPhoneCodeId: number;
     @Input() newPhoneNumber: string;
-
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 
     public active = false;
@@ -36,6 +36,7 @@ export class SmsVerificationModalComponent extends AppComponentBase{
 
     save(): void {
         this.saving = true;
+        this.verifyCodeInput.phoneCodeId = this.newPhoneCodeId;
         this.verifyCodeInput.phoneNumber = this.newPhoneNumber;
         this._profileService
             .verifySmsCode(this.verifyCodeInput)

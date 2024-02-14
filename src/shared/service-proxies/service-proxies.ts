@@ -52969,6 +52969,7 @@ export interface IVerifyAuthenticatorCodeInput {
 
 export class VerifySmsCodeInputDto implements IVerifySmsCodeInputDto {
     code!: string | undefined;
+    phoneCodeId!: number | undefined;
     phoneNumber!: string | undefined;
 
     constructor(data?: IVerifySmsCodeInputDto) {
@@ -52983,6 +52984,7 @@ export class VerifySmsCodeInputDto implements IVerifySmsCodeInputDto {
     init(_data?: any) {
         if (_data) {
             this.code = _data["code"];
+            this.phoneCodeId = _data["phoneCodeId"];
             this.phoneNumber = _data["phoneNumber"];
         }
     }
@@ -52997,6 +52999,7 @@ export class VerifySmsCodeInputDto implements IVerifySmsCodeInputDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["code"] = this.code;
+        data["phoneCodeId"] = this.phoneCodeId;
         data["phoneNumber"] = this.phoneNumber;
         return data;
     }
@@ -53004,6 +53007,7 @@ export class VerifySmsCodeInputDto implements IVerifySmsCodeInputDto {
 
 export interface IVerifySmsCodeInputDto {
     code: string | undefined;
+    phoneCodeId: number | undefined;
     phoneNumber: string | undefined;
 }
 

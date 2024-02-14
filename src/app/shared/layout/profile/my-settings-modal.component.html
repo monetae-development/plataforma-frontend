@@ -258,6 +258,7 @@
     *ngIf="user"
     #smsVerificationModal
     (modalSave)="changePhoneNumberToVerified()"
+    [newPhoneCodeId]="user.phoneCodeId"
     [newPhoneNumber]="user.phoneNumber"
 ></smsVerificationModal>
 

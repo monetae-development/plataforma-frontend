@@ -82,13 +82,10 @@ export class EnableTwoFactorAuthenticationModalComponent extends AppComponentBas
 
     copyRecoveryCodes(recoveryCodes: string[]): void {
         const recoveryCodesText = recoveryCodes.join('\r\n');
-
         navigator.clipboard.writeText(recoveryCodesText);
-
         const btnContinue = document.getElementById('btnContinue');
-
-        // User can continue
         btnContinue.removeAttribute('disabled');
+        this.notify.success(this.l('Copiado a portapapeles'));
     }
 
     show(): void {
