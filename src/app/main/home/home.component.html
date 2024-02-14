@@ -302,7 +302,9 @@
     <div class="ae-container__operations"[ngClass]="{'ae-active' : showFadeDialogOperations}">
         <div class="ae-operations__bg" (click)="showDialogOperations()"></div>
         <div class="ae-operations__mobile">
-            <span class="ae-operation__line" (click)="showDialogOperations()"></span>
+            <div class="ae-operation__line" (click)="showDialogOperations()">
+                <span class="ae-item__line"></span>
+            </div>
             <div class="ae-balance__item" (click)="showDialogBuySell(0)">
                 <div class="ae-item__icon ae-bg-primary flex align-items-center justify-content-center">
                     <i class="pi pi-plus"></i>

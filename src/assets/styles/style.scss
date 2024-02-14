@@ -1487,7 +1487,7 @@ body{
         }
         .ae-operations__bg{
             position: absolute;
-            height: 100vh;
+            height: 100%;
             background-color: rgba(0, 0, 0, 0.7);
             top: 0;
             bottom: 0;
@@ -1516,18 +1516,24 @@ body{
             transform: translateY(100%);
             .ae-operation__line{
                 position: absolute;
-                top: 6px;
+                top: 0;
                 left: 0;
                 right: 0;
-                display: block;
-                content: '';
-                width: 100%;
-                max-width: 50px;
-                margin: auto;
-                height: 5px;
-                background-color: var(--ae-primary);
-                border-radius: 25px;
                 cursor: pointer;
+                padding: 8px 10px;
+                width: 100%;
+                max-width: 100px;
+                margin: auto;
+                .ae-item__line{
+                    display: block;
+                    content: '';
+                    width: 100%;
+                    max-width: 50px;
+                    margin: auto;
+                    height: 5px;
+                    background-color: var(--ae-primary);
+                    border-radius: 25px;
+                }
             }
             .ae-balance__item{
                 display: inline-block;
