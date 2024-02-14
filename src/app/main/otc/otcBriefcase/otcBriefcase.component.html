@@ -3,11 +3,9 @@
     <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
       <p-table
         #dataTable
-        (onLazyLoad)="getAllMemberPortfolioRequests($event)"
         [value]="primengTableHelper.records"
         rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
         [paginator]="false"
-        [lazy]="true"
         [scrollable]="true"
         ScrollWidth="100%"
         [responsive]="primengTableHelper.isResponsive"
@@ -19,7 +17,7 @@
               <h6 class="ae-text-dark ae-text-medium fw-bold m-0">{{ l('Aquí tienes el registro de todos tus activos digitales') }}</h6>
               <span class="p-input-icon-right ml-auto">
                   <i class="pi pi-search"></i>
-                  <input pInputText type="text" (input)="dataTable.filterGlobal(applyFilterGlobal($event), 'contains')" placeholder="" />
+                  <input pInputText type="text" (input)="dataTable.filterGlobal($event.target.value, 'contains')" placeholder="" />
               </span>
           </div>
         </ng-template>

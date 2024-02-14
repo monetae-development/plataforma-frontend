@@ -51,6 +51,7 @@ export class OtcBriefcaseComponent extends AppComponentBase implements OnInit {
   }
 
   ngOnInit() {
+    this.paginator.rows = 25;
     this.getStatusMember();
     this.itemsMenu = [
       {
@@ -65,16 +66,11 @@ export class OtcBriefcaseComponent extends AppComponentBase implements OnInit {
           this.showDialogBuySell(1);
       }
       }
-    ]
-  }
-
-  applyFilterGlobal(event: any) {
-    console.log(event.target.value);
-    return event.target.value;
+    ];
+    this.getAllMemberPortfolioRequests();
   }
 
   getAllMemberPortfolioRequests(event?: LazyLoadEvent): void {
-    console.log(event);
     if (this.primengTableHelper.shouldResetPaging(event)) {
       this.paginator.changePage(0);
 
