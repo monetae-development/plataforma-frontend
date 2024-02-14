@@ -1,6 +1,5 @@
 import { CurrencyDto } from './CurrencyDto';
 import { IGetMemberDetailRequestDto } from './IGetMemberDetailRequestDto';
-import { MntMemberFiatDto } from './MntMemberFiatDto';
 import { MntMemberFiatRequestDto } from './MntMemberFiatRequestDto';
 
 export class GetMemberDetailRequestDto implements IGetMemberDetailRequestDto {
@@ -26,7 +25,7 @@ export class GetMemberDetailRequestDto implements IGetMemberDetailRequestDto {
 
     init(_data?: any) {
         if (_data) {
-            this.request = _data['request'] ? MntMemberFiatDto.fromJS(_data['request']) : <any>undefined;
+            this.request = _data['request'] ? MntMemberFiatRequestDto.fromJS(_data['request']) : <any>undefined;
             this.currency = _data['currency'] ? CurrencyDto.fromJS(_data['currency']) : <any>undefined;
         }
     }
