@@ -582,7 +582,7 @@ body{
     border-radius: 16px;
     overflow: hidden;
     &__boxshadow{
-        box-shadow: 4px 4px 16px 0px rgba(0, 0, 0, 0.03);
+        box-shadow: 4px 4px 24px 0px rgba(0, 0, 0, 0.05);
     }
 }
 .ae-project__card{
@@ -824,6 +824,12 @@ body{
             margin: auto;
             z-index: 10;
         }
+        .p-carousel-content{
+            .p-carousel-prev,
+            .p-carousel-next{
+                color: #6C757D;
+            }
+        } 
     }
 }
 .ae-table{
