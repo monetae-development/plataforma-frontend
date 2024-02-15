@@ -10,6 +10,7 @@ import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { FileUpload, FileUploadModule } from 'primeng/fileupload';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DialogDefaultComponent } from '../dialog-default/dialog-default.component';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { DialogAddBankAccountComponent } from '../dialog-add-bank-account/dialog-add-bank-account.component';
@@ -38,7 +39,7 @@ import { environment } from 'environments/environment';
     InputNumberModule,
     FileUploadModule,
     UtilsModule,
-    ToastModule 
+    ToastModule
   ],
   providers: [MessageService]
 })
@@ -73,9 +74,9 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
   uploadFileDepositReceipt = false;
 
   platformBankAccount: any;
-  messageUploadFileOperationProof: string = '';
+  messageUploadFileOperationProof = '';
   maxFileSize = environment.uploadMaxFileSize;
-  memberUserName: string = '';
+  memberUserName = '';
 
   constructor(
     injector: Injector,
@@ -83,12 +84,13 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
     public dialogService: DialogService,
+    private _dialogService: DialogService,
     private _serviceMemberProxy: ServiceMembersProxy,
     private _serviceCommonProxy: ServiceCommonProxy,
     private _httpClient: HttpClient,
     private _messageService: MessageService,
     private _mntMemberFilesServiceProxy: MntMemberFilesServiceProxy
-  ) { 
+  ) {
     super(injector);
     this.activeIndex = config.data?.activeIndex;
   }
@@ -107,7 +109,7 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
     this.memberBankAccount = new GetMntMemberBankAccountForViewDto();
   }
 
-  getMemberUserName(){
+  getMemberUserName() {
     this._serviceMemberProxy.getGetMemberFullName().subscribe((result) => {
       this.memberUserName = result || '';
     });
@@ -171,11 +173,11 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
     this.notify.success(this.l('Copiado a portapapeles'));
   }
 
-  onCancel(){
+  onCancel() {
     this.ref.close();
   }
 
-  saveDeposit(): void{
+  saveDeposit(): void {
     this.saving = true;
     this.fiatDeposit.fileGuid = this.fileGuid;
     console.log(this.fileGuid);
@@ -185,12 +187,8 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
         this.saving = false;
       }))
       .subscribe((result) => {
-        this._messageService
-        .add({ 
-          severity: 'success', 
-          summary: 'Solicitud de Depósito finalizada', 
-          detail: 'Su solicitud de depósito se ha realizado con éxito' 
-        });
+        this.openSuccessDialogFolio(result.folio);
+        this.ref.close();
       });
   }
 
@@ -206,7 +204,7 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
     this.isStepOne = false;
   }
 
-  onContinueWithdraw(): void{
+  onContinueWithdraw(): void {
     const ref = this.dialogService.open(DialogResumenWithdrawComponent, {
       showHeader: false,
       styleClass: 'ae-dialog ae-dialog--sm',
@@ -220,13 +218,9 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
 
     const instance = dialogRef?.instance?.componentRef?.instance as DialogResumenWithdrawComponent;
     instance?.outAccept.subscribe((values) => {
-      if(values){
-        this._messageService
-        .add({ 
-          severity: 'success', 
-          summary: 'Solicitud de Retiro finalizada', 
-          detail: 'Su solicitud de retiro se ha realizado con éxito' 
-        });
+      if (values) {
+        this.openSuccessDialogFolio(values);
+        this.ref.close();
       }
     });
   }
@@ -234,28 +228,28 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
   onUploadFile(event, recordFiles): void {
     for (const file of event.files) {
       if (file.size > this.maxFileSize) {
-        this.messageUploadFileOperationProof =  `El tamaño máximo permitido para la carga de archivos es de ${this.maxFileSize}`;
+        this.messageUploadFileOperationProof = `El tamaño máximo permitido para la carga de archivos es de ${this.maxFileSize}`;
         return;
       }
-      if(recordFiles){
-          const fileParameter: FileParameter = {
-              data: file,
-              fileName: file.name
-          };
-          this._mntMemberFilesServiceProxy.uploadDepositReceipt(fileParameter).subscribe((result) => {
-            this.fileGuid = result.fileGuid;
-            this.uploadFileDepositReceipt = true;
-          });
+      if (recordFiles) {
+        const fileParameter: FileParameter = {
+          data: file,
+          fileName: file.name
+        };
+        this._mntMemberFilesServiceProxy.uploadDepositReceipt(fileParameter).subscribe((result) => {
+          this.fileGuid = result.fileGuid;
+          this.uploadFileDepositReceipt = true;
+        });
       }
     }
   }
 
-  onRemoveFile(){
+  onRemoveFile() {
     this.uploadFileDepositReceipt = false;
   }
 
   onBeforeSend(event): void {
-      event.xhr.setRequestHeader('Authorization', 'Bearer ' + abp.auth.getToken());
+    event.xhr.setRequestHeader('Authorization', 'Bearer ' + abp.auth.getToken());
   }
 
   showDialogAddBankAccount(): void {
@@ -267,9 +261,29 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
     dialogRef?.changeDetectorRef.detectChanges();
     const instance = dialogRef?.instance?.componentRef?.instance as DialogAddBankAccountComponent;
     instance?.outAccept.subscribe((values) => {
-      if(values){
+      if (values) {
         this.loadBankAccounts();
       }
+    });
+  }
+
+  private openSuccessDialogFolio(folio): void {
+    const ref = this._dialogService.open(DialogDefaultComponent, {
+      showHeader: false,
+      styleClass: 'ae-dialog ae-dialog--default ae-dialog--sm',
+      data: {
+        icon: 'pi pi-chart-bar',
+        title: this.l('OTCRequestCreatedSuccessfully'),
+        subtitle: this.l('RequestSuccessfully', folio),
+        titleAction: 'Aceptar'
+      }
+    });
+    const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
+    dialogRef?.changeDetectorRef.detectChanges();
+    const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
+    instance?.outAccept.subscribe(() => {
+      this.outAccept.emit(true);
+      ref.close();
     });
   }
 

@@ -11,6 +11,7 @@ import {
     MntMemberFilesServiceProxy,
     FileParameter,
 } from '@shared/service-proxies/service-proxies';
+import { GetSelectIntDto } from '@shared/service-proxies/dto/Common/SelectInput/GetSelectIntDto';
 import { ServiceMembersProxy } from '@shared/service-proxies/service-members-proxies';
 import { CreateOrEditMntMemberComplementDto } from '@shared/service-proxies/dto/mntMembers/CreateOrEditMntMemberComplementDto';
 import { NotifyService } from 'abp-ng2-module';
@@ -38,7 +39,7 @@ import { MemberStatus } from '@shared/service-proxies/enum/Members/MemberStatus.
     templateUrl: './mntMemberDataComplements.component.html',
     encapsulation: ViewEncapsulation.None,
     animations: [appModuleAnimation()],
-    providers: [ DialogService ],
+    providers: [DialogService],
 })
 
 export class MntMemberDataComplementsComponent extends AppComponentBase implements OnInit, AfterViewInit {
@@ -85,6 +86,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     public memberAddressCountryId: number;
     public memberIdentity: CreateOrEditMntMemberIdentityDto;
     public memberEconomicInfo: CreateOrEditMntEconomicInfoDto;
+    public flags: GetSelectIntDto[] = [];
 
     advancedFiltersAreShown = false;
     filterText = '';
@@ -234,7 +236,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         this._profileService.getCurrentUserProfileForEdit().subscribe((result) => {
             this.user = result;
             this.residenceCountry.disabled = true;
-            
+
             this._serviceCommonProxy.getSelectOptions('MntMemberDataComplements/GetAllContriesForSelect', null).subscribe((result) => {
                 this.residenceDataCountries = result.items;
                 this.personalDataCountries = result.items;
@@ -250,6 +252,15 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
 
             this._serviceCommonProxy.getSelectOptions('MntMemberDataComplements/GetAllCountryPhoneCodesForSelect', null).subscribe((result) => {
                 this.personalDataPhones = result.items;
+                this.flags = [];
+                for (const record of result.items) {
+                    let temp = new GetSelectIntDto();
+                    temp.value = record.value;
+                    temp.label = record.label;
+                    temp.subtitle = record.subtitle;
+                    this.flags[record.value] = temp;
+                }
+                console.log(this.flags);
             });
 
             this._serviceCommonProxy.getSelectOptions('MntMemberDataComplements/GetAllIndentitiesTypesForSelect', null).subscribe((result) => {
@@ -280,49 +291,49 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     onUploadFile(event, recordFiles, typeUpload: string): void {
         for (const file of event.files) {
             if (file.size > this.maxFileSize) {
-                if(typeUpload === 'UploadAddressProof'){
-                    this.messageUploadFileAddressProof =  `El tamaño máximo permitido para la carga de archivos es de ${this.maxFileSize}`;
+                if (typeUpload === 'UploadAddressProof') {
+                    this.messageUploadFileAddressProof = `El tamaño máximo permitido para la carga de archivos es de ${this.maxFileSize}`;
                     return;
-                } else if(typeUpload === 'UploadIdentityFront') {
-                    this.messageUploadFileIdentityFront =  `El tamaño máximo permitido para la carga de archivos es de ${this.maxFileSize}`;
+                } else if (typeUpload === 'UploadIdentityFront') {
+                    this.messageUploadFileIdentityFront = `El tamaño máximo permitido para la carga de archivos es de ${this.maxFileSize}`;
                     return;
-                } else if(typeUpload === 'UploadIdentityBack') {
-                    this.messageUploadFileIdentityBack =  `El tamaño máximo permitido para la carga de archivos es de ${this.maxFileSize}`;
+                } else if (typeUpload === 'UploadIdentityBack') {
+                    this.messageUploadFileIdentityBack = `El tamaño máximo permitido para la carga de archivos es de ${this.maxFileSize}`;
                     return;
-                } else if(typeUpload === 'UploadIncomeProof') {
-                    this.messageUploadFileIncomeProof =  `El tamaño máximo permitido para la carga de archivos es de ${this.maxFileSize}`;
+                } else if (typeUpload === 'UploadIncomeProof') {
+                    this.messageUploadFileIncomeProof = `El tamaño máximo permitido para la carga de archivos es de ${this.maxFileSize}`;
                     return;
-                } else if(typeUpload === 'UploadTaxReturn') {
-                    this.messageUploadFileTaxReturn =  `El tamaño máximo permitido para la carga de archivos es de ${this.maxFileSize}`;
+                } else if (typeUpload === 'UploadTaxReturn') {
+                    this.messageUploadFileTaxReturn = `El tamaño máximo permitido para la carga de archivos es de ${this.maxFileSize}`;
                     return;
                 }
             }
-            if(recordFiles){
+            if (recordFiles) {
                 const fileParameter: FileParameter = {
                     data: file,
                     fileName: file.name
                 };
-                if(typeUpload === 'UploadAddressProof'){
+                if (typeUpload === 'UploadAddressProof') {
                     this._mntMemberFilesServiceProxy.uploadAddressProof(fileParameter).subscribe((result) => {
                         this.uploadFileAddressProof = true;
                         console.log(result);
                     });
-                } else if(typeUpload === 'UploadIdentityFront') {
+                } else if (typeUpload === 'UploadIdentityFront') {
                     this._mntMemberFilesServiceProxy.uploadIdentityFront(fileParameter).subscribe((result) => {
                         this.uploadFileIdentityFront = true;
                         console.log(result);
                     });
-                } else if(typeUpload === 'UploadIdentityBack') {
+                } else if (typeUpload === 'UploadIdentityBack') {
                     this._mntMemberFilesServiceProxy.uploadIdentityBack(fileParameter).subscribe((result) => {
                         this.uploadFileIdentityBack = true;
                         console.log(result);
                     });
-                } else if(typeUpload === 'UploadIncomeProof') {
+                } else if (typeUpload === 'UploadIncomeProof') {
                     this._mntMemberFilesServiceProxy.uploadIncomeProof(fileParameter).subscribe((result) => {
                         this.uploadFileIncomeProof = true;
                         console.log(result);
                     });
-                } else if(typeUpload === 'UploadTaxReturn') {
+                } else if (typeUpload === 'UploadTaxReturn') {
                     this._mntMemberFilesServiceProxy.uploadTaxReturn(fileParameter).subscribe((result) => {
                         this.uploadFileTaxReturn = true;
                         console.log(result);
@@ -332,16 +343,16 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         }
     }
 
-    onRemoveFile(event, typeUpload: string){
-        if(typeUpload === 'UploadAddressProof'){
+    onRemoveFile(event, typeUpload: string) {
+        if (typeUpload === 'UploadAddressProof') {
             this.uploadFileAddressProof = false;
-        } else if(typeUpload === 'UploadIdentityFront') {
+        } else if (typeUpload === 'UploadIdentityFront') {
             this.uploadFileIdentityFront = false;
-        } else if(typeUpload === 'UploadIdentityBack') {
+        } else if (typeUpload === 'UploadIdentityBack') {
             this.uploadFileIdentityBack = false;
-        } else if(typeUpload === 'UploadIncomeProof') {
+        } else if (typeUpload === 'UploadIncomeProof') {
             this.uploadFileIncomeProof = false;
-        } else if(typeUpload === 'UploadTaxReturn') {
+        } else if (typeUpload === 'UploadTaxReturn') {
             this.uploadFileTaxReturn = false;
         }
     }
@@ -506,44 +517,44 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     }
 
     backStep(step: number): void {
-        if(step === 0){
+        if (step === 0) {
             this.step0VerifyAccount = true;
             this.step1VerifyAccount = false;
-        } else if(step === 1) {
+        } else if (step === 1) {
             this.step1VerifyAccount = true;
             this.step2VerifyAccount = false;
-        } else if(step === 2) {
+        } else if (step === 2) {
             this.step2VerifyAccount = true;
             this.step3VerifyAccount = false;
-        } else if(step === 3) {
+        } else if (step === 3) {
             this.step3VerifyAccount = true;
             this.step4VerifyAccount = false;
         }
     }
 
     nextStep(step: number): void {
-        if(step === 0){
+        if (step === 0) {
             if (this.residenceForm.invalid) {
                 this.validateForm(this.residenceForm);
             } else {
                 this.step0VerifyAccount = false;
                 this.step1VerifyAccount = true;
             }
-        } else if(step === 1) {
+        } else if (step === 1) {
             if (this.personalDataForm.invalid) {
                 this.validateForm(this.personalDataForm);
             } else {
                 this.step1VerifyAccount = false;
                 this.step2VerifyAccount = true;
             }
-        } else if(step === 2) {
+        } else if (step === 2) {
             if (this.addressForm.invalid) {
                 this.validateForm(this.addressForm);
             } else {
                 this.step2VerifyAccount = false;
                 this.step3VerifyAccount = true;
             }
-        } else if(step === 3) {
+        } else if (step === 3) {
             if (this.identityForm.invalid) {
                 this.validateForm(this.identityForm);
             } else {

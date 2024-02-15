@@ -73,13 +73,43 @@
                                             id="phoneCodeId"
                                             name="phoneCodeId"
                                             [(ngModel)]="user.phoneCodeId"
-                                            [options]="personalDataPhones" 
+                                            [options]="personalDataPhones"
                                             optionLabel="label"
                                             optionValue="value"
                                             placeholder="{{ 'Loading' | localize }}"
                                             [filter]="true"
                                             (onChange)="onChangePhoneNumber()"
-                                        ></p-dropdown>
+                                        >
+                                            <ng-template pTemplate="selectedItem">
+                                                <div class="d-flex align-items-center" *ngIf="user.phoneCodeId">
+                                                    <div>
+                                                        <img
+                                                            src="/assets/flags/{{
+                                                                flags[user.phoneCodeId].subtitle
+                                                            }}.png"
+                                                            style="height: 14px"
+                                                        />
+                                                    </div>
+                                                    <div class="ms-2">
+                                                        {{ flags[user.phoneCodeId].label }}
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+
+                                            <ng-template let-flag pTemplate="item">
+                                                <div class="d-flex align-items-center">
+                                                    <div>
+                                                        <img
+                                                            src="/assets/flags/{{ flags[flag.value].subtitle }}.png"
+                                                            style="height: 14px"
+                                                        />
+                                                    </div>
+                                                    <div class="ms-2">
+                                                        {{ flags[flag.value].label }}
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </p-dropdown>
                                         <div class="formgroup-control">
                                             <input
                                                 type="text"
@@ -96,9 +126,7 @@
                                     <button
                                         id="btnSmsVerification"
                                         (click)="smsVerify()"
-                                        [disabled]="
-                                            isPhoneNumberConfirmed && savedPhoneNumber == user.phoneNumber
-                                        "
+                                        [disabled]="isPhoneNumberConfirmed && savedPhoneNumber == user.phoneNumber"
                                         class="ae-btn ae-btn--primary"
                                         type="button"
                                         tooltip="{{ 'YourPhoneNumberIsNotVerified' | localize }}"
@@ -117,10 +145,7 @@
                                         class="input-group-text"
                                         tooltip="{{ 'YourPhoneNumberIsVerified' | localize }}"
                                     >
-                                        <i
-                                            class="la la-check label-success"
-                                            [attr.aria-label]="l('Verified')"
-                                        ></i>
+                                        <i class="la la-check label-success" [attr.aria-label]="l('Verified')"></i>
                                     </span>
                                 </div>
                             </div>
@@ -157,9 +182,7 @@
                         <div class="mb-5">
                             <div *ngIf="isGoogleAuthenticatorEnabled; else googleAuthenticatorEnabled">
                                 <div class="mb-3 fw-semibold">
-                                    <h4
-                                        class="ae-text-primary fw-bold fs-3 d-flex align-items-center"
-                                    >
+                                    <h4 class="ae-text-primary fw-bold fs-3 d-flex align-items-center">
                                         <i class="fa-solid fa-lock me-2"></i>
                                         {{ 'AuthenticatorAppEnabled' | localize }}
                                     </h4>

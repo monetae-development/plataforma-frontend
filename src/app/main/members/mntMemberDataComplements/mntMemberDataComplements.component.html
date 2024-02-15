@@ -1,5 +1,5 @@
 ﻿<div [@routerTransition]>
-    <div *ngIf="!completed && (this.memberStatus === 0) && checkSessionAndComplemented">
+    <div *ngIf="!completed && this.memberStatus === 0 && checkSessionAndComplemented">
         <div class="ae-container__kyc ae-container--sm" *ngIf="step0VerifyAccount">
             <div class="ae-container__header">
                 <div class="ae-header__title mb-5">
@@ -14,10 +14,10 @@
                     <div class="ae-select mb-10">
                         <label>País de residencia *</label>
                         <div class="formgroup-control">
-                            <p-dropdown 
-                                #residenceCountry 
-                                formControlName="residenceCountry" 
-                                [(ngModel)]="memberPersonalData.residenceCountryId" 
+                            <p-dropdown
+                                #residenceCountry
+                                formControlName="residenceCountry"
+                                [(ngModel)]="memberPersonalData.residenceCountryId"
                                 [disabled]="true"
                                 [options]="residenceDataCountries"
                                 placeholder="{{ 'Loading' | localize }}"
@@ -41,10 +41,13 @@
                         </div>
                     </div>
                 </form>
-                <p class="ae-text-default ae-text-gris-dark mb-8">Completa los siguientes pasos para verificar tu cuenta en <strong>5 minutos</strong></p>
+                <p class="ae-text-default ae-text-gris-dark mb-8">
+                    Completa los siguientes pasos para verificar tu cuenta en
+                    <strong>5 minutos</strong>
+                </p>
                 <div class="ae-steps__verify">
                     <div class="ae-steps__item flex align-items-center">
-                        <i class="pi pi-user ae-text-gris-dark ae-text-medium  mr-3"></i>
+                        <i class="pi pi-user ae-text-gris-dark ae-text-medium mr-3"></i>
                         <p class="ae-text-gris-dark ae-text-default m-0">{{ 'PersonalDataTitle' | localize }}</p>
                     </div>
                     <div class="ae-steps__item flex align-items-center">
@@ -62,7 +65,11 @@
                 </div>
             </div>
             <div class="ae-container__actions">
-                <p-button class="ae-button ae-button--primary w-full ae-text-default" label="Siguiente" (click)="nextStep(0)"></p-button>
+                <p-button
+                    class="ae-button ae-button--primary w-full ae-text-default"
+                    label="Siguiente"
+                    (click)="nextStep(0)"
+                ></p-button>
             </div>
         </div>
         <div class="ae-container__kyc ae-container--md" *ngIf="step1VerifyAccount">
@@ -148,10 +155,40 @@
                                     formControlName="memberPhoneCode"
                                     [(ngModel)]="memberPersonalData.phoneCodeId"
                                     [disabled]="true"
-                                    [options]="personalDataPhones" 
+                                    [options]="personalDataPhones"
                                     placeholder="{{ 'SelectAnItemDropdown' | localize }}"
                                     [filter]="true"
-                                ></p-dropdown>
+                                >
+                                    <ng-template pTemplate="selectedItem">
+                                        <div class="d-flex align-items-center" *ngIf="memberPersonalData.phoneCodeId">
+                                            <div>
+                                                <img
+                                                    src="/assets/flags/{{
+                                                        flags[memberPersonalData.phoneCodeId].subtitle
+                                                    }}.png"
+                                                    style="height: 14px"
+                                                />
+                                            </div>
+                                            <div class="ms-2">
+                                                {{ flags[memberPersonalData.phoneCodeId].label }}
+                                            </div>
+                                        </div>
+                                    </ng-template>
+
+                                    <ng-template let-flag pTemplate="item">
+                                        <div class="d-flex align-items-center">
+                                            <div>
+                                                <img
+                                                    src="/assets/flags/{{ flags[flag.value].subtitle }}.png"
+                                                    style="height: 14px"
+                                                />
+                                            </div>
+                                            <div class="ms-2">
+                                                {{ flags[flag.value].label }}
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </p-dropdown>
                                 <div class="formgroup-control">
                                     <input
                                         type="text"
@@ -182,12 +219,12 @@
                         <div class="ae-select">
                             <label>{{ l('CatNationality') }} *</label>
                             <div class="formgroup-control">
-                                <p-dropdown 
-                                    #memberNationality 
-                                    formControlName="memberNationality" 
-                                    [(ngModel)]="memberPersonalData.catNationalityId" 
+                                <p-dropdown
+                                    #memberNationality
+                                    formControlName="memberNationality"
+                                    [(ngModel)]="memberPersonalData.catNationalityId"
                                     [disabled]="true"
-                                    [options]="personalDataNationalities" 
+                                    [options]="personalDataNationalities"
                                     placeholder="{{ 'SelectAnItemDropdown' | localize }}"
                                     [showClear]="true"
                                     [filter]="true"
@@ -439,7 +476,9 @@
                         <div class="ae-upload ae-grid--fullwidth">
                             <label for="addressProof">
                                 Adjuntar comprobante de domicilio *
-                                <span class="ae-text-default ae-text-gris-dark">{{ 'AddressProofDetails' | localize }}</span>
+                                <span class="ae-text-default ae-text-gris-dark">
+                                    {{ 'AddressProofDetails' | localize }}
+                                </span>
                                 <br />
                             </label>
                             <p-fileUpload
@@ -474,7 +513,9 @@
                                     </ul>
                                 </ng-template> -->
                             </p-fileUpload>
-                            <span *ngIf="messageUploadFileAddressProof" class="error-message">{{ messageUploadFileAddressProof }}</span>
+                            <span *ngIf="messageUploadFileAddressProof" class="error-message">
+                                {{ messageUploadFileAddressProof }}
+                            </span>
                         </div>
                     </div>
                 </form>
@@ -530,8 +571,8 @@
                         <div class="ae-select ae-orden__one">
                             <label>País Emisor *</label>
                             <div class="formgroup-control">
-                                <p-dropdown 
-                                    #identityIssuingCountry 
+                                <p-dropdown
+                                    #identityIssuingCountry
                                     formControlName="identityIssuingCountry"
                                     [(ngModel)]="memberIdentity.issuingCountryId"
                                     [disabled]="true"
@@ -645,7 +686,9 @@
                                     </ul>
                                 </ng-template> -->
                             </p-fileUpload>
-                            <span *ngIf="messageUploadFileIdentityFront" class="error-message">{{ messageUploadFileIdentityFront }}</span>
+                            <span *ngIf="messageUploadFileIdentityFront" class="error-message">
+                                {{ messageUploadFileIdentityFront }}
+                            </span>
                         </div>
                         <div class="ae-upload ae-orden__six">
                             <label for="identityBackPicture">{{ 'IdentityBackPicture' | localize }}</label>
@@ -678,7 +721,9 @@
                                     </ul>
                                 </ng-template> -->
                             </p-fileUpload>
-                            <span *ngIf="messageUploadFileIdentityBack" class="error-message">{{ messageUploadFileIdentityBack }}</span>
+                            <span *ngIf="messageUploadFileIdentityBack" class="error-message">
+                                {{ messageUploadFileIdentityBack }}
+                            </span>
                         </div>
                     </div>
                 </form>
@@ -812,15 +857,13 @@
                                 <div class="spin-validation">
                                     <spinSuccess
                                         *ngIf="
-                                            economicInfoForm.controls['economicInfoExpectedTransactions']
-                                                .valid &&
+                                            economicInfoForm.controls['economicInfoExpectedTransactions'].valid &&
                                             economicInfoForm.controls['economicInfoExpectedTransactions'].dirty
                                         "
                                     ></spinSuccess>
                                     <spinError
                                         *ngIf="
-                                            !economicInfoForm.controls['economicInfoExpectedTransactions']
-                                                .valid &&
+                                            !economicInfoForm.controls['economicInfoExpectedTransactions'].valid &&
                                             economicInfoForm.controls['economicInfoExpectedTransactions'].dirty
                                         "
                                     ></spinError>
@@ -830,7 +873,9 @@
                         <div class="ae-upload ae-grid--fullwidth mb-0">
                             <label for="economicInfoProofIncome">
                                 {{ 'ProofIncome' | localize }} *
-                                <span class="ae-text-default ae-text-gris-dark">{{ 'ProofIncomeDetails' | localize }}</span>
+                                <span class="ae-text-default ae-text-gris-dark">
+                                    {{ 'ProofIncomeDetails' | localize }}
+                                </span>
                                 <br />
                             </label>
                             <p-fileUpload
@@ -862,12 +907,17 @@
                                     </ul>
                                 </ng-template> -->
                             </p-fileUpload>
-                            <span *ngIf="messageUploadFileIncomeProof" class="error-message">{{ messageUploadFileIncomeProof }}</span>
+                            <span *ngIf="messageUploadFileIncomeProof" class="error-message">
+                                {{ messageUploadFileIncomeProof }}
+                            </span>
                         </div>
                         <div class="ae-upload ae-grid--fullwidth">
                             <label for="economicInfoTaxReturn">
-                                {{ 'TaxReturn' | localize }} (últimos 2 años). <br>
-                                <span class="ae-text-default ae-text-gris-dark">{{ 'TaxReturnDetails' | localize }}</span>
+                                {{ 'TaxReturn' | localize }} (últimos 2 años).
+                                <br />
+                                <span class="ae-text-default ae-text-gris-dark">
+                                    {{ 'TaxReturnDetails' | localize }}
+                                </span>
                             </label>
                             <p-fileUpload
                                 fileLimit="1"
@@ -898,7 +948,9 @@
                                     </ul>
                                 </ng-template> -->
                             </p-fileUpload>
-                            <span *ngIf="messageUploadFileTaxReturn" class="error-message">{{ messageUploadFileTaxReturn }}</span>
+                            <span *ngIf="messageUploadFileTaxReturn" class="error-message">
+                                {{ messageUploadFileTaxReturn }}
+                            </span>
                         </div>
                     </div>
                 </form>
@@ -946,3 +998,4 @@
             </div>
         </div>
     </div>
+</div>

@@ -1,335 +1,387 @@
 <div class="ae-tabs">
-  <p-tabMenu
-      [model]="menuItems"
-      [activeItem]="activeItem"
-      (activeItemChange)="onActiveItemChange($event)"
-  ></p-tabMenu>
+    <p-tabMenu
+        [model]="menuItems"
+        [activeItem]="activeItem"
+        (activeItemChange)="onActiveItemChange($event)"
+    ></p-tabMenu>
 </div>
 <div class="ae-tabs__container" *ngIf="activeItem.label == 'Depositar'">
-  <form #mntMemberFiatDepositForm="ngForm" novalidate autocomplete="off">
-    <div class="ae-step__one" *ngIf="isStepOne; else isStepTwo">
-      <div class="ae-tabs__container--content">
-        <div class="ae-title flex align-items-center justify-content-between">
-          <h2 class="ae-text-default ae-text-dark">Ingresar fondos</h2>
-          <h3 class="ae-text-xlarge ae-text-dark">1/2</h3>
-        </div>
-        <div class="ae-inputnumber">
-          <label htmlFor="amount">¿Cuánto quieres depositar?</label>
-          <div class="ae-inputnumber__group">
-            <div class="ae-inputnumber__coin flex align-items-center">
-              <span class="ae-text-light">USD</span>
-            </div>
-            <p-inputNumber
-              #MntMemberFiatDeposit_Amount="ngModel"
-              class="p-inputNumber--space"
-              inputId="MntMemberFiatDeposit_Amount"
-              name="MntMemberFiatDeposit_Amount"
-              [(ngModel)]="fiatDeposit.amount"
-              [disabled]="saving"
-              mode="decimal"
-              locale="en-US"
-              [minFractionDigits]="0"
-              [maxFractionDigits]="2"
-              required
-            ></p-inputNumber>
-          </div>
-          <validation-messages [formCtrl]="MntMemberFiatDeposit_Amount"></validation-messages>
-        </div>
-        <div class="ae-select">
-          <label>{{ l('BankAccountOriginAsk') }}</label>
-          <p-dropdown
-            #MntMemberFiatDeposit_BankAccount="ngModel"
-            id="MntMemberFiatDeposit_BankAccount"
-            name="MntMemberFiatDeposit_BankAccount"
-            [hidden]="loadBankAccountsComplete && !hasBankAccounts"
-            [disabled]="!hasBankAccounts"
-            [options]="memberBankAccounts"
-            [(ngModel)]="fiatDeposit.mntMemberBankAccountId"
-            placeholder="{{ l('SelectTreeDots') }}"
-            (onChange)="onChangeMemberAccount($event)"
-            required
-        >
-            <ng-template let-account pTemplate="selectedItem">
-                <div
-                    class="flex align-items-center gap-2"
-                    *ngIf="fiatDeposit.mntMemberBankAccountId"
-                >
-                    <div class="d-flex align-items-center">
-                      <div class="ae-text-dark ae-text-small">
-                        {{ account.label }}
-                        <span class="ae-text-dark ae-text-small">
-                            ({{ account.subtitle }})
-                        </span>
-                      </div>
-                    </div>
+    <form #mntMemberFiatDepositForm="ngForm" novalidate autocomplete="off">
+        <div class="ae-step__one" *ngIf="isStepOne; else isStepTwo">
+            <div class="ae-tabs__container--content">
+                <div class="ae-title flex align-items-center justify-content-between">
+                    <h2 class="ae-text-default ae-text-dark">Ingresar fondos</h2>
+                    <h3 class="ae-text-xlarge ae-text-dark">1/2</h3>
                 </div>
-            </ng-template>
-            <ng-template let-account pTemplate="item">
-                <div class="d-flex align-items-center">
-                  <div class="ae-text-dark ae-text-small">
-                    {{ account.label }}
-                    <span class="ae-text-dark ae-text-small" *ngIf="account.subtitle">
-                        ({{ account.subtitle }})
-                    </span>
-                  </div>
-                </div>
-            </ng-template>
-          </p-dropdown>
-          <validation-messages
-              [formCtrl]="MntMemberFiatDeposit_BankAccount"
-              [hidden]="loadBankAccountsComplete && !hasBankAccounts"
-          ></validation-messages>
-          <small class="ae-text-small ae-text-gris-dark mt-2" (click)="showDialogAddBankAccount()">Añadir cuenta bancaria</small>
-        </div>
-        <p class="ae-text-small ae-text-gris mt-5 font-normal">Asegúrate de que el nombre en tu cuenta bancaria coincide exactamente con tu nombre en Monetae ({{ memberUserName }}).</p>
-      </div>
-      <div class="ae-tabs__container--actions">
-        <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
-        <p-button label="Continuar" class="ae-button ae-button--primary" (click)="onContinueDeposit()"></p-button>
-      </div>
-    </div>
-    <ng-template #isStepTwo>
-      <div class="ae-step__two">
-        <div class="ae-tabs__container--content scroll-auto">
-          <div class="ae-title flex align-items-center justify-content-between mb-4">
-            <div class="ae-title__icon flex align-items-center">
-              <i class="pi pi-arrow-left ae-text-dark mr-3 ae-text-medium" (click)="onBack()"></i>
-              <h2 class="ae-text-default ae-text-dark m-0">Ingresar fondos</h2>
-            </div>
-            <h3 class="ae-text-xlarge ae-text-dark">2/2</h3>
-          </div>
-          <p class="ae-text-default ae-text-dark">Elige uno de nuestros bancos disponibles para realizar el depósito</p>
-          <div class="ae-select">
-            <p-dropdown
-              #MntMemberFiatDeposit_PlatformBankAccount="ngModel"
-              id="MntMemberFiatDeposit_PlatformBankAccount"
-              name="MntMemberFiatDeposit_PlatformBankAccount"
-              [hidden]="loadPlatformBankAccountsComplete && !hasPlatformBankAccounts"
-              [disabled]="!hasPlatformBankAccounts"
-              [options]="platformBankAccounts"
-              [(ngModel)]="fiatDeposit.platformBankAccountId"
-              placeholder="{{ l('SelectTreeDots') }}"
-              (onChange)="onChangePlatformBankAccount($event)"
-              required
-            >
-              <ng-template let-account pTemplate="selectedItem">
-                  <div
-                      class="flex align-items-center gap-2"
-                      *ngIf="fiatDeposit.platformBankAccountId"
-                  >
-                      <div class="d-flex align-items-center">
-                        <div class="ae-text-dark ae-text-small">
-                          {{ account.label }}
+                <div class="ae-inputnumber">
+                    <label htmlFor="amount">¿Cuánto quieres depositar?</label>
+                    <div class="ae-inputnumber__group">
+                        <div class="ae-inputnumber__coin flex align-items-center">
+                            <span class="ae-text-light">USD</span>
                         </div>
-                      </div>
-                  </div>
-              </ng-template>
-              <ng-template let-account pTemplate="item">
-                  <div class="d-flex align-items-center">
-                    <div class="ae-text-dark ae-text-small">
-                      {{ account.label }}
+                        <p-inputNumber
+                            #MntMemberFiatDeposit_Amount="ngModel"
+                            class="p-inputNumber--space"
+                            inputId="MntMemberFiatDeposit_Amount"
+                            name="MntMemberFiatDeposit_Amount"
+                            [(ngModel)]="fiatDeposit.amount"
+                            [disabled]="saving"
+                            mode="decimal"
+                            locale="en-US"
+                            [minFractionDigits]="0"
+                            [maxFractionDigits]="2"
+                            required
+                        ></p-inputNumber>
                     </div>
-                  </div>
-              </ng-template>
-            </p-dropdown>
-          </div>
-          <validation-messages
-              [formCtrl]="MntMemberFiatDeposit_PlatformBankAccount"
-              [hidden]="loadPlatformBankAccountsComplete && !hasPlatformBankAccounts"
-          ></validation-messages>
-          <div class="ae-card__bankaccount" *ngIf="fiatDeposit.platformBankAccountId">
-            <div class="ae-bankaccount__item flex align-items-center justify-content-between">
-              <div class="ae-text">
-                <small>Nombre del banco</small>
-                <span class="ae-text-default ae-text-dark">{{ platformBankAccount.bankAccount.alias }}</span>
-              </div>
-              <div class="ae-icon">
-                <i class="pi pi-copy" (click)="copyInfoBankAaccount(platformBankAccount.bankAccount.alias)"></i>
-              </div>
-            </div>
-            <div class="ae-bankaccount__item flex align-items-center justify-content-between">
-              <div class="ae-text">
-                <small>Cuenta bancaria</small>
-                <span class="ae-text-default ae-text-dark">{{ platformBankAccount.bankAccount.account }}</span>
-              </div>
-              <div class="ae-icon">
-                <i class="pi pi-copy" (click)="copyInfoBankAaccount(platformBankAccount.bankAccount.account)"></i>
-              </div>
-            </div>
-            <div class="ae-bankaccount__item flex align-items-center justify-content-between">
-              <div class="ae-text">
-                <small>Código SWIFT (internacional)</small>
-                <span class="ae-text-default ae-text-dark">{{ platformBankAccount.bankAccount.swift }}</span>
-              </div>
-              <div class="ae-icon">
-                <i class="pi pi-copy" (click)="copyInfoBankAaccount(platformBankAccount.bankAccount.swift)"></i>
-              </div>
-            </div>
-            <div class="ae-bankaccount__item flex align-items-center justify-content-between" *ngIf="platformBankAccount.bankAccount.catCountryTitle">
-              <div class="ae-text">
-                <small>País del banco</small>
-                <span class="ae-text-default ae-text-dark">{{ platformBankAccount.bankAccount.catCountryTitle }}</span>
-              </div>
-              <div class="ae-icon">
-                <i class="pi pi-copy" (click)="copyInfoBankAaccount(platformBankAccount.bankAccount.catCountryTitle)"></i>
-              </div>
-            </div>
-            <div class="ae-bankaccount__item flex align-items-center justify-content-between" *ngIf="platformBankAccount.bankAccount.address">
-              <div class="ae-text">
-                <small>Dirección del banco</small>
-                <span class="ae-text-default ae-text-dark">{{ platformBankAccount.bankAccount.address }}</span>
-              </div>
-              <div class="ae-icon">
-                <i class="pi pi-copy" (click)="copyInfoBankAaccount(platformBankAccount.bankAccount.address)"></i>
-              </div>
-            </div>
-          </div>
-          <p class="ae-text-default ae-text-dark">Una vez realizado el depósito para que se acredite en tu cuenta Monetae debes:</p>
-          <div class="ae-input">
-            <label>{{ l('ReferenceDepositAsk') }} *</label>
-            <div class="ae-input__group">
-              <div class="ae-input__coin flex align-items-center">
-                <span class="ae-text-light">REF</span>
-              </div>
-              <input
-                type="text"
-                #MntMemberFiatDeposit_Reference="ngModel"
-                id="MntMemberFiatDeposit_Reference"
-                class="form-control pl-8"
-                [(ngModel)]="fiatDeposit.reference"
-                name="MntMemberFiatDeposit_Reference"
-                minlength="6"
-                maxlength="20"
-                required
-              />
-            </div>
-            <validation-messages [formCtrl]="MntMemberFiatDeposit_Reference"></validation-messages>
-          </div>
-          <div class="ae-upload">
-            <label>Adjuntar comprobante de operación</label>
-            <p-fileUpload
-                id="economicInfoProofIncome"
-                name="economicInfoProofIncome"
-                accept="image/*,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-fontobject,application/pdf"
-                maxFileSize="10000000"
-                fileLimit="1"
-                [url]="uploadUrl"
-                (onSelect)="onUploadFile($event, uploadedOperationProof)"
-                (onRemove)="onRemoveFile()"
-                (onBeforeSend)="onBeforeSend($event)"
-                [showUploadButton]="false"
-                [showCancelButton]="false"
-            >
-                <ng-template pTemplate="toolbar">
-                    <div class="ae-upload__header">
-                        <i class="pi pi-cloud-upload ae-text-gris"></i>
-                        <p class="ae-text-gris ae-text-small m-0">Cargar archivo</p>
+                    <validation-messages [formCtrl]="MntMemberFiatDeposit_Amount"></validation-messages>
+                </div>
+                <div class="ae-select">
+                    <label>{{ l('BankAccountOriginAsk') }}</label>
+                    <div class="alert alert-warning" *ngIf="loadBankAccountsComplete && !hasBankAccounts">
+                        {{ l('MustHaveBankAccount') }}
                     </div>
-                </ng-template>
-            </p-fileUpload>
-            <span *ngIf="messageUploadFileOperationProof" class="error-message">{{ messageUploadFileOperationProof }}</span>
-          </div>
-          <p class="ae-text-small ae-text-gris">El depósito puede tardar hasta 24 horas hábiles dependiendo de los tiempos de los bancos.</p>
+                    <p-dropdown
+                        #MntMemberFiatDeposit_BankAccount="ngModel"
+                        id="MntMemberFiatDeposit_BankAccount"
+                        name="MntMemberFiatDeposit_BankAccount"
+                        [hidden]="loadBankAccountsComplete && !hasBankAccounts"
+                        [disabled]="!hasBankAccounts"
+                        [options]="memberBankAccounts"
+                        [(ngModel)]="fiatDeposit.mntMemberBankAccountId"
+                        placeholder="{{ l('SelectTreeDots') }}"
+                        (onChange)="onChangeMemberAccount($event)"
+                        required
+                    >
+                        <ng-template let-account pTemplate="selectedItem">
+                            <div class="flex align-items-center gap-2" *ngIf="fiatDeposit.mntMemberBankAccountId">
+                                <div class="d-flex align-items-center">
+                                    <div class="ae-text-dark ae-text-small">
+                                        {{ account.label }}
+                                        <span class="ae-text-dark ae-text-small">({{ account.subtitle }})</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template let-account pTemplate="item">
+                            <div class="d-flex align-items-center">
+                                <div class="ae-text-dark ae-text-small">
+                                    {{ account.label }}
+                                    <span class="ae-text-dark ae-text-small" *ngIf="account.subtitle">
+                                        ({{ account.subtitle }})
+                                    </span>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                    <validation-messages
+                        [formCtrl]="MntMemberFiatDeposit_BankAccount"
+                        [hidden]="loadBankAccountsComplete && !hasBankAccounts"
+                    ></validation-messages>
+                    <small class="ae-text-small ae-text-gris-dark mt-2" (click)="showDialogAddBankAccount()">
+                        Añadir cuenta bancaria
+                    </small>
+                </div>
+                <p class="ae-text-small ae-text-gris mt-5 font-normal">
+                    Asegúrate de que el nombre en tu cuenta bancaria coincide exactamente con tu nombre en Monetae ({{
+                        memberUserName
+                    }}).
+                </p>
+            </div>
+            <div class="ae-tabs__container--actions">
+                <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
+                <p-button
+                    label="Continuar"
+                    class="ae-button ae-button--primary"
+                    (click)="onContinueDeposit()"
+                ></p-button>
+            </div>
         </div>
-        <div class="ae-tabs__container--actions">
-          <button
-            type="button"
-            class="ae-button ae-button--component ae-button--primary" 
-            [disabled]="!mntMemberFiatDepositForm.form.valid" 
-            (click)="saveDeposit()">
-            Continuar
-          </button>
-        </div>
-      </div>
-    </ng-template>
-  </form>
-</div>
-<div class="ae-tabs__container" *ngIf="activeItem.label == 'Retirar'">
-  <div class="ae-tabs__container--content">
-    <div class="ae-title">
-      <h2 class="ae-text-default ae-text-dark">Retirar fondos</h2>
-    </div>
-    <form #mntMemberFiatWithdrawalForm="ngForm" novalidate autocomplete="off">
-      <div class="ae-select">
-        <p-dropdown
-          #MntMemberFiatWithdrawal_BankAccount="ngModel"
-          id="MntMemberFiatWithdrawal_BankAccount"
-          name="MntMemberFiatWithdrawal_BankAccount"
-          [hidden]="loadBankAccountsComplete && !hasBankAccounts"
-          [disabled]="!hasBankAccounts"
-          [options]="memberBankAccounts"
-          [(ngModel)]="fiatWithdrawal.mntMemberBankAccountId"
-          placeholder="{{ l('SelectTreeDots') }}"
-          (onChange)="onChangeMemberAccountWithdraw($event)"
-          required
-      >
-          <ng-template let-account pTemplate="selectedItem">
-              <div
-                  class="flex align-items-center gap-2"
-                  *ngIf="fiatWithdrawal.mntMemberBankAccountId"
-              >
-                  <div class="d-flex align-items-center">
-                      <div class="ae-text-dark ae-text-small">
-                          {{ account.label }}
-                          <span class="ae-text-dark ae-text-small">
-                              ({{ account.subtitle }})
-                          </span>
-                      </div>
-                  </div>
-              </div>
-          </ng-template>
-          <ng-template let-account pTemplate="item">
-              <div class="d-flex align-items-center">
-                  <div class="ae-text-dark ae-text-small">
-                      {{ account.label }}
-                      <span class="ae-text-dark ae-text-small" *ngIf="account.subtitle">
-                          ({{ account.subtitle }})
-                      </span>
-                  </div>
-              </div>
-          </ng-template>
-      </p-dropdown>
-      <validation-messages
-          [formCtrl]="MntMemberFiatWithdrawal_BankAccount"
-          [hidden]="loadBankAccountsComplete && !hasBankAccounts"
-      ></validation-messages>
-        <small class="ae-text-small ae-text-gris-dark mt-2" (click)="showDialogAddBankAccount()">Añadir cuenta bancaria</small>
-      </div>
-      <div class="ae-inputnumber">
-        <label>Ingresar cantidad</label>
-        <div class="ae-inputnumber__group">
-          <div class="ae-inputnumber__coin flex align-items-center">
-            <span class="ae-text-light">USD</span>
-          </div>
-          <p-inputNumber
-            #MntMemberFiatWithdrawal_Amount="ngModel"
-            class="p-inputNumber--space"
-            inputId="MntMemberFiatWithdrawal_Amount"
-            name="MntMemberFiatWithdrawal_Amount"
-            [(ngModel)]="fiatWithdrawal.amount"
-            [disabled]="saving"
-            mode="decimal"
-            locale="en-US"
-            [minFractionDigits]="0"
-            [maxFractionDigits]="2"
-            required
-        ></p-inputNumber>
-        </div>
-        <validation-messages [formCtrl]="MntMemberFiatWithdrawal_Amount"></validation-messages>
-      </div>
+        <ng-template #isStepTwo>
+            <div class="ae-step__two">
+                <div class="ae-tabs__container--content scroll-auto">
+                    <div class="ae-title flex align-items-center justify-content-between mb-4">
+                        <div class="ae-title__icon flex align-items-center">
+                            <i class="pi pi-arrow-left ae-text-dark mr-3 ae-text-medium" (click)="onBack()"></i>
+                            <h2 class="ae-text-default ae-text-dark m-0">Ingresar fondos</h2>
+                        </div>
+                        <h3 class="ae-text-xlarge ae-text-dark">2/2</h3>
+                    </div>
+                    <p class="ae-text-default ae-text-dark">
+                        Elige uno de nuestros bancos disponibles para realizar el depósito
+                    </p>
+                    <div class="ae-select">
+                        <p-dropdown
+                            #MntMemberFiatDeposit_PlatformBankAccount="ngModel"
+                            id="MntMemberFiatDeposit_PlatformBankAccount"
+                            name="MntMemberFiatDeposit_PlatformBankAccount"
+                            [hidden]="loadPlatformBankAccountsComplete && !hasPlatformBankAccounts"
+                            [disabled]="!hasPlatformBankAccounts"
+                            [options]="platformBankAccounts"
+                            [(ngModel)]="fiatDeposit.platformBankAccountId"
+                            placeholder="{{ l('SelectTreeDots') }}"
+                            (onChange)="onChangePlatformBankAccount($event)"
+                            required
+                        >
+                            <ng-template let-account pTemplate="selectedItem">
+                                <div class="flex align-items-center gap-2" *ngIf="fiatDeposit.platformBankAccountId">
+                                    <div class="d-flex align-items-center">
+                                        <div class="ae-text-dark ae-text-small">
+                                            {{ account.label }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <ng-template let-account pTemplate="item">
+                                <div class="d-flex align-items-center">
+                                    <div class="ae-text-dark ae-text-small">
+                                        {{ account.label }}
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </p-dropdown>
+                    </div>
+                    <validation-messages
+                        [formCtrl]="MntMemberFiatDeposit_PlatformBankAccount"
+                        [hidden]="loadPlatformBankAccountsComplete && !hasPlatformBankAccounts"
+                    ></validation-messages>
+                    <div class="ae-card__bankaccount" *ngIf="fiatDeposit.platformBankAccountId">
+                        <div class="ae-bankaccount__item flex align-items-center justify-content-between">
+                            <div class="ae-text">
+                                <small>Nombre del banco</small>
+                                <span class="ae-text-default ae-text-dark">
+                                    {{ platformBankAccount.bankAccount.alias }}
+                                </span>
+                            </div>
+                            <div class="ae-icon">
+                                <i
+                                    class="pi pi-copy"
+                                    (click)="copyInfoBankAaccount(platformBankAccount.bankAccount.alias)"
+                                ></i>
+                            </div>
+                        </div>
+                        <div class="ae-bankaccount__item flex align-items-center justify-content-between">
+                            <div class="ae-text">
+                                <small>Cuenta bancaria</small>
+                                <span class="ae-text-default ae-text-dark">
+                                    {{ platformBankAccount.bankAccount.account }}
+                                </span>
+                            </div>
+                            <div class="ae-icon">
+                                <i
+                                    class="pi pi-copy"
+                                    (click)="copyInfoBankAaccount(platformBankAccount.bankAccount.account)"
+                                ></i>
+                            </div>
+                        </div>
+                        <div class="ae-bankaccount__item flex align-items-center justify-content-between">
+                            <div class="ae-text">
+                                <small>Código SWIFT (internacional)</small>
+                                <span class="ae-text-default ae-text-dark">
+                                    {{ platformBankAccount.bankAccount.swift }}
+                                </span>
+                            </div>
+                            <div class="ae-icon">
+                                <i
+                                    class="pi pi-copy"
+                                    (click)="copyInfoBankAaccount(platformBankAccount.bankAccount.swift)"
+                                ></i>
+                            </div>
+                        </div>
+                        <div
+                            class="ae-bankaccount__item flex align-items-center justify-content-between"
+                            *ngIf="platformBankAccount.bankAccount.catCountryTitle"
+                        >
+                            <div class="ae-text">
+                                <small>País del banco</small>
+                                <span class="ae-text-default ae-text-dark">
+                                    {{ platformBankAccount.bankAccount.catCountryTitle }}
+                                </span>
+                            </div>
+                            <div class="ae-icon">
+                                <i
+                                    class="pi pi-copy"
+                                    (click)="copyInfoBankAaccount(platformBankAccount.bankAccount.catCountryTitle)"
+                                ></i>
+                            </div>
+                        </div>
+                        <div
+                            class="ae-bankaccount__item flex align-items-center justify-content-between"
+                            *ngIf="platformBankAccount.bankAccount.address"
+                        >
+                            <div class="ae-text">
+                                <small>Dirección del banco</small>
+                                <span class="ae-text-default ae-text-dark">
+                                    {{ platformBankAccount.bankAccount.address }}
+                                </span>
+                            </div>
+                            <div class="ae-icon">
+                                <i
+                                    class="pi pi-copy"
+                                    (click)="copyInfoBankAaccount(platformBankAccount.bankAccount.address)"
+                                ></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="ae-text-default ae-text-dark">
+                        Una vez realizado el depósito para que se acredite en tu cuenta Monetae debes:
+                    </p>
+                    <div class="ae-input">
+                        <label>{{ l('ReferenceDepositAsk') }} *</label>
+                        <div class="ae-input__group">
+                            <div class="ae-input__coin flex align-items-center">
+                                <span class="ae-text-light">REF</span>
+                            </div>
+                            <input
+                                type="text"
+                                #MntMemberFiatDeposit_Reference="ngModel"
+                                id="MntMemberFiatDeposit_Reference"
+                                class="form-control pl-8"
+                                [(ngModel)]="fiatDeposit.reference"
+                                name="MntMemberFiatDeposit_Reference"
+                                minlength="6"
+                                maxlength="20"
+                                required
+                            />
+                        </div>
+                        <validation-messages [formCtrl]="MntMemberFiatDeposit_Reference"></validation-messages>
+                    </div>
+                    <div class="ae-upload">
+                        <label>Adjuntar comprobante de operación</label>
+                        <p-fileUpload
+                            id="economicInfoProofIncome"
+                            name="economicInfoProofIncome"
+                            accept="image/*,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-fontobject,application/pdf"
+                            maxFileSize="10000000"
+                            fileLimit="1"
+                            [url]="uploadUrl"
+                            (onSelect)="onUploadFile($event, uploadedOperationProof)"
+                            (onRemove)="onRemoveFile()"
+                            (onBeforeSend)="onBeforeSend($event)"
+                            [showUploadButton]="false"
+                            [showCancelButton]="false"
+                        >
+                            <ng-template pTemplate="toolbar">
+                                <div class="ae-upload__header">
+                                    <i class="pi pi-cloud-upload ae-text-gris"></i>
+                                    <p class="ae-text-gris ae-text-small m-0">Cargar archivo</p>
+                                </div>
+                            </ng-template>
+                        </p-fileUpload>
+                        <span *ngIf="messageUploadFileOperationProof" class="error-message">
+                            {{ messageUploadFileOperationProof }}
+                        </span>
+                    </div>
+                    <p class="ae-text-small ae-text-gris">
+                        El depósito puede tardar hasta 24 horas hábiles dependiendo de los tiempos de los bancos.
+                    </p>
+                </div>
+                <div class="ae-tabs__container--actions">
+                    <button
+                        type="button"
+                        class="ae-button ae-button--component ae-button--primary"
+                        [disabled]="!mntMemberFiatDepositForm.form.valid"
+                        (click)="saveDeposit()"
+                    >
+                        Continuar
+                    </button>
+                </div>
+            </div>
+        </ng-template>
     </form>
-    <p class="ae-text-small ae-text-gris-dark mb-8">Recuerda que el horario para realizar retiros es de 09:00 am hasta las 6:00 pm (Hora del centro) de lunes a viernes.</p>
-    <p class="ae-text-small ae-text-dark">El depósito puede tardar hasta 24 horas hábiles dependiendo de los tiempos de los bancos.</p>
-  </div>
-  <div class="ae-tabs__container--actions">
-    <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
-    <button
-      type="button"
-      class="ae-button ae-button--component ae-button--primary" 
-      [disabled]="!mntMemberFiatWithdrawalForm.form.valid"
-      (click)="onContinueWithdraw()">
-      Continuar
-    </button>
-  </div>
+</div>
+
+<div class="ae-tabs__container" *ngIf="activeItem.label == 'Retirar'">
+    <div class="ae-tabs__container--content">
+        <div class="ae-title">
+            <h2 class="ae-text-default ae-text-dark">Retirar fondos</h2>
+        </div>
+        <form #mntMemberFiatWithdrawalForm="ngForm" novalidate autocomplete="off">
+            <div class="ae-select">
+                <div class="alert alert-warning" *ngIf="loadBankAccountsComplete && !hasBankAccounts">
+                    {{ l('MustHaveBankAccount') }}
+                </div>
+                <p-dropdown
+                    #MntMemberFiatWithdrawal_BankAccount="ngModel"
+                    id="MntMemberFiatWithdrawal_BankAccount"
+                    name="MntMemberFiatWithdrawal_BankAccount"
+                    [hidden]="loadBankAccountsComplete && !hasBankAccounts"
+                    [disabled]="!hasBankAccounts"
+                    [options]="memberBankAccounts"
+                    [(ngModel)]="fiatWithdrawal.mntMemberBankAccountId"
+                    placeholder="{{ l('SelectTreeDots') }}"
+                    (onChange)="onChangeMemberAccountWithdraw($event)"
+                    required
+                >
+                    <ng-template let-account pTemplate="selectedItem">
+                        <div class="flex align-items-center gap-2" *ngIf="fiatWithdrawal.mntMemberBankAccountId">
+                            <div class="d-flex align-items-center">
+                                <div class="ae-text-dark ae-text-small">
+                                    {{ account.label }}
+                                    <span class="ae-text-dark ae-text-small">({{ account.subtitle }})</span>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-account pTemplate="item">
+                        <div class="d-flex align-items-center">
+                            <div class="ae-text-dark ae-text-small">
+                                {{ account.label }}
+                                <span class="ae-text-dark ae-text-small" *ngIf="account.subtitle">
+                                    ({{ account.subtitle }})
+                                </span>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <validation-messages
+                    [formCtrl]="MntMemberFiatWithdrawal_BankAccount"
+                    [hidden]="loadBankAccountsComplete && !hasBankAccounts"
+                ></validation-messages>
+                <small class="ae-text-small ae-text-gris-dark mt-2" (click)="showDialogAddBankAccount()">
+                    Añadir cuenta bancaria
+                </small>
+            </div>
+            <div class="ae-inputnumber">
+                <label>Ingresar cantidad</label>
+                <div class="ae-inputnumber__group">
+                    <div class="ae-inputnumber__coin flex align-items-center">
+                        <span class="ae-text-light">USD</span>
+                    </div>
+                    <p-inputNumber
+                        #MntMemberFiatWithdrawal_Amount="ngModel"
+                        class="p-inputNumber--space"
+                        inputId="MntMemberFiatWithdrawal_Amount"
+                        name="MntMemberFiatWithdrawal_Amount"
+                        [(ngModel)]="fiatWithdrawal.amount"
+                        [disabled]="saving"
+                        mode="decimal"
+                        locale="en-US"
+                        [minFractionDigits]="0"
+                        [maxFractionDigits]="2"
+                        required
+                    ></p-inputNumber>
+                </div>
+                <validation-messages [formCtrl]="MntMemberFiatWithdrawal_Amount"></validation-messages>
+            </div>
+        </form>
+        <p class="ae-text-small ae-text-gris-dark mb-8">
+            Recuerda que el horario para realizar retiros es de 09:00 am hasta las 6:00 pm (Hora del centro) de lunes a
+            viernes.
+        </p>
+        <p class="ae-text-small ae-text-dark">
+            El depósito puede tardar hasta 24 horas hábiles dependiendo de los tiempos de los bancos.
+        </p>
+    </div>
+    <div class="ae-tabs__container--actions">
+        <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
+        <button
+            type="button"
+            class="ae-button ae-button--component ae-button--primary"
+            [disabled]="!mntMemberFiatWithdrawalForm.form.valid"
+            (click)="onContinueWithdraw()"
+        >
+            Continuar
+        </button>
+    </div>
 </div>
 <p-toast></p-toast>

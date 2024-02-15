@@ -16,6 +16,7 @@ import { finalize } from 'rxjs/operators';
 import { EnableTwoFactorAuthenticationModalComponent } from './enable-two-factor-authentication-modal.component';
 import { ServiceCommonProxy } from '@shared/service-proxies/service-common-proxies';
 import { SelectItem } from 'primeng/api';
+import { GetSelectIntDto } from '@shared/service-proxies/dto/Common/SelectInput/GetSelectIntDto';
 import { Dropdown } from 'primeng/dropdown';
 
 @Component({
@@ -45,6 +46,7 @@ export class MySettingsModalComponent extends AppComponentBase implements OnInit
     public newPhoneNumber: string;
     public memberPhoneCodeId: number;
     public personalDataPhones: SelectItem[];
+    public flags: GetSelectIntDto[] = [];
 
     isMultiTenancyEnabled: boolean = this.multiTenancy.isEnabled;
     isTwoFactorLoginEnabledForApplication = false;
@@ -52,7 +54,7 @@ export class MySettingsModalComponent extends AppComponentBase implements OnInit
     private _initialTimezone: string = undefined;
 
     constructor(
-        injector: Injector, 
+        injector: Injector,
         private _profileService: ProfileServiceProxy,
         private _serviceCommonProxy: ServiceCommonProxy,
     ) {
@@ -65,6 +67,14 @@ export class MySettingsModalComponent extends AppComponentBase implements OnInit
         );
         this._serviceCommonProxy.getSelectOptions('MntMemberDataComplements/GetAllCountryPhoneCodesForSelect', null).subscribe((result) => {
             this.personalDataPhones = result.items;
+            this.flags = [];
+            for (const record of result.items) {
+                let temp = new GetSelectIntDto();
+                temp.value = record.value;
+                temp.label = record.label;
+                temp.subtitle = record.subtitle;
+                this.flags[record.value] = temp;
+            }
         });
     }
 
@@ -106,8 +116,8 @@ export class MySettingsModalComponent extends AppComponentBase implements OnInit
             });
     }
 
-    onChangePhoneNumber(): void{
-        if(this.user.phoneCodeId && this.user.phoneNumber){
+    onChangePhoneNumber(): void {
+        if (this.user.phoneCodeId && this.user.phoneNumber) {
             this.activeMessagePhone = false;
         } else {
             this.activeMessagePhone = true;
@@ -115,7 +125,7 @@ export class MySettingsModalComponent extends AppComponentBase implements OnInit
     }
 
     smsVerify(): void {
-        if(!this.user.phoneCodeId || !this.user.phoneNumber){
+        if (!this.user.phoneCodeId || !this.user.phoneNumber) {
             this.activeMessagePhone = true;
         } else {
             let input = new SendVerificationSmsInputDto();

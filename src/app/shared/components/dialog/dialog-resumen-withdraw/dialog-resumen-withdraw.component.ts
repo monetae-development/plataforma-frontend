@@ -30,7 +30,7 @@ export class DialogResumenWithdrawComponent extends AppComponentBase implements 
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
     private _serviceMemberProxy: ServiceMembersProxy
-  ) { 
+  ) {
     super(injector);
     console.log(config.data.resumenWithdraw);
     this.resumenWithdraw = config.data.resumenWithdraw;
@@ -38,7 +38,7 @@ export class DialogResumenWithdrawComponent extends AppComponentBase implements 
   }
 
   ngOnInit() {
-    
+
   }
 
   get dateTime() {
@@ -49,10 +49,10 @@ export class DialogResumenWithdrawComponent extends AppComponentBase implements 
     const day = this.dateNow.getDate();
     const month = months[this.dateNow.getMonth()];
     const year = this.dateNow.getFullYear();
-    return  `${day} ${month} ${year}`;
+    return `${day} ${month} ${year}`;
   }
 
-  onCancel(){
+  onCancel() {
     this.ref.close();
   }
 
@@ -64,7 +64,7 @@ export class DialogResumenWithdrawComponent extends AppComponentBase implements 
         this.ref.close();
       }))
       .subscribe((result) => {
-        this.outAccept.emit(true);
+        this.outAccept.emit(result.folio);
       });
   }
 
