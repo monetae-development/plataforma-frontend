@@ -101,9 +101,8 @@
                                         "
                                         class="ae-btn ae-btn--primary"
                                         type="button"
-                                        tooltip="{{ 'YourPhoneNumberIsNotVerified' | localize }}"
+                                        [tooltip]="isPhoneNumberConfirmed && savedPhoneNumber == user.phoneNumber ? '' : l('YourPhoneNumberIsNotVerified') "
                                     >
-                                        <!-- <i class="fa fa-exclamation-triangle"></i> -->
                                         {{ 'Verify' | localize }}
                                     </button>
                                 </span>
