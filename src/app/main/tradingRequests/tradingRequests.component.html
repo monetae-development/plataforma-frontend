@@ -341,23 +341,9 @@
                                                     class="btn btn-actions"
                                                     pTooltip="{{ l('StatusChange') }}"
                                                     tooltipPosition="top"
-                                                    (click)="
-                                                        changeStatus(
-                                                            record.request.userFk.id,
-                                                            record.request.id,
-                                                            record.request.status
-                                                        )
-                                                    "
+                                                    (click)="changeStatus(record)"
                                                 >
                                                     <i class="flaticon2-console text-info"></i>
-                                                </button>
-                                                <button
-                                                    class="btn btn-actions"
-                                                    pTooltip="{{ l('Delete') }}"
-                                                    tooltipPosition="top"
-                                                    (click)="deleteRequest(record.request)"
-                                                >
-                                                    <i class="flaticon-delete text-danger"></i>
                                                 </button>
                                             </td>
                                         </tr>

@@ -11,6 +11,7 @@ import {
     MntMemberFilesServiceProxy,
     FileParameter,
 } from '@shared/service-proxies/service-proxies';
+import { GetMntMemberFileForUserEditDto } from '@shared/service-proxies/dto/members/mntMemberFile/GetMntMemberFileForUserEditDto';
 import { GetSelectIntDto } from '@shared/service-proxies/dto/Common/SelectInput/GetSelectIntDto';
 import { ServiceMembersProxy } from '@shared/service-proxies/service-members-proxies';
 import { CreateOrEditMntMemberComplementDto } from '@shared/service-proxies/dto/mntMembers/CreateOrEditMntMemberComplementDto';
@@ -24,7 +25,6 @@ import { PrimeNGConfig } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
 import { Dropdown } from 'primeng/dropdown';
 import { RadioButton } from 'primeng/radiobutton';
-import { CalendarModule } from 'primeng/calendar';
 import * as _ from 'lodash';
 import { DateTime } from 'luxon';
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
@@ -34,6 +34,7 @@ import { DialogDefaultComponent } from '@app/shared/components/dialog/dialog-def
 import { DialogService } from 'primeng/dynamicdialog';
 import { environment } from 'environments/environment';
 import { MemberStatus } from '@shared/service-proxies/enum/Members/MemberStatus.enum';
+import { FileType } from '@shared/service-proxies/enum/Members/FileType.enum';
 
 @Component({
     templateUrl: './mntMemberDataComplements.component.html',
@@ -86,6 +87,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     public memberAddressCountryId: number;
     public memberIdentity: CreateOrEditMntMemberIdentityDto;
     public memberEconomicInfo: CreateOrEditMntEconomicInfoDto;
+    public memberFiles: GetMntMemberFileForUserEditDto[] = [];
     public flags: GetSelectIntDto[] = [];
 
     advancedFiltersAreShown = false;
@@ -102,11 +104,11 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     uploadFileIdentityBack = false;
     uploadFileIncomeProof = false;
     uploadFileTaxReturn = false;
-    messageUploadFileAddressProof: string = '';
-    messageUploadFileIdentityFront: string = '';
-    messageUploadFileIdentityBack: string = '';
-    messageUploadFileIncomeProof: string = '';
-    messageUploadFileTaxReturn: string = '';
+    messageUploadFileAddressProof = '';
+    messageUploadFileIdentityFront = '';
+    messageUploadFileIdentityBack = '';
+    messageUploadFileIncomeProof = '';
+    messageUploadFileTaxReturn = '';
     maxFileSize = environment.uploadMaxFileSize;
 
     minDate: Date;
@@ -122,7 +124,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         'memberPhoneCode': new FormControl('', Validators.required),
         'memberPhone': new FormControl('', Validators.required),
         'memberNationality': new FormControl('', Validators.required),
-        'memberDayOfBirth': new FormControl('', Validators.required),
+        'memberDayOfBirth': new FormControl('', [Validators.required, this.validateAge]),
     });
     addressForm = this._formBuilder.group({
         'addressStreet': new FormControl('', Validators.required),
@@ -154,7 +156,12 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     saving = false;
     isValid = false;
     isClientRole = false;
-    memberStatus: number = 0;
+    memberStatus = MemberStatus.Register;
+    memberStatusEnum = MemberStatus;
+    _memberDayOfBirth = new Date();
+    _memberIdentityExpiration = new Date();
+    _fileType = FileType;
+    feedback: string;
 
     step0VerifyAccount: Boolean = true;
     step1VerifyAccount: Boolean = false;
@@ -195,37 +202,35 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         this.memberIdentity = new CreateOrEditMntMemberIdentityDto();
         this.memberEconomicInfo = new CreateOrEditMntEconomicInfoDto();
 
-        this._sessionServiceProxy.getCurrentLoignIsClientRole().subscribe((result) => {
-            console.log(result);
-            this.isClientRole = result.hasClientRole;
+        this.isClientRole = this.appSession.hasClientRole;
 
-            if (!result.hasClientRole) {
-                this.openMessageDialogRolAdministrador();
-            }
-
-            this._sessionServiceProxy.getCurrentLoginInformations().subscribe((session) => {
-                if (this.isClientRole) {
-                    this._serviceMembersProxy.getStatus().subscribe((result) => {
-                        console.log(result);
-                        this.memberStatus = result.status;
-                        this.checkSessionAndComplemented = true;
-                        if (this.memberStatus === MemberStatus.Register) {
-                            this.openMessageDialogVerifyAccount();
-                            this.formInit();
-                        } else if (this.memberStatus === MemberStatus.Approved) {
-                            this.openMessageDialogApproveAccount();
-                        } else if (this.memberStatus === MemberStatus.Refused) {
-                            this.openMessageDialogRefusedAccount();
-                        } else {
-                            this.openMessageDialogSuccessAccount();
-                        }
-                    });
-                } else {
-                    this.checkSessionAndComplemented = true;
-                    this.formInit();
+        if (this.isClientRole) {
+            this._serviceMembersProxy.getStatus().subscribe((result) => {
+                this.memberStatus = result.status;
+                this.feedback = result.feedback;
+                this.checkSessionAndComplemented = true;
+                switch (this.memberStatus) {
+                    case MemberStatus.Register:
+                        this.openMessageDialogVerifyAccount();
+                        this.formInit();
+                        break;
+                    case MemberStatus.Approved:
+                        this.openMessageDialogApproveAccount();
+                        break;
+                    case MemberStatus.Refused:
+                        this.openMessageDialogRefusedAccount();
+                        this.formInit();
+                        break;
+                    default:
+                        this.openMessageDialogSuccessAccount();
+                        break;
                 }
             });
-        });
+        } else {
+            this.openMessageDialogRolAdministrador();
+            this.checkSessionAndComplemented = true;
+            this.formInit();
+        }
     }
 
     ngAfterViewInit() {
@@ -235,6 +240,8 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     formInit() {
         this._profileService.getCurrentUserProfileForEdit().subscribe((result) => {
             this.user = result;
+            this.memberPersonalData.phoneCodeId = this.user.phoneCodeId;
+            this.memberPersonalData.phone = this.user.phoneNumber;
             this.residenceCountry.disabled = true;
 
             this._serviceCommonProxy.getSelectOptions('MntMemberDataComplements/GetAllContriesForSelect', null).subscribe((result) => {
@@ -242,8 +249,8 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
                 this.personalDataCountries = result.items;
                 this.identityDataCountries = result.items;
                 this.addressCountries = result.items;
-                this.residenceCountry.placeholder = this.l('SelectAnItemDropdown');
                 this.residenceCountry.disabled = false;
+                this.residenceCountry.placeholder = this.l('SelectAnItemDropdown');
             });
 
             this._serviceCommonProxy.getSelectOptions('MntMemberDataComplements/GetAllNationalitiesForSelect', null).subscribe((result) => {
@@ -260,7 +267,6 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
                     temp.subtitle = record.subtitle;
                     this.flags[record.value] = temp;
                 }
-                console.log(this.flags);
             });
 
             this._serviceCommonProxy.getSelectOptions('MntMemberDataComplements/GetAllIndentitiesTypesForSelect', null).subscribe((result) => {
@@ -275,16 +281,59 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
                 this.economicInfoSourceFoundses = result.items;
             });
 
+            if (this.memberStatus === MemberStatus.Refused) {
+                this.getForUserEdit();
+            }
         });
     }
 
-    onUploadFileAddressProof(event): void {
-        console.log("entra");
-        for (const file of event.files) {
-            // this.uploadedAddressProof.push(file);
-            // recordFiles.push(file);
-            console.log(event);
+    getForUserEdit() {
+        this._serviceMembersProxy.getForUserEdit().subscribe((result) => {
+            this.memberPersonalData = result.MemberPersonalData;
+            this.isPep = this.memberPersonalData.isPep;
+            this._memberDayOfBirth = new Date(result.MemberPersonalData.dayOfBirth.toString());
+            this.memberAddress = result.MemberAddress;
+            this.memberAddressCountryId = this.memberAddress.catCountryId;
+            this.onAddressChangeCountry();
+            this.memberIdentity = result.MemberIdentity;
+            this._memberIdentityExpiration = new Date(this.memberIdentity.expiration.toString());
+            this.memberEconomicInfo = result.MemberEconomicInfo;
+            this.memberFiles = result.MemberFiles;
+        });
+    }
+
+    getFile(type: FileType): GetMntMemberFileForUserEditDto {
+        let file = new GetMntMemberFileForUserEditDto();
+        if (this.memberStatus !== MemberStatus.Refused || this.memberFiles == null) {
+            file.type = FileType.Unknown;
+            return file;
         }
+        for (let item of this.memberFiles) {
+            if (item.type === type) {
+                file = item;
+
+                switch (type) {
+                    case FileType.AddressProof:
+                        this.uploadFileAddressProof = true;
+                        break;
+                    case FileType.IdentityFront:
+                        this.uploadFileIdentityFront = true;
+                        break;
+                    case FileType.IdentityBack:
+                        this.uploadFileIdentityBack = true;
+                        break;
+                    case FileType.IncomeProof:
+                        this.uploadFileIncomeProof = true;
+                        break;
+                    case FileType.TaxReturn:
+                        this.uploadFileTaxReturn = true;
+                        break;
+                }
+
+                break;
+            }
+        }
+        return file;
     }
 
     // upload event
@@ -359,17 +408,17 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
 
     onBeforeSend(event): void {
         event.xhr.setRequestHeader('Authorization', 'Bearer ' + abp.auth.getToken());
-        console.log("entra");
     }
 
     onSave() {
         this.memberPersonalData.name = this.user.name;
         this.memberPersonalData.surname = this.user.surname;
-        this.memberPersonalData.dayOfBirth = this._dateTimeService.getEndOfDayForDate(this.memberPersonalData.dayOfBirth);
+        this.memberPersonalData.dayOfBirth = this._dateTimeService.getEndOfDayForDate(this._memberDayOfBirth);
         this.memberPersonalData.isPep = this.isPep;
         this.member.MemberPersonalData = this.memberPersonalData;
         this.member.MemberAddress = this.memberAddress;
-        this.memberIdentity.expiration = this._dateTimeService.getEndOfDayForDate(this.memberIdentity.expiration);
+        this.memberIdentity.expiration = this._dateTimeService.getEndOfDayForDate(this._memberIdentityExpiration);
+        console.log(this.memberIdentity.expiration);
         this.member.MemberIdentity = this.memberIdentity;
         this.member.MemberEconomicInfo = this.memberEconomicInfo;
         this.saving = true;
@@ -392,7 +441,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
             this.saving = false;
             this.isValid = false;
         } else {
-            console.log(this.member);
+            //console.log(this.member);
             if (!this.isClientRole) {
                 this.openMessageDialogRolAdministrador();
             } else {
@@ -407,12 +456,16 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     }
 
     onAddressChangeCountry(event?: EventEmitter): void {
-        this.addressState.placeholder = this.l('loading');
-        this.addressState.disabled = true;
+        if (this.addressState !== undefined) {
+            this.addressState.placeholder = this.l('loading');
+            this.addressState.disabled = true;
+        }
         this._serviceCommonProxy.getSelectOptions('MntMemberDataComplements/GetAllStatesForSelect', this.memberAddressCountryId).subscribe((result) => {
             this.addressStates = result.items;
-            this.addressState.placeholder = this.l('SelectAnItemDropdown');
-            this.addressState.disabled = false;
+            if (this.addressState !== undefined) {
+                this.addressState.disabled = false;
+                this.addressState.placeholder = this.l('SelectAnItemDropdown');
+            }
         });
     }
 
@@ -458,6 +511,54 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
                 }
             }
         });
+    }
+
+    backStep(step: number): void {
+        if (step === 0) {
+            this.step0VerifyAccount = true;
+            this.step1VerifyAccount = false;
+        } else if (step === 1) {
+            this.step1VerifyAccount = true;
+            this.step2VerifyAccount = false;
+        } else if (step === 2) {
+            this.step2VerifyAccount = true;
+            this.step3VerifyAccount = false;
+        } else if (step === 3) {
+            this.step3VerifyAccount = true;
+            this.step4VerifyAccount = false;
+        }
+    }
+
+    nextStep(step: number): void {
+        if (step === 0) {
+            if (this.residenceForm.invalid) {
+                this.validateForm(this.residenceForm);
+            } else {
+                this.step0VerifyAccount = false;
+                this.step1VerifyAccount = true;
+            }
+        } else if (step === 1) {
+            if (this.personalDataForm.invalid) {
+                this.validateForm(this.personalDataForm);
+            } else {
+                this.step1VerifyAccount = false;
+                this.step2VerifyAccount = true;
+            }
+        } else if (step === 2) {
+            if (this.addressForm.invalid) {
+                this.validateForm(this.addressForm);
+            } else {
+                this.step2VerifyAccount = false;
+                this.step3VerifyAccount = true;
+            }
+        } else if (step === 3) {
+            if (this.identityForm.invalid) {
+                this.validateForm(this.identityForm);
+            } else {
+                this.step3VerifyAccount = false;
+                this.step4VerifyAccount = true;
+            }
+        }
     }
 
     protected translatePrimeComponents() {
@@ -516,52 +617,21 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         });
     }
 
-    backStep(step: number): void {
-        if (step === 0) {
-            this.step0VerifyAccount = true;
-            this.step1VerifyAccount = false;
-        } else if (step === 1) {
-            this.step1VerifyAccount = true;
-            this.step2VerifyAccount = false;
-        } else if (step === 2) {
-            this.step2VerifyAccount = true;
-            this.step3VerifyAccount = false;
-        } else if (step === 3) {
-            this.step3VerifyAccount = true;
-            this.step4VerifyAccount = false;
+    private validateAge(control) {
+        if (control.value == null || control.value === '') {
+            return null;
         }
-    }
+        const fechaNacimiento = new Date(control.value);
+        let edad = 1;
 
-    nextStep(step: number): void {
-        if (step === 0) {
-            if (this.residenceForm.invalid) {
-                this.validateForm(this.residenceForm);
-            } else {
-                this.step0VerifyAccount = false;
-                this.step1VerifyAccount = true;
-            }
-        } else if (step === 1) {
-            if (this.personalDataForm.invalid) {
-                this.validateForm(this.personalDataForm);
-            } else {
-                this.step1VerifyAccount = false;
-                this.step2VerifyAccount = true;
-            }
-        } else if (step === 2) {
-            if (this.addressForm.invalid) {
-                this.validateForm(this.addressForm);
-            } else {
-                this.step2VerifyAccount = false;
-                this.step3VerifyAccount = true;
-            }
-        } else if (step === 3) {
-            if (this.identityForm.invalid) {
-                this.validateForm(this.identityForm);
-            } else {
-                this.step3VerifyAccount = false;
-                this.step4VerifyAccount = true;
-            }
+        const hoy = new Date();
+        edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+        const mes = hoy.getMonth() - fechaNacimiento.getMonth();
+        if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimiento.getDate())) {
+            edad = edad - 1;
         }
+
+        return edad >= 18 ? null : { menorDeEdad: true };
     }
 
     private openMessageDialogRolAdministrador(): void {
@@ -636,7 +706,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         dialogRef?.changeDetectorRef.detectChanges();
         const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
         instance?.outAccept.subscribe(() => {
-            this._router.navigate(['app/main/members/mntMemberFiat']);
+            this._router.navigate(['app/main/dashboard', 'fiat-deposit']);
             ref.close();
         });
     }
@@ -647,8 +717,8 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
             styleClass: 'ae-dialog ae-dialog--default ae-text-danger ae-dialog--sm',
             data: {
                 icon: 'pi pi-id-card',
-                title: '"¡Lo sentimos! <br> Tu verificación de identidad KYC <br> ha sido rechazada',
-                subtitle: 'Para generar una nueva solicitud contacte a nuestro equipo de soporte en info@monetae.io.',
+                title: this.l('KycRequestRefusedDialogTitle'),
+                subtitle: this.l('KycRequestRefusedDialogMessage'),
                 titleAction: 'Aceptar'
             }
         });
@@ -656,7 +726,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         dialogRef?.changeDetectorRef.detectChanges();
         const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
         instance?.outAccept.subscribe(() => {
-            this._router.navigate(['app/main/dashboard']);
+            //this._router.navigate(['app/main/dashboard']);
             ref.close();
         });
     }

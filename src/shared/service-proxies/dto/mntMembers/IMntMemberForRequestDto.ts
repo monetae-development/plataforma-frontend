@@ -1,4 +1,4 @@
 export interface IMntMemberForRequestDto {
-    usserId: number;
+    userId: number;
     id: number;
 }

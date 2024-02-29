@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable arrow-body-style */
 /* eslint-disable @typescript-eslint/member-ordering */
 import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 'rxjs/operators';
 import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
@@ -17,8 +19,9 @@ import { CreateMntMemberFiatOutput } from './dto/members/mntMemberFiat/CreateMnt
 import { CreateMntMemberFiatWithdrawalDto } from './dto/members/mntMemberFiat/CreateMntMemberFiatWithdrawalDto';
 import { PRGetPlatformBankAccountForViewMemberDto } from './dto/Platform/PlatformBankAccount/PRGetPlatformBankAccountForViewMemberDto';
 import { PRGetAllMntMemberFiatForFullViewDto } from './dto/members/mntMemberFiat/PRGetAllMntMemberFiatForFullViewDto';
-import { UpdateMntMemberFiatRequestStatusInput } from './dto/members/mntMemberFiat/UpdateMntMemberFiatRequestStatusInput';
-import { UpdateTradingRequestStatusInput } from './dto/TradingRequest/UpdateTradingRequestStatusInput';
+import { UpdateMntMemberStatusDto } from './dto/mntMembers/UpdateMntMemberStatusDto';
+import { UpdateMntMemberFiatRequestStatusDto } from './dto/members/mntMemberFiat/UpdateMntMemberFiatRequestStatusDto';
+import { EditTradingRequestStatusDto } from './dto/TradingRequest/EditTradingRequestStatusDto';
 import { PRGetAllMntMemberTransactionRequestForViewDto } from './dto/members/mntMemberTransactionRequest/PRGetAllMntMemberTransactionRequestForViewDto';
 import { Helpers } from './service-helpers';
 import { DateTime, Duration } from 'luxon';
@@ -145,6 +148,56 @@ export class ServiceMembersProxy {
         return _observableOf(null as any);
     }
 
+    /**
+    * @param body (optional)
+    * @return Success
+    */
+    updateMemberStatus(body: UpdateMntMemberStatusDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + '/api/services/app/MntMembers/UpdateStatus';
+        url_ = url_.replace(/[?&]$/, '');
+
+        const content_ = JSON.stringify(body);
+
+        let options_: any = {
+            body: content_,
+            observe: 'response',
+            responseType: 'blob',
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json-patch+json',
+            })
+        };
+
+        return this.http.request('put', url_, options_).pipe(_observableMergeMap((response_: any) => this.processUpdateMemberStatus(response_))).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateMemberStatus(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else {
+                return _observableThrow(response_) as any as Observable<void>;
+            }
+        }));
+    }
+
+    protected processUpdateMemberStatus(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = response instanceof HttpResponse ? response.body : (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {};
+        if (response.headers) {
+            for (let key of response.headers.keys()) {
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        if (status === 200) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => _observableOf(null as any)));
+        } else if (status !== 200 && status !== 204) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers)));
+        }
+        return _observableOf(null as any);
+    }
+
 
     /**
      * @param body (optional)
@@ -194,6 +247,62 @@ export class ServiceMembersProxy {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => _observableOf(null as any)));
         } else if (status !== 200 && status !== 204) {
             return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers)));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional)
+     * @return Success
+     */
+    getForUserEdit(): Observable<CreateOrEditMntMemberComplementDto> {
+        let url_ = this.baseUrl + '/api/services/app/MntMemberDataComplements/GetForEdit';
+        url_ = url_.replace(/[?&]$/, '');
+
+        let options_: any = {
+            observe: 'response',
+            responseType: 'blob',
+            headers: new HttpHeaders({
+                'Accept': 'text/plain'
+            })
+        };
+
+        return this.http.request('get', url_, options_).pipe(_observableMergeMap((response_: any) => this.processGetForEdit(response_))).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CreateOrEditMntMemberComplementDto>;
+                }
+            } else {
+                return _observableThrow(response_) as any as Observable<CreateOrEditMntMemberComplementDto>;
+            }
+        }));
+    }
+
+    protected processGetForEdit(response: HttpResponseBase): Observable<CreateOrEditMntMemberComplementDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {};
+        if (response.headers) {
+            for (let key of response.headers.keys()) {
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        if (status === 200) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = CreateOrEditMntMemberComplementDto.fromJS(resultData200);
+                return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+            }));
         }
         return _observableOf(null as any);
     }
@@ -433,6 +542,61 @@ export class ServiceMembersProxy {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @param id (optional)
+     * @return Success
+     */
+    getBankAccountsByMemberIdForView(id: number | undefined): Observable<PRGetMntMemberBankAccountForViewDto> {
+        let url_ = this.baseUrl + '/api/services/app/MntMemberBankAccounts/GetBankAccountsByMemberIdForView?';
+        url_ += 'Id=' + encodeURIComponent('' + ((id === null || id === undefined) ? '' : id)) + '&';
+        url_ = url_.replace(/[?&]$/, '');
+
+        let options_: any = {
+            observe: 'response',
+            responseType: 'blob',
+            headers: new HttpHeaders({
+                'Accept': 'text/plain'
+            })
+        };
+
+        return this.http.request('get', url_, options_).pipe(_observableMergeMap((response_: any) => this.processGetBankAccountsByMemberIdForView(response_))).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBankAccountsByMemberIdForView(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PRGetMntMemberBankAccountForViewDto>;
+                }
+            } else {
+                return _observableThrow(response_) as any as Observable<PRGetMntMemberBankAccountForViewDto>;
+            }
+        }));
+    }
+
+    protected processGetBankAccountsByMemberIdForView(response: HttpResponseBase): Observable<PRGetMntMemberBankAccountForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) {
+            for (let key of response.headers.keys()) {
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        if (status === 200) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = PRGetMntMemberBankAccountForViewDto.fromJS(resultData200);
+                return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers)));
+        }
+        return _observableOf(null as any);
+    }
+
 
     /**
      * @param body (optional)
@@ -1090,7 +1254,7 @@ export class ServiceMembersProxy {
      * @param body (optional)
      * @return Success
      */
-    updateFiatStatus(body: UpdateMntMemberFiatRequestStatusInput | undefined): Observable<void> {
+    updateFiatStatus(body: UpdateMntMemberFiatRequestStatusDto | undefined): Observable<void> {
         let url_ = this.baseUrl + '/api/services/app/MntMemberFiatRequests/UpdateStatus';
         url_ = url_.replace(/[?&]$/, '');
 
@@ -1140,7 +1304,7 @@ export class ServiceMembersProxy {
      * @param body (optional)
      * @return Success
      */
-    updateTradingStatus(body: UpdateTradingRequestStatusInput | undefined): Observable<void> {
+    updateTradingStatus(body: EditTradingRequestStatusDto | undefined): Observable<void> {
         let url_ = this.baseUrl + '/api/services/app/TradingRequests/UpdateStatus';
         url_ = url_.replace(/[?&]$/, '');
 

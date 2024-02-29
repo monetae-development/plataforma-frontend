@@ -18,7 +18,7 @@ export class AccountComponent extends AppComponentBase implements OnInit {
     remoteServiceBaseUrl: string = AppConsts.remoteServiceBaseUrl;
     skin = this.appSession.theme.baseSettings.layout.darkMode ? 'dark' : 'light';
     //defaultLogo = AppConsts.appBaseUrl + '/assets/common/images/app-logo-on-' + this.skin + '.svg';
-    defaultLogo = AppConsts.appBaseUrl + '/assets/common/images/logo-monetae.svg';
+    defaultLogo = AppConsts.appBaseUrl + '/assets/common/images/logo-monetae.png';
     backgroundImageName = this.appSession.theme.baseSettings.layout.darkMode ? 'login' : 'login';
     tenantChangeDisabledRoutes: string[] = [
         'select-edition',

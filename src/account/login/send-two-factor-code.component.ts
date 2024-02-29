@@ -29,7 +29,7 @@ export class SendTwoFactorCodeComponent extends AppComponentBase implements CanA
         this.loginService.authenticateResult.twoFactorAuthProviders.forEach((value) => {
             let option = { label: this.l('TwoFactorOption:' + value), value: value };
             this.optionsTwoFactorProvider.push(option);
-            if (this.optionsTwoFactorProvider.length == 1) {
+            if (this.optionsTwoFactorProvider.length === 1) {
                 this.selectedTwoFactorProvider = this.optionsTwoFactorProvider[0].value;
             }
         });
@@ -65,11 +65,11 @@ export class SendTwoFactorCodeComponent extends AppComponentBase implements CanA
             .sendTwoFactorAuthCode(model)
             .pipe(finalize(() => (this.submitting = false)))
             .subscribe(() => {
-                this._router.navigate(['/account/verify-code'], { state : { provider : this.selectedTwoFactorProvider }});
+                this._router.navigate(['/account/verify-code'], { state: { provider: this.selectedTwoFactorProvider } });
             });
     }
 
-    goBack(){
+    goBack() {
         this.location.back();
     }
 }

@@ -189,7 +189,7 @@
                                             {{ l('Surname') }}
                                             <p-sortIcon field="userSurname"></p-sortIcon>
                                         </th>
-                                        <th style="width: 150px" pSortableColumn="userFk.email">
+                                        <th style="width: 150px" pSortableColumn="userFk.emailAddress">
                                             {{ l('Email') }}
                                             <p-sortIcon field="userEmail"></p-sortIcon>
                                         </th>
@@ -197,8 +197,8 @@
                                             {{ l('PhoneNumber') }}
                                             <p-sortIcon field="userPhoneNumber"></p-sortIcon>
                                         </th>
-                                        <th style="width: 150px" pSortableColumn="userFk.status">
-                                            {{ l('Estado') }}
+                                        <th style="width: 150px" pSortableColumn="status">
+                                            {{ l('Status') }}
                                             <p-sortIcon field="status"></p-sortIcon>
                                         </th>
                                         <th style="width: 150px" pSortableColumn="dayOfBirth">
@@ -238,10 +238,7 @@
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a
-                                                            href="javascript:;"
-                                                            (click)="showDialogChangeStatus(record.mntMember)"
-                                                        >
+                                                        <a href="javascript:;" (click)="changeStatus(record)">
                                                             {{ l('Cambiar estado') }}
                                                         </a>
                                                     </li>
@@ -258,7 +255,7 @@
                                             {{ record.userEmail }}
                                         </td>
                                         <td style="width: 150px">
-                                            {{ record.userPhoneCode + record.userPhoneNumber }}
+                                            {{ record.userPhoneNumber }}
                                         </td>
                                         <td style="width: 150px">
                                             {{ l(memberStatus[record.status]) }}
@@ -294,10 +291,7 @@
                 </div>
             </div>
         </div>
-        <createOrEditMntMemberModal
-            #createOrEditMntMemberModal
-            (modalSave)="getMntMembers()"
-        ></createOrEditMntMemberModal>
+        <member-changeStatus #changeStatusModal (onSave)="getMntMembers()"></member-changeStatus>
         <viewMntMemberModal #viewMntMemberModal></viewMntMemberModal>
     </div>
 </div>

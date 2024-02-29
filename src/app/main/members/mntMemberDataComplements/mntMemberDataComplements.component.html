@@ -1,6 +1,21 @@
 ﻿<div [@routerTransition]>
-    <div *ngIf="!completed && this.memberStatus === 0 && checkSessionAndComplemented">
-        <div class="ae-container__kyc ae-container--sm" *ngIf="step0VerifyAccount">
+    <div
+        *ngIf="
+            !completed &&
+            (memberStatus == memberStatusEnum.Register || memberStatus == memberStatusEnum.Refused) &&
+            checkSessionAndComplemented
+        "
+    >
+        <div
+            *ngIf="memberStatus == memberStatusEnum.Refused && feedback != null"
+            class="ae-container__kyc ae-container--sm alert alert-info mt-4"
+            [innerHTML]="l('KycRequestRefusedFeedbackTitle') + feedback"
+        ></div>
+        <div
+            class="ae-container__kyc ae-container--sm"
+            [class.mt-4]="feedback != undefined || feedback != null"
+            *ngIf="step0VerifyAccount"
+        >
             <div class="ae-container__header">
                 <div class="ae-header__title mb-5">
                     <h2 class="ae-text-dark ae-text-xlarge m-0">Completar registro KYC</h2>
@@ -72,7 +87,11 @@
                 ></p-button>
             </div>
         </div>
-        <div class="ae-container__kyc ae-container--md" *ngIf="step1VerifyAccount">
+        <div
+            class="ae-container__kyc ae-container--md"
+            [class.mt-4]="feedback != undefined || feedback != null"
+            *ngIf="step1VerifyAccount"
+        >
             <div class="ae-container__header">
                 <div class="ae-header__title flex align-items-center justify-content-between">
                     <div class="ae-text flex align-items-center">
@@ -252,7 +271,7 @@
                                     #memberDayOfBirth
                                     formControlName="memberDayOfBirth"
                                     placeholder="05/11/1955"
-                                    [(ngModel)]="memberPersonalData.dayOfBirth"
+                                    [(ngModel)]="_memberDayOfBirth"
                                     dateFormat="dd/mm/yy"
                                     [showIcon]="true"
                                     required
@@ -271,6 +290,15 @@
                                         "
                                     ></spinError>
                                 </div>
+                                <div
+                                    *ngIf="
+                                        !personalDataForm.controls['memberDayOfBirth'].valid &&
+                                        personalDataForm.controls['memberDayOfBirth'].dirty
+                                    "
+                                    class="text-danger feedback-error"
+                                >
+                                    {{ 'MustBeOfLegalAge' | localize }}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -280,7 +308,11 @@
                 <p-button class="ae-button ae-button--primary" label="Siguiente" (click)="nextStep(1)"></p-button>
             </div>
         </div>
-        <div class="ae-container__kyc ae-container--md" *ngIf="step2VerifyAccount">
+        <div
+            class="ae-container__kyc ae-container--md"
+            [class.mt-4]="feedback != undefined || feedback != null"
+            *ngIf="step2VerifyAccount"
+        >
             <div class="ae-container__header">
                 <div class="ae-header__title flex align-items-center justify-content-between">
                     <div class="ae-text flex align-items-center">
@@ -517,6 +549,13 @@
                                 {{ messageUploadFileAddressProof }}
                             </span>
                         </div>
+                        <div
+                            *ngIf="getFile(_fileType.AddressProof).type === _fileType.AddressProof"
+                            class="ae-grid--fullwidth text-primary text-center"
+                        >
+                            <strong>{{ 'FileLoaded' | localize }}:</strong>
+                            {{ getFile(_fileType.AddressProof).originalName }}
+                        </div>
                     </div>
                 </form>
             </div>
@@ -524,7 +563,11 @@
                 <p-button class="ae-button ae-button--primary" label="Siguiente" (click)="nextStep(2)"></p-button>
             </div>
         </div>
-        <div class="ae-container__kyc ae-container--md" *ngIf="step3VerifyAccount">
+        <div
+            class="ae-container__kyc ae-container--md"
+            [class.mt-4]="feedback != undefined || feedback != null"
+            *ngIf="step3VerifyAccount"
+        >
             <div class="ae-container__header">
                 <div class="ae-header__title flex align-items-center justify-content-between">
                     <div class="ae-text flex align-items-center">
@@ -633,7 +676,7 @@
                                     #identityExpiration
                                     formControlName="identityExpiration"
                                     placeholder="08/06/2029"
-                                    [(ngModel)]="memberIdentity.expiration"
+                                    [(ngModel)]="_memberIdentityExpiration"
                                     [minDate]="minDate"
                                     dateFormat="dd/mm/yy"
                                     [showIcon]="true"
@@ -689,6 +732,13 @@
                             <span *ngIf="messageUploadFileIdentityFront" class="error-message">
                                 {{ messageUploadFileIdentityFront }}
                             </span>
+                            <div
+                                *ngIf="getFile(_fileType.IdentityFront).type === _fileType.IdentityFront"
+                                class="ae-grid--fullwidth text-primary text-center"
+                            >
+                                <strong>{{ 'FileLoaded' | localize }}:</strong>
+                                {{ getFile(_fileType.IdentityFront).originalName }}
+                            </div>
                         </div>
                         <div class="ae-upload ae-orden__six">
                             <label for="identityBackPicture">{{ 'IdentityBackPicture' | localize }}</label>
@@ -724,6 +774,13 @@
                             <span *ngIf="messageUploadFileIdentityBack" class="error-message">
                                 {{ messageUploadFileIdentityBack }}
                             </span>
+                            <div
+                                *ngIf="getFile(_fileType.IdentityBack).type === _fileType.IdentityBack"
+                                class="ae-grid--fullwidth text-primary text-center"
+                            >
+                                <strong>{{ 'FileLoaded' | localize }}:</strong>
+                                {{ getFile(_fileType.IdentityBack).originalName }}
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -732,7 +789,11 @@
                 <p-button class="ae-button ae-button--primary" label="Siguiente" (click)="nextStep(3)"></p-button>
             </div>
         </div>
-        <div class="ae-container__kyc ae-container--md" *ngIf="step4VerifyAccount">
+        <div
+            class="ae-container__kyc ae-container--md"
+            [class.mt-4]="feedback != undefined || feedback != null"
+            *ngIf="step4VerifyAccount"
+        >
             <div class="ae-container__header">
                 <div class="ae-header__title flex align-items-center justify-content-between">
                     <div class="ae-text flex align-items-center">
@@ -910,6 +971,13 @@
                             <span *ngIf="messageUploadFileIncomeProof" class="error-message">
                                 {{ messageUploadFileIncomeProof }}
                             </span>
+                            <div
+                                *ngIf="getFile(_fileType.IncomeProof).type === _fileType.IncomeProof"
+                                class="ae-grid--fullwidth text-primary text-center"
+                            >
+                                <strong>{{ 'FileLoaded' | localize }}:</strong>
+                                {{ getFile(_fileType.IncomeProof).originalName }}
+                            </div>
                         </div>
                         <div class="ae-upload ae-grid--fullwidth">
                             <label for="economicInfoTaxReturn">
@@ -951,6 +1019,13 @@
                             <span *ngIf="messageUploadFileTaxReturn" class="error-message">
                                 {{ messageUploadFileTaxReturn }}
                             </span>
+                            <div
+                                *ngIf="getFile(_fileType.TaxReturn).type === _fileType.TaxReturn"
+                                class="ae-grid--fullwidth text-primary text-center"
+                            >
+                                <strong>{{ 'FileLoaded' | localize }}:</strong>
+                                {{ getFile(_fileType.TaxReturn).originalName }}
+                            </div>
                         </div>
                     </div>
                 </form>

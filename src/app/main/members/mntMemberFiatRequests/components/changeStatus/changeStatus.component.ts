@@ -6,7 +6,9 @@ import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
 import { NotifyService } from 'abp-ng2-module';
 import { ServiceMembersProxy } from '@shared/service-proxies/service-members-proxies';
 import { ServiceCommonProxy } from '@shared/service-proxies/service-common-proxies';
-import { UpdateMntMemberFiatRequestStatusInput } from '@shared/service-proxies/dto/members/mntMemberFiat/UpdateMntMemberFiatRequestStatusInput';
+import { GetMntMemberFiatForFullViewDto } from '@shared/service-proxies/dto/members/mntMemberFiat/GetMntMemberFiatForFullViewDto';
+import { UpdateMntMemberFiatRequestStatusDto } from '@shared/service-proxies/dto/members/mntMemberFiat/UpdateMntMemberFiatRequestStatusDto';
+import { CreateOrEditMntMemberRequestLogDto } from '@shared/service-proxies/dto/members/mntMemberRequestLog/CreateOrEditMntMemberRequestLogDto';
 import { FiatStatus } from '@shared/service-proxies/enum/Members/FiatStatus.enum';
 import { GetSelectIntDto } from '@shared/service-proxies/dto/Common/SelectInput/GetSelectIntDto';
 import { SelectItem } from 'primeng/api';
@@ -21,7 +23,8 @@ export class MntMemberFiatRequestsChangeStatusComponent extends AppComponentBase
   @Output() onSave: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('memberFiatChangeStatusModal', { static: true }) modal: ModalDirective;
 
-  fiatRequest: UpdateMntMemberFiatRequestStatusInput;
+  fiat: GetMntMemberFiatForFullViewDto;
+  request: UpdateMntMemberFiatRequestStatusDto;
   statusOptions: SelectItem[];
   status = FiatStatus;
   active = false;
@@ -39,15 +42,16 @@ export class MntMemberFiatRequestsChangeStatusComponent extends AppComponentBase
   }
 
   ngOnInit() {
-    this.fiatRequest = new UpdateMntMemberFiatRequestStatusInput();
+    this.reset();
     this.statusOptions = this.getSelectOptions(this.status);
   }
 
-  show(requestId: number, status: FiatStatus): void {
+  show(request: GetMntMemberFiatForFullViewDto): void {
+    this.fiat = request;
     this.active = true;
     this.modal.show();
-    this.fiatRequest.id = requestId;
-    this.fiatRequest.status = status;
+    this.request.id = this.fiat.mntMemberFiat.id;
+    this.request.status = this.fiat.mntMemberFiat.status;
   }
 
   //TODO: Unificar en un helper
@@ -64,14 +68,9 @@ export class MntMemberFiatRequestsChangeStatusComponent extends AppComponentBase
     return options;
   }
 
-  getKeyEnum(enumObj: any, valor: number): string | undefined {
-    const keys = Object.keys(enumObj).filter(key => typeof enumObj[key] === 'number' && enumObj[key] === valor);
-    return keys.length > 0 ? keys[0] : undefined;
-  }
-
   save(): void {
     this.saving = true;
-    this._serviceMemberProxy.updateFiatStatus(this.fiatRequest)
+    this._serviceMemberProxy.updateFiatStatus(this.request)
       .pipe(finalize(() => {
         this.saving = false;
       }))
@@ -84,6 +83,17 @@ export class MntMemberFiatRequestsChangeStatusComponent extends AppComponentBase
 
   close(): void {
     this.active = false;
+    this.reset();
     this.modal.hide();
+  }
+
+  private reset() {
+    this.request = new UpdateMntMemberFiatRequestStatusDto();
+    this.request.mntMemberRequestLog = new CreateOrEditMntMemberRequestLogDto();
+  }
+
+  private getKeyEnum(enumObj: any, valor: number): string | undefined {
+    const keys = Object.keys(enumObj).filter(key => typeof enumObj[key] === 'number' && enumObj[key] === valor);
+    return keys.length > 0 ? keys[0] : undefined;
   }
 }

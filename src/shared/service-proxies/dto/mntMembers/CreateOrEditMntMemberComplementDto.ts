@@ -1,23 +1,24 @@
 import { ICreateOrEditMntMemberComplementDto } from './ICreateOrEditMntMemberComplementDto';
-import {CreateOrEditMntMemberDto,
+import {
+    CreateOrEditMntMemberDto,
     CreateOrEditMntMemberAddressDto,
     CreateOrEditMntMemberIdentityDto,
     CreateOrEditMntEconomicInfoDto,
-    CreateOrEditMntMemberPepDto,
 } from '@shared/service-proxies/service-proxies';
+import { GetMntMemberFileForUserEditDto } from '../members/mntMemberFile/GetMntMemberFileForUserEditDto';
 
-export class CreateOrEditMntMemberComplementDto implements ICreateOrEditMntMemberComplementDto{
-    MemberPersonalData: CreateOrEditMntMemberDto;
-    MemberAddress: CreateOrEditMntMemberAddressDto;
-    MemberIdentity: CreateOrEditMntMemberIdentityDto;
-    MemberEconomicInfo: CreateOrEditMntEconomicInfoDto;
-    IsPep: boolean;
-    MemberPep: CreateOrEditMntMemberPepDto;
+export class CreateOrEditMntMemberComplementDto implements ICreateOrEditMntMemberComplementDto {
+    MemberPersonalData!: CreateOrEditMntMemberDto;
+    MemberAddress!: CreateOrEditMntMemberAddressDto;
+    MemberIdentity!: CreateOrEditMntMemberIdentityDto;
+    MemberEconomicInfo!: CreateOrEditMntEconomicInfoDto;
+    MemberFiles!: GetMntMemberFileForUserEditDto[];
 
-    constructor(data?: CreateOrEditMntMemberComplementDto) {
+    constructor(data?: ICreateOrEditMntMemberComplementDto) {
         if (data) {
+
             for (let property in data) {
-                if (data.hasOwnProperty(property)){
+                if (data.hasOwnProperty(property)) {
                     (<any>this)[property] = (<any>data)[property];
                 }
             }
@@ -33,23 +34,31 @@ export class CreateOrEditMntMemberComplementDto implements ICreateOrEditMntMembe
 
     init(_data?: any) {
         if (_data) {
-            this.MemberPersonalData = _data['MemberPersonalData'];
-            this.MemberAddress = _data['MemberAddress'];
-            this.MemberIdentity = _data['MemberIdentity'];
-            this.MemberEconomicInfo = _data['MemberEconomicInfo'];
-            this.IsPep = _data['IsPep'];
-            this.MemberPep = _data['MemberPep'];
+            this.MemberPersonalData = _data['memberPersonalData'] ? CreateOrEditMntMemberDto.fromJS(_data['memberPersonalData']) : <any>undefined;
+            this.MemberAddress = _data['memberAddress'] ? CreateOrEditMntMemberAddressDto.fromJS(_data['memberAddress']) : <any>undefined;
+            this.MemberIdentity = _data['memberIdentity'] ? CreateOrEditMntMemberIdentityDto.fromJS(_data['memberIdentity']) : <any>undefined;
+            this.MemberEconomicInfo = _data['memberEconomicInfo'] ? CreateOrEditMntEconomicInfoDto.fromJS(_data['memberEconomicInfo']) : <any>undefined;
+            if (Array.isArray(_data['memberFiles'])) {
+                this.MemberFiles = [] as any;
+                for (let item of _data['memberFiles']) {
+                    this.MemberFiles?.push(GetMntMemberFileForUserEditDto.fromJS(item));
+                }
+            }
         }
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data['MemberPersonalData'] = this.MemberPersonalData ;
-        data['MemberAddress'] = this.MemberAddress;
-        data['MemberIdentity'] = this.MemberIdentity;
-        data['MemberEconomicInfo'] = this.MemberEconomicInfo;
-        data['IsPep'] = this.IsPep;
-        data['MemberPep'] = this.MemberPep;
+        data['memberPersonalData'] = this.MemberPersonalData ? this.MemberPersonalData.toJSON() : <any>undefined;
+        data['memberAddress'] = this.MemberAddress ? this.MemberAddress.toJSON() : <any>undefined;
+        data['memberIdentity'] = this.MemberIdentity ? this.MemberIdentity.toJSON() : <any>undefined;
+        data['memberEconomicInfo'] = this.MemberEconomicInfo ? this.MemberEconomicInfo.toJSON() : <any>undefined;
+        if (Array.isArray(this.MemberFiles)) {
+            data['memberFiles'] = [];
+            for (let item of this.MemberFiles) {
+                data['memberFiles'].push(item.toJSON());
+            }
+        }
         return data;
     }
 }

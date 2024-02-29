@@ -12,15 +12,15 @@
         <div class="modal-content">
             <div class="modal-header mb-5">
                 <div class="modal-title">
-                    <h3 class="mb-3">
+                    <h4 class="mb-3">
                         <span>
                             {{ record.request.type == 1 ? l('RequestCryptoPurchase') : l('RequestCryptoSale') }}
                         </span>
-                    </h3>
-                    <h4 class="text-danger">{{ l('Folio') }} : {{ record.request.folio }}</h4>
-                    <h4 class="text-gray-600 fs-7 fw-light mt-2">
-                        {{ record.request.creationTime | luxonFormat : 'dd/MM/yyyy HH:mm:ss' }}
                     </h4>
+                    <h6 class="text-danger">{{ l('Folio') }} : {{ record.request.folio }}</h6>
+                    <h6 class="text-gray-600 fs-7 fw-light mt-2">
+                        {{ record.request.creationTime | luxonFormat : 'dd/MM/yyyy HH:mm:ss' }}
+                    </h6>
                 </div>
 
                 <button class="btn btn-secondary rounded-circle btn-sm close" (click)="close()">

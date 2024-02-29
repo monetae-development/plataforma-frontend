@@ -1,16 +1,17 @@
 import { IGetMntMemberStatus } from './IGetMntMemberStatus';
 
 
-export class GetMntMemberStatus implements IGetMntMemberStatus{
+export class GetMntMemberStatus implements IGetMntMemberStatus {
     completed: boolean;
     approved: boolean;
     refused: boolean;
     status: number;
+    feedback!: string | undefined;
 
     constructor(data?: GetMntMemberStatus) {
         if (data) {
             for (let property in data) {
-                if (data.hasOwnProperty(property)){
+                if (data.hasOwnProperty(property)) {
                     (<any>this)[property] = (<any>data)[property];
                 }
             }
@@ -30,6 +31,7 @@ export class GetMntMemberStatus implements IGetMntMemberStatus{
             this.approved = _data['approved'];
             this.refused = _data['refused'];
             this.status = _data['status'];
+            this.feedback = _data['feedback'];
         }
     }
 
@@ -39,6 +41,7 @@ export class GetMntMemberStatus implements IGetMntMemberStatus{
         data['approved'] = this.approved;
         data['refused'] = this.refused;
         data['status'] = this.status;
+        data['feedback'] = this.feedback;
         return data;
     }
 }

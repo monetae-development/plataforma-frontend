@@ -23,7 +23,7 @@ export class HistoryDepositWithdrawalComponent extends AppComponentBase implemen
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
 
-  folioFilter: string = '';
+  folioFilter: string;
   typeFilter: number = undefined;
   requestType = FiatType;
   fiatStatus = FiatStatus;
@@ -41,14 +41,54 @@ export class HistoryDepositWithdrawalComponent extends AppComponentBase implemen
   ngOnInit() {
   }
 
-  private getMemberDetailRequest(data){
+  getAllMemberRequests(event?: LazyLoadEvent): void {
+    if (this.primengTableHelper.shouldResetPaging(event)) {
+      this.paginator.changePage(0);
+
+      if (this.primengTableHelper.records && this.primengTableHelper.records.length > 0) {
+        return;
+      }
+    }
+    this.primengTableHelper.showLoadingIndicator();
     this._serviceMembersProxy
-    .getMemberDetailRequest(
-      data.id
-    )
-    .subscribe(result => {
+      .getAllFiatRequestsByMemmber(
+        this.folioFilter,
+        this.typeFilter,
+        this.primengTableHelper.getSorting(this.dataTable),
+        this.primengTableHelper.getSkipCount(this.paginator, event),
+        this.primengTableHelper.getMaxResultCount(this.paginator, event)
+      )
+      .pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator()))
+      .subscribe(result => {
+        console.log(result);
+        this.primengTableHelper.totalRecordsCount = result.totalCount;
+        this.primengTableHelper.records = result.items;
+        this.primengTableHelper.hideLoadingIndicator();
+      });
+  }
+
+  getDateFormat(input: string,): string {
+    const parsedDate = DateTime.fromISO(input);
+    return parsedDate.toFormat('dd/MM/yyyy');
+  }
+
+  getTimeFormat(input: string,): string {
+    const parsedDate = DateTime.fromISO(input);
+    return parsedDate.toFormat('HH:mm:ss');
+  }
+
+  selectRow(data) {
+    this.getMemberDetailRequest(data);
+  }
+
+  private getMemberDetailRequest(data) {
+    this._serviceMembersProxy
+      .getMemberDetailRequest(
+        data.id
+      )
+      .subscribe(result => {
         this.openDialogDetailDepositWithdraw(result, data.type)
-    });
+      });
   }
 
   private openDialogDetailDepositWithdraw(dataDetail, type): void {
@@ -60,41 +100,6 @@ export class HistoryDepositWithdrawalComponent extends AppComponentBase implemen
         type: type
       }
     });
-  }
-
-  getAllMemberRequests(event?: LazyLoadEvent): void {
-    if (this.primengTableHelper.shouldResetPaging(event)) {
-      this.paginator.changePage(0);
-
-      if (this.primengTableHelper.records && this.primengTableHelper.records.length > 0) {
-          return;
-      }
-    }
-    this.primengTableHelper.showLoadingIndicator();
-    this._serviceMembersProxy
-    .getAllFiatRequestsByMemmber(
-      this.folioFilter,
-      this.typeFilter,
-      this.primengTableHelper.getSorting(this.dataTable),
-      this.primengTableHelper.getSkipCount(this.paginator, event),
-      this.primengTableHelper.getMaxResultCount(this.paginator, event)
-    )
-    .pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator()))
-    .subscribe(result => {
-        console.log(result);
-        this.primengTableHelper.totalRecordsCount = result.totalCount;
-        this.primengTableHelper.records = result.items;
-        this.primengTableHelper.hideLoadingIndicator();
-    });
-  }
-
-  getDateTimeFormat(input: string,): string {
-    const parsedDate = DateTime.fromISO(input);
-    return parsedDate.toFormat('dd/MM/yy');
-  }
-
-  selectRow(data){
-    this.getMemberDetailRequest(data);
   }
 
 }

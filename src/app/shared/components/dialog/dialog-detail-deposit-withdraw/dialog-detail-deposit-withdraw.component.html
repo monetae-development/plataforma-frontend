@@ -1,57 +1,112 @@
 <div class="ae-dialog__header flex align-items-center justify-content-center">
-  <i class="pi pi-arrow-left ae-text-dark mr-3" (click)="onCancel()"></i>
-  <h2 class="ae-text-dark fw-bold">Detalle de transacción</h2>
+    <i class="pi pi-arrow-left ae-text-dark mr-3" (click)="onCancel()"></i>
+    <h2 class="ae-text-dark fw-bold">{{ 'DetailOf' | localize }} {{ l(requestType[type]) }}</h2>
 </div>
 <div class="ae-dialog__content">
-  <div class="ae-table__resumen mb-8">
-      <div class="ae-resumen__item flex align-items-center justify-content-between">
-          <div class="ae-description">
-              <p class="ae-text-dark ae-text-default w-full">Folio</p>
-          </div>
-          <div class="ae-content">
-              <span class="ae-text-gris-dark ae-text-default w-full">{{ detailHistory.request.folio }}</span>
-          </div>
-      </div>
-      <div class="ae-resumen__item flex align-items-center justify-content-between">
-          <div class="ae-description">
-              <p class="ae-text-dark ae-text-default w-full">Banco</p>
-          </div>
-          <div class="ae-content">
-              <span class="ae-text-gris-network ae-text-default w-full">{{ detailHistory.request.platformBankAlias}}</span>
-          </div>
-      </div>
-      <div class="ae-resumen__item flex align-items-center justify-content-between">
-          <div class="ae-description">
-              <p class="ae-text-dark ae-text-default w-full">Cuenta destino</p>
-          </div>
-          <div class="ae-content">
-              <span class="ae-text-gris-dark ae-text-default w-full">{{ detailHistory.request.platformBankAccount }}</span>
-          </div>
-      </div>
-      <div class="ae-resumen__item flex align-items-center justify-content-between">
-          <div class="ae-description">
-              <p class="ae-text-dark ae-text-default w-full">Total</p>
-          </div>
-          <div class="ae-content">
-              <span class="ae-text-gris-dark ae-text-default fw-bold w-full">{{ detailHistory.request.amount | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }}</span>
-          </div>
-      </div>
-      <div class="ae-resumen__item flex align-items-center justify-content-between">
-        <div class="ae-description">
-          <p class="ae-text-gris-dark ae-text-default fw-semibold w-full">{{  getDateTimeFormat(detailHistory.request.creationTime) }}</p>
-      </div>
-      <div class="ae-content">
-          <span 
-            class="ae-text-default ae-text-primary fw-semibold w-full" 
-            [class.ae-text-success]="detailHistory.request.status === 3"
-            [class.ae-text-danger]="detailHistory.request.status === 4"
-          >
-            {{ l(fiatStatus[detailHistory.request.status]) }}
-          </span>
-      </div>  
+    <div class="ae-table__resumen mb-8">
+        <div class="ae-resumen__item flex align-items-center justify-content-between">
+            <div class="ae-description">
+                <span class="ae-text-dark ae-text-default w-full text-danger">{{ l('DateTime') }}</span>
+            </div>
+            <div class="ae-content">
+                <span class="ae-text-gris-dark ae-text-default w-full text-danger">
+                    {{ getDateTimeFormat(detailHistory.request.creationTime) }}
+                </span>
+            </div>
+        </div>
+        <div class="ae-resumen__item flex align-items-center justify-content-between">
+            <div class="ae-description">
+                <p class="ae-text-dark ae-text-default w-full">Folio</p>
+            </div>
+            <div class="ae-content">
+                <span class="ae-text-gris-dark ae-text-default w-full">{{ detailHistory.request.folio }}</span>
+            </div>
+        </div>
+        <div
+            class="ae-resumen__item flex align-items-center justify-content-between"
+            *ngIf="detailHistory.request.type === requestType.Deposit"
+        >
+            <div class="ae-description">
+                <p class="ae-text-dark ae-text-default w-full">{{ l('DestinyAccount') }}</p>
+            </div>
+            <div class="ae-content">
+                <span class="ae-text-gris-network ae-text-default w-full">
+                    {{ detailHistory.request.platformBankAlias }}
+                </span>
+            </div>
+        </div>
+        <div
+            class="ae-resumen__item flex align-items-center justify-content-between"
+            *ngIf="detailHistory.request.type === requestType.Deposit"
+        >
+            <div class="ae-description">
+                <p class="ae-text-dark ae-text-default w-full"></p>
+            </div>
+            <div class="ae-content">
+                <span class="ae-text-gris-dark ae-text-default w-full" style="margin-top: -10px">
+                    {{ detailHistory.request.platformBankAccount }}
+                </span>
+            </div>
+        </div>
+        <div class="ae-resumen__item flex align-items-center justify-content-between">
+            <div class="ae-description">
+                <p
+                    class="ae-text-dark ae-text-default w-full"
+                    *ngIf="detailHistory.request.type === requestType.Deposit"
+                >
+                    {{ l('OriginAccount') }}
+                </p>
+                <p
+                    class="ae-text-dark ae-text-default w-full"
+                    *ngIf="detailHistory.request.type === requestType.Withdrawal"
+                >
+                    {{ l('DestinyAccount') }}
+                </p>
+            </div>
+            <div class="ae-content">
+                <span class="ae-text-gris-dark ae-text-default w-full">
+                    {{ detailHistory.request.mntMemberBankHolder }}
+                </span>
+            </div>
+        </div>
+        <div class="ae-resumen__item flex align-items-center justify-content-between">
+            <div class="ae-description">
+                <p class="ae-text-dark ae-text-default w-full"></p>
+            </div>
+            <div class="ae-content">
+                <span class="ae-text-gris-dark ae-text-default w-full" style="margin-top: -10px">
+                    {{ detailHistory.request.mntMemberBankAccount }}
+                </span>
+            </div>
+        </div>
+        <div class="ae-resumen__item flex align-items-center justify-content-between">
+            <div class="ae-description">
+                <p class="ae-text-dark ae-text-default w-full">Total</p>
+            </div>
+            <div class="ae-content">
+                <span class="ae-text-gris-dark ae-text-default fw-bold w-full">
+                    {{ detailHistory.request.amount | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }}
+                </span>
+            </div>
+        </div>
+        <div class="ae-resumen__item flex align-items-center justify-content-between">
+            <div class="ae-description">
+                <p class="ae-text-gris-dark ae-text-default fw-bold w-full">
+                    {{ l('Status') }}
+                </p>
+            </div>
+            <div class="ae-content">
+                <span
+                    class="ae-text-default ae-text-primary fw-semibold w-full"
+                    [class.ae-text-success]="detailHistory.request.status === fiatStatus.Approved"
+                    [class.ae-text-danger]="detailHistory.request.status === fiatStatus.Refused"
+                >
+                    {{ l(fiatStatus[detailHistory.request.status]) }}
+                </span>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 <div class="ae-dialog__actions">
-  <p-button class="ae-button ae-button--primary w-full" label="Aceptar" (click)="onContinue()"></p-button>
+    <p-button class="ae-button ae-button--primary w-full" label="Aceptar" (click)="onContinue()"></p-button>
 </div>

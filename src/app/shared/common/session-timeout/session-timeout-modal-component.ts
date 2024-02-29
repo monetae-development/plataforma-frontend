@@ -78,7 +78,8 @@ export class SessionTimeoutModalComponent extends AppComponentBase implements On
                     abp.utils.setCookieValue(
                         'userInfo',
                         JSON.stringify({
-                            userName: info.user.userName,
+                            userName: info.user.name + ' ' + info.user.surname,
+                            userEmail: info.user.emailAddress,
                             profilePictureId: info.user.profilePictureId,
                             tenant: info.tenant ? info.tenant.tenancyName : 'Host',
                         }),

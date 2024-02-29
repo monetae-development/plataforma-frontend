@@ -77,6 +77,7 @@ import { LogoutComponent } from './components/logout/logout.component';
                     { path: 'catalogs/catCountries', component: CatCountriesComponent, data: { permission: 'Pages.CatCountries' } },
                     { path: 'logout', component: LogoutComponent, data: { permission: 'Pages.Logout' } },
                     { path: 'dashboard', component: HomeComponent, data: { permission: 'Pages.Home' } },
+                    { path: 'dashboard/:action', component: HomeComponent, data: { permission: 'Pages.Home' } },
                     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
                     { path: '**', redirectTo: 'dashboard' },
                 ],

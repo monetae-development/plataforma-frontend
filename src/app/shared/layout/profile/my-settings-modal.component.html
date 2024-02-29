@@ -69,7 +69,7 @@
                                     <label>{{ 'PhoneNumber' | localize }} *</label>
                                     <div class="flex align-items-start">
                                         <p-dropdown
-                                            #phoneCodeId="ngModel"
+                                            #phoneCodeId
                                             id="phoneCodeId"
                                             name="phoneCodeId"
                                             [(ngModel)]="user.phoneCodeId"
@@ -129,7 +129,11 @@
                                         [disabled]="isPhoneNumberConfirmed && savedPhoneNumber == user.phoneNumber"
                                         class="ae-btn ae-btn--primary"
                                         type="button"
-                                        [tooltip]="isPhoneNumberConfirmed && savedPhoneNumber == user.phoneNumber ? '' : l('YourPhoneNumberIsNotVerified') "
+                                        [tooltip]="
+                                            isPhoneNumberConfirmed && savedPhoneNumber == user.phoneNumber
+                                                ? ''
+                                                : l('YourPhoneNumberIsNotVerified')
+                                        "
                                     >
                                         {{ 'Verify' | localize }}
                                     </button>
@@ -208,9 +212,7 @@
                             </div>
 
                             <ng-template #googleAuthenticatorEnabled>
-                                <div
-                                    class="notice d-flex bg-light-primary rounded border-primary border border-dashed p-6"
-                                >
+                                <div class="d-flex bg-light-primary rounded border-primary border border-dashed p-6">
                                     <!--begin::Icon-->
                                     <!--begin::Svg Icon | path: icons/duotune/general/gen048.svg-->
                                     <span class="svg-icon svg-icon-2tx svg-icon-primary me-4">

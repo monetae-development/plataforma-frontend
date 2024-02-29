@@ -58,7 +58,7 @@
                                                     [(ngModel)]="typeFilter"
                                                     placeholder="{{ l('SelectAll') }}"
                                                     [showClear]="true"
-                                                    (onClear)="getAllFiatRequests()"
+                                                    (onClear)="getAllRequests()"
                                                 ></p-dropdown>
                                             </div>
 
@@ -69,7 +69,7 @@
                                                     <button
                                                         class="btn btn-primary"
                                                         type="button"
-                                                        (click)="getAllFiatRequests()"
+                                                        (click)="getAllRequests()"
                                                         pTooltip="{{ l('SearchByFilters') }}"
                                                         tooltipPosition="top"
                                                     >
@@ -94,7 +94,7 @@
                             <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
                                 <p-table
                                     #dataTable
-                                    (onLazyLoad)="getAllFiatRequests($event)"
+                                    (onLazyLoad)="getAllRequests($event)"
                                     [value]="primengTableHelper.records"
                                     rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
                                     [paginator]="false"
@@ -229,21 +229,9 @@
                                                     class="btn btn-actions"
                                                     pTooltip="{{ l('StatusChange') }}"
                                                     tooltipPosition="top"
-                                                    (click)="
-                                                        changeStatus(
-                                                            record.mntMemberFiat.id,
-                                                            record.mntMemberFiat.status
-                                                        )
-                                                    "
+                                                    (click)="changeStatus(record)"
                                                 >
                                                     <i class="flaticon2-console text-info"></i>
-                                                </button>
-                                                <button
-                                                    class="btn btn-actions"
-                                                    pTooltip="{{ l('Delete') }}"
-                                                    tooltipPosition="top"
-                                                >
-                                                    <i class="flaticon-delete text-danger"></i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -256,7 +244,7 @@
                                     <p-paginator
                                         [rows]="primengTableHelper.defaultRecordsCountPerPage"
                                         #paginator
-                                        (onPageChange)="getAllFiatRequests($event)"
+                                        (onPageChange)="getAllRequests($event)"
                                         [totalRecords]="primengTableHelper.totalRecordsCount"
                                         [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
                                         [showCurrentPageReport]="true"
@@ -273,8 +261,8 @@
             </div>
         </div>
         <member-fiat-request-changeStatus
-            #changeStatusRequestModal
-            (onSave)="getAllFiatRequests()"
+            #changeStatusModal
+            (onSave)="getAllRequests()"
         ></member-fiat-request-changeStatus>
         <member-fiat-request-modal #viewRequestModal></member-fiat-request-modal>
     </div>

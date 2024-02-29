@@ -21,7 +21,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 export class DialogDetailDepositWithdrawComponent extends AppComponentBase implements OnInit {
 
   detailHistory: GetMemberDetailRequestDto;
-  type: number = 0;
+  type = 0;
   requestType = FiatType;
   fiatStatus = FiatStatus;
 
@@ -39,17 +39,17 @@ export class DialogDetailDepositWithdrawComponent extends AppComponentBase imple
 
   }
 
-  onCancel(){
+  onCancel() {
     this.ref.close();
   }
 
-  onContinue(){
+  onContinue() {
     this.ref.close();
   }
 
   getDateTimeFormat(input: string,): string {
     const parsedDate = DateTime.fromISO(input);
-    return parsedDate.toFormat('dd/MM/yy');
+    return parsedDate.toFormat('dd/MM/yyyy HH:mm:ss');
   }
 
 }

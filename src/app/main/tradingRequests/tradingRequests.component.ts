@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TradingRequestsServiceProxy } from '@shared/service-proxies/service-trading-requests-proxies';
 import { ServiceCommonProxy } from '@shared/service-proxies/service-common-proxies';
 import { TradingRequestDto } from '@shared/service-proxies/dto/tradingRequest/TradingRequestDto';
+import { GetTradingRequestForViewDto } from '@shared/service-proxies/dto/TradingRequest/GetTradingForViewDto';
 import { RequestType } from '@shared/service-proxies/enum/Trading/RequestType.enum';
 import { RequestStatus } from '@shared/service-proxies/enum/Trading/RequestStatus.enum';
 import { NotifyService } from 'abp-ng2-module';
@@ -145,8 +146,8 @@ export class TradingRequestsComponent extends AppComponentBase implements OnInit
         this.getAllRequests();
     }
 
-    changeStatus(userId: number, requestId: number, status: RequestStatus) {
-        this.changeStatusRequestModal.show(userId, requestId, status);
+    changeStatus(request: GetTradingRequestForViewDto) {
+        this.changeStatusRequestModal.show(request);
     }
 
     deleteRequest(TradingRequest: TradingRequestDto): void {

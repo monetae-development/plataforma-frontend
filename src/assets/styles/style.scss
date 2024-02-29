@@ -588,7 +588,7 @@ body{
 .ae-project__card{
     margin: 16px 10px;
     &:hover{
-        opacity: 1 !important;
+        
     }
     .ae-project__image{
         position: relative;
@@ -903,7 +903,6 @@ body{
 .ae-dialog{
     border-radius: 12px !important;
     overflow: hidden;
-    max-height: 100% !important;
     &__header{
         position: relative;
         padding: 12px 24px;
@@ -1470,7 +1469,6 @@ body{
         right: 0;
         display: flex;
         display: -webkit-flex;
-        align-items: flex-end;
         opacity: 0;
         -webkit-transition: all .25s ease-in-out;
         -moz-transition: all .25s ease-in-out;
@@ -1484,11 +1482,7 @@ body{
             z-index: 999;
             pointer-events: initial;
             .ae-operations__mobile{
-                -webkit-transform: translateY(0);
-                -moz-transform: translateY(0);
-                -ms-transform: translateY(0);
-                -o-transform: translateY(0);
-                transform: translateY(0);
+                
             }
         }
         .ae-operations__bg{
@@ -1509,17 +1503,14 @@ body{
             padding: 20px 24px;
             text-align: center;
             position: relative;
-            -webkit-transition: all .25s ease-in-out;
-            -moz-transition: all .25s ease-in-out;
-            -ms-transition: all .25s ease-in-out;
-            -o-transition: all .25s ease-in-out;
-            transition: all .25s ease-in-out;
+            -webkit-transition: all .5s ease-in-out;
+            -moz-transition: all .5s ease-in-out;
+            -ms-transition: all .5s ease-in-out;
+            -o-transition: all .5s ease-in-out;
+            transition: all .5s ease-in-out;
             z-index: 1000;
-            -webkit-transform: translateY(100%);
-            -moz-transform: translateY(100%);
-            -ms-transform: translateY(100%);
-            -o-transform: translateY(100%);
-            transform: translateY(100%);
+            top:100%;
+            height: 400px;
             .ae-operation__line{
                 position: absolute;
                 top: 0;

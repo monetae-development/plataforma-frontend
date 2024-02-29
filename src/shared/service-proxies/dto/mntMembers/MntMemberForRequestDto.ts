@@ -1,7 +1,7 @@
 import { IMntMemberForRequestDto } from './IMntMemberForRequestDto';
 
 export class MntMemberForRequestDto implements IMntMemberForRequestDto {
-    usserId!: number;
+    userId!: number;
     id!: number;
 
     constructor(data?: IMntMemberForRequestDto) {
@@ -23,13 +23,13 @@ export class MntMemberForRequestDto implements IMntMemberForRequestDto {
 
     init(_data?: any) {
         if (_data) {
-            this.usserId = _data['userId'];
+            this.userId = _data['userId'];
             this.id = _data['id'];
         }
     }
 
     toJSON(data?: any) {
-        data['userId'] = this.usserId;
+        data['userId'] = this.userId;
         data['id'] = this.id;
         return data;
     }

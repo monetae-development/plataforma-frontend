@@ -29,7 +29,7 @@ export class MySettingsModalComponent extends AppComponentBase implements OnInit
     enableTwoFactorAuthenticationModal: EnableTwoFactorAuthenticationModalComponent;
     @ViewChild('smsVerificationModal') smsVerificationModal: SmsVerificationModalComponent;
     @ViewChild('verifyCodeModal') verifyCodeModal: SmsVerificationModalComponent;
-    @ViewChild('memberPhoneCode') memberPhoneCode: Dropdown;
+    @ViewChild('phoneCodeId') memberPhoneCode: Dropdown;
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 
     public active = false;
@@ -65,6 +65,21 @@ export class MySettingsModalComponent extends AppComponentBase implements OnInit
         this.isTwoFactorLoginEnabledForApplication = abp.setting.getBoolean(
             'Abp.Zero.UserManagement.TwoFactorLogin.IsEnabled'
         );
+    }
+
+    show(): void {
+        this.active = true;
+        this._profileService.getCurrentUserProfileForEdit().subscribe((result) => {
+            this.smsEnabled = this.setting.getBoolean('App.UserManagement.SmsVerificationEnabled');
+            this.user = result;
+            this._initialTimezone = result.timezone;
+            this.canChangeUserName = this.user.userName !== AppConsts.userManagement.defaultAdminUserName;
+            this.modal.show();
+            this.isGoogleAuthenticatorEnabled = result.isGoogleAuthenticatorEnabled;
+            this.isPhoneNumberConfirmed = result.isPhoneNumberConfirmed;
+            this.savedPhoneNumber = result.phoneNumber;
+        });
+        console.log('TEST');
         this._serviceCommonProxy.getSelectOptions('MntMemberDataComplements/GetAllCountryPhoneCodesForSelect', null).subscribe((result) => {
             this.personalDataPhones = result.items;
             this.flags = [];
@@ -75,21 +90,8 @@ export class MySettingsModalComponent extends AppComponentBase implements OnInit
                 temp.subtitle = record.subtitle;
                 this.flags[record.value] = temp;
             }
-        });
-    }
-
-    show(): void {
-        this.active = true;
-        this._profileService.getCurrentUserProfileForEdit().subscribe((result) => {
-            console.log(result);
-            this.smsEnabled = this.setting.getBoolean('App.UserManagement.SmsVerificationEnabled');
-            this.user = result;
-            this._initialTimezone = result.timezone;
-            this.canChangeUserName = this.user.userName !== AppConsts.userManagement.defaultAdminUserName;
-            this.modal.show();
-            this.isGoogleAuthenticatorEnabled = result.isGoogleAuthenticatorEnabled;
-            this.isPhoneNumberConfirmed = result.isPhoneNumberConfirmed;
-            this.savedPhoneNumber = result.phoneNumber;
+            this.memberPhoneCode.disabled = false;
+            this.memberPhoneCode.placeholder = '+1';
         });
     }
 

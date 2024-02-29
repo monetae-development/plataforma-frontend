@@ -3,4 +3,5 @@ export interface IGetMntMemberStatus {
     approved: boolean;
     refused: boolean;
     status: number;
+    feedback: string | undefined;
 }

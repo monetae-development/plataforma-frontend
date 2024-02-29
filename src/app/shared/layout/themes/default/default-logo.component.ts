@@ -29,10 +29,10 @@ export class DefaultLogoComponent extends AppComponentBase implements OnInit {
         this.setLogoUrl();
     }
 
-    setLogoUrl(): void{
+    setLogoUrl(): void {
         //this.defaultLogo = AppConsts.appBaseUrl + '/assets/common/images/app-logo-on-' + this.skin + '.png';
         //this.defaultSmallLogo = AppConsts.appBaseUrl + '/assets/common/images/app-logo-on-' + this.skin + '-sm.png';
-        this.defaultLogo = AppConsts.appBaseUrl + '/assets/common/images/logo-monetae.svg';
-        this.defaultSmallLogo = AppConsts.appBaseUrl + '/assets/common/images/logo-monetae-sm.svg';
+        this.defaultLogo = AppConsts.appBaseUrl + '/assets/common/images/logo-monetae.png';
+        this.defaultSmallLogo = AppConsts.appBaseUrl + '/assets/common/images/logo-monetae-sm.png';
     }
 }

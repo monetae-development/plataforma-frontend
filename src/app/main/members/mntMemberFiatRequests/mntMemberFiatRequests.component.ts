@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
+import { GetMntMemberFiatForFullViewDto } from '@shared/service-proxies/dto/members/mntMemberFiat/GetMntMemberFiatForFullViewDto';
 import { NotifyService } from 'abp-ng2-module';
 import { Table } from 'primeng/table';
 import { Paginator } from 'primeng/paginator';
@@ -24,7 +25,7 @@ import { ViewMemberFiatRequestModalComponent } from './view-memberFiatRequest-mo
   animations: [appModuleAnimation()]
 })
 export class MntMemberFiatRequestsComponent extends AppComponentBase implements OnInit {
-  @ViewChild('changeStatusRequestModal', { static: true }) changeStatusRequestModal: MntMemberFiatRequestsChangeStatusComponent;
+  @ViewChild('changeStatusModal', { static: true }) changeStatusModal: MntMemberFiatRequestsChangeStatusComponent;
   @ViewChild('viewRequestModal', { static: true }) viewRequestModal: ViewMemberFiatRequestModalComponent;
 
   @ViewChild('dataTable', { static: true }) dataTable: Table;
@@ -55,7 +56,7 @@ export class MntMemberFiatRequestsComponent extends AppComponentBase implements 
     this.statusOptions = this.getSelectOptions(FiatStatus);
   }
 
-  getAllFiatRequests(event?: LazyLoadEvent) {
+  getAllRequests(event?: LazyLoadEvent) {
     if (this.primengTableHelper.shouldResetPaging(event)) {
       this.paginator.changePage(0);
       if (this.primengTableHelper.records &&
@@ -106,7 +107,7 @@ export class MntMemberFiatRequestsComponent extends AppComponentBase implements 
   cleanFilters() {
     this.folioFilter = '';
     this.typeFilter = -1;
-    this.getAllFiatRequests();
+    this.getAllRequests();
   }
 
   //TODO:Unificar en un helper
@@ -115,7 +116,7 @@ export class MntMemberFiatRequestsComponent extends AppComponentBase implements 
     return dateTime[index];
   }
 
-  changeStatus(requestId: number, status: FiatStatus) {
-    this.changeStatusRequestModal.show(requestId, status);
+  changeStatus(request: GetMntMemberFiatForFullViewDto) {
+    this.changeStatusModal.show(request);
   }
 }

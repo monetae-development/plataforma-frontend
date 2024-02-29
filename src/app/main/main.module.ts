@@ -109,6 +109,7 @@ import { CreateOrEditMntMemberAddressModalComponent } from './members/mntMemberA
 import { MntMemberAddressMntMemberLookupTableModalComponent } from './members/mntMemberAddresses/mntMemberAddress-mntMember-lookup-table-modal.component';
 import { MntMemberAddressCatStateLookupTableModalComponent } from './members/mntMemberAddresses/mntMemberAddress-catState-lookup-table-modal.component';
 import { MntMembersComponent } from './members/mntMembers/mntMembers.component';
+import { MntMemberChangeStatusComponent } from './members/mntMembers/components/changeStatus/changeStatus.component';
 import { ViewMntMemberModalComponent } from './members/mntMembers/view-mntMember-modal.component';
 import { CreateOrEditMntMemberModalComponent } from './members/mntMembers/create-or-edit-mntMember-modal.component';
 import { MntMemberUserLookupTableModalComponent } from './members/mntMembers/mntMember-user-lookup-table-modal.component';
@@ -319,6 +320,7 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 		MntMemberAddressMntMemberLookupTableModalComponent,
 		MntMemberAddressCatStateLookupTableModalComponent,
 		MntMembersComponent,
+		MntMemberChangeStatusComponent,
 		ViewMntMemberModalComponent,
 		CreateOrEditMntMemberModalComponent,
 		MntMemberUserLookupTableModalComponent,

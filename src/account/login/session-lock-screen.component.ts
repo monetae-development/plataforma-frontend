@@ -13,11 +13,10 @@ import { AppConsts } from '@shared/AppConsts';
     animations: [accountModuleAnimation()],
 })
 export class SessionLockScreenComponent extends AppComponentBase {
-    
     userInfo: any;
     submitting = false;
     showPassword = false;
-    passwordFieldType: string = "password";
+    passwordFieldType: string = 'password';
 
     constructor(
         injector: Injector,
@@ -38,19 +37,21 @@ export class SessionLockScreenComponent extends AppComponentBase {
         if (!cookie) {
             location.href = '';
         }
-
+        console.log(cookie);
         let userInfo = JSON.parse(cookie);
         if (!userInfo) {
             location.href = '';
         }
-        this.loginService.authenticateModel.userNameOrEmailAddress = userInfo.userName;
+
+        this.loginService.authenticateModel.userNameOrEmailAddress = userInfo.userEmail;
         this.userInfo = {
             userName: userInfo.userName,
+            userEmail: userInfo.userEmail,
             tenant: userInfo.tenant,
             profilePicture: '',
         };
 
-        this._profileService.getProfilePictureByUserName(userInfo.userName).subscribe(
+        this._profileService.getProfilePictureByUserName(userInfo.userEmail).subscribe(
             (data) => {
                 if (data.profilePicture) {
                     this.userInfo.profilePicture = 'data:image/jpeg;base64,' + data.profilePicture;
@@ -88,7 +89,7 @@ export class SessionLockScreenComponent extends AppComponentBase {
         }
     }
 
-    togglePasswordVisibility(): void{
+    togglePasswordVisibility(): void {
         this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
         this.showPassword = !this.showPassword;
     }

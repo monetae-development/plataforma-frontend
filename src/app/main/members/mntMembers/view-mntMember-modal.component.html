@@ -181,6 +181,42 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row mb-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>{{ l('BankAccountsInfoTitle') }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-warning text-center" *ngIf="!isHasBankAccounts">
+                                {{ 'NoHasBankAccounts' | localize }}
+                            </div>
+                            <div class="row" *ngFor="let record of bankAccounts">
+                                <div class="col-6 mb-3">
+                                    <h6>{{ l('Holder') }} :</h6>
+                                    {{ record.mntMemberBankAccount.holder }}
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <h6>{{ l('AccountNumber') }} :</h6>
+                                    {{ record.mntMemberBankAccount.account }}
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <h6>{{ l('AccountType') }} :</h6>
+                                    {{ record.catAccountTypeTitle }}
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <h6>{{ l('Banco') }} :</h6>
+                                    {{ record.catBankTitle }}
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <h6>{{ l('Currency') }} :</h6>
+                                    {{ record.catCurrencyTitle }} ({{ record.catCurrencySymbol }})
+                                </div>
+                                <hr />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button [disabled]="saving" type="button" class="btn btn-primary blue" (click)="close()">

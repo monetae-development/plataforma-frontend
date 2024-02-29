@@ -20,6 +20,7 @@ export class EnableTwoFactorAuthenticationModalComponent extends AppComponentBas
     public saving = false;
     public stepper: StepperComponent;
     public model: GenerateGoogleAuthenticatorKeyOutput;
+    public isCompleted = false;
 
     constructor(injector: Injector, private _profileService: ProfileServiceProxy) {
         super(injector);
@@ -83,7 +84,7 @@ export class EnableTwoFactorAuthenticationModalComponent extends AppComponentBas
     copyRecoveryCodes(recoveryCodes: string[]): void {
         const recoveryCodesText = recoveryCodes.join('\r\n');
         const elementoInput = document.createElement('input');
-        elementoInput.value = recoveryCodesText
+        elementoInput.value = recoveryCodesText;
         document.body.appendChild(elementoInput);
         elementoInput.select();
         document.execCommand('copy');

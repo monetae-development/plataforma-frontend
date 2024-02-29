@@ -6,12 +6,14 @@ import {
     SessionServiceProxy,
     TenantLoginInfoDto,
     UserLoginInfoDto,
+    UserLoginRoleDto,
     UiCustomizationSettingsDto,
 } from '@shared/service-proxies/service-proxies';
 
 @Injectable()
 export class AppSessionService {
     private _user: UserLoginInfoDto;
+    private _role: UserLoginRoleDto;
     private _impersonatorUser: UserLoginInfoDto;
     private _tenant: TenantLoginInfoDto;
     private _impersonatorTenant: TenantLoginInfoDto;
@@ -21,7 +23,7 @@ export class AppSessionService {
     constructor(
         private _sessionService: SessionServiceProxy,
         private _abpMultiTenancyService: AbpMultiTenancyService
-    ) {}
+    ) { }
 
     get application(): ApplicationInfoDto {
         return this._application;
@@ -33,6 +35,14 @@ export class AppSessionService {
 
     get userId(): number {
         return this.user ? this.user.id : null;
+    }
+
+    get hasClientRole(): boolean {
+        return this._role.hasClientRole;
+    }
+
+    get isOnlyClientRole(): boolean {
+        return this._role.isOnlyClientRole;
     }
 
     get tenant(): TenantLoginInfoDto {
@@ -84,6 +94,7 @@ export class AppSessionService {
                     (result: GetCurrentLoginInformationsOutput) => {
                         this._application = result.application;
                         this._user = result.user;
+                        this._role = result.role;
                         this._tenant = result.tenant;
                         this._theme = result.theme;
                         this._impersonatorTenant = result.impersonatorTenant;

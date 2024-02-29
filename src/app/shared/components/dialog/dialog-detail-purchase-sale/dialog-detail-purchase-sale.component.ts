@@ -19,9 +19,8 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
   ]
 })
 export class DialogDetailPurchaseSaleComponent extends AppComponentBase implements OnInit {
-
   detailHistory: TradingRequestMemberDto;
-  type: number = 0;
+  type = 0;
   requestType = RequestType;
   requestStatus = RequestStatus;
 
@@ -39,17 +38,17 @@ export class DialogDetailPurchaseSaleComponent extends AppComponentBase implemen
 
   }
 
-  onCancel(){
+  onCancel() {
     this.ref.close();
   }
 
-  onContinue(){
+  onContinue() {
     this.ref.close();
   }
 
-  getDateTimeFormat(input: string,): string {
+  getDateTimeFormat(input: string): string {
     const parsedDate = DateTime.fromISO(input);
-    return parsedDate.toFormat('dd/MM/yy');
+    return parsedDate.toFormat('dd/MM/yyyy HH:mm:ss');
   }
 
 }

@@ -17,10 +17,7 @@
             <div class="ae-dialog__content pt-8">
                 <div>
                     <!--begin::Stepper-->
-                    <div
-                        class="stepper stepper-pills stepper-column d-flex flex-column flex-lg-row"
-                        id="2fa_stepper"
-                    >
+                    <div class="stepper stepper-pills stepper-column d-flex flex-column flex-lg-row" id="2fa_stepper">
                         <!--begin::Aside-->
                         <div class="d-flex flex-row-auto w-100 w-lg-300px">
                             <!--begin::Nav-->
@@ -38,7 +35,7 @@
 
                                         <!--begin::Label-->
                                         <div class="stepper-label">
-                                            <h3 class="stepper-title">{{ 'AuthenticatorAppTitle' | localize }}</h3>
+                                            <h6>{{ 'AuthenticatorAppTitle' | localize }}</h6>
                                         </div>
                                         <!--end::Label-->
                                     </div>
@@ -63,7 +60,7 @@
 
                                         <!--begin::Label-->
                                         <div class="stepper-label">
-                                            <h3 class="stepper-title">{{ 'SaveRecoveryCodesTitle' | localize }}</h3>
+                                            <h6>{{ 'SaveRecoveryCodesTitle' | localize }}</h6>
                                         </div>
                                         <!--end::Label-->
                                     </div>
@@ -87,7 +84,7 @@
 
                                         <!--begin::Label-->
                                         <div class="stepper-label">
-                                            <h3 class="stepper-title">{{ 'AuthenticatorAppEnabled' | localize }}</h3>
+                                            <h6>{{ 'AuthenticatorAppEnabled' | localize }}</h6>
                                         </div>
                                         <!--end::Label-->
                                     </div>
@@ -117,14 +114,14 @@
                                             </div>
                                             <div class="col-md-8 mx-auto">
                                                 <div class="text-bold text-center">
-                                                    {{ 'AuthenticatorAppScan' | localize }}
+                                                    {{ 'AuthenticatorAppScanHelp' | localize }}
                                                 </div>
-                                                <small>{{ 'AuthenticatorAppScanHelp' | localize }}</small>
                                                 <input
                                                     maxlength="6"
                                                     (keyup)="onAuthenticatorCodeInput($event)"
                                                     id="authenticationCode"
                                                     class="form-control form-control-sm mt-5"
+                                                    placeholder="{{ 'Write6DigitCode' | localize }}"
                                                     required
                                                 />
                                             </div>

@@ -1,5 +1,5 @@
 import { AppConsts } from '@shared/AppConsts';
-import { Component, Injector, ViewEncapsulation, ViewChild, OnInit } from '@angular/core';
+import { Component, Injector, ViewEncapsulation, ViewChild, OnInit, AfterViewInit, HostListener, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
@@ -28,9 +28,12 @@ import { MemberType } from '@shared/service-proxies/enum/Members/MemberType.enum
   encapsulation: ViewEncapsulation.None,
   selector: 'monetae-home',
   templateUrl: './home.component.html',
-  providers: [ DialogService ]
+  providers: [DialogService]
 })
-export class HomeComponent extends AppComponentBase implements OnInit {
+export class HomeComponent extends AppComponentBase implements OnInit, AfterViewInit {
+  @ViewChild('inversionesContainer') inversionesContainer: ElementRef;
+  @ViewChild('wrapperBalance') wrapperBalance: ElementRef;
+  @ViewChild('wrapperMobile') wrapperMobile: ElementRef;
   @ViewChild('createMntMemberFiatDepositModal', { static: true }) createMntMemberFiatDepositModal: MntMemberFiatDepositComponent;
   @ViewChild('createMntMemberFiatWithdrawalModal', { static: true }) createMntMemberFiatWithdrawalModal: MntMemberFiatWithdrawalComponent;
   @ViewChild('dataTable', { static: true }) dataTable: Table;
@@ -47,10 +50,17 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   responsiveOptionsCryptos: any[] | undefined;
   isInversionesCarousel: Boolean = true;
   filterInversiones: SelectItem[];
-  amount: number = 0;
-  currency: string = '';
+  amount: number;
+  currency: string;
   statusMember: number;
   showFadeDialogOperations: Boolean = false;
+  pageWidth: number;
+  pageHeight: number;
+  wrapperWidth: number;
+  diffCenter = 0;
+  wrapperHeight = 0;
+  wrapperMobileTopPosition: string;
+  runInterval = false;
 
   constructor(
     injector: Injector,
@@ -66,27 +76,86 @@ export class HomeComponent extends AppComponentBase implements OnInit {
     super(injector);
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.pageWidth = window.innerWidth;
+    this.pageHeight = window.innerHeight;
+    this.runInterval = false;
+    this.wrapperResize();
+  }
+
+  ngAfterViewInit() {
+    this.pageWidth = window.innerWidth;
+    this.pageHeight = window.innerHeight;
+    setTimeout(() => {
+      this.wrapperResize();
+    });
+    this.doAction();
+  }
+
+  wrapperResize() {
+    this.wrapperHeight = this.wrapperBalance.nativeElement.clientHeight - 20;
+
+    let menuW = 249 / 2;
+    if (this.appSession.isOnlyClientRole) {
+      menuW = 0;
+    }
+
+    this.wrapperWidth = this.inversionesContainer.nativeElement.clientWidth;
+    if (this.pageWidth < 992) {
+      menuW = 0;
+      this.wrapperWidth = this.pageWidth;
+    }
+
+    if (!this.runInterval) {
+      let interval: any;
+      interval = setInterval(() => {
+        this.wrapperResize();
+        clearInterval(interval);
+      }, 500);
+    }
+    this.runInterval = true;
+
+    if (this.pageWidth > this.wrapperWidth) {
+      this.diffCenter = (this.pageWidth - this.wrapperWidth) / 2 + menuW;
+    } else {
+      this.diffCenter = 0;
+    }
+  }
+
+  wrapperMobilePosition() {
+    if (!this.showFadeDialogOperations) {
+      this.wrapperMobileTopPosition = this.pageHeight - (this.wrapperMobile.nativeElement.clientHeight / 2) + 'px';
+    } else {
+      this.wrapperMobileTopPosition = '100%';
+    }
+  }
+
   ngOnInit() {
     this.getBalance();
     this.getStatusMember();
+    this.amount = 0;
+    this.currency = '';
     this.menuItems = [
-      { label: 'Inversiones' },
-      { label: 'Portafolio' },
-      { label: 'Historial' }
+      { label: this.l('Investments') },
+      { label: this.l('Market') },
+      { label: this.l('Portfolio') },
+      { label: this.l('Historic') }
     ];
     this.menuItemsHistory = [
-      { label: 'Compra/Venta' },
-      { label: 'Depósito/Retiro' },
-      { label: 'Envío/Recepción' }
+      { label: this.l('Sale/Purchase') },
+      { label: this.l('Deposit/Withdrawal') },
+      { label: this.l('Send/Receiving') }
     ];
     this.filterInversiones = [
       {
         label: 'Todos',
         value: 0
       }
-    ]
+    ];
     this.activeItem = this.menuItems[0];
     this.activeItemHistory = this.menuItemsHistory[0];
+
     this.products = [
       {
         category: 'Inmobiliario',
@@ -112,7 +181,7 @@ export class HomeComponent extends AppComponentBase implements OnInit {
         category: 'Inmobiliario',
         title: 'Proyecto El Salvador',
       }
-    ]
+    ];
     this.cryptos = [
       {
         name: 'Bitcoin',
@@ -134,17 +203,17 @@ export class HomeComponent extends AppComponentBase implements OnInit {
         name: 'Bitcoin',
         coin: 'BTC'
       },
-    ]
+    ];
     this.responsiveOptions = [
       {
-          breakpoint: '1024px',
-          numVisible: 2,
-          numScroll: 1
+        breakpoint: '1024px',
+        numVisible: 2,
+        numScroll: 1
       },
       {
-          breakpoint: '640px',
-          numVisible: 1,
-          numScroll: 1
+        breakpoint: '640px',
+        numVisible: 1,
+        numScroll: 1
       }
     ];
     this.responsiveOptionsCryptos = [
@@ -154,47 +223,26 @@ export class HomeComponent extends AppComponentBase implements OnInit {
         numScroll: 1
       },
       {
-          breakpoint: '640px',
-          numVisible: 2,
-          numScroll: 1
+        breakpoint: '640px',
+        numVisible: 2,
+        numScroll: 1
       },
       {
         breakpoint: '420px',
         numVisible: 1,
         numScroll: 1
       }
-    ]
+    ];
   }
 
-  private getBalance(){
-    this._serviceMembersProxy.getBalance().subscribe((result) => {
-      this.amount = result.amount;
-      this.currency = result.currency;
-    });
-  }
-
-  private getStatusMember(){
-    this._sessionServiceProxy.getCurrentLoignIsClientRole().subscribe((result) => {
-      console.log(result);
-      if (result.hasClientRole) {
-        this._serviceMembersProxy.getStatus().subscribe((result) => {
-          console.log(result);
-          this.statusMember = result.status;
-        });
-      } else {
-        this.statusMember = MemberType.Administrador;
-      }
-    });
-  }
-
-  showDialogBuySell(index){
-    if (this.statusMember === MemberStatus.Register){
+  showDialogBuySell(index) {
+    if (this.statusMember === MemberStatus.Register) {
       this.openMessageDialogVerifyAccount();
-    } else if (this.statusMember === MemberStatus.Pending || this.statusMember === MemberStatus.Review){
+    } else if (this.statusMember === MemberStatus.Pending || this.statusMember === MemberStatus.Review) {
       this.openMessageDialogSuccessAccount();
-    } else if (this.statusMember === MemberStatus.Refused){
+    } else if (this.statusMember === MemberStatus.Refused) {
       this.openMessageDialogRefusedAccount();
-    } else if(this.statusMember === MemberType.Administrador) {
+    } else if (this.statusMember === MemberType.Administrador) {
       this.openMessageDialogRolAdministrador();
     } else {
       const ref = this._dialogService.open(DialogOperationBuySellComponent, {
@@ -208,21 +256,21 @@ export class HomeComponent extends AppComponentBase implements OnInit {
       dialogRef?.changeDetectorRef.detectChanges();
       const instance = dialogRef?.instance?.componentRef?.instance as DialogOperationBuySellComponent;
       instance?.outAccept.subscribe((values) => {
-        if(values){
+        if (values) {
           ref.close();
         }
       });
     }
   }
 
-  showDialogSendReceive(index){
-    if (this.statusMember === MemberStatus.Register){
+  showDialogSendReceive(index) {
+    if (this.statusMember === MemberStatus.Register) {
       this.openMessageDialogVerifyAccount();
-    } else if (this.statusMember === MemberStatus.Pending || this.statusMember === MemberStatus.Review){
+    } else if (this.statusMember === MemberStatus.Pending || this.statusMember === MemberStatus.Review) {
       this.openMessageDialogSuccessAccount();
-    } else if (this.statusMember === MemberStatus.Refused){
+    } else if (this.statusMember === MemberStatus.Refused) {
       this.openMessageDialogRefusedAccount();
-    } else if(this.statusMember === MemberType.Administrador) {
+    } else if (this.statusMember === MemberType.Administrador) {
       this.openMessageDialogRolAdministrador();
     } else {
       const ref = this._dialogService.open(DialogOperationSendReceiveComponent, {
@@ -242,14 +290,14 @@ export class HomeComponent extends AppComponentBase implements OnInit {
     }
   }
 
-  showDialogDepositWithdraw(index){
-    if (this.statusMember === MemberStatus.Register){
+  showDialogDepositWithdraw(index) {
+    if (this.statusMember === MemberStatus.Register) {
       this.openMessageDialogVerifyAccount();
-    } else if (this.statusMember === MemberStatus.Pending || this.statusMember === MemberStatus.Review){
+    } else if (this.statusMember === MemberStatus.Pending || this.statusMember === MemberStatus.Review) {
       this.openMessageDialogSuccessAccount();
-    } else if (this.statusMember === MemberStatus.Refused){
+    } else if (this.statusMember === MemberStatus.Refused) {
       this.openMessageDialogRefusedAccount();
-    } else if(this.statusMember === MemberType.Administrador) {
+    } else if (this.statusMember === MemberType.Administrador) {
       this.openMessageDialogRolAdministrador();
     } else {
       const ref = this._dialogService.open(DialogOperationDepositWithdrawComponent, {
@@ -270,7 +318,7 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   }
 
   goToProject(tokenId: string) {
-    this._router.navigate(['/app/main/projects/project-' + tokenId]);
+    //this._router.navigate(['/app/main/projects/project-' + tokenId]);
   }
 
   onActiveItemChange(event: MenuItem) {
@@ -285,93 +333,125 @@ export class HomeComponent extends AppComponentBase implements OnInit {
     this.cryptoRequests.getAllOtcRequestsByMember();
   }
 
-  goToInversionesCards(){
+  goToInversionesCards() {
     this.isInversionesCarousel = false;
+  }
+
+  showDialogOperations() {
+    this.wrapperMobilePosition();
+    this.showFadeDialogOperations = !this.showFadeDialogOperations;
+
+  }
+
+  private doAction() {
+    this._activatedRoute.params.subscribe(params => {
+      let action = params['action'];
+      switch (action) {
+        case 'fiat-deposit':
+          this.showDialogDepositWithdraw(0);
+          break;
+        case 'history-fiat':
+          this.activeItem = this.menuItems[3];
+          this.activeItemHistory = this.menuItemsHistory[1];
+          break;
+      }
+    });
+  }
+
+  private getBalance() {
+    this._serviceMembersProxy.getBalance().subscribe((result) => {
+      this.amount = result.amount;
+      this.currency = result.currency;
+    });
+  }
+
+  private getStatusMember() {
+    if (this.appSession.hasClientRole) {
+      this._serviceMembersProxy.getStatus().subscribe((result) => {
+        this.statusMember = result.status;
+      });
+    } else {
+      this.statusMember = MemberType.Administrador;
+    }
   }
 
   private openMessageDialogVerifyAccount(): void {
     const ref = this._dialogService.open(DialogDefaultComponent, {
-        showHeader: false,
-        styleClass: 'ae-dialog ae-dialog--default ae-dialog--sm',
-        data: {
-            icon: 'pi pi-id-card',
-            title: 'Verificar cuenta',
-            subtitle: 'Completa la verificación KYC para continuar con la operación',
-            titleAction: 'Empezar ahora'
-        }
+      showHeader: false,
+      styleClass: 'ae-dialog ae-dialog--default ae-dialog--sm',
+      data: {
+        icon: 'pi pi-id-card',
+        title: 'Verificar cuenta',
+        subtitle: 'Completa la verificación KYC para continuar con la operación',
+        titleAction: 'Empezar ahora'
+      }
     });
     const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
     dialogRef?.changeDetectorRef.detectChanges();
     const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
     instance?.outAccept.subscribe(() => {
       this._router.navigate(['app/main/members/mntMemberDataComplements']);
-        ref.close();
+      ref.close();
     });
   }
 
   private openMessageDialogSuccessAccount(): void {
     const ref = this._dialogService.open(DialogDefaultComponent, {
-        showHeader: false,
-        styleClass: 'ae-dialog ae-dialog--default',
-        data: {
-            icon: 'pi pi-id-card',
-            title: 'Gracias por completar el proceso de verificación',
-            subtitle: 'Actualmente, estamos analizando tus datos con diligencia. En breve, te informaremos los resultados. ¡Gracias por tu paciencia!"',
-            titleAction: this.l('Continue'),
-        }
+      showHeader: false,
+      styleClass: 'ae-dialog ae-dialog--default',
+      data: {
+        icon: 'pi pi-id-card',
+        title: 'Gracias por completar el proceso de verificación',
+        subtitle: 'Actualmente, estamos analizando tus datos con diligencia. En breve, te informaremos los resultados. ¡Gracias por tu paciencia!"',
+        titleAction: this.l('Continue'),
+      }
     });
     const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
     dialogRef?.changeDetectorRef.detectChanges();
     const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
     instance?.outAccept.subscribe(() => {
-        ref.close();
-        this.showFadeDialogOperations = false;
+      ref.close();
+      this.showFadeDialogOperations = false;
     });
   }
 
   private openMessageDialogRefusedAccount(): void {
     const ref = this._dialogService.open(DialogDefaultComponent, {
-        showHeader: false,
-        styleClass: 'ae-dialog ae-dialog--default ae-text-danger ae-dialog--sm',
-        data: {
-            icon: 'pi pi-id-card',
-            title: '"¡Lo sentimos! <br> Tu verificación de identidad KYC <br> ha sido rechazada',
-            subtitle: 'Para generar una nueva solicitud contacte a nuestro equipo de soporte en info@monetae.io.',
-            titleAction: 'Aceptar'
-        }
+      showHeader: false,
+      styleClass: 'ae-dialog ae-dialog--default ae-text-danger ae-dialog--sm',
+      data: {
+        icon: 'pi pi-id-card',
+        title: this.l('KycRequestRefusedDialogTitle'),
+        subtitle: this.l('KycRequestRefusedDialogMessage'),
+        titleAction: 'Aceptar'
+      }
     });
     const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
     dialogRef?.changeDetectorRef.detectChanges();
     const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
     instance?.outAccept.subscribe(() => {
-        this._router.navigate(['app/main/dashboard']);
-        ref.close();
-        this.showFadeDialogOperations = false;
+      this.showFadeDialogOperations = false;
+      this._router.navigate(['app/main/members/mntMemberDataComplements']);
+      ref.close();
     });
-}
+  }
 
   private openMessageDialogRolAdministrador(): void {
     const ref = this._dialogService.open(DialogDefaultComponent, {
-        showHeader: false,
-        styleClass: 'ae-dialog ae-dialog--default ae-dialog--sm',
-        data: {
-            icon: 'pi pi-id-card',
-            title: 'Las operaciones son de uso exclusivo para clientes de Monetae.',
-            titleAction: 'Aceptar'
-        }
+      showHeader: false,
+      styleClass: 'ae-dialog ae-dialog--default ae-dialog--sm',
+      data: {
+        icon: 'pi pi-id-card',
+        title: 'Las operaciones son de uso exclusivo para clientes de Monetae.',
+        titleAction: 'Aceptar'
+      }
     });
     const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
     dialogRef?.changeDetectorRef.detectChanges();
     const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
     instance?.outAccept.subscribe(() => {
-        ref.close();
-        this.showFadeDialogOperations = false;
+      ref.close();
+      this.showFadeDialogOperations = false;
     });
   }
-
-  showDialogOperations(){
-    console.log("entra");
-    this.showFadeDialogOperations = !this.showFadeDialogOperations;
-  }
-
 }

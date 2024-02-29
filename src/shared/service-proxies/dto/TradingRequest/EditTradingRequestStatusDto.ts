@@ -1,12 +1,15 @@
-import { IUpdateTradingRequestStatusInput } from './IUpdateTradingRequestStatusInput';
+import { IEditTradingRequestStatusDto } from './IEditTradingRequestStatusDto';
 import { RequestStatus } from '@shared/service-proxies/enum/Trading/RequestStatus.enum';
+import { CreateOrEditMntMemberRequestLogDto } from '../members/mntMemberRequestLog/CreateOrEditMntMemberRequestLogDto';
 
-export class UpdateTradingRequestStatusInput implements IUpdateTradingRequestStatusInput {
+export class EditTradingRequestStatusDto implements IEditTradingRequestStatusDto {
     id!: number;
     userId!: number;
-    status!: RequestStatus;
+    status: RequestStatus;
+    mntMemberRequestLog!: CreateOrEditMntMemberRequestLogDto;
 
-    constructor(data?: IUpdateTradingRequestStatusInput) {
+
+    constructor(data?: IEditTradingRequestStatusDto) {
         if (data) {
             for (let property in data) {
                 if (data.hasOwnProperty(property)) {
@@ -16,9 +19,9 @@ export class UpdateTradingRequestStatusInput implements IUpdateTradingRequestSta
         }
     }
 
-    static fromJS(data: any): UpdateTradingRequestStatusInput {
+    static fromJS(data: any): EditTradingRequestStatusDto {
         data = typeof data === 'object' ? data : {};
-        let result = new UpdateTradingRequestStatusInput();
+        let result = new EditTradingRequestStatusDto();
         result.init(data);
         return result;
     }
@@ -28,6 +31,7 @@ export class UpdateTradingRequestStatusInput implements IUpdateTradingRequestSta
             this.id = _data['id'];
             this.userId = _data['userId'];
             this.status = _data['status'];
+            this.mntMemberRequestLog = _data['mntMemberRequestLog'] ? CreateOrEditMntMemberRequestLogDto.fromJS(_data['mntMemberRequestLog']) : <any>undefined;
         }
     }
 
@@ -36,6 +40,7 @@ export class UpdateTradingRequestStatusInput implements IUpdateTradingRequestSta
         data['id'] = this.id;
         data['userId'] = this.userId;
         data['status'] = this.status;
+        data['mntMemberRequestLog'] = this.mntMemberRequestLog ? this.mntMemberRequestLog.toJSON() : <any>undefined;
         return data;
     }
 }

@@ -1,5 +1,6 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { Component, EventEmitter, Injector, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { GetMntMemberBankAccountForViewDto } from '@shared/service-proxies/dto/members/mntMemberBankAccount/GetMntMemberBankAccountForViewDto';
@@ -80,6 +81,9 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
 
   constructor(
     injector: Injector,
+    private _activatedRoute: ActivatedRoute,
+    private _router: Router,
+    private _location: Location,
     private fb: FormBuilder,
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
@@ -165,7 +169,7 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
 
   copyInfoBankAaccount(text: string): void {
     const elementoInput = document.createElement('input');
-    elementoInput.value = text
+    elementoInput.value = text;
     document.body.appendChild(elementoInput);
     elementoInput.select();
     document.execCommand('copy');
@@ -284,6 +288,10 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
     instance?.outAccept.subscribe(() => {
       this.outAccept.emit(true);
       ref.close();
+      if (this._router.url === '/app/main/dashboard/history-fiat') {
+        window.location.reload();
+      }
+      this._router.navigate(['/app/main/dashboard', 'history-fiat']);
     });
   }
 

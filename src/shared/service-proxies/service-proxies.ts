@@ -32568,6 +32568,7 @@ export class CreateOrEditMntMemberAddressDto implements ICreateOrEditMntMemberAd
     proof!: string | undefined;
     mntMemberId!: number | undefined;
     catStateId!: number;
+    catCountryId!: number;
     id!: number | undefined;
 
     constructor(data?: ICreateOrEditMntMemberAddressDto) {
@@ -32589,6 +32590,7 @@ export class CreateOrEditMntMemberAddressDto implements ICreateOrEditMntMemberAd
             this.proof = _data["proof"];
             this.mntMemberId = _data["mntMemberId"];
             this.catStateId = _data["catStateId"];
+            this.catCountryId = _data["catCountryId"];
             this.id = _data["id"];
         }
     }
@@ -32610,6 +32612,7 @@ export class CreateOrEditMntMemberAddressDto implements ICreateOrEditMntMemberAd
         data["proof"] = this.proof;
         data["mntMemberId"] = this.mntMemberId;
         data["catStateId"] = this.catStateId;
+        data["catCountryId"] = this.catCountryId;
         data["id"] = this.id;
         return data;
     }
@@ -32624,6 +32627,7 @@ export interface ICreateOrEditMntMemberAddressDto {
     proof: string | undefined;
     mntMemberId: number | undefined;
     catStateId: number;
+    catCountryId: number;
     id: number | undefined;
 }
 
@@ -32778,7 +32782,7 @@ export interface ICreateMntMemberWalletDto {
 export class CreateOrEditMntMemberDto implements ICreateOrEditMntMemberDto {
     name!: string | undefined;
     surname!: string | undefined;
-    phoneCodeId!: string | undefined;
+    phoneCodeId!: number | undefined;
     phone!: string | undefined;
     dayOfBirth!: DateTime | undefined;
     comments!: string | undefined;
@@ -32840,7 +32844,7 @@ export class CreateOrEditMntMemberDto implements ICreateOrEditMntMemberDto {
 export interface ICreateOrEditMntMemberDto {
     name: string | undefined;
     surname: string | undefined;
-    phoneCodeId: string | undefined;
+    phoneCodeId: number | undefined;
     phone: string | undefined;
     dayOfBirth: DateTime | undefined;
     comments: string | undefined;
@@ -37514,6 +37518,7 @@ export interface IGetCatTransactionTypeForViewDto {
 
 export class GetCurrentLoginInformationsOutput implements IGetCurrentLoginInformationsOutput {
     user!: UserLoginInfoDto;
+    role!: UserLoginRoleDto;
     impersonatorUser!: UserLoginInfoDto;
     tenant!: TenantLoginInfoDto;
     impersonatorTenant!: TenantLoginInfoDto;
@@ -37532,6 +37537,7 @@ export class GetCurrentLoginInformationsOutput implements IGetCurrentLoginInform
     init(_data?: any) {
         if (_data) {
             this.user = _data["user"] ? UserLoginInfoDto.fromJS(_data["user"]) : <any>undefined;
+            this.role = _data["role"] ? UserLoginRoleDto.fromJS(_data["role"]) : <any>undefined;
             this.impersonatorUser = _data["impersonatorUser"] ? UserLoginInfoDto.fromJS(_data["impersonatorUser"]) : <any>undefined;
             this.tenant = _data["tenant"] ? TenantLoginInfoDto.fromJS(_data["tenant"]) : <any>undefined;
             this.impersonatorTenant = _data["impersonatorTenant"] ? TenantLoginInfoDto.fromJS(_data["impersonatorTenant"]) : <any>undefined;
@@ -37550,6 +37556,7 @@ export class GetCurrentLoginInformationsOutput implements IGetCurrentLoginInform
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        data["role"] = this.role ? this.role.toJSON() : <any>undefined;
         data["impersonatorUser"] = this.impersonatorUser ? this.impersonatorUser.toJSON() : <any>undefined;
         data["tenant"] = this.tenant ? this.tenant.toJSON() : <any>undefined;
         data["impersonatorTenant"] = this.impersonatorTenant ? this.impersonatorTenant.toJSON() : <any>undefined;
@@ -37561,6 +37568,7 @@ export class GetCurrentLoginInformationsOutput implements IGetCurrentLoginInform
 
 export interface IGetCurrentLoginInformationsOutput {
     user: UserLoginInfoDto;
+    role: UserLoginRoleDto;
     impersonatorUser: UserLoginInfoDto;
     tenant: TenantLoginInfoDto;
     impersonatorTenant: TenantLoginInfoDto;
@@ -47703,7 +47711,7 @@ export interface IUploadDepositReceiptDto {
 }
 
 export class UploadDepositReceiptDto implements IUploadDepositReceiptDto {
-    fileGuid: string| undefined;
+    fileGuid: string | undefined;
 
     constructor(data?: IUploadDepositReceiptDto) {
         if (data) {
@@ -52700,6 +52708,46 @@ export interface IUserLoginInfoDto {
     emailAddress: string | undefined;
     profilePictureId: string | undefined;
     id: number;
+}
+
+export class UserLoginRoleDto implements IUserLoginRoleDto {
+    hasClientRole!: boolean;
+    isOnlyClientRole!: boolean;
+
+    constructor(data?: IUserLoginRoleDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.hasClientRole = _data["hasClientRole"];
+            this.isOnlyClientRole = _data["isOnlyClientRole"];
+        }
+    }
+
+    static fromJS(data: any): UserLoginRoleDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserLoginRoleDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["hasClientRole"] = this.hasClientRole;
+        data["isOnlyClientRole"] = this.isOnlyClientRole;
+        return data;
+    }
+}
+
+export interface IUserLoginRoleDto {
+    hasClientRole: boolean;
+    isOnlyClientRole: boolean;
 }
 
 export class UserNotification implements IUserNotification {

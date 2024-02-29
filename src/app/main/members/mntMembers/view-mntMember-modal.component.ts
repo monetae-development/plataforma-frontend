@@ -8,6 +8,8 @@ import {
     MntEconomicInfosServiceProxy, GetMntEconomicInfoCompletedDto,
 } from '@shared/service-proxies/service-proxies';
 import { ServiceMembersProxy } from '@shared/service-proxies/service-members-proxies';
+import { GetMntMemberBankAccountForViewDto } from '@shared/service-proxies/dto/members/mntMemberBankAccount/GetMntMemberBankAccountForViewDto';
+import { BankAccountStatus } from '@shared/service-proxies/enum/Members/BankAccountStatus.enum';
 import { FileType } from '@shared/service-proxies/enum/Members/FileType.enum';
 import { AppComponentBase } from '@shared/common/app-component-base';
 
@@ -27,6 +29,8 @@ export class ViewMntMemberModalComponent extends AppComponentBase {
     address: GetMntMemberAddressCompletedDto;
     identity: GetMntMemberIdentityCompletedDto;
     economic: GetMntEconomicInfoCompletedDto;
+    bankAccounts: GetMntMemberBankAccountForViewDto[];
+    isHasBankAccounts = false;
     fileType = FileType;
 
     constructor(
@@ -34,7 +38,7 @@ export class ViewMntMemberModalComponent extends AppComponentBase {
         private _mntMemberAddressesServiceProxy: MntMemberAddressesServiceProxy,
         private _mntMemberIdentitiesServiceProxy: MntMemberIdentitiesServiceProxy,
         private _mntEconomicInfosServiceProxy: MntEconomicInfosServiceProxy,
-        private _mntMembersProxy: ServiceMembersProxy,
+        private _serviceMemberProxy: ServiceMembersProxy,
     ) {
         super(injector);
         this.item = new GetMntMemberForViewDto();
@@ -59,10 +63,20 @@ export class ViewMntMemberModalComponent extends AppComponentBase {
         this._mntEconomicInfosServiceProxy.getMntEconomicInfoByMemberId(this.item.mntMember.id).subscribe(result => {
             this.economic = result;
         });
+
+        this._serviceMemberProxy.getBankAccountsByMemberIdForView(item.mntMember.id
+        ).subscribe(result => {
+            if (result.totalCount > 0) {
+                this.isHasBankAccounts = true;
+            } else {
+                this.isHasBankAccounts = false;
+            }
+            this.bankAccounts = result.items;
+        });
     }
 
     downloadFile(fileType: number): void {
-        this._mntMembersProxy.downloadMemberFile(this.item.mntMember.userId, fileType);
+        this._serviceMemberProxy.downloadMemberFile(this.item.mntMember.userId, fileType);
     }
 
     close(): void {

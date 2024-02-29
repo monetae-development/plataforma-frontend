@@ -1,10 +1,10 @@
-import { Component, Injector, EventEmitter, OnInit, Input, Output } from '@angular/core'
-import { AppComponentBase } from '@shared/common/app-component-base'
-import { finalize } from 'rxjs/operators'
-import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies'
-import { SettingsPlatformServiceProxy } from '@shared/service-proxies/service-settings-platform-proxies'
-import { OTCSettingsDto } from '@shared/service-proxies/dto/SettingsPlatform/OTCSettingsDto'
-import { result } from 'lodash-es'
+import { Component, Injector, EventEmitter, OnInit, Input, Output } from '@angular/core';
+import { AppComponentBase } from '@shared/common/app-component-base';
+import { finalize } from 'rxjs/operators';
+import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
+import { SettingsPlatformServiceProxy } from '@shared/service-proxies/service-settings-platform-proxies';
+import { OTCSettingsDto } from '@shared/service-proxies/dto/SettingsPlatform/OTCSettingsDto';
+import { result } from 'lodash-es';
 
 @Component({
   selector: 'otc-settings',
@@ -16,15 +16,14 @@ export class OTCComponent extends AppComponentBase implements OnInit {
   saving = false;
 
   constructor(injector: Injector, private _settingsPlatformServiceProxy: SettingsPlatformServiceProxy) {
-    super(injector)
+    super(injector);
     this.otcSettings = new OTCSettingsDto();
   }
 
   ngOnInit() {
     this._settingsPlatformServiceProxy.getOTCSettings().subscribe(result => {
-      console.log(result);
       this.otcSettings = result.otcSettings;
-    })
+    });
   }
 
   save() {

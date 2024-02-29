@@ -76,7 +76,7 @@ export class UserMenuComponent extends ThemesLayoutBaseComponent implements OnIn
     setCurrentLoginInformations(): void {
         this.shownLoginName = this.appSession.getShownLoginName();
         this.tenancyName = this.appSession.tenancyName;
-        this.userName = this.appSession.user.userName;
+        this.userName = this.appSession.user.name + ' ' + this.appSession.user.surname;
         this.emailAddress = this.appSession.user.emailAddress;
     }
 
@@ -112,6 +112,14 @@ export class UserMenuComponent extends ThemesLayoutBaseComponent implements OnIn
 
     showUserDelegations(): void {
         abp.event.trigger('app.show.userDelegationsModal');
+    }
+
+    showUserBankAccounts(): void {
+        this._router.navigate(['/app/main/members/mntMemberBankAccounts']);
+    }
+
+    showUserKyc(): void {
+        this._router.navigate(['/app/main/members/mntMemberDataComplements']);
     }
 
     changePassword(): void {

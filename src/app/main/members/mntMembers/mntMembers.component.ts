@@ -1,10 +1,11 @@
 ﻿import { AppConsts } from '@shared/AppConsts';
 import { Component, Injector, ViewEncapsulation, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MntMembersServiceProxy, MntMemberDto, UpdateStatusDto } from '@shared/service-proxies/service-proxies';
+import { MntMembersServiceProxy, MntMemberDto, GetMntMemberForViewDto } from '@shared/service-proxies/service-proxies';
 import { NotifyService } from 'abp-ng2-module';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
+import { MntMemberChangeStatusComponent } from './components/changeStatus/changeStatus.component';
 import { CreateOrEditMntMemberModalComponent } from './create-or-edit-mntMember-modal.component';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { Table } from 'primeng/table';
@@ -16,16 +17,13 @@ import { DateTime } from 'luxon';
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
 import { MemberStatus } from '@shared/service-proxies/enum/Members/MemberStatus.enum';
 import { GetSelectDto } from '@shared/service-proxies/dto/Common/SelectInput/GetSelectDto';
-import { DialogService } from 'primeng/dynamicdialog';
-import { DialogChangeStatusComponent } from '@app/shared/components/dialog/dialog-change-status/dialog-change-status.component';
-
 @Component({
     templateUrl: './mntMembers.component.html',
     encapsulation: ViewEncapsulation.None,
     animations: [appModuleAnimation()],
-    providers: [DialogService]
 })
 export class MntMembersComponent extends AppComponentBase {
+    @ViewChild('changeStatusModal', { static: true }) changeStatusModal: MntMemberChangeStatusComponent;
     @ViewChild('createOrEditMntMemberModal', { static: true }) createOrEditMntMemberModal: CreateOrEditMntMemberModalComponent;
     @ViewChild('dataTable', { static: true }) dataTable: Table;
     @ViewChild('paginator', { static: true }) paginator: Paginator;
@@ -48,8 +46,7 @@ export class MntMembersComponent extends AppComponentBase {
         private _tokenAuth: TokenAuthServiceProxy,
         private _activatedRoute: ActivatedRoute,
         private _fileDownloadService: FileDownloadService,
-        private _dateTimeService: DateTimeService,
-        public dialogService: DialogService,
+        private _dateTimeService: DateTimeService
     ) {
         super(injector);
     }
@@ -79,7 +76,6 @@ export class MntMembersComponent extends AppComponentBase {
             this.primengTableHelper.totalRecordsCount = result.totalCount;
             this.primengTableHelper.records = result.items;
             this.primengTableHelper.hideLoadingIndicator();
-            console.log(result.items);
         });
     }
 
@@ -89,38 +85,6 @@ export class MntMembersComponent extends AppComponentBase {
 
     createMntMember(): void {
         this.createOrEditMntMemberModal.show();
-    }
-
-    showDialogChangeStatus(mntMember: MntMemberDto): void {
-        const ref = this.dialogService.open(DialogChangeStatusComponent, {
-            showHeader: false,
-            styleClass: 'ae-dialog ae-dialog--sm',
-            data: {
-                transfer: {
-
-                },
-            },
-        });
-
-        const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
-        dialogRef?.changeDetectorRef.detectChanges();
-
-        const instance = dialogRef?.instance?.componentRef?.instance as DialogChangeStatusComponent;
-        instance?.outAccept.subscribe((values) => {
-            const statusBody = new UpdateStatusDto();
-            statusBody.id = mntMember.id;
-            statusBody.status = values;
-            if (values) {
-                this._mntMembersServiceProxy.updateStatus(statusBody)
-                    .subscribe(() => {
-                        this.reloadPage();
-                        ref.close();
-                    },
-                        (err) => {
-                            ref.close();
-                        });
-            }
-        });
     }
 
     deleteMntMember(mntMember: MntMemberDto): void {
@@ -139,17 +103,7 @@ export class MntMembersComponent extends AppComponentBase {
         );
     }
 
-    exportToExcel(): void {
-        this._mntMembersServiceProxy.getMntMembersToExcel(
-            this.filterText,
-            this.maxDayOfBirthFilter === undefined ? this.maxDayOfBirthFilter : this._dateTimeService.getEndOfDayForDate(this.maxDayOfBirthFilter),
-            this.minDayOfBirthFilter === undefined ? this.minDayOfBirthFilter : this._dateTimeService.getStartOfDayForDate(this.minDayOfBirthFilter),
-            this.commentsFilter,
-            this.userNameFilter,
-            this.catNationalityTitleFilter,
-        )
-            .subscribe(result => {
-                this._fileDownloadService.downloadTempFile(result);
-            });
+    changeStatus(member: GetMntMemberForViewDto) {
+        this.changeStatusModal.show(member);
     }
 }
