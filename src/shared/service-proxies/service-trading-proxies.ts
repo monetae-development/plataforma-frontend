@@ -5,14 +5,16 @@ import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
 import { Helpers } from './service-helpers';
 import { BalanceFiatDto } from './dto/Common/Balance/BalanceFiatDto';
+import { PRGetAllTradingCryptoCurrencyForFullViewDto } from './dto/Trading/TradingCryptoCurrency/PRGetAllTradingCryptoCurrencyForFullViewDto';
+import { PRGetAllTradingCryptoCurrencyForSimpleViewDto } from './dto/Trading/TradingCryptoCurrency/PRGetAllTradingCryptoCurrencyForSimpleViewDto';
 import { PagedResultDtoGetAllCryptoCurrencies } from './dto/mntMemberTrading/PagedResultDtoGetAllCryptoCurrencies';
 import { MntMemberTradingRequestDto } from './dto/mntMemberTrading/MntMemberTradingRequestDto';
 import { GetCryptoBalanceDto } from './dto/mntMemberTrading/GetCryptoBalanceDto';
 import { MntMemberTradingResponseDto } from './dto/mntMemberTrading/MntMemberTradingResponseDto';
-import { PRGetAllMntMemberFiatForViewDto } from './dto/members/mntMemberFiat/PRGetAllMntMemberFiatForViewDto';
 import { PRGetAllMntMemberTradingForViewDto } from './dto/mntMemberTrading/PRGetAllMntMemberTradingForViewDto';
 import { PRGetAllMntMemberTradingPortfolioForViewDto } from './dto/mntMemberTrading/PRGetAllMntMemberTradingPortfolioForViewDto';
 import { GetMemberDetailRequestDto } from './dto/mntMemberTrading/GetMemberDetailRequestDto';
+
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
@@ -203,8 +205,8 @@ export class ServiceTradingProxy {
         return _observableOf(null as any);
     }
 
-    getAllCryptoCurrencies(): Observable<PagedResultDtoGetAllCryptoCurrencies> {
-        let url_ = this.baseUrl + "/api/services/app/MntMemberTrading/GetAllCryptoCurrencies";
+    getAllCryptoCurrenciesFull(): Observable<PRGetAllTradingCryptoCurrencyForFullViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/MntMemberTrading/GetAllCryptoCurrenciesFull";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: any = {
@@ -215,10 +217,108 @@ export class ServiceTradingProxy {
             })
         };
 
-        return this.http.request('get', url_, options_).pipe(_observableMergeMap((response_: any) => this.processGetAllCryptoCurrencies(response_))).pipe(_observableCatch((response_: any) => {
+        return this.http.request('get', url_, options_).pipe(_observableMergeMap((response_: any) => this.processGetAllCryptoCurrenciesFull(response_))).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetAllCryptoCurrencies(response_ as any);
+                    return this.processGetAllCryptoCurrenciesFull(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PRGetAllTradingCryptoCurrencyForFullViewDto>;
+                }
+            } else {
+                return _observableThrow(response_) as any as Observable<PRGetAllTradingCryptoCurrencyForFullViewDto>;
+            }
+        }));
+    }
+
+    protected processGetAllCryptoCurrenciesFull(response: HttpResponseBase): Observable<PRGetAllTradingCryptoCurrencyForFullViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) {
+            for (let key of response.headers.keys()) {
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        if (status === 200) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = PRGetAllTradingCryptoCurrencyForFullViewDto.fromJS(resultData200);
+                return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers)));
+        }
+        return _observableOf(null as any);
+    }
+
+    getAllCryptoCurrenciesSimple(): Observable<PRGetAllTradingCryptoCurrencyForSimpleViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/MntMemberTrading/GetAllCryptoCurrenciesSimple";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request('get', url_, options_).pipe(_observableMergeMap((response_: any) => this.processGetAllCryptoCurrenciesSimple(response_))).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllCryptoCurrenciesSimple(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PRGetAllTradingCryptoCurrencyForSimpleViewDto>;
+                }
+            } else {
+                return _observableThrow(response_) as any as Observable<PRGetAllTradingCryptoCurrencyForSimpleViewDto>;
+            }
+        }));
+    }
+
+    protected processGetAllCryptoCurrenciesSimple(response: HttpResponseBase): Observable<PRGetAllTradingCryptoCurrencyForSimpleViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) {
+            for (let key of response.headers.keys()) {
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        if (status === 200) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = PRGetAllTradingCryptoCurrencyForSimpleViewDto.fromJS(resultData200);
+                return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers)));
+        }
+        return _observableOf(null as any);
+    }
+
+    getAllCryptoCurrenciesForSelect(): Observable<PagedResultDtoGetAllCryptoCurrencies> {
+        let url_ = this.baseUrl + "/api/services/app/MntMemberTrading/GetAllCryptoCurrenciesForSelect";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request('get', url_, options_).pipe(_observableMergeMap((response_: any) => this.processGetAllCryptoCurrenciesForSelect(response_))).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllCryptoCurrenciesForSelect(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<PagedResultDtoGetAllCryptoCurrencies>;
                 }
@@ -228,7 +328,7 @@ export class ServiceTradingProxy {
         }));
     }
 
-    protected processGetAllCryptoCurrencies(response: HttpResponseBase): Observable<PagedResultDtoGetAllCryptoCurrencies> {
+    protected processGetAllCryptoCurrenciesForSelect(response: HttpResponseBase): Observable<PagedResultDtoGetAllCryptoCurrencies> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :

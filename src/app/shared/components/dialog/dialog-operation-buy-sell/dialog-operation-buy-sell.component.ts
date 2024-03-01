@@ -62,7 +62,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
     private _serviceTradingProxy: ServiceTradingProxy,
     private _messageService: MessageService,
     private _dialogService: DialogService,
-  ) { 
+  ) {
     super(injector);
     this.activeIndex = config.data?.activeIndex;
     this.purchaseForm = this._buildPurchaseForm();
@@ -81,7 +81,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
 
   private _buildPurchaseForm(): FormGroup {
     return this.fb.group({
-      cryptoCurrencyId: [{ value: null, disabled: true}, [Validators.required]],
+      cryptoCurrencyId: [{ value: null, disabled: true }, [Validators.required]],
       amountCrypto: [null, [Validators.required]],
       amount: [null, [Validators.required]],
     });
@@ -89,7 +89,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
 
   private _buildSaleForm(): FormGroup {
     return this.fb.group({
-      cryptoCurrencyId: [{ value: null, disabled: true}, [Validators.required]],
+      cryptoCurrencyId: [{ value: null, disabled: true }, [Validators.required]],
       amountCrypto: [null, [Validators.required]],
       amount: [null, [Validators.required]],
     });
@@ -103,23 +103,23 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   get amountCryptoSaleControl() { return this.saleForm.controls['amountCrypto'] as FormControl; }
   get amountSaleControl() { return this.saleForm.controls['amount'] as FormControl; }
 
-  loadBalance(){
+  loadBalance() {
     this._serviceTradingProxy.getFiatBalance()
-    .subscribe((result) => {
-      this.amountPurchase = result.amount;
-    });
+      .subscribe((result) => {
+        this.amountPurchase = result.amount;
+      });
   }
 
-  loadCryptoAssets(){
-    this._serviceTradingProxy.getAllCryptoCurrencies()
-    .subscribe((result) => {
-      this.cryptoAssets = result.items;
-      this.cryptoAssetIdPurchaseControl.enable();
-      this.cryptoAssetIdSaleControl.enable();
-    });
+  loadCryptoAssets() {
+    this._serviceTradingProxy.getAllCryptoCurrenciesForSelect()
+      .subscribe((result) => {
+        this.cryptoAssets = result.items;
+        this.cryptoAssetIdPurchaseControl.enable();
+        this.cryptoAssetIdSaleControl.enable();
+      });
   }
 
-  onCancel(){
+  onCancel() {
     this.ref.close();
   }
 
@@ -131,9 +131,9 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
     }
     this.purchasePrice = event.value.purchasePrice;
     this.comissionPurchase = event.value.fee;
-    if(this.amountCryptoPurchaseControl.value !== null && this.amountCryptoPurchaseControl.value >= 0){
+    if (this.amountCryptoPurchaseControl.value !== null && this.amountCryptoPurchaseControl.value >= 0) {
       this.calculatePurchaseCost(this.amountCryptoPurchaseControl.value);
-    } else if(this.amountPurchaseControl.value !== null && this.amountPurchaseControl.value >= 0){
+    } else if (this.amountPurchaseControl.value !== null && this.amountPurchaseControl.value >= 0) {
       this.calculateCryptoPurchaseCost(this.amountPurchaseControl.value);
     }
   }
@@ -146,9 +146,9 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
     this.getCryptoBalance(event.value.value);
     this.salePrice = event.value.salePrice;
     this.comissionSale = event.value.fee;
-    if(this.amountCryptoSaleControl.value !== null && this.amountCryptoSaleControl.value >= 0){
+    if (this.amountCryptoSaleControl.value !== null && this.amountCryptoSaleControl.value >= 0) {
       this.calculateSaleCost(this.amountCryptoSaleControl.value);
-    } else if(this.amountSaleControl.value !== null && this.amountSaleControl.value >= 0){
+    } else if (this.amountSaleControl.value !== null && this.amountSaleControl.value >= 0) {
       this.calculateCryptoSaleCost(this.amountSaleControl.value);
     }
   }
@@ -160,7 +160,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
       this.amountPurchaseControl.setValue(null);
       return;
     }
-    if(this.cryptoAssetIdPurchaseControl.value){
+    if (this.cryptoAssetIdPurchaseControl.value) {
       this.amountCryptoPurchaseControl.setValue(event.value);
       this.calculatePurchaseCost(event.value);
     }
@@ -172,8 +172,8 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
       this.amountCryptoPurchaseControl.setValue(null);
       return;
     }
-    if(this.cryptoAssetIdPurchaseControl.value){
-      if(event.value >= this.amountPurchase){
+    if (this.cryptoAssetIdPurchaseControl.value) {
+      if (event.value >= this.amountPurchase) {
         console.log("entra");
         this.amountPurchaseControl.setValue(this.amountPurchase);
         this.calculateCryptoPurchaseCost(this.amountPurchase);
@@ -190,7 +190,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
       this.amountSaleControl.setValue(null);
       return;
     }
-    if(this.cryptoAssetIdSaleControl.value){
+    if (this.cryptoAssetIdSaleControl.value) {
       this.amountCryptoSaleControl.setValue(event.value);
       this.calculateSaleCost(event.value);
       console.log("entra");
@@ -204,7 +204,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
       this.amountCryptoSaleControl.setValue(null);
       return;
     }
-    if(this.cryptoAssetIdSaleControl.value){
+    if (this.cryptoAssetIdSaleControl.value) {
       this.amountSaleControl.setValue(event.value);
       this.calculateCryptoSaleCost(event.value);
     }
@@ -226,7 +226,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
     console.log(amount);
     if (amount >= 0) {
       console.log(amount);
-      this.amountCryptoPurchaseControl.setValue(amount/this.purchasePrice);
+      this.amountCryptoPurchaseControl.setValue(amount / this.purchasePrice);
       this.amountPurchaseCommision = (this.amountPurchaseControl.value * this.comissionPurchase) / 100;
     } else {
       this.amountPurchaseCommision = undefined;
@@ -235,7 +235,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
 
   calculateSaleCost(amount) {
     if (amount >= 0) {
-      this.amountSaleControl.setValue(amount*this.salePrice);
+      this.amountSaleControl.setValue(amount * this.salePrice);
       this.amountSaleCommision = (this.amountSaleControl.value * this.comissionSale) / 100;
     } else {
       this.amountSaleCommision = undefined;
@@ -244,7 +244,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
 
   calculateCryptoSaleCost(amount) {
     if (amount >= 0) {
-      this.amountCryptoSaleControl.setValue(amount/this.salePrice);
+      this.amountCryptoSaleControl.setValue(amount / this.salePrice);
       this.amountSaleCommision = (this.amountSaleControl.value * this.comissionSale) / 100;
     } else {
       this.amountSaleCommision = undefined;
@@ -313,32 +313,32 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
     this.calculateSaleCost(this.amountSale);
   }
 
-  private getCryptoBalance(cryptoCurrencyId){
+  private getCryptoBalance(cryptoCurrencyId) {
     console.log(cryptoCurrencyId);
     this._serviceTradingProxy.getCryptoBalance(cryptoCurrencyId)
-    .subscribe((result) => {
-      console.log(result.amount);
-      this.amountSale = result.amount;
-    });
+      .subscribe((result) => {
+        console.log(result.amount);
+        this.amountSale = result.amount;
+      });
   }
 
   private openSuccessDialogFolio(folio): void {
     const ref = this._dialogService.open(DialogDefaultComponent, {
-        showHeader: false,
-        styleClass: 'ae-dialog ae-dialog--default ae-dialog--sm',
-        data: {
-            icon: 'pi pi-chart-bar',
-            title: this.l('OTCRequestCreatedSuccessfully'),
-            subtitle: this.l('RequestSuccessfully', folio),
-            titleAction: 'Aceptar'
-        }
+      showHeader: false,
+      styleClass: 'ae-dialog ae-dialog--default ae-dialog--sm',
+      data: {
+        icon: 'pi pi-chart-bar',
+        title: this.l('OTCRequestCreatedSuccessfully'),
+        subtitle: this.l('RequestSuccessfully', folio),
+        titleAction: 'Aceptar'
+      }
     });
     const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
     dialogRef?.changeDetectorRef.detectChanges();
     const instance = dialogRef?.instance?.componentRef?.instance as DialogDefaultComponent;
     instance?.outAccept.subscribe(() => {
-        this.outAccept.emit(true);
-        ref.close();
+      this.outAccept.emit(true);
+      ref.close();
     });
   }
 
