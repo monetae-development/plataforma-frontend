@@ -1,16 +1,20 @@
 <div class="ae-dialog__header flex align-items-center justify-content-center">
     <i class="pi pi-arrow-left ae-text-dark mr-3" (click)="onCancel()"></i>
     <h2 class="ae-text-dark fw-bold">{{ title }}</h2>
-  </div>
-  <div class="ae-dialog__content">
+</div>
+<div class="ae-dialog__content">
     <div class="ae-resumen__title flex flex-column align-items-center jus">
         <img
             class="mb-3"
-            src="/assets/crypto-icons/{{ resumenSend.cryptoCurrencyId.subtitle.toLowerCase() }}.png" 
+            src="/assets/crypto-icons/{{ resumenSend.cryptoCurrencyId.subtitle.toLowerCase() }}.png"
             style="width: 50px"
         />
-        <p class="mb-1 ae-text-dark ae-text-medium fw-bold">{{ resumenSend.amountCrypto }} {{ resumenSend.cryptoCurrencyId.subtitle }}</p>
-        <p class="m-0 ae-text-small ae-text-gris">{{ amountPrice | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }} USD</p>
+        <p class="mb-1 ae-text-dark ae-text-medium fw-bold">
+            {{ resumenSend.amountCrypto | number : '1.2-6' : 'en' }} {{ resumenSend.cryptoCurrencyId.subtitle }}
+        </p>
+        <p class="m-0 ae-text-small ae-text-gris">
+            {{ amountPrice | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }} USD
+        </p>
     </div>
     <div class="ae-table__resumen mb-8">
         <div class="ae-resumen__item flex align-items-center justify-content-between">
@@ -26,7 +30,9 @@
                 <p class="ae-text-dark ae-text-default w-full">Precio {{ resumenSend.cryptoCurrencyId.subtitle }}</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-gris-network ae-text-default w-full">{{ amountPrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}</span>
+                <span class="ae-text-gris-network ae-text-default w-full">
+                    {{ amountPrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}
+                </span>
             </div>
         </div>
         <div class="ae-resumen__item flex align-items-center justify-content-between">
@@ -42,7 +48,9 @@
                 <p class="ae-text-dark ae-text-default w-full">Subtotal</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-gris-dark ae-text-default w-full">{{ resumenSend.amount | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }} USD</span>
+                <span class="ae-text-gris-dark ae-text-default w-full">
+                    {{ resumenSend.amount | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }} USD
+                </span>
             </div>
         </div>
         <div class="ae-resumen__item flex align-items-center justify-content-between">
@@ -50,19 +58,28 @@
                 <p class="ae-text-dark ae-text-default w-full">Comisión</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-gris-dark ae-text-default w-full">{{ amountCommision | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }} USD</span>
-            </div>            
+                <span class="ae-text-gris-dark ae-text-default w-full">
+                    {{ amountCommision | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }} USD
+                </span>
+            </div>
         </div>
         <div class="ae-resumen__item flex align-items-center justify-content-between">
             <div class="ae-description">
                 <p class="ae-text-dark ae-text-default w-full">Total</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-gris-dark ae-text-default fw-bold w-full">{{ amountTotal | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }} USD</span>
+                <span class="ae-text-gris-dark ae-text-default fw-bold w-full">
+                    {{ amountTotal | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }} USD
+                </span>
             </div>
         </div>
     </div>
-  </div>
-  <div class="ae-dialog__actions">
-    <p-button class="ae-button ae-button--primary w-full" [label]="titleAction" [disabled]="sending" (click)="onRequestSend()"></p-button>
-  </div>
+</div>
+<div class="ae-dialog__actions">
+    <p-button
+        class="ae-button ae-button--primary w-full"
+        [label]="titleAction"
+        [disabled]="sending"
+        (click)="onRequestSend()"
+    ></p-button>
+</div>

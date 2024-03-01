@@ -1,8 +1,4 @@
 <div class="ae-table mt-8">
-    <div class="ae-table__title">
-        <!-- <h6 class="ae-text-dark fw-bold m-0">{{ l('Aquí tienes el registro de todas tus activos digitales') }}</h6> -->
-        <!-- <h6 class="card-title mb-0">{{ l('MarketsOverview') }}</h6> -->
-    </div>
     <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
         <p-table
             #dataTable
@@ -24,12 +20,16 @@
             [globalFilterFields]="['otcCoin.name', 'otcCoin.key']"
         >
             <ng-template pTemplate="caption">
-                <div class="flex align-items-center justify-content-end mb-4">
-                    <h6 class="ae-text-dark fw-bold m-0">{{ l('Aquí tienes el registro de todas tus activos digitales') }}</h6>
-                    <span class="p-input-icon-right ml-auto">
+                <div class="flex align-items-center m-0 p-0">
+                    <!--<span class="p-input-icon-right">
                         <i class="pi pi-search"></i>
-                        <input pInputText type="text" (input)="dataTable.filterGlobal($event.target.value, 'contains')" placeholder="" />
-                    </span>
+                        <input
+                            pInputText
+                            type="text"
+                            (input)="dataTable.filterGlobal($event.target.value, 'contains')"
+                            placeholder=""
+                        />
+                    </span>-->
                 </div>
             </ng-template>
             <ng-template pTemplate="header">
@@ -51,7 +51,7 @@
                         {{ l('Cantidad') }}
                         <!-- {{ l('SalePrice') }} -->
                     </th>
-                    <th style="width: 100px;">
+                    <th style="width: 100px">
                         <!-- {{ l('Actions') }} -->
                     </th>
                 </tr>
@@ -75,15 +75,14 @@
                     </td>
                     <td>
                         <div *ngIf="record.otcCoin.change24h > 0; else isDown">
-                            <img src="/assets/common/images/icon-line-up.png" alt="Monetae">
-                          </div>
-                          <ng-template #isDown>
-                            <img src="/assets/common/images/icon-line-down.png" alt="Monetae">
-                          </ng-template>
+                            <img src="/assets/common/images/icon-line-up.png" alt="Monetae" />
+                        </div>
+                        <ng-template #isDown>
+                            <img src="/assets/common/images/icon-line-down.png" alt="Monetae" />
+                        </ng-template>
                         <!-- {{ record.otcCoin.salePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }} -->
                     </td>
                     <td
-                        
                         [class.text-success]="record.otcCoin.change24h > 0"
                         [class.text-danger]="record.otcCoin.change24h < 0"
                     >
@@ -99,7 +98,9 @@
                         <span class="ae-text-gris-dark">50%</span>
                     </td>
                     <td>
-                        <span class="ae-text-gris-dark">{{ record.otcCoin.purchasePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}</span>
+                        <span class="ae-text-gris-dark">
+                            {{ record.otcCoin.purchasePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}
+                        </span>
                     </td>
                     <td>
                         <div class="flex">
