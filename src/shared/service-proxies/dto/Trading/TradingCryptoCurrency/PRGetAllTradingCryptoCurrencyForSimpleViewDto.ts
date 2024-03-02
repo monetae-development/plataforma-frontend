@@ -16,10 +16,11 @@ export class PRGetAllTradingCryptoCurrencyForSimpleViewDto implements IPRGetAllT
 
     init(_data?: any) {
         if (_data) {
-            this.totalCount = _data["totalCount"];
-            if (Array.isArray(_data["items"])) {
+            this.totalCount = _data["totalCount"] ?? _data["TotalCount"];
+            let items = _data['items'] ?? _data['Items'];
+            if (Array.isArray(items)) {
                 this.items = [] as any;
-                for (let item of _data["items"])
+                for (let item of items)
                     this.items!.push(GetAllTradingCryptoCurrencyForSimpleViewDto.fromJS(item));
             }
         }

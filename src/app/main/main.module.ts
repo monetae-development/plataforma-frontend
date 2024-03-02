@@ -58,6 +58,7 @@ import { CatBankCatCountryLookupTableModalComponent } from './catalogs/catBanks/
 import { TradingRequestsComponent } from './tradingRequests/tradingRequests.component';
 import { ViewTradingRequestModalComponent } from './tradingRequests/view-tradingRequest-modal.component';
 import { TradingRequestsChangeStatusComponent } from './tradingRequests/components/changeStatus/changeStatus.component';
+import { TradingMarketSliderComponent } from './trading/market-slider/market-slider.component';
 
 /*TODO Se removeran componentes de OTC*/
 import { OTCRequestsComponent } from './otc/otcRequests/otcRequests.component';
@@ -70,6 +71,11 @@ import { ViewOTCCoinModalComponent } from './otc/otcCoins/view-otcCoin-modal.com
 import { CreateOrEditOTCCoinModalComponent } from './otc/otcCoins/create-or-edit-otcCoin-modal.component';
 import { OtcWrapperComponent } from './otc/otcWrapper/otcWrapper.component';
 import { OTCTradingComponent } from './otc/otcTrading/otcTrading.component';
+
+import { OtcBriefcaseComponent } from './otc/otcBriefcase/otcBriefcase.component';
+import { HistoryPurchaseSaleComponent } from './history/history-purchase-sale/history-purchase-sale.component';
+import { HistoryDepositWithdrawalComponent } from './history/history-deposit-withdrawal/history-deposit-withdrawal.component';
+import { HistorySendReceiveComponent } from './history/history-send-receive/history-send-receive.component';
 
 import { CatControlFilesComponent } from './catalogs/catControlFiles/catControlFiles.component';
 import { ViewCatControlFileModalComponent } from './catalogs/catControlFiles/view-catControlFile-modal.component';
@@ -166,10 +172,6 @@ import { CarouselModule } from 'primeng/carousel';
 import { MenuModule } from 'primeng/menu';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
-import { OtcBriefcaseComponent } from './otc/otcBriefcase/otcBriefcase.component';
-import { HistoryPurchaseSaleComponent } from './history/history-purchase-sale/history-purchase-sale.component';
-import { HistoryDepositWithdrawalComponent } from './history/history-deposit-withdrawal/history-deposit-withdrawal.component';
-import { HistorySendReceiveComponent } from './history/history-send-receive/history-send-receive.component';
 
 NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 
@@ -264,6 +266,7 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 		TradingRequestsComponent,
 		ViewTradingRequestModalComponent,
 		TradingRequestsChangeStatusComponent,
+		TradingMarketSliderComponent,
 
 		ViewCatBankModalComponent,
 		CreateOrEditCatBankModalComponent,

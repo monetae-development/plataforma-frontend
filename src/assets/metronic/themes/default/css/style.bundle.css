@@ -48749,3 +48749,11 @@ i.socialmedia-projects{
   border-color:  var(--kt-primary) !important;
   background:  var(--kt-primary) !important;
 }
+
+.trading-behavior-up{
+  transform: rotate(-18deg) !important;
+}
+
+.trading-behavior-down{
+  transform: rotate(210deg) !important;
+}

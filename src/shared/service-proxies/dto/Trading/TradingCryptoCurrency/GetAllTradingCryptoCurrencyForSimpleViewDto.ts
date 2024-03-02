@@ -23,7 +23,8 @@ export class GetAllTradingCryptoCurrencyForSimpleViewDto implements IGetAllTradi
 
     init(_data?: any) {
         if (_data) {
-            this.tradingCryptoCurrency = _data['tradingCryptoCurrency'] ? TradingCryptoCurrencyForSimpleViewDto.fromJS(_data['tradingCryptoCurrency']) : <any>undefined;
+            let item = _data['tradingCryptoCurrency'] ?? _data['TradingCryptoCurrency'];
+            this.tradingCryptoCurrency = item ? TradingCryptoCurrencyForSimpleViewDto.fromJS(item) : <any>undefined;
         }
     }
 

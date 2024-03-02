@@ -45,9 +45,7 @@ export class HomeComponent extends AppComponentBase implements OnInit, AfterView
   activeItem: MenuItem | undefined;
   activeItemHistory: MenuItem | undefined;
   products: any[] | undefined;
-  cryptos: any[] | undefined;
   responsiveOptions: any[] | undefined;
-  responsiveOptionsCryptos: any[] | undefined;
   isInversionesCarousel: Boolean = true;
   filterInversiones: SelectItem[];
   amount: number;
@@ -182,28 +180,6 @@ export class HomeComponent extends AppComponentBase implements OnInit, AfterView
         title: 'Proyecto El Salvador',
       }
     ];
-    this.cryptos = [
-      {
-        name: 'Bitcoin',
-        coin: 'BTC'
-      },
-      {
-        name: 'Litecoin',
-        coin: 'ITC'
-      },
-      {
-        name: 'Ethereum',
-        coin: 'ETH'
-      },
-      {
-        name: 'Solana',
-        coin: 'SOL'
-      },
-      {
-        name: 'Bitcoin',
-        coin: 'BTC'
-      },
-    ];
     this.responsiveOptions = [
       {
         breakpoint: '1024px',
@@ -212,23 +188,6 @@ export class HomeComponent extends AppComponentBase implements OnInit, AfterView
       },
       {
         breakpoint: '640px',
-        numVisible: 1,
-        numScroll: 1
-      }
-    ];
-    this.responsiveOptionsCryptos = [
-      {
-        breakpoint: '768px',
-        numVisible: 3,
-        numScroll: 1
-      },
-      {
-        breakpoint: '640px',
-        numVisible: 2,
-        numScroll: 1
-      },
-      {
-        breakpoint: '420px',
         numVisible: 1,
         numScroll: 1
       }

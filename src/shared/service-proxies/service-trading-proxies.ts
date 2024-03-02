@@ -205,6 +205,12 @@ export class ServiceTradingProxy {
         return _observableOf(null as any);
     }
 
+    getAllCryptoCurrenciesSimpleFromWebSocket(_responseText: any): PRGetAllTradingCryptoCurrencyForSimpleViewDto {
+        let resultData = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+        let result = PRGetAllTradingCryptoCurrencyForSimpleViewDto.fromJS(resultData);
+        return result;
+    }
+
     getAllCryptoCurrenciesFull(): Observable<PRGetAllTradingCryptoCurrencyForFullViewDto> {
         let url_ = this.baseUrl + "/api/services/app/MntMemberTrading/GetAllCryptoCurrenciesFull";
         url_ = url_.replace(/[?&]$/, "");

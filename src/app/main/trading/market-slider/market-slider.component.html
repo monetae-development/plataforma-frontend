@@ -1,0 +1,37 @@
+<div class="ae-carousel">
+  <p-carousel [value]="cryptoCurrencies" [numVisible]="4" [numScroll]="4" [responsiveOptions]="responsiveOptions"
+    [circular]="true" autoplayInterval="5000">
+    <ng-template let-record pTemplate="item">
+      <div class="ae-crypto__card ae-card ae-card__boxshadow">
+        <div class="ae-crypto__title flex align-items-center mb-4">
+          <div class="ae-coin mr-3">
+            <img src="/assets/crypto-icons/{{record.tradingCryptoCurrency.key | lowercase}}.png" />
+          </div>
+          <div class="ae-text">
+            <h2 class="ae-text-dark fw-bold">{{ record.tradingCryptoCurrency.name }}</h2>
+            <p class="ae-text-dark">{{ record.tradingCryptoCurrency.key }}</p>
+          </div>
+        </div>
+        <div class="ae-crypto__content flex align-items-center">
+          <div class="ae-text">
+            <h2 class="ae-text-dark fw-semibold">{{ record.tradingCryptoCurrency.salePrice | currency : 'USD' :
+              'symbol' : '1.2-5' : 'en' }}</h2>
+            <p class="ae-text-default m-0 fw-semibold"
+              [class.text-success]="record.tradingCryptoCurrency.behavior == behavior.Up"
+              [class.text-danger]="record.tradingCryptoCurrency.behavior == behavior.Down"> {{
+              record.tradingCryptoCurrency.behavior
+              ==
+              behavior.Up ? "+" : "-"}} {{ record.tradingCryptoCurrency.change24h }}%</p>
+          </div>
+          <div class="ae-graphic">
+            <i class="la la-line-chart"
+              [class.text-success.trading-behavior-up]="record.tradingCryptoCurrency.behavior == behavior.Up"
+              [class.trading-behavior-up]="record.tradingCryptoCurrency.behavior == behavior.Up"
+              [class.text-danger.trading-behavior-down]="record.tradingCryptoCurrency.behavior == behavior.Down"
+              [class.trading-behavior-down]="record.tradingCryptoCurrency.behavior == behavior.Down"></i>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-carousel>
+</div>
