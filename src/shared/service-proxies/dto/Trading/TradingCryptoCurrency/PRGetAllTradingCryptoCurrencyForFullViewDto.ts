@@ -7,20 +7,10 @@ export class PRGetAllTradingCryptoCurrencyForFullViewDto implements IPRGetAllTra
 
     constructor(data?: IPRGetAllTradingCryptoCurrencyForFullViewDto) {
         if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
+            for (let property in data) {
+                if (data.hasOwnProperty(property)) {
                     (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.totalCount = _data["totalCount"];
-            if (Array.isArray(_data["items"])) {
-                this.items = [] as any;
-                for (let item of _data["items"])
-                    this.items!.push(GetAllTradingCryptoCurrencyForFullViewDto.fromJS(item));
+                }
             }
         }
     }
@@ -32,13 +22,27 @@ export class PRGetAllTradingCryptoCurrencyForFullViewDto implements IPRGetAllTra
         return result;
     }
 
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data['totalCount'] ?? _data['TotalCount'];
+            let items = _data['items'] ?? _data['Items'];
+            if (Array.isArray(items)) {
+                this.items = [] as any;
+                for (let item of items) {
+                    this.items?.push(GetAllTradingCryptoCurrencyForFullViewDto.fromJS(item));
+                }
+            }
+        }
+    }
+
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["totalCount"] = this.totalCount;
+        data['totalCount'] = this.totalCount;
         if (Array.isArray(this.items)) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item.toJSON());
+            data['items'] = [];
+            for (let item of this.items) {
+                data['items'].push(item.toJSON());
+            }
         }
         return data;
     }

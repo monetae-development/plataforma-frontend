@@ -27,7 +27,7 @@ export class ServiceTradingProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : '';
     }
 
     /**
@@ -157,14 +157,14 @@ export class ServiceTradingProxy {
      */
 
     getFiatBalance(): Observable<BalanceFiatDto> {
-        let url_ = this.baseUrl + "/api/services/app/MntMemberTrading/GetFiatBalance";
-        url_ = url_.replace(/[?&]$/, "");
+        let url_ = this.baseUrl + '/api/services/app/MntMemberTrading/GetFiatBalance';
+        url_ = url_.replace(/[?&]$/, '');
 
         let options_: any = {
-            observe: "response",
-            responseType: "blob",
+            observe: 'response',
+            responseType: 'blob',
             headers: new HttpHeaders({
-                "Accept": "text/plain"
+                'Accept': 'text/plain'
             })
         };
 
@@ -205,6 +205,12 @@ export class ServiceTradingProxy {
         return _observableOf(null as any);
     }
 
+    getAllCryptoCurrenciesFullFromWebSocket(_responseText: any): PRGetAllTradingCryptoCurrencyForFullViewDto {
+        let resultData = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+        let result = PRGetAllTradingCryptoCurrencyForFullViewDto.fromJS(resultData);
+        return result;
+    }
+
     getAllCryptoCurrenciesSimpleFromWebSocket(_responseText: any): PRGetAllTradingCryptoCurrencyForSimpleViewDto {
         let resultData = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
         let result = PRGetAllTradingCryptoCurrencyForSimpleViewDto.fromJS(resultData);
@@ -212,14 +218,14 @@ export class ServiceTradingProxy {
     }
 
     getAllCryptoCurrenciesFull(): Observable<PRGetAllTradingCryptoCurrencyForFullViewDto> {
-        let url_ = this.baseUrl + "/api/services/app/MntMemberTrading/GetAllCryptoCurrenciesFull";
-        url_ = url_.replace(/[?&]$/, "");
+        let url_ = this.baseUrl + '/api/services/app/MntMemberTrading/GetAllCryptoCurrenciesFull';
+        url_ = url_.replace(/[?&]$/, '');
 
         let options_: any = {
-            observe: "response",
-            responseType: "blob",
+            observe: 'response',
+            responseType: 'blob',
             headers: new HttpHeaders({
-                "Accept": "text/plain"
+                'Accept': 'text/plain'
             })
         };
 
@@ -261,14 +267,14 @@ export class ServiceTradingProxy {
     }
 
     getAllCryptoCurrenciesSimple(): Observable<PRGetAllTradingCryptoCurrencyForSimpleViewDto> {
-        let url_ = this.baseUrl + "/api/services/app/MntMemberTrading/GetAllCryptoCurrenciesSimple";
-        url_ = url_.replace(/[?&]$/, "");
+        let url_ = this.baseUrl + '/api/services/app/MntMemberTrading/GetAllCryptoCurrenciesSimple';
+        url_ = url_.replace(/[?&]$/, '');
 
         let options_: any = {
-            observe: "response",
-            responseType: "blob",
+            observe: 'response',
+            responseType: 'blob',
             headers: new HttpHeaders({
-                "Accept": "text/plain"
+                'Accept': 'text/plain'
             })
         };
 
@@ -310,14 +316,14 @@ export class ServiceTradingProxy {
     }
 
     getAllCryptoCurrenciesForSelect(): Observable<PagedResultDtoGetAllCryptoCurrencies> {
-        let url_ = this.baseUrl + "/api/services/app/MntMemberTrading/GetAllCryptoCurrenciesForSelect";
-        url_ = url_.replace(/[?&]$/, "");
+        let url_ = this.baseUrl + '/api/services/app/MntMemberTrading/GetAllCryptoCurrenciesForSelect';
+        url_ = url_.replace(/[?&]$/, '');
 
         let options_: any = {
-            observe: "response",
-            responseType: "blob",
+            observe: 'response',
+            responseType: 'blob',
             headers: new HttpHeaders({
-                "Accept": "text/plain"
+                'Accept': 'text/plain'
             })
         };
 

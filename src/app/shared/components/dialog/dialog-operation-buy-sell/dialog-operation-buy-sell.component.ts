@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Injector, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { ServiceCommonProxy } from '@shared/service-proxies/service-common-proxies';
 import { MenuItem, MessageService, SelectItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
@@ -14,6 +13,7 @@ import { ServiceTradingProxy } from '@shared/service-proxies/service-trading-pro
 import { ToastModule } from 'primeng/toast';
 import { RequestType } from '@shared/service-proxies/enum/MemberTrading/RequestType.enum';
 import { DialogDefaultComponent } from '../dialog-default/dialog-default.component';
+import { GetAllCryptoCurrenciesDto } from '@shared/service-proxies/dto/mntMemberTrading/GetAllCryptoCurrenciesDto';
 
 @Component({
   standalone: true,
@@ -39,19 +39,20 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   outAccept = new EventEmitter();
   purchaseForm: FormGroup;
   saleForm: FormGroup;
-
   menuItems: MenuItem[] | undefined;
   activeItem: MenuItem | undefined;
   activeIndex: Number = 0;
+  activeCryptoCurrencyId: Number = 0;
   cryptoAssets: SelectItem[] = undefined;
-  purchasePrice: number = 0;
-  salePrice: number = 0;
-  amountPurchase: number = 0;
-  amountSale: number = 0;
-  amountPurchaseCommision: number = 0;
-  amountSaleCommision: number = 0;
-  comissionPurchase: number = 0;
-  comissionSale: number = 0;
+  selectedCryptoCurrency: GetAllCryptoCurrenciesDto;
+  purchasePrice = 0;
+  salePrice = 0;
+  amountPurchase = 0;
+  amountSale = 0;
+  amountPurchaseCommision = 0;
+  amountSaleCommision = 0;
+  comissionPurchase = 0;
+  comissionSale = 0;
 
   constructor(
     injector: Injector,
@@ -65,43 +66,40 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   ) {
     super(injector);
     this.activeIndex = config.data?.activeIndex;
+    this.activeCryptoCurrencyId = config.data?.activeCryptoCurrencyId;
     this.purchaseForm = this._buildPurchaseForm();
     this.saleForm = this._buildSaleForm();
   }
 
+  get cryptoAssetIdPurchaseControl() {
+    return this.purchaseForm.controls['cryptoCurrencyId'] as FormControl;
+  }
+  get amountCryptoPurchaseControl() {
+    return this.purchaseForm.controls['amountCrypto'] as FormControl;
+  }
+  get amountPurchaseControl() {
+    return this.purchaseForm.controls['amount'] as FormControl;
+  }
+
+  get cryptoAssetIdSaleControl() {
+    return this.saleForm.controls['cryptoCurrencyId'] as FormControl;
+  }
+  get amountCryptoSaleControl() {
+    return this.saleForm.controls['amountCrypto'] as FormControl;
+  }
+  get amountSaleControl() {
+    return this.saleForm.controls['amount'] as FormControl;
+  }
+
   ngOnInit() {
     this.menuItems = [
-      { label: 'Comprar' },
-      { label: 'Vender' }
+      { label: this.l('Purchase') },
+      { label: this.l('Sale') }
     ];
     this.activeItem = this.menuItems[Number(this.activeIndex)];
     this.loadBalance();
     this.loadCryptoAssets();
   }
-
-  private _buildPurchaseForm(): FormGroup {
-    return this.fb.group({
-      cryptoCurrencyId: [{ value: null, disabled: true }, [Validators.required]],
-      amountCrypto: [null, [Validators.required]],
-      amount: [null, [Validators.required]],
-    });
-  }
-
-  private _buildSaleForm(): FormGroup {
-    return this.fb.group({
-      cryptoCurrencyId: [{ value: null, disabled: true }, [Validators.required]],
-      amountCrypto: [null, [Validators.required]],
-      amount: [null, [Validators.required]],
-    });
-  }
-
-  get cryptoAssetIdPurchaseControl() { return this.purchaseForm.controls['cryptoCurrencyId'] as FormControl; }
-  get amountCryptoPurchaseControl() { return this.purchaseForm.controls['amountCrypto'] as FormControl; }
-  get amountPurchaseControl() { return this.purchaseForm.controls['amount'] as FormControl; }
-
-  get cryptoAssetIdSaleControl() { return this.saleForm.controls['cryptoCurrencyId'] as FormControl; }
-  get amountCryptoSaleControl() { return this.saleForm.controls['amountCrypto'] as FormControl; }
-  get amountSaleControl() { return this.saleForm.controls['amount'] as FormControl; }
 
   loadBalance() {
     this._serviceTradingProxy.getFiatBalance()
@@ -116,6 +114,18 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
         this.cryptoAssets = result.items;
         this.cryptoAssetIdPurchaseControl.enable();
         this.cryptoAssetIdSaleControl.enable();
+
+        if (this.activeCryptoCurrencyId !== undefined) {
+          for (let item of result.items) {
+            if (item.value === this.activeCryptoCurrencyId) {
+              this.selectedCryptoCurrency = item;
+              this.purchasePrice = this.selectedCryptoCurrency.purchasePrice;
+              this.comissionPurchase = this.selectedCryptoCurrency.fee;
+              this.cryptoAssetIdPurchaseControl.setValue(this.selectedCryptoCurrency);
+              break;
+            }
+          }
+        }
       });
   }
 
@@ -124,7 +134,6 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   }
 
   onChangeCurrencyPurchase(event: any) {
-    console.log(event);
     if (event.value == null) {
       this.purchasePrice = null;
       return;
@@ -155,7 +164,6 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
 
   amountCryptoPurchaseOnChange(event: any) {
     if (event.value == null) {
-      console.log("entra");
       this.amountPurchaseCommision = null;
       this.amountPurchaseControl.setValue(null);
       return;
@@ -174,7 +182,6 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
     }
     if (this.cryptoAssetIdPurchaseControl.value) {
       if (event.value >= this.amountPurchase) {
-        console.log("entra");
         this.amountPurchaseControl.setValue(this.amountPurchase);
         this.calculateCryptoPurchaseCost(this.amountPurchase);
       } else {
@@ -193,12 +200,10 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
     if (this.cryptoAssetIdSaleControl.value) {
       this.amountCryptoSaleControl.setValue(event.value);
       this.calculateSaleCost(event.value);
-      console.log("entra");
     }
   }
 
   amountSaleOnChange(event: any) {
-    console.log(event);
     if (event.value == null) {
       this.amountSaleCommision = null;
       this.amountCryptoSaleControl.setValue(null);
@@ -211,10 +216,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   }
 
   calculatePurchaseCost(amount) {
-    console.log(amount);
     if (amount >= 0) {
-      console.log(this.purchasePrice);
-      console.log(amount * this.purchasePrice);
       this.amountPurchaseControl.setValue(amount * this.purchasePrice);
       this.amountPurchaseCommision = (this.amountPurchaseControl.value * this.comissionPurchase) / 100;
     } else {
@@ -223,9 +225,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   }
 
   calculateCryptoPurchaseCost(amount) {
-    console.log(amount);
     if (amount >= 0) {
-      console.log(amount);
       this.amountCryptoPurchaseControl.setValue(amount / this.purchasePrice);
       this.amountPurchaseCommision = (this.amountPurchaseControl.value * this.comissionPurchase) / 100;
     } else {
@@ -256,8 +256,6 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   }
 
   onContinuePurchase(): void {
-    console.log(this.purchaseForm.value);
-    // return;
     const ref = this.dialogService.open(DialogResumenBuySellComponent, {
       showHeader: false,
       styleClass: 'ae-dialog ae-dialog--sm',
@@ -313,6 +311,22 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
     this.calculateSaleCost(this.amountSale);
   }
 
+  private _buildPurchaseForm(): FormGroup {
+    return this.fb.group({
+      cryptoCurrencyId: [{ value: null, disabled: true }, [Validators.required]],
+      amountCrypto: [null, [Validators.required]],
+      amount: [null, [Validators.required]],
+    });
+  }
+
+  private _buildSaleForm(): FormGroup {
+    return this.fb.group({
+      cryptoCurrencyId: [{ value: null, disabled: true }, [Validators.required]],
+      amountCrypto: [null, [Validators.required]],
+      amount: [null, [Validators.required]],
+    });
+  }
+
   private getCryptoBalance(cryptoCurrencyId) {
     console.log(cryptoCurrencyId);
     this._serviceTradingProxy.getCryptoBalance(cryptoCurrencyId)
@@ -341,5 +355,4 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
       ref.close();
     });
   }
-
 }

@@ -1,5 +1,5 @@
 import { ITradingCryptoCurrencyForFullViewDto } from './ITradingCryptoCurrencyForFullViewDto';
-import { CryptoBehaviors } from "@shared/service-proxies/enum/Trading/CryptoBehaviors.enum";
+import { CryptoBehaviors } from '@shared/service-proxies/enum/Trading/CryptoBehaviors.enum';
 
 export class TradingCryptoCurrencyForFullViewDto implements ITradingCryptoCurrencyForFullViewDto {
     id: number;

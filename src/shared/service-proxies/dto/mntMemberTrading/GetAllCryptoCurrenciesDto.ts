@@ -1,4 +1,4 @@
-import { IGetAllCryptoCurrenciesDto } from "./IGetAllCryptoCurrenciesDto";
+import { IGetAllCryptoCurrenciesDto } from './IGetAllCryptoCurrenciesDto';
 
 export class GetAllCryptoCurrenciesDto implements IGetAllCryptoCurrenciesDto {
     label: string;

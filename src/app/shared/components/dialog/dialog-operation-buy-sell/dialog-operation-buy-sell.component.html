@@ -1,236 +1,275 @@
 <div class="ae-tabs">
-  <p-tabMenu
-      [model]="menuItems"
-      [activeItem]="activeItem"
-      (activeItemChange)="onActiveItemChange($event)"
-  ></p-tabMenu>
+    <p-tabMenu
+        [model]="menuItems"
+        [activeItem]="activeItem"
+        (activeItemChange)="onActiveItemChange($event)"
+    ></p-tabMenu>
 </div>
-<div class="ae-tabs__container" *ngIf="activeItem.label == 'Comprar'">
-  <div class="ae-tabs__container--content">
-    <form [formGroup]="purchaseForm">
-      <div class="ae-selectinput__grid">
-        <div class="ae-selectinput__grid--title flex align-items-center justify-content-between">
-          <label class="ae-text-dark ae-text-default">Comprar</label>
-          <small class="ae-text-gris-dark ae-text-small" *ngIf="cryptoAssetIdPurchaseControl.value">Precio: {{ purchasePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }} </small>
-        </div>
-        <div class="ae-selectinput__grid--fields">
-          <div class="ae-select">
-            <p-dropdown
-                [options]="cryptoAssets"
-                optionLabel="label"
-                [formControl]="cryptoAssetIdPurchaseControl"
-                placeholder="{{ l('SelectTreeDots') }}"
-                [showClear]="true"
-                [filter]="true"
-                (onChange)="onChangeCurrencyPurchase($event)"
-                required
-            >
-                <ng-template pTemplate="selectedItem">
-                    <div class="flex align-items-center" *ngIf="cryptoAssetIdPurchaseControl.value">
-                        <div class="mr-2">
-                            <img
-                              src="/assets/crypto-icons/{{ cryptoAssetIdPurchaseControl.value?.subtitle.toLowerCase() }}.png" 
-                              style="width: 25px"
-                            />
+<div class="ae-tabs__container" *ngIf="activeIndex === 0">
+    <div class="ae-tabs__container--content">
+        <form [formGroup]="purchaseForm">
+            <div class="ae-selectinput__grid">
+                <div class="ae-selectinput__grid--title flex align-items-center justify-content-between">
+                    <label class="ae-text-dark ae-text-default">Comprar</label>
+                    <small class="ae-text-gris-dark ae-text-small" *ngIf="cryptoAssetIdPurchaseControl.value">
+                        Precio: {{ purchasePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}
+                    </small>
+                </div>
+                <div class="ae-selectinput__grid--fields">
+                    <div class="ae-select">
+                        <p-dropdown
+                            [(ngModel)]="selectedCryptoCurrency"
+                            [options]="cryptoAssets"
+                            optionLabel="label"
+                            [formControl]="cryptoAssetIdPurchaseControl"
+                            placeholder="{{ l('SelectTreeDots') }}"
+                            [showClear]="true"
+                            [filter]="true"
+                            (onChange)="onChangeCurrencyPurchase($event)"
+                            required
+                        >
+                            <ng-template pTemplate="selectedItem">
+                                <div class="flex align-items-center" *ngIf="cryptoAssetIdPurchaseControl.value">
+                                    <div class="mr-2">
+                                        <img
+                                            src="/assets/crypto-icons/{{
+                                                cryptoAssetIdPurchaseControl.value?.subtitle.toLowerCase()
+                                            }}.png"
+                                            style="width: 25px"
+                                        />
+                                    </div>
+                                    <div class="flex align-items-center">
+                                        <span class="ae-text-gris-dark ae-text-default fw-semibold">
+                                            {{ cryptoAssetIdPurchaseControl.value?.subtitle }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <ng-template let-coin pTemplate="item">
+                                <div class="flex align-items-center justify-content-between w-full">
+                                    <div class="flex align-items-center mr-8">
+                                        <div class="mr-3">
+                                            <img
+                                                src="/assets/crypto-icons/{{ coin.subtitle.toLowerCase() }}.png"
+                                                style="width: 25px"
+                                            />
+                                        </div>
+                                        <div class="flex flex-column">
+                                            <span class="ae-text-dark ae-text-default fw-semibold">
+                                                {{ coin.label }}
+                                            </span>
+                                            <span class="ae-text-gris-dark ae-text-default">{{ coin.subtitle }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-column align-items-end">
+                                        <span class="ae-text-dark ae-text-default">
+                                            {{ coin.purchasePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}
+                                        </span>
+                                        <span
+                                            class="ae-text-default"
+                                            [ngClass]="{
+                                                'ae-text-success': coin.percent24H > 0,
+                                                'ae-text-danger': coin.percent24H < 0
+                                            }"
+                                        >
+                                            {{ coin.percent24H }}%
+                                        </span>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </p-dropdown>
+                    </div>
+                    <div class="ae-inputnumber">
+                        <div class="ae-inputnumber__group">
+                            <p-inputNumber
+                                name="amount"
+                                [formControl]="amountCryptoPurchaseControl"
+                                inputmode="decimal"
+                                mode="decimal"
+                                locale="en-US"
+                                [minFractionDigits]="0"
+                                [maxFractionDigits]="9"
+                                [min]="0"
+                                (onInput)="amountCryptoPurchaseOnChange($event)"
+                                required
+                            ></p-inputNumber>
                         </div>
-                        <div class="flex align-items-center">
-                            <span class=" ae-text-gris-dark ae-text-default fw-semibold">{{ cryptoAssetIdPurchaseControl.value?.subtitle }}</span>
-                        </div>
                     </div>
-                </ng-template>
-                <ng-template let-coin pTemplate="item">
-                  <div class="flex align-items-center justify-content-between w-full">
-                    <div class="flex align-items-center mr-8">
-                      <div class="mr-3">
-                          <img 
-                            src="/assets/crypto-icons/{{ coin.subtitle.toLowerCase() }}.png" 
-                            style="width: 25px"/>
-                      </div>
-                      <div class="flex flex-column">
-                          <span class="ae-text-dark ae-text-default fw-semibold">{{ coin.label }}</span>
-                          <span class="ae-text-gris-dark ae-text-default">{{ coin.subtitle }}</span>
-                      </div>
-                    </div>
-                    <div class="flex flex-column align-items-end">
-                      <span class="ae-text-dark ae-text-default">{{ coin.purchasePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}</span>
-                      <span class="ae-text-default" [ngClass]="{'ae-text-success': coin.percent24H > 0, 'ae-text-danger': coin.percent24H < 0 }">{{ coin.percent24H }}%</span>
-                    </div>
-                  </div>
-                </ng-template>
-            </p-dropdown>
-          </div>
-          <div class="ae-inputnumber">
-            <div class="ae-inputnumber__group">
-              <p-inputNumber
-                name="amount"
-                [formControl]="amountCryptoPurchaseControl"
-                inputmode="decimal"
-                mode="decimal"
-                locale="en-US"
-                [minFractionDigits]="0"
-                [maxFractionDigits]="9"
-                [min]="0"
-                (onInput)="amountCryptoPurchaseOnChange($event)"
-                required
-              >
-              </p-inputNumber>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="ae-inputnumber">
-        <div class="flex align-items-center justify-content-between">
-          <label htmlFor="amount">Método de pago</label>
-          <small class="ae-text-gris-dark ae-text-small">{{ l('Saldo disponible:') }} {{ amountPurchase | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }} </small>
-        </div>
-        <div class="ae-inputnumber__group">
-          <div class="ae-inputnumber__coin flex align-items-center">
-            <span class="ae-text-light">USD</span>
-          </div>
-          <p-inputNumber
-            class="p-inputNumber--space"
-            name="amount"
-            [formControl]="amountPurchaseControl"
-            inputmode="decimal"
-            mode="decimal"
-            locale="en-US"
-            [minFractionDigits]="0"
-            [maxFractionDigits]="9"
-            [min]="0"
-            [max]="amountPurchase"
-            (onInput)="amountPurchaseOnChange($event)"
-            required
-          >
-          </p-inputNumber>
-          <div class="ae-inputnumber__max flex align-items-center" (click)="setMaxAmountPurchase()">
-            <span class="mr-3 ae-text-gris ae-text-default">MAX</span>
-            <i class="pi pi-arrow-right-arrow-left ae-text-gris"></i>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
-  <div class="ae-tabs__container--actions">
-    <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
-    <button
-      type="button" 
-      class="ae-button ae-button--component ae-button--primary"
-      [disabled]="purchaseForm.invalid" 
-      (click)="onContinuePurchase()">
-      Continuar
-    </button>
-  </div>
+            <div class="ae-inputnumber">
+                <div class="flex align-items-center justify-content-between">
+                    <label htmlFor="amount">Método de pago</label>
+                    <small class="ae-text-gris-dark ae-text-small">
+                        {{ l('Saldo disponible:') }} {{ amountPurchase | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}
+                    </small>
+                </div>
+                <div class="ae-inputnumber__group">
+                    <div class="ae-inputnumber__coin flex align-items-center">
+                        <span class="ae-text-light">USD</span>
+                    </div>
+                    <p-inputNumber
+                        class="p-inputNumber--space"
+                        name="amount"
+                        [formControl]="amountPurchaseControl"
+                        inputmode="decimal"
+                        mode="decimal"
+                        locale="en-US"
+                        [minFractionDigits]="0"
+                        [maxFractionDigits]="9"
+                        [min]="0"
+                        [max]="amountPurchase"
+                        (onInput)="amountPurchaseOnChange($event)"
+                        required
+                    ></p-inputNumber>
+                    <div class="ae-inputnumber__max flex align-items-center" (click)="setMaxAmountPurchase()">
+                        <span class="mr-3 ae-text-gris ae-text-default">MAX</span>
+                        <i class="pi pi-arrow-right-arrow-left ae-text-gris"></i>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="ae-tabs__container--actions">
+        <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
+        <button
+            type="button"
+            class="ae-button ae-button--component ae-button--primary"
+            [disabled]="purchaseForm.invalid"
+            (click)="onContinuePurchase()"
+        >
+            Continuar
+        </button>
+    </div>
 </div>
-<div class="ae-tabs__container" *ngIf="activeItem.label == 'Vender'">
-  <div class="ae-tabs__container--content">
-    <form [formGroup]="saleForm">
-      <div class="ae-selectinput__grid">
-        <div class="ae-selectinput__grid--title flex align-items-center justify-content-between">
-          <label class="ae-text-dark ae-text-default">Vender</label>
-          <small class="ae-text-gris-dark ae-text-small" *ngIf="cryptoAssetIdSaleControl.value">{{ l('Saldo disponible:') }} {{ amountSale }} </small>
-        </div>
-        <div class="ae-selectinput__grid--fields">
-          <div class="ae-select">
-            <p-dropdown
-                [options]="cryptoAssets"
-                optionLabel="label"
-                [formControl]="cryptoAssetIdSaleControl"
-                placeholder="{{ l('SelectTreeDots') }}"
-                [showClear]="true"
-                [filter]="true"
-                (onChange)="onChangeCurrencySale($event)"
-                required
-            >
-                <ng-template pTemplate="selectedItem">
-                    <div class="flex align-items-center" *ngIf="cryptoAssetIdSaleControl.value">
-                        <div class="mr-2">
-                            <img
-                              src="/assets/crypto-icons/{{ cryptoAssetIdSaleControl.value?.subtitle.toLowerCase() }}.png" 
-                              style="width: 25px"
-                            />
+<div class="ae-tabs__container" *ngIf="activeIndex === 1">
+    <div class="ae-tabs__container--content">
+        <form [formGroup]="saleForm">
+            <div class="ae-selectinput__grid">
+                <div class="ae-selectinput__grid--title flex align-items-center justify-content-between">
+                    <label class="ae-text-dark ae-text-default">Vender</label>
+                    <small class="ae-text-gris-dark ae-text-small" *ngIf="cryptoAssetIdSaleControl.value">
+                        {{ l('Saldo disponible:') }} {{ amountSale }}
+                    </small>
+                </div>
+                <div class="ae-selectinput__grid--fields">
+                    <div class="ae-select">
+                        <p-dropdown
+                            [options]="cryptoAssets"
+                            optionLabel="label"
+                            [formControl]="cryptoAssetIdSaleControl"
+                            placeholder="{{ l('SelectTreeDots') }}"
+                            [showClear]="true"
+                            [filter]="true"
+                            (onChange)="onChangeCurrencySale($event)"
+                            required
+                        >
+                            <ng-template pTemplate="selectedItem">
+                                <div class="flex align-items-center" *ngIf="cryptoAssetIdSaleControl.value">
+                                    <div class="mr-2">
+                                        <img
+                                            src="/assets/crypto-icons/{{
+                                                cryptoAssetIdSaleControl.value?.subtitle.toLowerCase()
+                                            }}.png"
+                                            style="width: 25px"
+                                        />
+                                    </div>
+                                    <div class="flex align-items-center">
+                                        <span class="ae-text-gris-dark ae-text-default fw-semibold">
+                                            {{ cryptoAssetIdSaleControl.value?.subtitle }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <ng-template let-coin pTemplate="item">
+                                <div class="flex align-items-center justify-content-between w-full">
+                                    <div class="flex align-items-center mr-8">
+                                        <div class="mr-3">
+                                            <img
+                                                src="/assets/crypto-icons/{{ coin.subtitle.toLowerCase() }}.png"
+                                                style="width: 25px"
+                                            />
+                                        </div>
+                                        <div class="flex flex-column">
+                                            <span class="ae-text-dark ae-text-default fw-semibold">
+                                                {{ coin.label }}
+                                            </span>
+                                            <span class="ae-text-gris-dark ae-text-default">{{ coin.subtitle }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-column align-items-end">
+                                        <span class="ae-text-dark ae-text-default">
+                                            {{ coin.salePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}
+                                        </span>
+                                        <span
+                                            class="ae-text-default"
+                                            [ngClass]="{
+                                                'ae-text-success': coin.percent24H > 0,
+                                                'ae-text-danger': coin.percent24H < 0
+                                            }"
+                                        >
+                                            {{ coin.percent24H }}%
+                                        </span>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </p-dropdown>
+                    </div>
+                    <div class="ae-inputnumber">
+                        <div class="ae-inputnumber__group">
+                            <p-inputNumber
+                                name="amount"
+                                [formControl]="amountCryptoSaleControl"
+                                inputmode="decimal"
+                                mode="decimal"
+                                locale="en-US"
+                                [minFractionDigits]="0"
+                                [maxFractionDigits]="9"
+                                [min]="0"
+                                (onInput)="amountCryptoSaleOnChange($event)"
+                                required
+                            ></p-inputNumber>
+                            <div class="ae-inputnumber__max flex align-items-center" (click)="setMaxAmountSale()">
+                                <span class="mr-3 ae-text-gris ae-text-default">MAX</span>
+                                <i class="pi pi-arrow-right-arrow-left ae-text-gris"></i>
+                            </div>
                         </div>
-                        <div class="flex align-items-center">
-                            <span class=" ae-text-gris-dark ae-text-default fw-semibold">{{ cryptoAssetIdSaleControl.value?.subtitle }}</span>
+                    </div>
+                </div>
+                <div class="ae-inputnumber">
+                    <label htmlFor="amount">Recibir Fiat</label>
+                    <div class="ae-inputnumber__group">
+                        <div class="ae-inputnumber__coin flex align-items-center">
+                            <span class="ae-text-light">USD</span>
                         </div>
+                        <p-inputNumber
+                            class="p-inputNumber--space"
+                            name="amount"
+                            [formControl]="amountSaleControl"
+                            inputmode="decimal"
+                            mode="decimal"
+                            locale="en-US"
+                            [minFractionDigits]="0"
+                            [maxFractionDigits]="9"
+                            [min]="0"
+                            (onInput)="amountSaleOnChange($event)"
+                            required
+                        ></p-inputNumber>
                     </div>
-                </ng-template>
-                <ng-template let-coin pTemplate="item">
-                  <div class="flex align-items-center justify-content-between w-full">
-                    <div class="flex align-items-center mr-8">
-                      <div class="mr-3">
-                        <img 
-                          src="/assets/crypto-icons/{{ coin.subtitle.toLowerCase() }}.png" 
-                          style="width: 25px"/>
-                      </div>
-                      <div class="flex flex-column">
-                          <span class="ae-text-dark ae-text-default fw-semibold">{{ coin.label }}</span>
-                          <span class="ae-text-gris-dark ae-text-default">{{ coin.subtitle }}</span>
-                      </div>
-                    </div>
-                    <div class="flex flex-column align-items-end">
-                      <span class="ae-text-dark ae-text-default">{{ coin.salePrice | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}</span>
-                      <span class="ae-text-default" [ngClass]="{'ae-text-success': coin.percent24H > 0, 'ae-text-danger': coin.percent24H < 0 }">{{ coin.percent24H }}%</span>
-                    </div>
-                  </div>
-                </ng-template>
-            </p-dropdown>
-          </div>
-          <div class="ae-inputnumber">
-            <div class="ae-inputnumber__group">
-              <p-inputNumber
-                name="amount"
-                [formControl]="amountCryptoSaleControl"
-                inputmode="decimal"
-                mode="decimal"
-                locale="en-US"
-                [minFractionDigits]="0"
-                [maxFractionDigits]="9"
-                [min]="0"
-                (onInput)="amountCryptoSaleOnChange($event)"
-                required
-              >
-              </p-inputNumber>
-              <div class="ae-inputnumber__max flex align-items-center" (click)="setMaxAmountSale()">
-                <span class="mr-3 ae-text-gris ae-text-default">MAX</span>
-                <i class="pi pi-arrow-right-arrow-left ae-text-gris"></i>
-              </div>
+                </div>
             </div>
-          </div>
-        </div>
-        <div class="ae-inputnumber">
-          <label htmlFor="amount">Recibir Fiat</label>
-          <div class="ae-inputnumber__group">
-            <div class="ae-inputnumber__coin flex align-items-center">
-              <span class="ae-text-light">USD</span>
-            </div>
-            <p-inputNumber
-              class="p-inputNumber--space"
-              name="amount"
-              [formControl]="amountSaleControl"
-              inputmode="decimal"
-              mode="decimal"
-              locale="en-US"
-              [minFractionDigits]="0"
-              [maxFractionDigits]="9"
-              [min]="0"
-              (onInput)="amountSaleOnChange($event)"
-              required
-            >
-            </p-inputNumber>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
-  <div class="ae-tabs__container--actions">
-    <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
-    <button 
-      type="button"
-      class="ae-button ae-button--component ae-button--primary" 
-      [disabled]="saleForm.invalid"
-      (click)="onContinueSale()">
-      Continuar
-    </button>
-  </div>
+        </form>
+    </div>
+    <div class="ae-tabs__container--actions">
+        <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
+        <button
+            type="button"
+            class="ae-button ae-button--component ae-button--primary"
+            [disabled]="saleForm.invalid"
+            (click)="onContinueSale()"
+        >
+            Continuar
+        </button>
+    </div>
 </div>
 <p-toast></p-toast>

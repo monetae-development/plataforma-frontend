@@ -194,7 +194,7 @@ export class HomeComponent extends AppComponentBase implements OnInit, AfterView
     ];
   }
 
-  showDialogBuySell(index) {
+  showDialogBuySell(index: number, cryptoCurrencyId?: number) {
     if (this.statusMember === MemberStatus.Register) {
       this.openMessageDialogVerifyAccount();
     } else if (this.statusMember === MemberStatus.Pending || this.statusMember === MemberStatus.Review) {
@@ -208,7 +208,8 @@ export class HomeComponent extends AppComponentBase implements OnInit, AfterView
         showHeader: false,
         styleClass: 'ae-dialog ae-dialog--operations ae-dialog--sm',
         data: {
-          activeIndex: index
+          activeIndex: index,
+          activeCryptoCurrencyId: cryptoCurrencyId
         },
       });
       const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
@@ -280,6 +281,10 @@ export class HomeComponent extends AppComponentBase implements OnInit, AfterView
     //this._router.navigate(['/app/main/projects/project-' + tokenId]);
   }
 
+  onActiveMenuItem(index: number) {
+    this.activeItem = this.menuItems[index];
+  }
+
   onActiveItemChange(event: MenuItem) {
     this.activeItem = event;
   }
@@ -299,7 +304,6 @@ export class HomeComponent extends AppComponentBase implements OnInit, AfterView
   showDialogOperations() {
     this.wrapperMobilePosition();
     this.showFadeDialogOperations = !this.showFadeDialogOperations;
-
   }
 
   private doAction() {

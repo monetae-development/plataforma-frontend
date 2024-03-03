@@ -9,7 +9,7 @@
   --bs-yellow: #ffc107;
   --bs-green: #198754;
   --bs-teal: #20c997;
-  --bs-cyan: #0dcaf0;
+  --bs-cyan: #D0FEFF;
   --bs-black: #000000;
   --bs-white: #ffffff;
   --bs-gray: #7E8299;
@@ -3180,8 +3180,8 @@ textarea.form-control-lg {
 
 .btn-info {
   --bs-btn-color: #000;
-  --bs-btn-bg: #0dcaf0;
-  --bs-btn-border-color: #0dcaf0;
+  --bs-btn-bg: #D0FEFF;
+  --bs-btn-border-color: #D0FEFF;
   --bs-btn-hover-color: #000;
   --bs-btn-hover-bg: #31d2f2;
   --bs-btn-hover-border-color: #25cff2;
@@ -3191,8 +3191,8 @@ textarea.form-control-lg {
   --bs-btn-active-border-color: #25cff2;
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #000;
-  --bs-btn-disabled-bg: #0dcaf0;
-  --bs-btn-disabled-border-color: #0dcaf0;
+  --bs-btn-disabled-bg: #D0FEFF;
+  --bs-btn-disabled-border-color: #D0FEFF;
 }
 
 .btn-warning {
@@ -26671,7 +26671,7 @@ ul.form-text.text-danger {
   --kt-secondary: #E4E6EF;
   --kt-secondary-gray: #575756;
   --kt-success: #198754;
-  --kt-info: #0dcaf0;
+  --kt-info: #D0FEFF;
   --kt-warning: #ffc700;
   --kt-danger: #f1aeb5;
   --kt-dark: #1D1D1B;
@@ -26680,7 +26680,7 @@ ul.form-text.text-danger {
   --kt-secondary-active: #B5B5C3;
   --kt-light-active: #eff2f5;
   --kt-success-active: #47be7d;
-  --kt-info-active: #31d2f2;
+  --kt-info-active: #00CED1;
   --kt-warning-active: #f1bc00;
   --kt-danger-active: #bb2d3b;
   --kt-dark-active: #131628;
@@ -26695,7 +26695,7 @@ ul.form-text.text-danger {
   --kt-secondary-inverse: #3F4254;
   --kt-light-inverse: #7E8299;
   --kt-success-inverse: #ffffff;
-  --kt-info-inverse: #000;
+  --kt-info-inverse: #00CED1;
   --kt-warning-inverse: #ffffff;
   --kt-danger-inverse: #ffffff;
   --kt-dark-inverse: #ffffff;
@@ -33642,7 +33642,7 @@ html:not([data-theme=dark]) .theme-light-bg-body {
   color: var(--kt-info-inverse);
 }
 .btn-check:checked + .btn.btn-info, .btn-check:active + .btn.btn-info, .btn.btn-info:focus:not(.btn-active), .btn.btn-info:hover:not(.btn-active), .btn.btn-info:active:not(.btn-active), .btn.btn-info.active, .btn.btn-info.show, .show > .btn.btn-info {
-  color: var(--kt-info-inverse);
+  color: var(--kt-info);
   border-color: var(--kt-info-active);
   background-color: var(--kt-info-active) !important;
 }
@@ -48756,4 +48756,18 @@ i.socialmedia-projects{
 
 .trading-behavior-down{
   transform: rotate(210deg) !important;
+}
+
+.btn-style-primary{
+  width: 319px;
+  height: 45px;
+  padding: 9px, 81px, 8px, 82px;
+  border-radius: 16px;
+}
+
+.btn-style-secondary{
+  width: 101.5px !important;
+  height: 35px !important;
+  padding: 4px, 6.5px, 3px, 7px !important;
+  border-radius: 12px !important;
 }

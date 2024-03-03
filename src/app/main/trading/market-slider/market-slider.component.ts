@@ -13,12 +13,12 @@ import { environment } from 'environments/environment';
   templateUrl: './market-slider.component.html'
 })
 export class TradingMarketSliderComponent extends AppComponentBase implements OnInit {
-
   socketOptions: SocketOptions = { auth: { token: abp.auth.getToken() } };
   socket = io(environment.socketioHost, this.socketOptions);
   responsiveOptions: any[] | undefined;
   cryptoCurrencies: GetAllTradingCryptoCurrencyForSimpleViewDto[] | undefined;
   behavior = CryptoBehaviors;
+  loaded = false;
 
   constructor(
     injector: Injector,
@@ -30,14 +30,22 @@ export class TradingMarketSliderComponent extends AppComponentBase implements On
   }
 
   ngOnInit() {
+    this._tradingServiceProxy.getAllCryptoCurrenciesSimple().subscribe((result) => {
+      this.cryptoCurrencies = result.items;
+      this.loaded = true;
+    });
+
     this.socket.on('connect', () => {
       console.log('Conected to Websocket:' + this.socket.id);
     });
 
     this.socket.on('OTC:COINSQUOTE', (response: any) => {
-      let result = this._tradingServiceProxy.getAllCryptoCurrenciesSimpleFromWebSocket(response);
-      this.updateValues(result.items);
+      if (this.loaded) {
+        let result = this._tradingServiceProxy.getAllCryptoCurrenciesSimpleFromWebSocket(response);
+        this.updateValues(result.items);
+      }
     });
+
     this.responsiveOptions = [
       {
         breakpoint: '768px',
@@ -56,9 +64,7 @@ export class TradingMarketSliderComponent extends AppComponentBase implements On
       }
     ];
 
-    this._tradingServiceProxy.getAllCryptoCurrenciesSimple().subscribe((result) => {
-      this.cryptoCurrencies = result.items;
-    });
+
   }
 
   private updateValues(items: GetAllTradingCryptoCurrencyForSimpleViewDto[]) {
