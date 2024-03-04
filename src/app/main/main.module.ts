@@ -60,6 +60,7 @@ import { ViewTradingRequestModalComponent } from './tradingRequests/view-trading
 import { TradingRequestsChangeStatusComponent } from './tradingRequests/components/changeStatus/changeStatus.component';
 import { TradingMarketSliderComponent } from './trading/market-slider/market-slider.component';
 import { TradingMarketGridComponent } from './trading/market-grid/market-grid.component';
+import { TradingPortfolioComponent } from './trading/portfolio/portfolio.component';
 
 /*TODO Se removeran componentes de OTC*/
 import { OTCRequestsComponent } from './otc/otcRequests/otcRequests.component';
@@ -269,6 +270,7 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 		TradingRequestsChangeStatusComponent,
 		TradingMarketSliderComponent,
 		TradingMarketGridComponent,
+		TradingPortfolioComponent,
 
 		ViewCatBankModalComponent,
 		CreateOrEditCatBankModalComponent,

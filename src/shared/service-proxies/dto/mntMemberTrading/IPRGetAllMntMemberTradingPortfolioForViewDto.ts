@@ -1,6 +1,6 @@
-import { PRGetTradingPortfolioRequestForViewDto } from "./PRGetTradingPortfolioRequestForViewDto";
+import { GetTradingRequestsForPortfolioDto } from './GetTradingRequestsForPortfolioDto';
 
 export interface IPRGetAllMntMemberTradingPortfolioForViewDto {
     totalCount: number;
-    items: PRGetTradingPortfolioRequestForViewDto[] | undefined;
+    items: GetTradingRequestsForPortfolioDto[] | undefined;
 }

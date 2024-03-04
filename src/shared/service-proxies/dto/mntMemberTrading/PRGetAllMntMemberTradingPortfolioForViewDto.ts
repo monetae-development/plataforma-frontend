@@ -1,10 +1,9 @@
-import { PRGetTradingRequestForViewDto } from '../TradingRequest/PRGetTradingRequestForViewDto';
+import { GetTradingRequestsForPortfolioDto } from './GetTradingRequestsForPortfolioDto';
 import { IPRGetAllMntMemberTradingPortfolioForViewDto } from './IPRGetAllMntMemberTradingPortfolioForViewDto';
-import { PRGetTradingPortfolioRequestForViewDto } from './PRGetTradingPortfolioRequestForViewDto';
 
 export class PRGetAllMntMemberTradingPortfolioForViewDto implements IPRGetAllMntMemberTradingPortfolioForViewDto {
     totalCount!: number;
-    items!: PRGetTradingPortfolioRequestForViewDto[] | undefined;
+    items!: GetTradingRequestsForPortfolioDto[] | undefined;
 
     constructor(data?: IPRGetAllMntMemberTradingPortfolioForViewDto) {
         if (data) {
@@ -29,7 +28,7 @@ export class PRGetAllMntMemberTradingPortfolioForViewDto implements IPRGetAllMnt
             if (Array.isArray(_data['items'])) {
                 this.items = [] as any;
                 for (let item of _data['items']) {
-                    this.items.push(PRGetTradingPortfolioRequestForViewDto.fromJS(item));
+                    this.items.push(GetTradingRequestsForPortfolioDto.fromJS(item));
                 }
             }
         }
