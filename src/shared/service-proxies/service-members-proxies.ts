@@ -1089,7 +1089,7 @@ export class ServiceMembersProxy {
     /**
      * @return Success
      */
-    getBalance(): Observable<BalanceFiatDto> {
+    getFiatBalance(): Observable<BalanceFiatDto> {
         let url_ = this.baseUrl + '/api/services/app/MntMemberFiat/GetBalance';
         url_ = url_.replace(/[?&]$/, '');
 
@@ -1101,10 +1101,10 @@ export class ServiceMembersProxy {
             })
         };
 
-        return this.http.request('get', url_, options_).pipe(_observableMergeMap((response_: any) => this.processGetBalance(response_))).pipe(_observableCatch((response_: any) => {
+        return this.http.request('get', url_, options_).pipe(_observableMergeMap((response_: any) => this.processGetFiatBalance(response_))).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetBalance(response_ as any);
+                    return this.processGetFiatBalance(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<BalanceFiatDto>;
                 }
@@ -1114,7 +1114,7 @@ export class ServiceMembersProxy {
         }));
     }
 
-    protected processGetBalance(response: HttpResponseBase): Observable<BalanceFiatDto> {
+    protected processGetFiatBalance(response: HttpResponseBase): Observable<BalanceFiatDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :

@@ -41,8 +41,8 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   saleForm: FormGroup;
   menuItems: MenuItem[] | undefined;
   activeItem: MenuItem | undefined;
-  activeIndex: Number = 0;
-  activeCryptoCurrencyId: Number = 0;
+  activeIndex = 0;
+  activeCryptoCurrencyId = 0;
   cryptoAssets: SelectItem[] = undefined;
   selectedCryptoCurrency: GetAllCryptoCurrenciesDto;
   purchasePrice = 0;
@@ -53,6 +53,8 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   amountSaleCommision = 0;
   comissionPurchase = 0;
   comissionSale = 0;
+  cryptoBalanceLoaded = false;
+  fiatBalanceLoaded = false;
 
   constructor(
     injector: Injector,
@@ -97,36 +99,39 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
       { label: this.l('Sale') }
     ];
     this.activeItem = this.menuItems[Number(this.activeIndex)];
-    this.loadBalance();
+    this.getFiatBalance();
     this.loadCryptoAssets();
+    if (this.activeCryptoCurrencyId !== undefined && this.activeCryptoCurrencyId > 0) {
+      this.getCryptoBalance(this.activeCryptoCurrencyId);
+    }
   }
 
-  loadBalance() {
-    this._serviceTradingProxy.getFiatBalance()
-      .subscribe((result) => {
-        this.amountPurchase = result.amount;
-      });
+  getFiatBalance() {
+    this._serviceTradingProxy.getFiatBalance().subscribe((result) => {
+      this.amountPurchase = result.amount;
+      this.fiatBalanceLoaded = true;
+    });
   }
 
   loadCryptoAssets() {
-    this._serviceTradingProxy.getAllCryptoCurrenciesForSelect()
-      .subscribe((result) => {
-        this.cryptoAssets = result.items;
-        this.cryptoAssetIdPurchaseControl.enable();
-        this.cryptoAssetIdSaleControl.enable();
-
-        if (this.activeCryptoCurrencyId !== undefined) {
-          for (let item of result.items) {
-            if (item.value === this.activeCryptoCurrencyId) {
-              this.selectedCryptoCurrency = item;
-              this.purchasePrice = this.selectedCryptoCurrency.purchasePrice;
-              this.comissionPurchase = this.selectedCryptoCurrency.fee;
-              this.cryptoAssetIdPurchaseControl.setValue(this.selectedCryptoCurrency);
-              break;
-            }
+    this._serviceTradingProxy.getAllCryptoCurrenciesForSelect().subscribe((result) => {
+      this.cryptoAssets = result.items;
+      this.cryptoAssetIdPurchaseControl.enable();
+      this.cryptoAssetIdSaleControl.enable();
+      if (this.activeCryptoCurrencyId !== undefined) {
+        for (let item of result.items) {
+          if (item.value === this.activeCryptoCurrencyId) {
+            this.selectedCryptoCurrency = item;
+            this.purchasePrice = this.selectedCryptoCurrency.purchasePrice;
+            this.comissionPurchase = this.selectedCryptoCurrency.fee;
+            this.salePrice = this.selectedCryptoCurrency.salePrice;
+            this.comissionSale = this.selectedCryptoCurrency.fee;
+            this.cryptoAssetIdPurchaseControl.setValue(this.selectedCryptoCurrency);
+            break;
           }
         }
-      });
+      }
+    });
   }
 
   onCancel() {
@@ -235,6 +240,8 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
 
   calculateSaleCost(amount) {
     if (amount >= 0) {
+      console.log(amount);
+      console.log(this.salePrice);
       this.amountSaleControl.setValue(amount * this.salePrice);
       this.amountSaleCommision = (this.amountSaleControl.value * this.comissionSale) / 100;
     } else {
@@ -253,6 +260,12 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
 
   onActiveItemChange(event: MenuItem) {
     this.activeItem = event;
+    for (let i = 0; i < this.menuItems.length; i++) {
+      if (this.menuItems[i].label === this.activeItem.label) {
+        this.activeIndex = i;
+        break;
+      }
+    }
   }
 
   onContinuePurchase(): void {
@@ -328,11 +341,10 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   }
 
   private getCryptoBalance(cryptoCurrencyId) {
-    console.log(cryptoCurrencyId);
     this._serviceTradingProxy.getCryptoBalance(cryptoCurrencyId)
       .subscribe((result) => {
-        console.log(result.amount);
         this.amountSale = result.amount;
+        this.cryptoBalanceLoaded = true;
       });
   }
 

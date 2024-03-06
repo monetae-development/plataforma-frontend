@@ -9,6 +9,7 @@ import { Helpers } from './service-helpers';
 import { GetOTCSettingsDto } from './dto/SettingsPlatform/GetOTCSettingsDto';
 import { OTCSettingsDto } from './dto/SettingsPlatform/OTCSettingsDto';
 import { GetAllMntMemberLevelForViewDto } from './dto/MntMemberLevel/GetAllMntMemberLevelForViewDto';
+import { GetMntMemberLevelTradingForViewDto } from './dto/MntMemberLevel/GetMntMemberLevelTradingForViewDto';
 import { DateTime, Duration } from 'luxon';
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
@@ -27,7 +28,7 @@ export class SettingsPlatformServiceProxy {
     /**
      * @return Success
      */
-    getOTCSettings(): Observable<GetOTCSettingsDto> {
+    getPurchaseSellSettings(): Observable<GetOTCSettingsDto> {
         let url_ = this.baseUrl + '/api/services/app/PlatformSettings/GetOTCSettings';
         url_ = url_.replace(/[?&]$/, '');
 
@@ -43,14 +44,14 @@ export class SettingsPlatformServiceProxy {
             .request('get', url_, options_)
             .pipe(
                 _observableMergeMap((response_: any) => {
-                    return this.processGetOTCSettings(response_);
+                    return this.processGetPurchaseSellSettings(response_);
                 })
             )
             .pipe(
                 _observableCatch((response_: any) => {
                     if (response_ instanceof HttpResponseBase) {
                         try {
-                            return this.processGetOTCSettings(response_ as any);
+                            return this.processGetPurchaseSellSettings(response_ as any);
                         } catch (e) {
                             return _observableThrow(e) as any as Observable<GetOTCSettingsDto>;
                         }
@@ -61,7 +62,7 @@ export class SettingsPlatformServiceProxy {
             );
     }
 
-    protected processGetOTCSettings(response: HttpResponseBase): Observable<GetOTCSettingsDto> {
+    protected processGetPurchaseSellSettings(response: HttpResponseBase): Observable<GetOTCSettingsDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse
@@ -104,7 +105,7 @@ export class SettingsPlatformServiceProxy {
      * @param body (optional)
      * @return Success
      */
-    updateOTCSettings(body: OTCSettingsDto | undefined): Observable<void> {
+    updatePurchaseSellSettings(body: OTCSettingsDto | undefined): Observable<void> {
         let url_ = this.baseUrl + '/api/services/app/PlatformSettings/Update';
         url_ = url_.replace(/[?&]$/, '');
 
@@ -120,11 +121,11 @@ export class SettingsPlatformServiceProxy {
         };
 
         return this.http.request('put', url_, options_).pipe(_observableMergeMap((response_: any) => {
-            return this.processUpdateOTCSettings(response_);
+            return this.processUpdatePurchaseSellSettings(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processUpdateOTCSettings(response_ as any);
+                    return this.processUpdatePurchaseSellSettings(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<void>;
                 }
@@ -134,7 +135,7 @@ export class SettingsPlatformServiceProxy {
         }));
     }
 
-    protected processUpdateOTCSettings(response: HttpResponseBase): Observable<void> {
+    protected processUpdatePurchaseSellSettings(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -268,6 +269,139 @@ export class SettingsPlatformServiceProxy {
     }
 
     protected processUpdateLevelsSettings(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) {
+            for (let key of response.headers.keys()) {
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        if (status === 200) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getLevelTradingSettings(): Observable<GetMntMemberLevelTradingForViewDto> {
+        let url_ = this.baseUrl + '/api/services/app/PlatformSettings/GetLevelsSettings';
+        url_ = url_.replace(/[?&]$/, '');
+
+        let options_: any = {
+            observe: 'response',
+            responseType: 'blob',
+            headers: new HttpHeaders({
+                Accept: 'text/plain'
+            })
+        };
+
+        return this.http
+            .request('get', url_, options_)
+            .pipe(
+                _observableMergeMap((response_: any) => {
+                    return this.processGetLevelTradingSettings(response_);
+                })
+            )
+            .pipe(
+                _observableCatch((response_: any) => {
+                    if (response_ instanceof HttpResponseBase) {
+                        try {
+                            return this.processGetLevelTradingSettings(response_ as any);
+                        } catch (e) {
+                            return _observableThrow(e) as any as Observable<GetMntMemberLevelTradingForViewDto>;
+                        }
+                    } else {
+                        return _observableThrow(response_) as any as Observable<GetMntMemberLevelTradingForViewDto>;
+                    }
+                })
+            );
+    }
+
+    protected processGetLevelTradingSettings(response: HttpResponseBase): Observable<GetMntMemberLevelTradingForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse
+                ? response.body
+                : (response as any).error instanceof Blob
+                    ? (response as any).error
+                    : undefined;
+
+        let _headers: any = {};
+        if (response.headers) {
+            for (let key of response.headers.keys()) {
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        if (status === 200) {
+            return Helpers.blobToText(responseBlob).pipe(
+                _observableMergeMap((_responseText: string) => {
+                    let result200: any = null;
+                    let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                    result200 = GetMntMemberLevelTradingForViewDto.fromJS(resultData200);
+                    return _observableOf(result200);
+                })
+            );
+        } else if (status !== 200 && status !== 204) {
+            return Helpers.blobToText(responseBlob).pipe(
+                _observableMergeMap((_responseText: string) => {
+                    return Helpers.throwException(
+                        'An unexpected server error occurred.',
+                        status,
+                        _responseText,
+                        _headers
+                    );
+                })
+            );
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional)
+     * @return Success
+     */
+    updateLevelTradingSettings(body: GetMntMemberLevelTradingForViewDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + '/api/services/app/PlatformSettings/UpdateLevels';
+        url_ = url_.replace(/[?&]$/, '');
+
+        const content_ = JSON.stringify(body);
+
+        let options_: any = {
+            body: content_,
+            observe: 'response',
+            responseType: 'blob',
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json-patch+json',
+            })
+        };
+
+        return this.http.request('put', url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processUpdateLevelTradingSettings(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateLevelTradingSettings(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else {
+                return _observableThrow(response_) as any as Observable<void>;
+            }
+        }));
+    }
+
+    protected processUpdateLevelTradingSettings(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :

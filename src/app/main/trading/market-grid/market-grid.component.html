@@ -30,9 +30,7 @@
                     <th>
                         {{ l('24H') }}
                     </th>
-                    <th style="width: 100px">
-                        <!-- {{ l('Actions') }} -->
-                    </th>
+                    <th></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-record="$implicit" let-i="rowIndex">
@@ -74,8 +72,11 @@
                             [class.text-success]="record.tradingCryptoCurrency.behavior === behavior.Up"
                             [class.text-danger]="record.tradingCryptoCurrency.behavior === behavior.Down"
                         >
-                            {{ record.tradingCryptoCurrency.behavior === behavior.Up ? '+' : '' }}
-                            {{ record.tradingCryptoCurrency.change24h }}%
+                            {{
+                                record.tradingCryptoCurrency.behavior === behavior.Up
+                                    ? '+' + record.tradingCryptoCurrency.change24h
+                                    : record.tradingCryptoCurrency.change24h
+                            }}%
                         </span>
                     </td>
                     <td>
@@ -86,8 +87,6 @@
                             {{ 'Invest' | localize }}
                         </button>
                     </td>
-
-                    <td></td>
                 </tr>
             </ng-template>
         </p-table>

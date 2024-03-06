@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit, ViewChild } from '@angular/core';
+import { Component, Injector, Output, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { DialogDefaultComponent } from '@app/shared/components/dialog/dialog-default/dialog-default.component';
 import { DialogOperationBuySellComponent } from '@app/shared/components/dialog/dialog-operation-buy-sell/dialog-operation-buy-sell.component';
@@ -29,13 +29,14 @@ export class TradingPortfolioComponent extends AppComponentBase implements OnIni
   @ViewChild('dataTable', { static: true }) dataTable: Table;
   @ViewChild('paginator', { static: true }) paginator: Paginator;
 
-  filter: string = '';
+  filter = '';
   requestType = RequestType;
   requestStatus = RequestStatus;
   itemsMenu: any[] | undefined;
-  total: number = 6;
+  total = 6;
   items: any = [];
   statusMember: number;
+  selectedRecord: number;
 
   primengTableHelper = new PrimengTableHelper();
 
@@ -55,15 +56,15 @@ export class TradingPortfolioComponent extends AppComponentBase implements OnIni
     this.getStatusMember();
     this.itemsMenu = [
       {
-        label: 'Comprar',
+        label: this.l('PurchaseAction'),
         command: () => {
-          this.showDialogBuySell(0);
+          this.showDialogBuySell(0, this.selectedRecord);
         }
       },
       {
-        label: 'Vender',
+        label: this.l('SellAction'),
         command: () => {
-          this.showDialogBuySell(1);
+          this.showDialogBuySell(1, this.selectedRecord);
         }
       }
     ];
@@ -78,42 +79,26 @@ export class TradingPortfolioComponent extends AppComponentBase implements OnIni
       }
     }
     this.primengTableHelper.showLoadingIndicator();
-    this._serviceTradingProxy
-      .getAllMemberPortfolioRequests(
-        this.filter,
-        this.primengTableHelper.getSorting(this.dataTable),
-        this.primengTableHelper.getSkipCount(this.paginator, event),
-        this.primengTableHelper.getMaxResultCount(this.paginator, event)
-      )
+    this._serviceTradingProxy.getAllMemberPortfolioRequests(
+      this.filter,
+      this.primengTableHelper.getSorting(this.dataTable),
+      this.primengTableHelper.getSkipCount(this.paginator, event),
+      this.primengTableHelper.getMaxResultCount(this.paginator, event)
+    )
       .pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator()))
       .subscribe(result => {
-        console.log(result);
         this.primengTableHelper.totalRecordsCount = result.totalCount;
         this.primengTableHelper.records = result.items;
         this.primengTableHelper.hideLoadingIndicator();
       });
   }
 
-  getDateTimeFormat(input: string,): string {
+  getDateTimeFormat(input: string): string {
     const parsedDate = DateTime.fromISO(input);
     return parsedDate.toFormat('dd/MM/yy');
   }
 
-  private getStatusMember() {
-    this._sessionServiceProxy.getCurrentLoignIsClientRole().subscribe((result) => {
-      console.log(result);
-      if (result.hasClientRole) {
-        this._serviceMembersProxy.getStatus().subscribe((result) => {
-          console.log(result);
-          this.statusMember = result.status;
-        });
-      } else {
-        this.statusMember = MemberType.Administrador;
-      }
-    });
-  }
-
-  showDialogBuySell(index) {
+  showDialogBuySell(index: number, cryptoCurrencyId?: number) {
     if (this.statusMember === MemberStatus.Register) {
       this.openMessageDialogVerifyAccount();
     } else if (this.statusMember === MemberStatus.Pending || this.statusMember === MemberStatus.Review) {
@@ -127,7 +112,8 @@ export class TradingPortfolioComponent extends AppComponentBase implements OnIni
         showHeader: false,
         styleClass: 'ae-dialog ae-dialog--operations ae-dialog--sm',
         data: {
-          activeIndex: index
+          activeIndex: index,
+          activeCryptoCurrencyId: cryptoCurrencyId
         },
       });
       const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
@@ -140,6 +126,19 @@ export class TradingPortfolioComponent extends AppComponentBase implements OnIni
       });
     }
   }
+
+  private getStatusMember() {
+    this._sessionServiceProxy.getCurrentLoignIsClientRole().subscribe((result) => {
+      if (result.hasClientRole) {
+        this._serviceMembersProxy.getStatus().subscribe((result) => {
+          this.statusMember = result.status;
+        });
+      } else {
+        this.statusMember = MemberType.Administrador;
+      }
+    });
+  }
+
 
   private openMessageDialogVerifyAccount(): void {
     const ref = this._dialogService.open(DialogDefaultComponent, {

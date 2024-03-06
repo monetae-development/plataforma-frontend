@@ -147,14 +147,21 @@
         <form [formGroup]="saleForm">
             <div class="ae-selectinput__grid">
                 <div class="ae-selectinput__grid--title flex align-items-center justify-content-between">
-                    <label class="ae-text-dark ae-text-default">Vender</label>
-                    <small class="ae-text-gris-dark ae-text-small" *ngIf="cryptoAssetIdSaleControl.value">
-                        {{ l('Saldo disponible:') }} {{ amountSale }}
+                    <label class="ae-text-dark ae-text-default">{{ l('SellAction') }}</label>
+                    <div class="d-flex justify-content-center" *ngIf="!cryptoBalanceLoaded">
+                        <div class="spinner-border text-gray-400 spinner-small" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <span class="ms-2 mt-0 ae-text-gris-dark ae-text-small">{{ l('LoadingBalance') }}...</span>
+                    </div>
+                    <small class="ae-text-gris-dark ae-text-small" *ngIf="cryptoBalanceLoaded">
+                        {{ l('AvailableBalance') }}: {{ amountSale | number : '1.0-6' : 'en' }}
                     </small>
                 </div>
                 <div class="ae-selectinput__grid--fields">
                     <div class="ae-select">
                         <p-dropdown
+                            [(ngModel)]="selectedCryptoCurrency"
                             [options]="cryptoAssets"
                             optionLabel="label"
                             [formControl]="cryptoAssetIdSaleControl"
@@ -237,7 +244,7 @@
                     </div>
                 </div>
                 <div class="ae-inputnumber">
-                    <label htmlFor="amount">Recibir Fiat</label>
+                    <label htmlFor="amount">{{ l('ReceiveFiat') }}</label>
                     <div class="ae-inputnumber__group">
                         <div class="ae-inputnumber__coin flex align-items-center">
                             <span class="ae-text-light">USD</span>

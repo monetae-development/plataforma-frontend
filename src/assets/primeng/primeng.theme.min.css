@@ -93,3 +93,53 @@ p-chips .p-chips.p-component ul.p-inputtext {
 .p-checkbox.p-checkbox-checked:not(.p-checkbox-disabled).p-checkbox-focused {
   box-shadow: 0 0 1px 10px rgba(0, 206, 209, 0.12);
 }
+
+.p-inputtext:enabled:focus{
+  border-color: #00CED1;
+  box-shadow: inset 0 0 0 1px #00CED1, inset 0 0 0 1px #00CED1, inset 0 0 0 1px #00CED1, inset 0 0 0 1px #00CED1;
+}
+
+p-messages .p-message-wrapper{
+  background: #FFE7E6;
+  border: 0px;
+  border-radius: 12px;
+}
+
+p-messages .p-message.p-message-error{
+  border-radius: 12px;
+}
+
+p-messages .p-message-wrapper .p-message-summary{
+  display: none !important;
+}
+
+p-messages .p-message-wrapper .p-message-detail{
+  font-size: 14px;
+  color: #FF5757;
+}
+
+p-messages .p-message.p-message-error .p-message-icon,
+p-messages .p-message-wrapper .p-message-icon{
+  color: #FF5757;
+}
+
+p-messages .p-message-wrapper button i{
+  color: #FF5757;
+}
+
+p-fileupload .p-fileupload-content .p-fileupload-files{
+  display: none !important;
+}
+
+p-fileupload .p-progressbar,
+p-fileupload .p-progressbar .p-progressbar-value{
+  background: #00CED1;
+}
+
+p-fileupload.upload-completed div.p-fileupload .p-fileupload-buttonbar{
+  display: none !important;
+}
+
+p-fileupload .p-fileupload-content .p-progressbar{
+  margin-top: 10px;
+}

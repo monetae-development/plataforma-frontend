@@ -1,17 +1,13 @@
-import { IGetMntMemberLevelForViewDto } from './IGetMntMemberLevelForViewDto';
+import { IGetMntMemberLevelTradingForViewDto } from './IGetMntMemberLevelTradingForViewDto';
 
-export class GetMntMemberLevelForViewDto implements IGetMntMemberLevelForViewDto {
+export class GetMntMemberLevelTradingForViewDto implements IGetMntMemberLevelTradingForViewDto {
     id: number;
     title!: string | undefined;
-    fiatDepositMin!: number | undefined;
-    fiatDepositMax!: number | undefined;
-    fiatWithdrawalMin!: number | undefined;
-    fiatWithdrawalMax!: number | undefined;
     tradingPurchaseFee!: number | undefined;
     tradingSaleFee!: number | undefined;
     default: boolean;
 
-    constructor(data?: IGetMntMemberLevelForViewDto) {
+    constructor(data?: IGetMntMemberLevelTradingForViewDto) {
         if (data) {
             for (let property in data) {
                 if (data.hasOwnProperty(property)) {
@@ -21,9 +17,9 @@ export class GetMntMemberLevelForViewDto implements IGetMntMemberLevelForViewDto
         }
     }
 
-    static fromJS(data: any): GetMntMemberLevelForViewDto {
+    static fromJS(data: any): GetMntMemberLevelTradingForViewDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GetMntMemberLevelForViewDto();
+        let result = new GetMntMemberLevelTradingForViewDto();
         result.init(data);
         return result;
     }
@@ -32,10 +28,6 @@ export class GetMntMemberLevelForViewDto implements IGetMntMemberLevelForViewDto
         if (_data) {
             this.id = _data['id'];
             this.title = _data['title'];
-            this.fiatDepositMin = _data['fiatDepositMin'];
-            this.fiatDepositMax = _data['fiatDepositMax'];
-            this.fiatWithdrawalMin = _data['fiatWithdrawalMin'];
-            this.fiatWithdrawalMax = _data['fiatWithdrawalMax'];
             this.tradingPurchaseFee = _data['tradingPurchaseFee'];
             this.tradingSaleFee = _data['tradingSaleFee'];
             this.default = _data['default'];
@@ -46,10 +38,6 @@ export class GetMntMemberLevelForViewDto implements IGetMntMemberLevelForViewDto
         data = typeof data === 'object' ? data : {};
         data['id'] = this.id;
         data['title'] = this.title;
-        data['fiatDepositMin'] = this.fiatDepositMin;
-        data['fiatDepositMax'] = this.fiatDepositMax;
-        data['fiatWithdrawalMin'] = this.fiatWithdrawalMin;
-        data['fiatWithdrawalMax'] = this.fiatWithdrawalMax;
         data['tradingPurchaseFee'] = this.tradingPurchaseFee;
         data['tradingSaleFee'] = this.tradingSaleFee;
         data['default'] = this.default;

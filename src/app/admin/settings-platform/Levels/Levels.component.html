@@ -1,101 +1,161 @@
 <form class="text-soft mt-4" #levelsSettingsForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
-    <div class="row">
-        <h6 class="mb-4">{{ l('MemberPersonLevels') }}</h6>
-        <div class="col-xl-6">
-            <div class="form-group mb-10">
-                <div class="input-group">
-                    <label class="input-group-text" id="inputGroup-sizing-default">
-                        {{ l('FiatDepositMin') }}
-                    </label>
-                    <p-inputNumber
-                        #fiatDepositMin="ngModel"
-                        name="fiatDepositMin"
-                        class="form-control"
-                        [(ngModel)]="levels.level1.fiatDepositMin"
-                        mode="decimal"
-                        locale="en-US"
-                        [minFractionDigits]="0"
-                        [maxFractionDigits]="2"
-                        [min]="0"
-                        required
-                    ></p-inputNumber>
-                    <span class="input-group-text">USD</span>
-                </div>
-                <div class="small text-center">{{ l('FiatLimitZero') }}</div>
-                <validation-messages [formCtrl]="fiatDepositMin"></validation-messages>
-            </div>
+    <p-tabView styleClass="tabview-custom">
+        <p-tabPanel>
+            <ng-template pTemplate="header">
+                <span>{{ l('Sale/Purchase') }}</span>
+            </ng-template>
 
-            <div class="form-group mb-10">
-                <div class="input-group">
-                    <label class="input-group-text" id="inputGroup-sizing-default">
-                        {{ l('FiatDepositMax') }}
-                    </label>
-                    <p-inputNumber
-                        #fiatDepositMax="ngModel"
-                        name="fiatDepositMax"
-                        class="form-control"
-                        [(ngModel)]="levels.level1.fiatDepositMax"
-                        mode="decimal"
-                        locale="en-US"
-                        [minFractionDigits]="0"
-                        [maxFractionDigits]="2"
-                        [min]="0"
-                        required
-                    ></p-inputNumber>
-                    <span class="input-group-text">USD</span>
-                </div>
-                <div class="small text-center">{{ l('FiatLimitZero') }}</div>
-                <validation-messages [formCtrl]="fiatDepositMax"></validation-messages>
-            </div>
+            <div class="row">
+                <h6 class="mb-4">{{ l('MemberPerson') }}</h6>
+                <div class="col-xl-6">
+                    <div class="form-group mb-10">
+                        <div class="input-group">
+                            <label class="input-group-text" id="inputGroup-sizing-default">
+                                {{ l('FiatDepositMin') }}
+                            </label>
+                            <p-inputNumber
+                                #fiatDepositMin="ngModel"
+                                name="fiatDepositMin"
+                                class="form-control"
+                                [(ngModel)]="levels.level1.fiatDepositMin"
+                                mode="decimal"
+                                locale="en-US"
+                                [minFractionDigits]="0"
+                                [maxFractionDigits]="2"
+                                [min]="0"
+                                required
+                            ></p-inputNumber>
+                            <span class="input-group-text">USD</span>
+                        </div>
+                        <div class="small text-center">{{ l('FiatLimitZero') }}</div>
+                        <validation-messages [formCtrl]="fiatDepositMin"></validation-messages>
+                    </div>
 
-            <div class="form-group mb-10">
-                <div class="input-group">
-                    <label class="input-group-text" id="inputGroup-sizing-default">
-                        {{ l('FiatWithdrawalMin') }}
-                    </label>
-                    <p-inputNumber
-                        #fiatWithdrawalMin="ngModel"
-                        name="fiatWithdrawalMin"
-                        class="form-control"
-                        [(ngModel)]="levels.level1.fiatWithdrawalMin"
-                        mode="decimal"
-                        locale="en-US"
-                        [minFractionDigits]="0"
-                        [maxFractionDigits]="2"
-                        [min]="0"
-                        required
-                    ></p-inputNumber>
-                    <span class="input-group-text">USD</span>
-                </div>
-                <div class="small text-center">{{ l('FiatLimitZero') }}</div>
-                <validation-messages [formCtrl]="fiatWithdrawalMin"></validation-messages>
-            </div>
+                    <div class="form-group mb-10">
+                        <div class="input-group">
+                            <label class="input-group-text" id="inputGroup-sizing-default">
+                                {{ l('FiatDepositMax') }}
+                            </label>
+                            <p-inputNumber
+                                #fiatDepositMax="ngModel"
+                                name="fiatDepositMax"
+                                class="form-control"
+                                [(ngModel)]="levels.level1.fiatDepositMax"
+                                mode="decimal"
+                                locale="en-US"
+                                [minFractionDigits]="0"
+                                [maxFractionDigits]="2"
+                                [min]="0"
+                                required
+                            ></p-inputNumber>
+                            <span class="input-group-text">USD</span>
+                        </div>
+                        <div class="small text-center">{{ l('FiatLimitZero') }}</div>
+                        <validation-messages [formCtrl]="fiatDepositMax"></validation-messages>
+                    </div>
 
-            <div class="form-group mb-10">
-                <div class="input-group">
-                    <label class="input-group-text" id="inputGroup-sizing-default">
-                        {{ l('FiatWithdrawalMax') }}
-                    </label>
-                    <p-inputNumber
-                        #fiatWithdrawalMax="ngModel"
-                        name="fiatWithdrawalMax"
-                        class="form-control"
-                        [(ngModel)]="levels.level1.fiatWithdrawalMax"
-                        mode="decimal"
-                        locale="en-US"
-                        [minFractionDigits]="0"
-                        [maxFractionDigits]="2"
-                        [min]="0"
-                        required
-                    ></p-inputNumber>
-                    <span class="input-group-text">USD</span>
-                </div>
-                <div class="small text-center">{{ l('FiatLimitZero') }}</div>
-                <validation-messages [formCtrl]="fiatWithdrawalMax"></validation-messages>
-            </div>
-        </div>
-    </div>
+                    <div class="form-group mb-10">
+                        <div class="input-group">
+                            <label class="input-group-text" id="inputGroup-sizing-default">
+                                {{ l('FiatWithdrawalMin') }}
+                            </label>
+                            <p-inputNumber
+                                #fiatWithdrawalMin="ngModel"
+                                name="fiatWithdrawalMin"
+                                class="form-control"
+                                [(ngModel)]="levels.level1.fiatWithdrawalMin"
+                                mode="decimal"
+                                locale="en-US"
+                                [minFractionDigits]="0"
+                                [maxFractionDigits]="2"
+                                [min]="0"
+                                required
+                            ></p-inputNumber>
+                            <span class="input-group-text">USD</span>
+                        </div>
+                        <div class="small text-center">{{ l('FiatLimitZero') }}</div>
+                        <validation-messages [formCtrl]="fiatWithdrawalMin"></validation-messages>
+                    </div>
 
+                    <div class="form-group mb-10">
+                        <div class="input-group">
+                            <label class="input-group-text" id="inputGroup-sizing-default">
+                                {{ l('FiatWithdrawalMax') }}
+                            </label>
+                            <p-inputNumber
+                                #fiatWithdrawalMax="ngModel"
+                                name="fiatWithdrawalMax"
+                                class="form-control"
+                                [(ngModel)]="levels.level1.fiatWithdrawalMax"
+                                mode="decimal"
+                                locale="en-US"
+                                [minFractionDigits]="0"
+                                [maxFractionDigits]="2"
+                                [min]="0"
+                                required
+                            ></p-inputNumber>
+                            <span class="input-group-text">USD</span>
+                        </div>
+                        <div class="small text-center">{{ l('FiatLimitZero') }}</div>
+                        <validation-messages [formCtrl]="fiatWithdrawalMax"></validation-messages>
+                    </div>
+                </div>
+            </div>
+        </p-tabPanel>
+        <p-tabPanel>
+            <ng-template pTemplate="header">
+                <span>{{ l('Deposit') }}/{{ l('Withdrawal') }}</span>
+            </ng-template>
+            <div class="row">
+                <h6 class="mb-4">{{ l('MemberPerson') }}</h6>
+                <div class="col-xl-6">
+                    <div class="form-group mb-10">
+                        <div class="input-group">
+                            <label class="input-group-text" id="inputGroup-sizing-default">
+                                {{ l('TradingPurchaseFee') }}
+                            </label>
+                            <p-inputNumber
+                                #tradingPurchaseFee="ngModel"
+                                name="tradingPurchaseFee"
+                                class="form-control"
+                                [(ngModel)]="levels.level1.tradingPurchaseFee"
+                                mode="decimal"
+                                locale="en-US"
+                                [minFractionDigits]="0"
+                                [maxFractionDigits]="2"
+                                [min]="0"
+                                required
+                            ></p-inputNumber>
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <validation-messages [formCtrl]="tradingPurchaseFee"></validation-messages>
+                    </div>
+
+                    <div class="form-group mb-10">
+                        <div class="input-group">
+                            <label class="input-group-text" id="inputGroup-sizing-default">
+                                {{ l('TradingSaleFee') }}
+                            </label>
+                            <p-inputNumber
+                                #tradingSaleFee="ngModel"
+                                name="tradingSaleFee"
+                                class="form-control"
+                                [(ngModel)]="levels.level1.tradingSaleFee"
+                                mode="decimal"
+                                locale="en-US"
+                                [minFractionDigits]="0"
+                                [maxFractionDigits]="2"
+                                [min]="0"
+                                required
+                            ></p-inputNumber>
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <validation-messages [formCtrl]="tradingSaleFee"></validation-messages>
+                    </div>
+                </div>
+            </div>
+        </p-tabPanel>
+    </p-tabView>
     <div class="row justify-content-end mt-5">
         <div class="col-2">
             <button

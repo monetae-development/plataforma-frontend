@@ -7,6 +7,7 @@ export class GetTradingRequestsForPortfolioDto implements IGetTradingRequestsFor
     changePct24Hour: number;
     totalPercent: number;
     profitPercent: number;
+    quantity: number;
     amount: number;
 
     constructor(data?: IGetTradingRequestsForPortfolioDto) {
@@ -34,6 +35,7 @@ export class GetTradingRequestsForPortfolioDto implements IGetTradingRequestsFor
             this.changePct24Hour = _data['changePct24Hour'];
             this.totalPercent = _data['totalPercent'];
             this.profitPercent = _data['profitPercent'];
+            this.quantity = _data['quantity'];
             this.amount = _data['amount'];
         }
     }
@@ -45,6 +47,7 @@ export class GetTradingRequestsForPortfolioDto implements IGetTradingRequestsFor
         data['changePct24Hour'] = this.changePct24Hour;
         data['totalPercent'] = this.totalPercent;
         data['profitPercent'] = this.profitPercent;
+        data['quantity'] = this.quantity;
         data['amount'] = this.amount;
         return data;
     }

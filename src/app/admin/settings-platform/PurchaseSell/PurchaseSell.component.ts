@@ -7,10 +7,10 @@ import { OTCSettingsDto } from '@shared/service-proxies/dto/SettingsPlatform/OTC
 import { result } from 'lodash-es';
 
 @Component({
-  selector: 'otc-settings',
-  templateUrl: './OTC.component.html'
+  selector: 'purchase-sell-settings',
+  templateUrl: './PurchaseSell.component.html'
 })
-export class OTCComponent extends AppComponentBase implements OnInit {
+export class PurchaseSellComponent extends AppComponentBase implements OnInit {
   moreOptionsAreShown = false;
   otcSettings: OTCSettingsDto;
   saving = false;
@@ -21,14 +21,14 @@ export class OTCComponent extends AppComponentBase implements OnInit {
   }
 
   ngOnInit() {
-    this._settingsPlatformServiceProxy.getOTCSettings().subscribe(result => {
+    this._settingsPlatformServiceProxy.getPurchaseSellSettings().subscribe(result => {
       this.otcSettings = result.otcSettings;
     });
   }
 
   save() {
     this.saving = true;
-    this._settingsPlatformServiceProxy.updateOTCSettings(this.otcSettings)
+    this._settingsPlatformServiceProxy.updatePurchaseSellSettings(this.otcSettings)
       .pipe(finalize(() => {
         this.saving = false;
       }))

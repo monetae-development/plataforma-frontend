@@ -216,7 +216,8 @@
                                         [(ngModel)]="memberPersonalData.phone"
                                         placeholder="929552746"
                                         class="form-control"
-                                        maxlength="32"
+                                        maxlength="10"
+                                        mask="0*"
                                     />
                                     <div class="spin-validation">
                                         <spinSuccess
@@ -456,8 +457,6 @@
                                     placeholder="Número"
                                     class="form-control"
                                     maxlength="10"
-                                    mask="0*"
-                                    pattern="^(?!\s)(.*\S)?(?<!\s)$"
                                 />
                                 <div class="spin-validation">
                                     <spinSuccess
@@ -514,40 +513,44 @@
                                 <br />
                             </label>
                             <p-fileUpload
-                                id="addressProof"
-                                name="addressProof"
+                                #addressFileProof
+                                id="addressFileProof"
+                                name="addressFileProof"
                                 accept="image/*,application/pdf"
-                                maxFileSize="maxFileSize"
-                                fileLimit="1"
-                                [url]="uploadUrl"
+                                [maxFileSize]="maxFileSize"
+                                [multiple]="false"
                                 mode="advanced"
-                                (onSelect)="onUploadFile($event, uploadedAddressProof, 'UploadAddressProof')"
+                                (onSelect)="onUploadFile($event, 'UploadAddressProof')"
                                 (onBeforeSend)="onBeforeSend($event)"
                                 (onRemove)="onRemoveFile($event, 'UploadAddressProof')"
                                 [showUploadButton]="false"
                                 [showCancelButton]="false"
+                                invalidFileSizeMessageDetail="{{ l('ErrorFileMemberUploadLimit') }}: {0}"
+                                [class.upload-completed]="uploadFileAddressProof"
                             >
                                 <ng-template pTemplate="toolbar">
                                     <div class="ae-upload__header">
                                         <i class="pi pi-cloud-upload ae-text-gris"></i>
-                                        <p class="ae-text-gris ae-text-small m-0">Cargar archivo</p>
+                                        <p class="ae-text-gris ae-text-small m-0">{{ l('FileUpload') }}</p>
                                     </div>
                                 </ng-template>
-                                <!-- <ng-template pTemplate="content">
-                                    <ul *ngIf="uploadedAddressProof.length">
-                                        <li *ngFor="let file of uploadedAddressProof" class="flex align-items-center justify-content-between mt-2">
-                                            <div class="flex flex-column">
-                                                <p>{{ file.name }}</p>
-                                                <small>{{ file.size }} bytes</small>
-                                            </div>
-                                            <i class="pi pi-times" (click)="onRemoveFile(file)"></i>
-                                        </li>
-                                    </ul>
-                                </ng-template> -->
                             </p-fileUpload>
-                            <span *ngIf="messageUploadFileAddressProof" class="error-message">
-                                {{ messageUploadFileAddressProof }}
-                            </span>
+                            <div
+                                *ngIf="uploadFileAddressProof"
+                                class="fileupload-file-info d-flex justify-content-between px-10 mt-10"
+                            >
+                                <span class="pt-2">{{ uploadedFiles['UploadAddressProof'].fileName }}</span>
+                                <span class="pt-2">{{ uploadedFiles['UploadAddressProof'].fileSize }} KB</span>
+                                <button
+                                    class="btn btn-info btn-sm btn-only-icon btn-style-secondary"
+                                    (click)="onClearUploadFileAddressProof()"
+                                >
+                                    <i class="fa fa-close"></i>
+                                </button>
+                            </div>
+                            <div *ngIf="!uploadFileAddressProof" class="fw-bold error-message text-danger">
+                                {{ l('RequiredFileError') }}
+                            </div>
                         </div>
                         <div
                             *ngIf="getFile(_fileType.AddressProof).type === _fileType.AddressProof"
@@ -699,39 +702,46 @@
                             </div>
                         </div>
                         <div class="ae-upload ae-orden__five">
-                            <label for="identityFrontPicture">{{ 'IdentityFrontPicture' | localize }}</label>
+                            <label for="identityFileFront">{{ 'IdentityFrontPicture' | localize }}</label>
                             <p-fileUpload
-                                id="identityFrontPicture"
-                                name="identityFrontPicture"
+                                #identityFileFront
+                                id="identityFileFront"
+                                name="identityFileFront"
                                 accept="image/*,application/pdf"
-                                maxFileSize="maxFileSize"
-                                fileLimit="1"
-                                [url]="uploadUrl"
-                                (onSelect)="onUploadFile($event, uploadedFront, 'UploadIdentityFront')"
+                                [maxFileSize]="maxFileSize"
+                                [multiple]="false"
+                                mode="advanced"
+                                (onSelect)="onUploadFile($event, 'UploadIdentityFront')"
                                 (onBeforeSend)="onBeforeSend($event)"
+                                (onRemove)="onRemoveFile($event, 'UploadIdentityFront')"
                                 [showUploadButton]="false"
                                 [showCancelButton]="false"
+                                invalidFileSizeMessageDetail="{{ l('ErrorFileMemberUploadLimit') }}: {0}"
+                                [class.upload-completed]="uploadFileIdentityFront"
                             >
                                 <ng-template pTemplate="toolbar">
                                     <div class="ae-upload__header">
                                         <i class="pi pi-cloud-upload ae-text-gris"></i>
-                                        <p class="ae-text-gris ae-text-small m-0">Cargar archivo</p>
+                                        <p class="ae-text-gris ae-text-small m-0">{{ l('FileUpload') }}</p>
                                     </div>
                                 </ng-template>
-                                <!-- <ng-template pTemplate="content">
-                                    <ul *ngIf="uploadedFront.length">
-                                        <li *ngFor="let file of uploadedFront">
-                                            <div class="flex flex-column">
-                                                <p>{{ file.name }}</p>
-                                                <small>{{ file.size }} bytes</small>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </ng-template> -->
                             </p-fileUpload>
-                            <span *ngIf="messageUploadFileIdentityFront" class="error-message">
-                                {{ messageUploadFileIdentityFront }}
-                            </span>
+                            <div
+                                *ngIf="uploadFileIdentityFront"
+                                class="fileupload-file-info d-flex justify-content-between px-10 mt-10"
+                            >
+                                <span class="pt-2">{{ uploadedFiles['UploadIdentityFront'].fileName }}</span>
+                                <span class="pt-2">{{ uploadedFiles['UploadIdentityFront'].fileSize }} KB</span>
+                                <button
+                                    class="btn btn-info btn-sm btn-only-icon btn-style-secondary"
+                                    (click)="onClearUploadFileIdentityFront()"
+                                >
+                                    <i class="fa fa-close"></i>
+                                </button>
+                            </div>
+                            <div *ngIf="!uploadFileIdentityFront" class="fw-bold error-message text-danger">
+                                {{ l('RequiredFileError') }}
+                            </div>
                             <div
                                 *ngIf="getFile(_fileType.IdentityFront).type === _fileType.IdentityFront"
                                 class="ae-grid--fullwidth text-primary text-center"
@@ -741,39 +751,47 @@
                             </div>
                         </div>
                         <div class="ae-upload ae-orden__six">
-                            <label for="identityBackPicture">{{ 'IdentityBackPicture' | localize }}</label>
+                            <label for="identityFileBack">{{ 'IdentityBackPicture' | localize }}</label>
                             <p-fileUpload
+                                #identityFileBack
                                 fileLimit="1"
-                                id="identityBackPicture"
-                                name="identityBackPicture"
+                                id="identityFileBack"
+                                name="identityFileBack"
                                 accept="image/*,application/pdf"
-                                maxFileSize="maxFileSize"
-                                [url]="uploadUrl"
-                                (onSelect)="onUploadFile($event, uploadedBack, 'UploadIdentityBack')"
+                                [maxFileSize]="maxFileSize"
+                                [multiple]="false"
+                                mode="advanced"
+                                (onSelect)="onUploadFile($event, 'UploadIdentityBack')"
                                 (onBeforeSend)="onBeforeSend($event)"
+                                (onRemove)="onRemoveFile($event, 'UploadIdentityBack')"
                                 [showUploadButton]="false"
                                 [showCancelButton]="false"
+                                invalidFileSizeMessageDetail="{{ l('ErrorFileMemberUploadLimit') }}: {0}"
+                                [class.upload-completed]="uploadFileIdentityBack"
                             >
                                 <ng-template pTemplate="toolbar">
                                     <div class="ae-upload__header">
                                         <i class="pi pi-cloud-upload ae-text-gris"></i>
-                                        <p class="ae-text-gris ae-text-small m-0">Cargar archivo</p>
+                                        <p class="ae-text-gris ae-text-small m-0">{{ l('FileUpload') }}</p>
                                     </div>
                                 </ng-template>
-                                <!-- <ng-template pTemplate="content">
-                                    <ul *ngIf="uploadedBack.length">
-                                        <li *ngFor="let file of uploadedBack">
-                                            <div class="flex flex-column">
-                                                <p>{{ file.name }}</p>
-                                                <small>{{ file.size }} bytes</small>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </ng-template> -->
                             </p-fileUpload>
-                            <span *ngIf="messageUploadFileIdentityBack" class="error-message">
-                                {{ messageUploadFileIdentityBack }}
-                            </span>
+                            <div
+                                *ngIf="uploadFileIdentityBack"
+                                class="fileupload-file-info d-flex justify-content-between px-10 mt-10"
+                            >
+                                <span class="pt-2">{{ uploadedFiles['UploadIdentityBack'].fileName }}</span>
+                                <span class="pt-2">{{ uploadedFiles['UploadIdentityBack'].fileSize }} KB</span>
+                                <button
+                                    class="btn btn-info btn-sm btn-only-icon btn-style-secondary"
+                                    (click)="onClearUploadFileIdentityBack()"
+                                >
+                                    <i class="fa fa-close"></i>
+                                </button>
+                            </div>
+                            <div *ngIf="!uploadFileIdentityBack" class="fw-bold error-message text-danger">
+                                {{ l('RequiredFileError') }}
+                            </div>
                             <div
                                 *ngIf="getFile(_fileType.IdentityBack).type === _fileType.IdentityBack"
                                 class="ae-grid--fullwidth text-primary text-center"
@@ -932,7 +950,7 @@
                             </div>
                         </div>
                         <div class="ae-upload ae-grid--fullwidth mb-0">
-                            <label for="economicInfoProofIncome">
+                            <label for="economicInfoFileIncomeProof">
                                 {{ 'ProofIncome' | localize }} *
                                 <span class="ae-text-default ae-text-gris-dark">
                                     {{ 'ProofIncomeDetails' | localize }}
@@ -940,37 +958,44 @@
                                 <br />
                             </label>
                             <p-fileUpload
-                                id="economicInfoProofIncome"
-                                name="economicInfoProofIncome"
+                                #economicInfoFileIncomeProof
+                                id="economicInfoFileIncomeProof"
+                                name="economicInfoFileIncomeProof"
                                 accept="image/*,application/pdf"
-                                maxFileSize="maxFileSize"
-                                fileLimit="1"
-                                [url]="uploadUrl"
-                                (onSelect)="onUploadFile($event, uploadedProofIncome, 'UploadIncomeProof')"
+                                [maxFileSize]="maxFileSize"
+                                [multiple]="false"
+                                mode="advanced"
+                                (onSelect)="onUploadFile($event, 'UploadIncomeProof')"
                                 (onBeforeSend)="onBeforeSend($event)"
+                                (onRemove)="onRemoveFile($event, 'UploadIncomeProof')"
                                 [showUploadButton]="false"
                                 [showCancelButton]="false"
+                                invalidFileSizeMessageDetail="{{ l('ErrorFileMemberUploadLimit') }}: {0}"
+                                [class.upload-completed]="uploadFileIncomeProof"
                             >
                                 <ng-template pTemplate="toolbar">
                                     <div class="ae-upload__header">
                                         <i class="pi pi-cloud-upload ae-text-gris"></i>
-                                        <p class="ae-text-gris ae-text-small m-0">Cargar archivo</p>
+                                        <p class="ae-text-gris ae-text-small m-0">{{ l('FileUpload') }}</p>
                                     </div>
                                 </ng-template>
-                                <!-- <ng-template pTemplate="content">
-                                    <ul *ngIf="uploadedProofIncome.length">
-                                        <li *ngFor="let file of uploadedProofIncome">
-                                            <div class="flex flex-column">
-                                                <p>{{ file.name }}</p>
-                                                <small>{{ file.size }} bytes</small>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </ng-template> -->
                             </p-fileUpload>
-                            <span *ngIf="messageUploadFileIncomeProof" class="error-message">
-                                {{ messageUploadFileIncomeProof }}
-                            </span>
+                            <div
+                                *ngIf="uploadFileIncomeProof"
+                                class="fileupload-file-info d-flex justify-content-between px-10 mt-10"
+                            >
+                                <span class="pt-2">{{ uploadedFiles['UploadIncomeProof'].fileName }}</span>
+                                <span class="pt-2">{{ uploadedFiles['UploadIncomeProof'].fileSize }} KB</span>
+                                <button
+                                    class="btn btn-info btn-sm btn-only-icon btn-style-secondary"
+                                    (click)="onClearUploadFileIncomeProof()"
+                                >
+                                    <i class="fa fa-close"></i>
+                                </button>
+                            </div>
+                            <div *ngIf="!uploadFileIncomeProof" class="fw-bold error-message text-danger">
+                                {{ l('RequiredFileError') }}
+                            </div>
                             <div
                                 *ngIf="getFile(_fileType.IncomeProof).type === _fileType.IncomeProof"
                                 class="ae-grid--fullwidth text-primary text-center"
@@ -980,7 +1005,7 @@
                             </div>
                         </div>
                         <div class="ae-upload ae-grid--fullwidth">
-                            <label for="economicInfoTaxReturn">
+                            <label for="economicInfoFileTaxReturn">
                                 {{ 'TaxReturn' | localize }} (últimos 2 años).
                                 <br />
                                 <span class="ae-text-default ae-text-gris-dark">
@@ -988,37 +1013,45 @@
                                 </span>
                             </label>
                             <p-fileUpload
+                                #economicInfoFileTaxReturn
                                 fileLimit="1"
-                                id="economicInfoTaxReturn"
-                                name="economicInfoTaxReturn"
+                                id="economicInfoFileTaxReturn"
+                                name="economicInfoFileTaxReturn"
                                 accept="image/*,application/pdf"
-                                maxFileSize="maxFileSize"
-                                [url]="uploadUrl"
-                                (onSelect)="onUploadFile($event, uploadedTaxReturn, 'UploadTaxReturn')"
+                                [maxFileSize]="maxFileSize"
+                                [multiple]="false"
+                                mode="advanced"
+                                (onSelect)="onUploadFile($event, 'UploadTaxReturn')"
                                 (onBeforeSend)="onBeforeSend($event)"
+                                (onRemove)="onRemoveFile($event, 'UploadTaxReturn')"
                                 [showUploadButton]="false"
                                 [showCancelButton]="false"
+                                invalidFileSizeMessageDetail="{{ l('ErrorFileMemberUploadLimit') }}: {0}"
+                                [class.upload-completed]="uploadFileTaxReturn"
                             >
                                 <ng-template pTemplate="toolbar">
                                     <div class="ae-upload__header">
                                         <i class="pi pi-cloud-upload ae-text-gris"></i>
-                                        <p class="ae-text-gris ae-text-small m-0">Cargar archivo</p>
+                                        <p class="ae-text-gris ae-text-small m-0">{{ l('FileUpload') }}</p>
                                     </div>
                                 </ng-template>
-                                <!-- <ng-template pTemplate="content">
-                                    <ul *ngIf="uploadedTaxReturn.length">
-                                        <li *ngFor="let file of uploadedTaxReturn">
-                                            <div class="flex flex-column">
-                                                <p>{{ file.name }}</p>
-                                                <small>{{ file.size }} bytes</small>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </ng-template> -->
                             </p-fileUpload>
-                            <span *ngIf="messageUploadFileTaxReturn" class="error-message">
-                                {{ messageUploadFileTaxReturn }}
-                            </span>
+                            <div
+                                *ngIf="uploadFileTaxReturn"
+                                class="fileupload-file-info d-flex justify-content-between px-10 mt-10"
+                            >
+                                <span class="pt-2">{{ uploadedFiles['UploadTaxReturn'].fileName }}</span>
+                                <span class="pt-2">{{ uploadedFiles['UploadTaxReturn'].fileSize }} KB</span>
+                                <button
+                                    class="btn btn-info btn-sm btn-only-icon btn-style-secondary"
+                                    (click)="onClearUploadFileTaxReturn()"
+                                >
+                                    <i class="fa fa-close"></i>
+                                </button>
+                            </div>
+                            <div *ngIf="!uploadFileTaxReturn" class="fw-bold error-message text-danger">
+                                {{ l('RequiredFileError') }}
+                            </div>
                             <div
                                 *ngIf="getFile(_fileType.TaxReturn).type === _fileType.TaxReturn"
                                 class="ae-grid--fullwidth text-primary text-center"

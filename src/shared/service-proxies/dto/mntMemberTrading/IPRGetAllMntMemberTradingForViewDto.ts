@@ -1,4 +1,4 @@
-import { PRGetTradingRequestForViewDto } from "../TradingRequest/PRGetTradingRequestForViewDto";
+import { PRGetTradingRequestForViewDto } from '../TradingRequest/PRGetTradingRequestForViewDto';
 
 export interface IPRGetAllMntMemberTradingForViewDto {
     totalCount: number;

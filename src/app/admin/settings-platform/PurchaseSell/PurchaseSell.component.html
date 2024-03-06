@@ -40,89 +40,6 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <h6 class="mb-4">{{ l('FeeSettings') }}</h6>
-        <div class="col-lg-6">
-            <div class="form-group mb-10">
-                <div class="input-group">
-                    <label class="input-group-text" id="inputGroup-sizing-default">
-                        {{ l('BaseFee') }}
-                    </label>
-                    <p-inputNumber
-                        #baseFee="ngModel"
-                        name="baseFee"
-                        class="form-control"
-                        [(ngModel)]="otcSettings.baseFee"
-                        mode="decimal"
-                        locale="en-US"
-                        [minFractionDigits]="0"
-                        [maxFractionDigits]="2"
-                        [min]="0"
-                        [max]="30"
-                        required
-                    ></p-inputNumber>
-                    <span class="input-group-text">%</span>
-                </div>
-                <div class="small text-center">{{ l('BaseFeeDefaultValue') }}</div>
-                <validation-messages [formCtrl]="baseFee"></validation-messages>
-            </div>
-        </div>
-
-        <div class="col-lg-6">
-            <div class="form-group mb-10">
-                <div class="input-group">
-                    <label class="input-group-text" id="inputGroup-sizing-default">
-                        {{ l('TradingFee') }}
-                    </label>
-                    <p-inputNumber
-                        #tradingFee="ngModel"
-                        name="tradingFee"
-                        class="form-control"
-                        [(ngModel)]="otcSettings.tradingFee"
-                        mode="decimal"
-                        locale="en-US"
-                        [minFractionDigits]="0"
-                        [maxFractionDigits]="2"
-                        [min]="0"
-                        [max]="30"
-                        required
-                    ></p-inputNumber>
-                    <span class="input-group-text">%</span>
-                </div>
-                <div class="small text-center">{{ l('TradingFeeDefaultValue') }}</div>
-                <validation-messages [formCtrl]="tradingFee"></validation-messages>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <h6 class="mb-4">{{ l('TaxSettings') }}</h6>
-        <div class="col-md-6">
-            <div class="form-group mb-10">
-                <div class="input-group">
-                    <label class="input-group-text" id="inputGroup-sizing-default">
-                        {{ l('Tax') }}
-                    </label>
-                    <p-inputNumber
-                        #tax="ngModel"
-                        name="tax"
-                        class="form-control"
-                        [(ngModel)]="otcSettings.tax"
-                        mode="decimal"
-                        locale="en-US"
-                        [minFractionDigits]="0"
-                        [maxFractionDigits]="2"
-                        [min]="0"
-                        [max]="30"
-                        required
-                    ></p-inputNumber>
-                    <span class="input-group-text">%</span>
-                </div>
-                <div class="small text-center">{{ l('TaxDefaultValue') }}</div>
-                <validation-messages [formCtrl]="tax"></validation-messages>
-            </div>
-        </div>
-    </div>
 
     <div class="row mb-8">
         <h6 class="mb-4">{{ l('NotifyBySMS') }}</h6>
@@ -171,25 +88,6 @@
     </button>
 
     <div class="row mt-5" [hidden]="!moreOptionsAreShown">
-        <div class="col-md-6">
-            <div class="form-group mb-10">
-                <div class="input-group">
-                    <label class="input-group-text" id="inputGroup-sizing-default">
-                        {{ l('Currency') }}
-                    </label>
-                    <input
-                        type="text"
-                        #currency="ngModel"
-                        name="currency"
-                        class="form-control"
-                        [(ngModel)]="otcSettings.currency"
-                        required
-                    />
-                </div>
-                <div class="small text-center">{{ l('CurrencyDefaultValue') }}</div>
-                <validation-messages [formCtrl]="currency"></validation-messages>
-            </div>
-        </div>
         <div class="col-md-6">
             <div class="form-group mb-10">
                 <div class="input-group">

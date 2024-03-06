@@ -20,9 +20,12 @@ import { DialogOperationDepositWithdrawComponent } from '@app/shared/components/
 import { DialogOperationBuySellComponent } from '@app/shared/components/dialog/dialog-operation-buy-sell/dialog-operation-buy-sell.component';
 import { DialogOperationSendReceiveComponent } from '@app/shared/components/dialog/dialog-operation-send-receive/dialog-operation-send-receive.component';
 import { ServiceMembersProxy } from '@shared/service-proxies/service-members-proxies';
+import { ServiceTradingProxy } from '@shared/service-proxies/service-trading-proxies';
+import { GetAllMemberCryptoBalanceForMenuOutput } from '@shared/service-proxies/dto/mntMemberTrading/GetAllMemberCryptoBalanceForMenuOutput';
 import { MemberStatus } from '@shared/service-proxies/enum/Members/MemberStatus.enum';
 import { DialogDefaultComponent } from '@app/shared/components/dialog/dialog-default/dialog-default.component';
 import { MemberType } from '@shared/service-proxies/enum/Members/MemberType.enum';
+import { MenuModule } from 'primeng/menu';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -48,6 +51,10 @@ export class HomeComponent extends AppComponentBase implements OnInit, AfterView
   responsiveOptions: any[] | undefined;
   isInversionesCarousel: Boolean = true;
   filterInversiones: SelectItem[];
+  cryptoBalances: GetAllMemberCryptoBalanceForMenuOutput[];
+  cryptoBalanceSelected: GetAllMemberCryptoBalanceForMenuOutput;
+  isShowMenuCryptoBalance = false;
+  menuItemsCryptoBalance: MenuItem[] | undefined;
   amount: number;
   currency: string;
   statusMember: number;
@@ -68,6 +75,7 @@ export class HomeComponent extends AppComponentBase implements OnInit, AfterView
     private _activatedRoute: ActivatedRoute,
     private _dateTimeService: DateTimeService,
     private _serviceMembersProxy: ServiceMembersProxy,
+    private _serviceTradingProxy: ServiceTradingProxy,
     private _dialogService: DialogService,
     private _sessionServiceProxy: SessionServiceProxy,
   ) {
@@ -130,7 +138,9 @@ export class HomeComponent extends AppComponentBase implements OnInit, AfterView
   }
 
   ngOnInit() {
-    this.getBalance();
+    this.cryptoBalanceSelected = new GetAllMemberCryptoBalanceForMenuOutput();
+    this.getFiatBalance();
+    this.getCryptoBalance();
     this.getStatusMember();
     this.amount = 0;
     this.currency = '';
@@ -140,17 +150,21 @@ export class HomeComponent extends AppComponentBase implements OnInit, AfterView
       { label: this.l('Portfolio') },
       { label: this.l('Historic') }
     ];
+
     this.menuItemsHistory = [
       { label: this.l('Sale/Purchase') },
       { label: this.l('Deposit/Withdrawal') },
       { label: this.l('Send/Receiving') }
     ];
+
     this.filterInversiones = [
       {
         label: 'Todos',
         value: 0
       }
     ];
+
+
     this.activeItem = this.menuItems[0];
     this.activeItemHistory = this.menuItemsHistory[0];
 
@@ -306,6 +320,18 @@ export class HomeComponent extends AppComponentBase implements OnInit, AfterView
     this.showFadeDialogOperations = !this.showFadeDialogOperations;
   }
 
+  onShowMenuCryptoBalances(event: any) {
+    this.isShowMenuCryptoBalance = true;
+  }
+
+  onHiddenMenuCryptoBalances(event: any) {
+    this.isShowMenuCryptoBalance = false;
+  }
+
+  onSelectMenuCryptoBalances(menuCryptoCurrencyIndex: number) {
+    this.cryptoBalanceSelected = this.cryptoBalances[menuCryptoCurrencyIndex];
+  }
+
   private doAction() {
     this._activatedRoute.params.subscribe(params => {
       let action = params['action'];
@@ -321,10 +347,27 @@ export class HomeComponent extends AppComponentBase implements OnInit, AfterView
     });
   }
 
-  private getBalance() {
-    this._serviceMembersProxy.getBalance().subscribe((result) => {
+  private getFiatBalance() {
+    this._serviceMembersProxy.getFiatBalance().subscribe((result) => {
       this.amount = result.amount;
       this.currency = result.currency;
+    });
+  }
+
+  private getCryptoBalance() {
+    this.menuItemsCryptoBalance = [];
+    this._serviceTradingProxy.getAllCryptoBalance().subscribe((result) => {
+      this.cryptoBalances = result.items;
+      for (let i = 0; i < this.cryptoBalances.length; i++) {
+        let temp = {
+          label: this.cryptoBalances[i].label,
+          command: () => {
+            this.onSelectMenuCryptoBalances(i);
+          }
+        };
+        this.menuItemsCryptoBalance.push(temp);
+      }
+      this.cryptoBalanceSelected = this.cryptoBalances[0];
     });
   }
 
