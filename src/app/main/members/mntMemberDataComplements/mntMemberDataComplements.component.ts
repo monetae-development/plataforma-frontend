@@ -100,11 +100,11 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     filterText = '';
 
     uploadedFiles = [];
-    uploadFileAddressProof = false;
-    uploadFileIdentityFront = false;
-    uploadFileIdentityBack = false;
-    uploadFileIncomeProof = false;
-    uploadFileTaxReturn = false;
+    uploadFileAddressProof: boolean;
+    uploadFileIdentityFront: boolean;
+    uploadFileIdentityBack: boolean;
+    uploadFileIncomeProof: boolean;
+    uploadFileTaxReturn: boolean;
     maxFileSize = environment.uploadMaxFileSize;
 
     minDate: Date;
@@ -152,6 +152,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     saving = false;
     isValid = false;
     isClientRole = false;
+    isModeEdit = false;
     memberStatus = MemberStatus.Register;
     memberStatusEnum = MemberStatus;
     _memberDayOfBirth = new Date();
@@ -293,6 +294,12 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
 
             if (this.memberStatus === MemberStatus.Refused) {
                 this.getForUserEdit();
+            } else {
+                this.uploadFileAddressProof = false;
+                this.uploadFileIdentityFront = false;
+                this.uploadFileIdentityBack = false;
+                this.uploadFileIncomeProof = false;
+                this.uploadFileTaxReturn = false;
             }
         });
     }
@@ -309,6 +316,18 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
             this._memberIdentityExpiration = new Date(this.memberIdentity.expiration.toString());
             this.memberEconomicInfo = result.MemberEconomicInfo;
             this.memberFiles = result.MemberFiles;
+
+            this.uploadFileAddressProof = true;
+            this.uploadedFiles['UploadAddressProof'] = { 'fileName': this.getFile(this._fileType.AddressProof).originalName, 'fileSize': '' };
+            this.uploadFileIdentityFront = true;
+            this.uploadedFiles['UploadIdentityFront'] = { 'fileName': this.getFile(this._fileType.IdentityFront).originalName, 'fileSize': '' };
+            this.uploadFileIdentityBack = true;
+            this.uploadedFiles['UploadIdentityBack'] = { 'fileName': this.getFile(this._fileType.IdentityBack).originalName, 'fileSize': '' };
+            this.uploadFileIncomeProof = true;
+            this.uploadedFiles['UploadIncomeProof'] = { 'fileName': this.getFile(this._fileType.IncomeProof).originalName, 'fileSize': '' };
+            this.uploadFileTaxReturn = true;
+            this.uploadedFiles['UploadTaxReturn'] = { 'fileName': this.getFile(this._fileType.TaxReturn).originalName, 'fileSize': '' };
+            this.isModeEdit = true;
         });
     }
 
@@ -321,25 +340,6 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         for (let item of this.memberFiles) {
             if (item.type === type) {
                 file = item;
-
-                switch (type) {
-                    case FileType.AddressProof:
-                        this.uploadFileAddressProof = true;
-                        break;
-                    case FileType.IdentityFront:
-                        this.uploadFileIdentityFront = true;
-                        break;
-                    case FileType.IdentityBack:
-                        this.uploadFileIdentityBack = true;
-                        break;
-                    case FileType.IncomeProof:
-                        this.uploadFileIncomeProof = true;
-                        break;
-                    case FileType.TaxReturn:
-                        this.uploadFileTaxReturn = true;
-                        break;
-                }
-
                 break;
             }
         }
@@ -383,16 +383,19 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
                 this._mntMemberFilesServiceProxy.uploadAddressProof(fileParameter).subscribe((result) => {
                     this.uploadFileAddressProof = true;
                     this.uploadedFiles['UploadAddressProof'] = uploadFile;
+                    this.addressForm.updateValueAndValidity();
                 });
             } else if (typeUpload === 'UploadIdentityFront') {
                 this._mntMemberFilesServiceProxy.uploadIdentityFront(fileParameter).subscribe((result) => {
                     this.uploadFileIdentityFront = true;
                     this.uploadedFiles['UploadIdentityFront'] = uploadFile;
+                    this.identityForm.updateValueAndValidity();
                 });
             } else if (typeUpload === 'UploadIdentityBack') {
                 this._mntMemberFilesServiceProxy.uploadIdentityBack(fileParameter).subscribe((result) => {
                     this.uploadFileIdentityBack = true;
                     this.uploadedFiles['UploadIdentityBack'] = uploadFile;
+                    this.identityForm.updateValueAndValidity();
                 });
             } else if (typeUpload === 'UploadIncomeProof') {
                 this._mntMemberFilesServiceProxy.uploadIncomeProof(fileParameter).subscribe((result) => {

@@ -5,6 +5,6 @@ export interface IGetTradingRequestsForPortfolioDto {
     changePct24Hour: number;
     totalPercent: number;
     profitPercent: number;
-    quantity: number;
+    totalUSD: number;
     amount: number;
 }

@@ -1,21 +1,14 @@
 ﻿<div [@routerTransition]>
-    <div
-        *ngIf="
+    <div *ngIf="
             !completed &&
             (memberStatus == memberStatusEnum.Register || memberStatus == memberStatusEnum.Refused) &&
             checkSessionAndComplemented
-        "
-    >
-        <div
-            *ngIf="memberStatus == memberStatusEnum.Refused && feedback != null"
+        ">
+        <div *ngIf="memberStatus == memberStatusEnum.Refused && feedback != null"
             class="ae-container__kyc ae-container--sm alert alert-info mt-4"
-            [innerHTML]="l('KycRequestRefusedFeedbackTitle') + feedback"
-        ></div>
-        <div
-            class="ae-container__kyc ae-container--sm"
-            [class.mt-4]="feedback != undefined || feedback != null"
-            *ngIf="step0VerifyAccount"
-        >
+            [innerHTML]="l('KycRequestRefusedFeedbackTitle') + feedback"></div>
+        <div class="ae-container__kyc ae-container--sm" [class.mt-4]="feedback != undefined || feedback != null"
+            *ngIf="step0VerifyAccount">
             <div class="ae-container__header">
                 <div class="ae-header__title mb-5">
                     <h2 class="ae-text-dark ae-text-xlarge m-0">Completar registro KYC</h2>
@@ -29,29 +22,19 @@
                     <div class="ae-select mb-10">
                         <label>País de residencia *</label>
                         <div class="formgroup-control">
-                            <p-dropdown
-                                #residenceCountry
-                                formControlName="residenceCountry"
-                                [(ngModel)]="memberPersonalData.residenceCountryId"
-                                [disabled]="true"
-                                [options]="residenceDataCountries"
-                                placeholder="{{ 'Loading' | localize }}"
-                                [showClear]="true"
-                                [filter]="true"
-                            ></p-dropdown>
+                            <p-dropdown #residenceCountry formControlName="residenceCountry"
+                                [(ngModel)]="memberPersonalData.residenceCountryId" [disabled]="true"
+                                [options]="residenceDataCountries" placeholder="{{ 'Loading' | localize }}"
+                                [showClear]="true" [filter]="true"></p-dropdown>
                             <div class="spin-validation">
-                                <spinSuccess
-                                    *ngIf="
+                                <spinSuccess *ngIf="
                                         residenceForm.controls['residenceCountry'].valid &&
                                         residenceForm.controls['residenceCountry'].dirty
-                                    "
-                                ></spinSuccess>
-                                <spinError
-                                    *ngIf="
+                                    "></spinSuccess>
+                                <spinError *ngIf="
                                         !residenceForm.controls['residenceCountry'].valid &&
                                         residenceForm.controls['residenceCountry'].dirty
-                                    "
-                                ></spinError>
+                                    "></spinError>
                             </div>
                         </div>
                     </div>
@@ -80,18 +63,12 @@
                 </div>
             </div>
             <div class="ae-container__actions">
-                <p-button
-                    class="ae-button ae-button--primary w-full ae-text-default"
-                    label="Siguiente"
-                    (click)="nextStep(0)"
-                ></p-button>
+                <button type="button" class="btn btn-primary w-100" (click)="nextStep(0)"
+                    [disabled]="!residenceForm.valid">{{l('Next2')}}</button>
             </div>
         </div>
-        <div
-            class="ae-container__kyc ae-container--md"
-            [class.mt-4]="feedback != undefined || feedback != null"
-            *ngIf="step1VerifyAccount"
-        >
+        <div class="ae-container__kyc ae-container--md" [class.mt-4]="feedback != undefined || feedback != null"
+            *ngIf="step1VerifyAccount">
             <div class="ae-container__header">
                 <div class="ae-header__title flex align-items-center justify-content-between">
                     <div class="ae-text flex align-items-center">
@@ -109,84 +86,52 @@
                         <div class="ae-input">
                             <label>{{ 'FirstName' | localize }} *</label>
                             <div class="formgroup-control">
-                                <input
-                                    type="text"
-                                    #memberName
-                                    formControlName="memberName"
-                                    [(ngModel)]="user.name"
-                                    placeholder="{{ 'FirstName' | localize }}"
-                                    class="form-control"
-                                    minlength="3"
-                                    maxlength="64"
-                                    pattern="^(?!\s)(.*\S)?(?<!\s)$"
-                                />
+                                <input type="text" #memberName formControlName="memberName" [(ngModel)]="user.name"
+                                    placeholder="{{ 'FirstName' | localize }}" class="form-control" minlength="3"
+                                    maxlength="64" pattern="^(?!\s)(.*\S)?(?<!\s)$" />
                                 <div class="spin-validation">
-                                    <spinSuccess
-                                        *ngIf="
+                                    <spinSuccess *ngIf="
                                             personalDataForm.controls['memberName'].valid &&
                                             personalDataForm.controls['memberName'].dirty
-                                        "
-                                    ></spinSuccess>
-                                    <spinError
-                                        *ngIf="
+                                        "></spinSuccess>
+                                    <spinError *ngIf="
                                             !personalDataForm.controls['memberName'].valid &&
                                             personalDataForm.controls['memberName'].dirty
-                                        "
-                                    ></spinError>
+                                        "></spinError>
                                 </div>
                             </div>
                         </div>
                         <div class="ae-input">
                             <label>Apellido(s) *</label>
                             <div class="formgroup-control">
-                                <input
-                                    type="text"
-                                    #memberSurname
-                                    formControlName="memberSurname"
-                                    [(ngModel)]="user.surname"
-                                    placeholder="Apellido(s)"
-                                    class="form-control"
-                                    minlength="3"
-                                    maxlength="64"
-                                    pattern="^(?!\s)(.*\S)?(?<!\s)$"
-                                />
+                                <input type="text" #memberSurname formControlName="memberSurname"
+                                    [(ngModel)]="user.surname" placeholder="Apellido(s)" class="form-control"
+                                    minlength="3" maxlength="64" pattern="^(?!\s)(.*\S)?(?<!\s)$" />
                                 <div class="spin-validation">
-                                    <spinSuccess
-                                        *ngIf="
+                                    <spinSuccess *ngIf="
                                             personalDataForm.controls['memberSurname'].valid &&
                                             personalDataForm.controls['memberSurname'].dirty
-                                        "
-                                    ></spinSuccess>
-                                    <spinError
-                                        *ngIf="
+                                        "></spinSuccess>
+                                    <spinError *ngIf="
                                             !personalDataForm.controls['memberSurname'].valid &&
                                             personalDataForm.controls['memberSurname'].dirty
-                                        "
-                                    ></spinError>
+                                        "></spinError>
                                 </div>
                             </div>
                         </div>
                         <div class="ae-selectinput">
                             <label>{{ 'PhoneNumber' | localize }} *</label>
                             <div class="flex align-items-start">
-                                <p-dropdown
-                                    #memberPhoneCode
-                                    formControlName="memberPhoneCode"
-                                    [(ngModel)]="memberPersonalData.phoneCodeId"
-                                    [disabled]="true"
-                                    [options]="personalDataPhones"
-                                    placeholder="{{ 'SelectAnItemDropdown' | localize }}"
-                                    [filter]="true"
-                                >
+                                <p-dropdown #memberPhoneCode formControlName="memberPhoneCode"
+                                    [(ngModel)]="memberPersonalData.phoneCodeId" [disabled]="true"
+                                    [options]="personalDataPhones" placeholder="{{ 'SelectAnItemDropdown' | localize }}"
+                                    [filter]="true">
                                     <ng-template pTemplate="selectedItem">
                                         <div class="d-flex align-items-center" *ngIf="memberPersonalData.phoneCodeId">
                                             <div>
-                                                <img
-                                                    src="/assets/flags/{{
+                                                <img src="/assets/flags/{{
                                                         flags[memberPersonalData.phoneCodeId].subtitle
-                                                    }}.png"
-                                                    style="height: 14px"
-                                                />
+                                                    }}.png" style="height: 14px" />
                                             </div>
                                             <div class="ms-2">
                                                 {{ flags[memberPersonalData.phoneCodeId].label }}
@@ -197,10 +142,8 @@
                                     <ng-template let-flag pTemplate="item">
                                         <div class="d-flex align-items-center">
                                             <div>
-                                                <img
-                                                    src="/assets/flags/{{ flags[flag.value].subtitle }}.png"
-                                                    style="height: 14px"
-                                                />
+                                                <img src="/assets/flags/{{ flags[flag.value].subtitle }}.png"
+                                                    style="height: 14px" />
                                             </div>
                                             <div class="ms-2">
                                                 {{ flags[flag.value].label }}
@@ -209,29 +152,18 @@
                                     </ng-template>
                                 </p-dropdown>
                                 <div class="formgroup-control">
-                                    <input
-                                        type="text"
-                                        #memberPhone
-                                        formControlName="memberPhone"
-                                        [(ngModel)]="memberPersonalData.phone"
-                                        placeholder="929552746"
-                                        class="form-control"
-                                        maxlength="10"
-                                        mask="0*"
-                                    />
+                                    <input type="text" #memberPhone formControlName="memberPhone"
+                                        [(ngModel)]="memberPersonalData.phone" placeholder="929552746"
+                                        class="form-control" maxlength="10" mask="0*" />
                                     <div class="spin-validation">
-                                        <spinSuccess
-                                            *ngIf="
+                                        <spinSuccess *ngIf="
                                                 personalDataForm.controls['memberPhone'].valid &&
                                                 personalDataForm.controls['memberPhone'].dirty
-                                            "
-                                        ></spinSuccess>
-                                        <spinError
-                                            *ngIf="
+                                            "></spinSuccess>
+                                        <spinError *ngIf="
                                                 !personalDataForm.controls['memberPhone'].valid &&
                                                 personalDataForm.controls['memberPhone'].dirty
-                                            "
-                                        ></spinError>
+                                            "></spinError>
                                     </div>
                                 </div>
                             </div>
@@ -239,65 +171,43 @@
                         <div class="ae-select">
                             <label>{{ l('CatNationality') }} *</label>
                             <div class="formgroup-control">
-                                <p-dropdown
-                                    #memberNationality
-                                    formControlName="memberNationality"
-                                    [(ngModel)]="memberPersonalData.catNationalityId"
-                                    [disabled]="true"
+                                <p-dropdown #memberNationality formControlName="memberNationality"
+                                    [(ngModel)]="memberPersonalData.catNationalityId" [disabled]="true"
                                     [options]="personalDataNationalities"
-                                    placeholder="{{ 'SelectAnItemDropdown' | localize }}"
-                                    [showClear]="true"
-                                    [filter]="true"
-                                ></p-dropdown>
+                                    placeholder="{{ 'SelectAnItemDropdown' | localize }}" [showClear]="true"
+                                    [filter]="true"></p-dropdown>
                                 <div class="spin-validation">
-                                    <spinSuccess
-                                        *ngIf="
+                                    <spinSuccess *ngIf="
                                             personalDataForm.controls['memberNationality'].valid &&
                                             personalDataForm.controls['memberNationality'].dirty
-                                        "
-                                    ></spinSuccess>
-                                    <spinError
-                                        *ngIf="
+                                        "></spinSuccess>
+                                    <spinError *ngIf="
                                             !personalDataForm.controls['memberNationality'].valid &&
                                             personalDataForm.controls['memberNationality'].dirty
-                                        "
-                                    ></spinError>
+                                        "></spinError>
                                 </div>
                             </div>
                         </div>
                         <div class="ae-calendar">
                             <label>Fecha de nacimiento *</label>
                             <div class="formgroup-control">
-                                <p-calendar
-                                    #memberDayOfBirth
-                                    formControlName="memberDayOfBirth"
-                                    placeholder="05/11/1955"
-                                    [(ngModel)]="_memberDayOfBirth"
-                                    dateFormat="dd/mm/yy"
-                                    [showIcon]="true"
-                                    required
-                                ></p-calendar>
+                                <p-calendar #memberDayOfBirth formControlName="memberDayOfBirth"
+                                    placeholder="05/11/1955" [(ngModel)]="_memberDayOfBirth" dateFormat="dd/mm/yy"
+                                    [showIcon]="true" required></p-calendar>
                                 <div class="spin-validation">
-                                    <spinSuccess
-                                        *ngIf="
+                                    <spinSuccess *ngIf="
                                             personalDataForm.controls['memberDayOfBirth'].valid &&
                                             personalDataForm.controls['memberDayOfBirth'].dirty
-                                        "
-                                    ></spinSuccess>
-                                    <spinError
-                                        *ngIf="
+                                        "></spinSuccess>
+                                    <spinError *ngIf="
                                             !personalDataForm.controls['memberDayOfBirth'].valid &&
                                             personalDataForm.controls['memberDayOfBirth'].dirty
-                                        "
-                                    ></spinError>
+                                        "></spinError>
                                 </div>
-                                <div
-                                    *ngIf="
+                                <div *ngIf="
                                         !personalDataForm.controls['memberDayOfBirth'].valid &&
                                         personalDataForm.controls['memberDayOfBirth'].dirty
-                                    "
-                                    class="text-danger feedback-error"
-                                >
+                                    " class="text-danger feedback-error">
                                     {{ 'MustBeOfLegalAge' | localize }}
                                 </div>
                             </div>
@@ -306,14 +216,12 @@
                 </form>
             </div>
             <div class="ae-container__actions flex align-items-center justify-content-end">
-                <p-button class="ae-button ae-button--primary" label="Siguiente" (click)="nextStep(1)"></p-button>
+                <button type="button" class="btn btn-primary btn-max-width" (click)="nextStep(1)"
+                    [disabled]="!personalDataForm.valid">{{l('Next2')}}</button>
             </div>
         </div>
-        <div
-            class="ae-container__kyc ae-container--md"
-            [class.mt-4]="feedback != undefined || feedback != null"
-            *ngIf="step2VerifyAccount"
-        >
+        <div class="ae-container__kyc ae-container--md" [class.mt-4]="feedback != undefined || feedback != null"
+            *ngIf="step2VerifyAccount">
             <div class="ae-container__header">
                 <div class="ae-header__title flex align-items-center justify-content-between">
                     <div class="ae-text flex align-items-center">
@@ -331,176 +239,111 @@
                         <div class="ae-select">
                             <label>{{ l('CatCountry') }} *</label>
                             <div class="formgroup-control">
-                                <p-dropdown
-                                    #addressCountry
-                                    formControlName="addressCountry"
-                                    [(ngModel)]="memberAddressCountryId"
-                                    [disabled]="true"
-                                    [options]="addressCountries"
-                                    placeholder="{{ 'SelectAnItemDropdown' | localize }}"
-                                    [showClear]="true"
-                                    [filter]="true"
-                                    (onChange)="onAddressChangeCountry()"
-                                ></p-dropdown>
+                                <p-dropdown #addressCountry formControlName="addressCountry"
+                                    [(ngModel)]="memberAddressCountryId" [disabled]="true" [options]="addressCountries"
+                                    placeholder="{{ 'SelectAnItemDropdown' | localize }}" [showClear]="true"
+                                    [filter]="true" (onChange)="onAddressChangeCountry()"></p-dropdown>
                                 <div class="spin-validation">
-                                    <spinSuccess
-                                        *ngIf="
+                                    <spinSuccess *ngIf="
                                             addressForm.controls['addressCountry'].valid &&
                                             addressForm.controls['addressCountry'].dirty
-                                        "
-                                    ></spinSuccess>
-                                    <spinError
-                                        *ngIf="
+                                        "></spinSuccess>
+                                    <spinError *ngIf="
                                             !addressForm.controls['addressCountry'].valid &&
                                             addressForm.controls['addressCountry'].dirty
-                                        "
-                                    ></spinError>
+                                        "></spinError>
                                 </div>
                             </div>
                         </div>
                         <div class="ae-select">
                             <label>Provincia/Alcaldía *</label>
                             <div class="formgroup-control">
-                                <p-dropdown
-                                    #addressState
-                                    formControlName="addressState"
-                                    [(ngModel)]="memberAddress.catStateId"
-                                    [options]="addressStates"
-                                    placeholder="{{ 'SelectAnItemDropdown' | localize }}"
-                                    [showClear]="true"
-                                    [filter]="true"
-                                    [disabled]="true"
-                                    emptyMessage="{{ 'PrimeNGEmptyMessage' | localize }}"
-                                ></p-dropdown>
+                                <p-dropdown #addressState formControlName="addressState"
+                                    [(ngModel)]="memberAddress.catStateId" [options]="addressStates"
+                                    placeholder="{{ 'SelectAnItemDropdown' | localize }}" [showClear]="true"
+                                    [filter]="true" [disabled]="true"
+                                    emptyMessage="{{ 'PrimeNGEmptyMessage' | localize }}"></p-dropdown>
                                 <div class="spin-validation">
-                                    <spinSuccess
-                                        *ngIf="
+                                    <spinSuccess *ngIf="
                                             addressForm.controls['addressState'].valid &&
                                             addressForm.controls['addressState'].dirty
-                                        "
-                                    ></spinSuccess>
-                                    <spinError
-                                        *ngIf="
+                                        "></spinSuccess>
+                                    <spinError *ngIf="
                                             !addressForm.controls['addressState'].valid &&
                                             addressForm.controls['addressState'].dirty
-                                        "
-                                    ></spinError>
+                                        "></spinError>
                                 </div>
                             </div>
                         </div>
                         <div class="ae-input">
                             <label>{{ 'City' | localize }} *</label>
                             <div class="formgroup-control">
-                                <input
-                                    type="text"
-                                    #addressCity
-                                    formControlName="addressCity"
-                                    [(ngModel)]="memberAddress.city"
-                                    placeholder="{{ 'City' | localize }}"
-                                    class="form-control"
-                                    maxlength="32"
-                                    pattern="^(?!\s)(.*\S)?(?<!\s)$"
-                                />
+                                <input type="text" #addressCity formControlName="addressCity"
+                                    [(ngModel)]="memberAddress.city" placeholder="{{ 'City' | localize }}"
+                                    class="form-control" maxlength="32" pattern="^(?!\s)(.*\S)?(?<!\s)$" />
                                 <div class="spin-validation">
-                                    <spinSuccess
-                                        *ngIf="
+                                    <spinSuccess *ngIf="
                                             addressForm.controls['addressCity'].valid &&
                                             addressForm.controls['addressCity'].dirty
-                                        "
-                                    ></spinSuccess>
-                                    <spinError
-                                        *ngIf="
+                                        "></spinSuccess>
+                                    <spinError *ngIf="
                                             !addressForm.controls['addressCity'].valid &&
                                             addressForm.controls['addressCity'].dirty
-                                        "
-                                    ></spinError>
+                                        "></spinError>
                                 </div>
                             </div>
                         </div>
                         <div class="ae-input">
                             <label>{{ 'Street' | localize }} *</label>
                             <div class="formgroup-control">
-                                <input
-                                    type="text"
-                                    #addressStreet
-                                    formControlName="addressStreet"
-                                    [(ngModel)]="memberAddress.street"
-                                    placeholder="{{ 'Street' | localize }}"
-                                    class="form-control"
-                                    maxlength="32"
-                                    pattern="^(?!\s)(.*\S)?(?<!\s)$"
-                                />
+                                <input type="text" #addressStreet formControlName="addressStreet"
+                                    [(ngModel)]="memberAddress.street" placeholder="{{ 'Street' | localize }}"
+                                    class="form-control" maxlength="32" pattern="^(?!\s)(.*\S)?(?<!\s)$" />
                                 <div class="spin-validation">
-                                    <spinSuccess
-                                        *ngIf="
+                                    <spinSuccess *ngIf="
                                             addressForm.controls['addressStreet'].valid &&
                                             addressForm.controls['addressStreet'].dirty
-                                        "
-                                    ></spinSuccess>
-                                    <spinError
-                                        *ngIf="
+                                        "></spinSuccess>
+                                    <spinError *ngIf="
                                             !addressForm.controls['addressStreet'].valid &&
                                             addressForm.controls['addressStreet'].dirty
-                                        "
-                                    ></spinError>
+                                        "></spinError>
                                 </div>
                             </div>
                         </div>
                         <div class="ae-input">
                             <label>Número *</label>
                             <div class="formgroup-control">
-                                <input
-                                    type="text"
-                                    #addressExteriorNo
-                                    formControlName="addressExteriorNo"
-                                    [(ngModel)]="memberAddress.exteriorNo"
-                                    placeholder="Número"
-                                    class="form-control"
-                                    maxlength="10"
-                                />
+                                <input type="text" #addressExteriorNo formControlName="addressExteriorNo"
+                                    [(ngModel)]="memberAddress.exteriorNo" placeholder="Número" class="form-control"
+                                    maxlength="10" />
                                 <div class="spin-validation">
-                                    <spinSuccess
-                                        *ngIf="
+                                    <spinSuccess *ngIf="
                                             addressForm.controls['addressExteriorNo'].valid &&
                                             addressForm.controls['addressExteriorNo'].dirty
-                                        "
-                                    ></spinSuccess>
-                                    <spinError
-                                        *ngIf="
+                                        "></spinSuccess>
+                                    <spinError *ngIf="
                                             !addressForm.controls['addressExteriorNo'].valid &&
                                             addressForm.controls['addressExteriorNo'].dirty
-                                        "
-                                    ></spinError>
+                                        "></spinError>
                                 </div>
                             </div>
                         </div>
                         <div class="ae-input">
                             <label>{{ 'ZipCode' | localize }} *</label>
                             <div class="formgroup-control">
-                                <input
-                                    type="text"
-                                    #addressZipCode
-                                    formControlName="addressZipCode"
-                                    [(ngModel)]="memberAddress.zipCode"
-                                    placeholder="{{ 'ZipCode' | localize }}"
-                                    class="form-control"
-                                    maxlength="32"
-                                    mask="0*"
-                                    pattern="^(?!\s)(.*\S)?(?<!\s)$"
-                                />
+                                <input type="text" #addressZipCode formControlName="addressZipCode"
+                                    [(ngModel)]="memberAddress.zipCode" placeholder="{{ 'ZipCode' | localize }}"
+                                    class="form-control" maxlength="32" mask="0*" pattern="^(?!\s)(.*\S)?(?<!\s)$" />
                                 <div class="spin-validation">
-                                    <spinSuccess
-                                        *ngIf="
+                                    <spinSuccess *ngIf="
                                             addressForm.controls['addressZipCode'].valid &&
                                             addressForm.controls['addressZipCode'].dirty
-                                        "
-                                    ></spinSuccess>
-                                    <spinError
-                                        *ngIf="
+                                        "></spinSuccess>
+                                    <spinError *ngIf="
                                             !addressForm.controls['addressZipCode'].valid &&
                                             addressForm.controls['addressZipCode'].dirty
-                                        "
-                                    ></spinError>
+                                        "></spinError>
                                 </div>
                             </div>
                         </div>
@@ -512,22 +355,14 @@
                                 </span>
                                 <br />
                             </label>
-                            <p-fileUpload
-                                #addressFileProof
-                                id="addressFileProof"
-                                name="addressFileProof"
-                                accept="image/*,application/pdf"
-                                [maxFileSize]="maxFileSize"
-                                [multiple]="false"
-                                mode="advanced"
-                                (onSelect)="onUploadFile($event, 'UploadAddressProof')"
+                            <p-fileUpload #addressFileProof id="addressFileProof" name="addressFileProof"
+                                accept="image/*,application/pdf" [maxFileSize]="maxFileSize" [multiple]="false"
+                                mode="advanced" (onSelect)="onUploadFile($event, 'UploadAddressProof')"
                                 (onBeforeSend)="onBeforeSend($event)"
-                                (onRemove)="onRemoveFile($event, 'UploadAddressProof')"
-                                [showUploadButton]="false"
+                                (onRemove)="onRemoveFile($event, 'UploadAddressProof')" [showUploadButton]="false"
                                 [showCancelButton]="false"
                                 invalidFileSizeMessageDetail="{{ l('ErrorFileMemberUploadLimit') }}: {0}"
-                                [class.upload-completed]="uploadFileAddressProof"
-                            >
+                                [class.upload-completed]="uploadFileAddressProof">
                                 <ng-template pTemplate="toolbar">
                                     <div class="ae-upload__header">
                                         <i class="pi pi-cloud-upload ae-text-gris"></i>
@@ -535,16 +370,13 @@
                                     </div>
                                 </ng-template>
                             </p-fileUpload>
-                            <div
-                                *ngIf="uploadFileAddressProof"
-                                class="fileupload-file-info d-flex justify-content-between px-10 mt-10"
-                            >
+                            <div *ngIf="uploadFileAddressProof"
+                                class="fileupload-file-info d-flex justify-content-between px-10 mt-10">
                                 <span class="pt-2">{{ uploadedFiles['UploadAddressProof'].fileName }}</span>
-                                <span class="pt-2">{{ uploadedFiles['UploadAddressProof'].fileSize }} KB</span>
-                                <button
-                                    class="btn btn-info btn-sm btn-only-icon btn-style-secondary"
-                                    (click)="onClearUploadFileAddressProof()"
-                                >
+                                <span class="pt-2" *ngIf="uploadedFiles['UploadAddressProof'].fileSize != ''">{{
+                                    uploadedFiles['UploadAddressProof'].fileSize }} KB</span>
+                                <button class="btn btn-info btn-sm btn-only-icon btn-style-secondary"
+                                    (click)="onClearUploadFileAddressProof()">
                                     <i class="fa fa-close"></i>
                                 </button>
                             </div>
@@ -552,25 +384,16 @@
                                 {{ l('RequiredFileError') }}
                             </div>
                         </div>
-                        <div
-                            *ngIf="getFile(_fileType.AddressProof).type === _fileType.AddressProof"
-                            class="ae-grid--fullwidth text-primary text-center"
-                        >
-                            <strong>{{ 'FileLoaded' | localize }}:</strong>
-                            {{ getFile(_fileType.AddressProof).originalName }}
-                        </div>
                     </div>
                 </form>
             </div>
             <div class="ae-container__actions flex align-items-center justify-content-end">
-                <p-button class="ae-button ae-button--primary" label="Siguiente" (click)="nextStep(2)"></p-button>
+                <button type="button" class="btn btn-primary btn-max-width" (click)="nextStep(2)"
+                    [disabled]="!addressForm.valid || !uploadFileAddressProof">{{l('Next2')}}</button>
             </div>
         </div>
-        <div
-            class="ae-container__kyc ae-container--md"
-            [class.mt-4]="feedback != undefined || feedback != null"
-            *ngIf="step3VerifyAccount"
-        >
+        <div class="ae-container__kyc ae-container--md" [class.mt-4]="feedback != undefined || feedback != null"
+            *ngIf="step3VerifyAccount">
             <div class="ae-container__header">
                 <div class="ae-header__title flex align-items-center justify-content-between">
                     <div class="ae-text flex align-items-center">
@@ -588,137 +411,88 @@
                         <div class="ae-select ae-orden__two">
                             <label>{{ l('CatIdentityType') }} *</label>
                             <div class="formgroup-control">
-                                <p-dropdown
-                                    #identityType
-                                    formControlName="identityType"
-                                    [(ngModel)]="memberIdentity.catIdentityTypeId"
-                                    [disabled]="true"
-                                    [options]="identityTypes"
-                                    placeholder="{{ 'SelectAnItemDropdown' | localize }}"
-                                    [showClear]="true"
-                                    [filter]="true"
-                                ></p-dropdown>
+                                <p-dropdown #identityType formControlName="identityType"
+                                    [(ngModel)]="memberIdentity.catIdentityTypeId" [disabled]="true"
+                                    [options]="identityTypes" placeholder="{{ 'SelectAnItemDropdown' | localize }}"
+                                    [showClear]="true" [filter]="true"></p-dropdown>
                                 <div class="spin-validation">
-                                    <spinSuccess
-                                        *ngIf="
+                                    <spinSuccess *ngIf="
                                             identityForm.controls['identityType'].valid &&
                                             identityForm.controls['identityType'].dirty
-                                        "
-                                    ></spinSuccess>
-                                    <spinError
-                                        *ngIf="
+                                        "></spinSuccess>
+                                    <spinError *ngIf="
                                             !identityForm.controls['identityType'].valid &&
                                             identityForm.controls['identityType'].dirty
-                                        "
-                                    ></spinError>
+                                        "></spinError>
                                 </div>
                             </div>
                         </div>
                         <div class="ae-select ae-orden__one">
                             <label>País Emisor *</label>
                             <div class="formgroup-control">
-                                <p-dropdown
-                                    #identityIssuingCountry
-                                    formControlName="identityIssuingCountry"
-                                    [(ngModel)]="memberIdentity.issuingCountryId"
-                                    [disabled]="true"
+                                <p-dropdown #identityIssuingCountry formControlName="identityIssuingCountry"
+                                    [(ngModel)]="memberIdentity.issuingCountryId" [disabled]="true"
                                     [options]="identityDataCountries"
-                                    placeholder="{{ 'SelectAnItemDropdown' | localize }}"
-                                    [showClear]="true"
-                                    [filter]="true"
-                                ></p-dropdown>
+                                    placeholder="{{ 'SelectAnItemDropdown' | localize }}" [showClear]="true"
+                                    [filter]="true"></p-dropdown>
                                 <div class="spin-validation">
-                                    <spinSuccess
-                                        *ngIf="
+                                    <spinSuccess *ngIf="
                                             identityForm.controls['identityIssuingCountry'].valid &&
                                             identityForm.controls['identityIssuingCountry'].dirty
-                                        "
-                                    ></spinSuccess>
-                                    <spinError
-                                        *ngIf="
+                                        "></spinSuccess>
+                                    <spinError *ngIf="
                                             !identityForm.controls['identityIssuingCountry'].valid &&
                                             identityForm.controls['identityIssuingCountry'].dirty
-                                        "
-                                    ></spinError>
+                                        "></spinError>
                                 </div>
                             </div>
                         </div>
                         <div class="ae-input ae-orden__three">
                             <label>{{ 'IdentityId' | localize }} *</label>
                             <div class="formgroup-control">
-                                <input
-                                    type="text"
-                                    #identityId
-                                    formControlName="identityId"
-                                    [(ngModel)]="memberIdentity.identityId"
-                                    placeholder="{{ 'IdentityId' | localize }}"
-                                    class="form-control"
-                                    maxlength="32"
-                                    pattern="^(?!\s)(.*\S)?(?<!\s)$"
-                                />
+                                <input type="text" #identityId formControlName="identityId"
+                                    [(ngModel)]="memberIdentity.identityId" placeholder="{{ 'IdentityId' | localize }}"
+                                    class="form-control" maxlength="32" pattern="^(?!\s)(.*\S)?(?<!\s)$" />
                                 <div class="spin-validation">
-                                    <spinSuccess
-                                        *ngIf="
+                                    <spinSuccess *ngIf="
                                             identityForm.controls['identityId'].valid &&
                                             identityForm.controls['identityId'].dirty
-                                        "
-                                    ></spinSuccess>
-                                    <spinError
-                                        *ngIf="
+                                        "></spinSuccess>
+                                    <spinError *ngIf="
                                             !identityForm.controls['identityId'].valid &&
                                             identityForm.controls['identityId'].dirty
-                                        "
-                                    ></spinError>
+                                        "></spinError>
                                 </div>
                             </div>
                         </div>
                         <div class="ae-calendar ae-orden__four">
                             <label>{{ 'ExpirationDate' | localize }} *</label>
                             <div class="formgroup-control">
-                                <p-calendar
-                                    #identityExpiration
-                                    formControlName="identityExpiration"
-                                    placeholder="08/06/2029"
-                                    [(ngModel)]="_memberIdentityExpiration"
-                                    [minDate]="minDate"
-                                    dateFormat="dd/mm/yy"
-                                    [showIcon]="true"
-                                    required
-                                ></p-calendar>
+                                <p-calendar #identityExpiration formControlName="identityExpiration"
+                                    placeholder="08/06/2029" [(ngModel)]="_memberIdentityExpiration" [minDate]="minDate"
+                                    dateFormat="dd/mm/yy" [showIcon]="true" required></p-calendar>
                                 <div class="spin-validation">
-                                    <spinSuccess
-                                        *ngIf="
+                                    <spinSuccess *ngIf="
                                             identityForm.controls['identityExpiration'].valid &&
                                             identityForm.controls['identityExpiration'].dirty
-                                        "
-                                    ></spinSuccess>
-                                    <spinError
-                                        *ngIf="
+                                        "></spinSuccess>
+                                    <spinError *ngIf="
                                             !identityForm.controls['identityExpiration'].valid &&
                                             identityForm.controls['identityExpiration'].dirty
-                                        "
-                                    ></spinError>
+                                        "></spinError>
                                 </div>
                             </div>
                         </div>
                         <div class="ae-upload ae-orden__five">
                             <label for="identityFileFront">{{ 'IdentityFrontPicture' | localize }}</label>
-                            <p-fileUpload
-                                #identityFileFront
-                                id="identityFileFront"
-                                name="identityFileFront"
-                                accept="image/*,application/pdf"
-                                [maxFileSize]="maxFileSize"
-                                [multiple]="false"
-                                mode="advanced"
-                                (onSelect)="onUploadFile($event, 'UploadIdentityFront')"
+                            <p-fileUpload #identityFileFront id="identityFileFront" name="identityFileFront"
+                                accept="image/*,application/pdf" [maxFileSize]="maxFileSize" [multiple]="false"
+                                mode="advanced" (onSelect)="onUploadFile($event, 'UploadIdentityFront')"
                                 (onBeforeSend)="onBeforeSend($event)"
-                                (onRemove)="onRemoveFile($event, 'UploadIdentityFront')"
-                                [showUploadButton]="false"
+                                (onRemove)="onRemoveFile($event, 'UploadIdentityFront')" [showUploadButton]="false"
                                 [showCancelButton]="false"
                                 invalidFileSizeMessageDetail="{{ l('ErrorFileMemberUploadLimit') }}: {0}"
-                                [class.upload-completed]="uploadFileIdentityFront"
-                            >
+                                [class.upload-completed]="uploadFileIdentityFront">
                                 <ng-template pTemplate="toolbar">
                                     <div class="ae-upload__header">
                                         <i class="pi pi-cloud-upload ae-text-gris"></i>
@@ -726,49 +500,30 @@
                                     </div>
                                 </ng-template>
                             </p-fileUpload>
-                            <div
-                                *ngIf="uploadFileIdentityFront"
-                                class="fileupload-file-info d-flex justify-content-between px-10 mt-10"
-                            >
+                            <div *ngIf="uploadFileIdentityFront"
+                                class="fileupload-file-info d-flex justify-content-between px-10 mt-10">
                                 <span class="pt-2">{{ uploadedFiles['UploadIdentityFront'].fileName }}</span>
-                                <span class="pt-2">{{ uploadedFiles['UploadIdentityFront'].fileSize }} KB</span>
-                                <button
-                                    class="btn btn-info btn-sm btn-only-icon btn-style-secondary"
-                                    (click)="onClearUploadFileIdentityFront()"
-                                >
+                                <span class="pt-2" *ngIf="uploadedFiles['UploadIdentityFront'].fileSize != ''">{{
+                                    uploadedFiles['UploadIdentityFront'].fileSize }} KB</span>
+                                <button class="btn btn-info btn-sm btn-only-icon btn-style-secondary"
+                                    (click)="onClearUploadFileIdentityFront()">
                                     <i class="fa fa-close"></i>
                                 </button>
                             </div>
                             <div *ngIf="!uploadFileIdentityFront" class="fw-bold error-message text-danger">
                                 {{ l('RequiredFileError') }}
                             </div>
-                            <div
-                                *ngIf="getFile(_fileType.IdentityFront).type === _fileType.IdentityFront"
-                                class="ae-grid--fullwidth text-primary text-center"
-                            >
-                                <strong>{{ 'FileLoaded' | localize }}:</strong>
-                                {{ getFile(_fileType.IdentityFront).originalName }}
-                            </div>
                         </div>
                         <div class="ae-upload ae-orden__six">
                             <label for="identityFileBack">{{ 'IdentityBackPicture' | localize }}</label>
-                            <p-fileUpload
-                                #identityFileBack
-                                fileLimit="1"
-                                id="identityFileBack"
-                                name="identityFileBack"
-                                accept="image/*,application/pdf"
-                                [maxFileSize]="maxFileSize"
-                                [multiple]="false"
-                                mode="advanced"
-                                (onSelect)="onUploadFile($event, 'UploadIdentityBack')"
+                            <p-fileUpload #identityFileBack fileLimit="1" id="identityFileBack" name="identityFileBack"
+                                accept="image/*,application/pdf" [maxFileSize]="maxFileSize" [multiple]="false"
+                                mode="advanced" (onSelect)="onUploadFile($event, 'UploadIdentityBack')"
                                 (onBeforeSend)="onBeforeSend($event)"
-                                (onRemove)="onRemoveFile($event, 'UploadIdentityBack')"
-                                [showUploadButton]="false"
+                                (onRemove)="onRemoveFile($event, 'UploadIdentityBack')" [showUploadButton]="false"
                                 [showCancelButton]="false"
                                 invalidFileSizeMessageDetail="{{ l('ErrorFileMemberUploadLimit') }}: {0}"
-                                [class.upload-completed]="uploadFileIdentityBack"
-                            >
+                                [class.upload-completed]="uploadFileIdentityBack">
                                 <ng-template pTemplate="toolbar">
                                     <div class="ae-upload__header">
                                         <i class="pi pi-cloud-upload ae-text-gris"></i>
@@ -776,42 +531,29 @@
                                     </div>
                                 </ng-template>
                             </p-fileUpload>
-                            <div
-                                *ngIf="uploadFileIdentityBack"
-                                class="fileupload-file-info d-flex justify-content-between px-10 mt-10"
-                            >
+                            <div *ngIf="uploadFileIdentityBack"
+                                class="fileupload-file-info d-flex justify-content-between px-10 mt-10">
                                 <span class="pt-2">{{ uploadedFiles['UploadIdentityBack'].fileName }}</span>
                                 <span class="pt-2">{{ uploadedFiles['UploadIdentityBack'].fileSize }} KB</span>
-                                <button
-                                    class="btn btn-info btn-sm btn-only-icon btn-style-secondary"
-                                    (click)="onClearUploadFileIdentityBack()"
-                                >
+                                <button class="btn btn-info btn-sm btn-only-icon btn-style-secondary"
+                                    (click)="onClearUploadFileIdentityBack()">
                                     <i class="fa fa-close"></i>
                                 </button>
                             </div>
                             <div *ngIf="!uploadFileIdentityBack" class="fw-bold error-message text-danger">
                                 {{ l('RequiredFileError') }}
                             </div>
-                            <div
-                                *ngIf="getFile(_fileType.IdentityBack).type === _fileType.IdentityBack"
-                                class="ae-grid--fullwidth text-primary text-center"
-                            >
-                                <strong>{{ 'FileLoaded' | localize }}:</strong>
-                                {{ getFile(_fileType.IdentityBack).originalName }}
-                            </div>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="ae-container__actions flex align-items-center justify-content-end">
-                <p-button class="ae-button ae-button--primary" label="Siguiente" (click)="nextStep(3)"></p-button>
+                <button type="button" class="btn btn-primary btn-max-width" (click)="nextStep(3)"
+                    [disabled]="!identityForm.valid || !uploadFileIdentityFront || !uploadFileIdentityBack">{{l('Next2')}}</button>
             </div>
         </div>
-        <div
-            class="ae-container__kyc ae-container--md"
-            [class.mt-4]="feedback != undefined || feedback != null"
-            *ngIf="step4VerifyAccount"
-        >
+        <div class="ae-container__kyc ae-container--md" [class.mt-4]="feedback != undefined || feedback != null"
+            *ngIf="step4VerifyAccount">
             <div class="ae-container__header">
                 <div class="ae-header__title flex align-items-center justify-content-between">
                     <div class="ae-text flex align-items-center">
@@ -829,123 +571,81 @@
                         <div class="ae-select">
                             <label>{{ l('CatProfession') }} *</label>
                             <div class="formgroup-control">
-                                <p-dropdown
-                                    #economicInfoProfession
-                                    formControlName="economicInfoProfession"
-                                    [(ngModel)]="memberEconomicInfo.catProfessionId"
-                                    [disabled]="true"
+                                <p-dropdown #economicInfoProfession formControlName="economicInfoProfession"
+                                    [(ngModel)]="memberEconomicInfo.catProfessionId" [disabled]="true"
                                     [options]="economicInfoProfessions"
-                                    placeholder="{{ 'SelectAnItemDropdown' | localize }}"
-                                    [showClear]="true"
-                                    [filter]="true"
-                                ></p-dropdown>
+                                    placeholder="{{ 'SelectAnItemDropdown' | localize }}" [showClear]="true"
+                                    [filter]="true"></p-dropdown>
                                 <div class="spin-validation">
-                                    <spinSuccess
-                                        *ngIf="
+                                    <spinSuccess *ngIf="
                                             economicInfoForm.controls['economicInfoProfession'].valid &&
                                             economicInfoForm.controls['economicInfoProfession'].dirty
-                                        "
-                                    ></spinSuccess>
-                                    <spinError
-                                        *ngIf="
+                                        "></spinSuccess>
+                                    <spinError *ngIf="
                                             !economicInfoForm.controls['economicInfoProfession'].valid &&
                                             economicInfoForm.controls['economicInfoProfession'].dirty
-                                        "
-                                    ></spinError>
+                                        "></spinError>
                                 </div>
                             </div>
                         </div>
                         <div class="ae-input">
                             <label>{{ 'MonthlyIncome' | localize }} *</label>
                             <div class="formgroup-control">
-                                <input
-                                    type="text"
-                                    #economicInfoIncome
-                                    formControlName="economicInfoIncome"
+                                <input type="text" #economicInfoIncome formControlName="economicInfoIncome"
                                     [(ngModel)]="memberEconomicInfo.income"
-                                    placeholder="{{ 'MonthlyIncome' | localize }}"
-                                    class="form-control"
-                                    prefix="$"
-                                    mask="separator"
-                                    thousandSeparator=","
-                                    [validation]="true"
-                                    minlength="2"
-                                    maxlength="32"
-                                />
+                                    placeholder="{{ 'MonthlyIncome' | localize }}" class="form-control" prefix="$"
+                                    mask="separator" thousandSeparator="," [validation]="true" minlength="2"
+                                    maxlength="32" />
                                 <div class="spin-validation">
-                                    <spinSuccess
-                                        *ngIf="
+                                    <spinSuccess *ngIf="
                                             economicInfoForm.controls['economicInfoIncome'].valid &&
                                             economicInfoForm.controls['economicInfoIncome'].dirty
-                                        "
-                                    ></spinSuccess>
-                                    <spinError
-                                        *ngIf="
+                                        "></spinSuccess>
+                                    <spinError *ngIf="
                                             !economicInfoForm.controls['economicInfoIncome'].valid &&
                                             economicInfoForm.controls['economicInfoIncome'].dirty
-                                        "
-                                    ></spinError>
+                                        "></spinError>
                                 </div>
                             </div>
                         </div>
                         <div class="ae-select">
                             <label>{{ l('CatSourceFoundses') }} *</label>
                             <div class="formgroup-control">
-                                <p-dropdown
-                                    #economicInfoSourceFounds
-                                    formControlName="economicInfoSourceFounds"
-                                    [(ngModel)]="memberEconomicInfo.catSourceFoundsId"
-                                    [disabled]="true"
+                                <p-dropdown #economicInfoSourceFounds formControlName="economicInfoSourceFounds"
+                                    [(ngModel)]="memberEconomicInfo.catSourceFoundsId" [disabled]="true"
                                     [options]="economicInfoSourceFoundses"
-                                    placeholder="{{ 'SelectAnItemDropdown' | localize }}"
-                                    [showClear]="true"
-                                    [filter]="true"
-                                ></p-dropdown>
+                                    placeholder="{{ 'SelectAnItemDropdown' | localize }}" [showClear]="true"
+                                    [filter]="true"></p-dropdown>
                                 <div class="spin-validation">
-                                    <spinSuccess
-                                        *ngIf="
+                                    <spinSuccess *ngIf="
                                             economicInfoForm.controls['economicInfoSourceFounds'].valid &&
                                             economicInfoForm.controls['economicInfoSourceFounds'].dirty
-                                        "
-                                    ></spinSuccess>
-                                    <spinError
-                                        *ngIf="
+                                        "></spinSuccess>
+                                    <spinError *ngIf="
                                             !economicInfoForm.controls['economicInfoSourceFounds'].valid &&
                                             economicInfoForm.controls['economicInfoSourceFounds'].dirty
-                                        "
-                                    ></spinError>
+                                        "></spinError>
                                 </div>
                             </div>
                         </div>
                         <div class="ae-input">
                             <label>Estimado de operaciones en USD *</label>
                             <div class="formgroup-control">
-                                <input
-                                    type="text"
-                                    #economicInfoExpectedTransactions
+                                <input type="text" #economicInfoExpectedTransactions
                                     formControlName="economicInfoExpectedTransactions"
                                     [(ngModel)]="memberEconomicInfo.expectedTransactions"
-                                    placeholder="{{ 'MonthlyExpectedTransactions' | localize }}"
-                                    class="form-control"
-                                    prefix="$"
-                                    mask="separator"
-                                    thousandSeparator=","
-                                    [validation]="true"
-                                    maxlength="32"
-                                />
+                                    placeholder="{{ 'MonthlyExpectedTransactions' | localize }}" class="form-control"
+                                    prefix="$" mask="separator" thousandSeparator="," [validation]="true" minlength="1"
+                                    maxlength="32" />
                                 <div class="spin-validation">
-                                    <spinSuccess
-                                        *ngIf="
+                                    <spinSuccess *ngIf="
                                             economicInfoForm.controls['economicInfoExpectedTransactions'].valid &&
                                             economicInfoForm.controls['economicInfoExpectedTransactions'].dirty
-                                        "
-                                    ></spinSuccess>
-                                    <spinError
-                                        *ngIf="
+                                        "></spinSuccess>
+                                    <spinError *ngIf="
                                             !economicInfoForm.controls['economicInfoExpectedTransactions'].valid &&
                                             economicInfoForm.controls['economicInfoExpectedTransactions'].dirty
-                                        "
-                                    ></spinError>
+                                        "></spinError>
                                 </div>
                             </div>
                         </div>
@@ -957,22 +657,15 @@
                                 </span>
                                 <br />
                             </label>
-                            <p-fileUpload
-                                #economicInfoFileIncomeProof
-                                id="economicInfoFileIncomeProof"
-                                name="economicInfoFileIncomeProof"
-                                accept="image/*,application/pdf"
-                                [maxFileSize]="maxFileSize"
-                                [multiple]="false"
-                                mode="advanced"
+                            <p-fileUpload #economicInfoFileIncomeProof id="economicInfoFileIncomeProof"
+                                name="economicInfoFileIncomeProof" accept="image/*,application/pdf"
+                                [maxFileSize]="maxFileSize" [multiple]="false" mode="advanced"
                                 (onSelect)="onUploadFile($event, 'UploadIncomeProof')"
                                 (onBeforeSend)="onBeforeSend($event)"
-                                (onRemove)="onRemoveFile($event, 'UploadIncomeProof')"
-                                [showUploadButton]="false"
+                                (onRemove)="onRemoveFile($event, 'UploadIncomeProof')" [showUploadButton]="false"
                                 [showCancelButton]="false"
                                 invalidFileSizeMessageDetail="{{ l('ErrorFileMemberUploadLimit') }}: {0}"
-                                [class.upload-completed]="uploadFileIncomeProof"
-                            >
+                                [class.upload-completed]="uploadFileIncomeProof">
                                 <ng-template pTemplate="toolbar">
                                     <div class="ae-upload__header">
                                         <i class="pi pi-cloud-upload ae-text-gris"></i>
@@ -980,28 +673,18 @@
                                     </div>
                                 </ng-template>
                             </p-fileUpload>
-                            <div
-                                *ngIf="uploadFileIncomeProof"
-                                class="fileupload-file-info d-flex justify-content-between px-10 mt-10"
-                            >
+                            <div *ngIf="uploadFileIncomeProof"
+                                class="fileupload-file-info d-flex justify-content-between px-10 mt-10">
                                 <span class="pt-2">{{ uploadedFiles['UploadIncomeProof'].fileName }}</span>
-                                <span class="pt-2">{{ uploadedFiles['UploadIncomeProof'].fileSize }} KB</span>
-                                <button
-                                    class="btn btn-info btn-sm btn-only-icon btn-style-secondary"
-                                    (click)="onClearUploadFileIncomeProof()"
-                                >
+                                <span class="pt-2" *ngIf="uploadedFiles['UploadIncomeProof'].fileSize != ''">{{
+                                    uploadedFiles['UploadIncomeProof'].fileSize }} KB</span>
+                                <button class="btn btn-info btn-sm btn-only-icon btn-style-secondary"
+                                    (click)="onClearUploadFileIncomeProof()">
                                     <i class="fa fa-close"></i>
                                 </button>
                             </div>
                             <div *ngIf="!uploadFileIncomeProof" class="fw-bold error-message text-danger">
                                 {{ l('RequiredFileError') }}
-                            </div>
-                            <div
-                                *ngIf="getFile(_fileType.IncomeProof).type === _fileType.IncomeProof"
-                                class="ae-grid--fullwidth text-primary text-center"
-                            >
-                                <strong>{{ 'FileLoaded' | localize }}:</strong>
-                                {{ getFile(_fileType.IncomeProof).originalName }}
                             </div>
                         </div>
                         <div class="ae-upload ae-grid--fullwidth">
@@ -1012,23 +695,15 @@
                                     {{ 'TaxReturnDetails' | localize }}
                                 </span>
                             </label>
-                            <p-fileUpload
-                                #economicInfoFileTaxReturn
-                                fileLimit="1"
-                                id="economicInfoFileTaxReturn"
-                                name="economicInfoFileTaxReturn"
-                                accept="image/*,application/pdf"
-                                [maxFileSize]="maxFileSize"
-                                [multiple]="false"
-                                mode="advanced"
+                            <p-fileUpload #economicInfoFileTaxReturn fileLimit="1" id="economicInfoFileTaxReturn"
+                                name="economicInfoFileTaxReturn" accept="image/*,application/pdf"
+                                [maxFileSize]="maxFileSize" [multiple]="false" mode="advanced"
                                 (onSelect)="onUploadFile($event, 'UploadTaxReturn')"
                                 (onBeforeSend)="onBeforeSend($event)"
-                                (onRemove)="onRemoveFile($event, 'UploadTaxReturn')"
-                                [showUploadButton]="false"
+                                (onRemove)="onRemoveFile($event, 'UploadTaxReturn')" [showUploadButton]="false"
                                 [showCancelButton]="false"
                                 invalidFileSizeMessageDetail="{{ l('ErrorFileMemberUploadLimit') }}: {0}"
-                                [class.upload-completed]="uploadFileTaxReturn"
-                            >
+                                [class.upload-completed]="uploadFileTaxReturn">
                                 <ng-template pTemplate="toolbar">
                                     <div class="ae-upload__header">
                                         <i class="pi pi-cloud-upload ae-text-gris"></i>
@@ -1036,28 +711,18 @@
                                     </div>
                                 </ng-template>
                             </p-fileUpload>
-                            <div
-                                *ngIf="uploadFileTaxReturn"
-                                class="fileupload-file-info d-flex justify-content-between px-10 mt-10"
-                            >
+                            <div *ngIf="uploadFileTaxReturn"
+                                class="fileupload-file-info d-flex justify-content-between px-10 mt-10">
                                 <span class="pt-2">{{ uploadedFiles['UploadTaxReturn'].fileName }}</span>
-                                <span class="pt-2">{{ uploadedFiles['UploadTaxReturn'].fileSize }} KB</span>
-                                <button
-                                    class="btn btn-info btn-sm btn-only-icon btn-style-secondary"
-                                    (click)="onClearUploadFileTaxReturn()"
-                                >
+                                <span class="pt-2" *ngIf="uploadedFiles['UploadTaxReturn'].fileSize != ''">{{
+                                    uploadedFiles['UploadTaxReturn'].fileSize }} KB</span>
+                                <button class="btn btn-info btn-sm btn-only-icon btn-style-secondary"
+                                    (click)="onClearUploadFileTaxReturn()">
                                     <i class="fa fa-close"></i>
                                 </button>
                             </div>
                             <div *ngIf="!uploadFileTaxReturn" class="fw-bold error-message text-danger">
                                 {{ l('RequiredFileError') }}
-                            </div>
-                            <div
-                                *ngIf="getFile(_fileType.TaxReturn).type === _fileType.TaxReturn"
-                                class="ae-grid--fullwidth text-primary text-center"
-                            >
-                                <strong>{{ 'FileLoaded' | localize }}:</strong>
-                                {{ getFile(_fileType.TaxReturn).originalName }}
                             </div>
                         </div>
                     </div>
@@ -1069,40 +734,29 @@
                     </div>
                     <div class="ae-radiobutton flex align-items-center">
                         <div class="ae-radiobutton__item mr-8">
-                            <p-radioButton
-                                #pep
-                                formControlName="pep"
-                                [value]="true"
-                                label="Soy PPE"
-                                [(ngModel)]="isPep"
-                                (onClick)="disableControlsPep()"
-                            ></p-radioButton>
+                            <p-radioButton #pep formControlName="pep" [value]="true" label="Soy PPE" [(ngModel)]="isPep"
+                                (onClick)="disableControlsPep()"></p-radioButton>
                         </div>
                         <div class="ae-radiobutton__item">
-                            <p-radioButton
-                                #pep
-                                formControlName="pep"
-                                [value]="false"
-                                label="No soy PPE"
-                                [(ngModel)]="isPep"
-                                (onClick)="disableControlsPep()"
-                            ></p-radioButton>
+                            <p-radioButton #pep formControlName="pep" [value]="false" label="No soy PPE"
+                                [(ngModel)]="isPep" (onClick)="disableControlsPep()"></p-radioButton>
                         </div>
                         <div class="col-2 pt-10">
                             <div class="spin-validation">
-                                <spinSuccess
-                                    *ngIf="pepForm.controls['pep'].valid && pepForm.controls['pep'].dirty"
-                                ></spinSuccess>
-                                <spinError
-                                    *ngIf="!pepForm.controls['pep'].valid && pepForm.controls['pep'].dirty"
-                                ></spinError>
+                                <spinSuccess *ngIf="pepForm.controls['pep'].valid && pepForm.controls['pep'].dirty">
+                                </spinSuccess>
+                                <spinError *ngIf="!pepForm.controls['pep'].valid && pepForm.controls['pep'].dirty">
+                                </spinError>
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="ae-container__actions flex align-items-center justify-content-end">
-                <p-button class="ae-button ae-button--primary" (click)="onSave()" label="Finalizar"></p-button>
+                <button type="button" class="btn btn-primary btn-max-width"
+                    [disabled]="!economicInfoForm.valid || !pepForm.valid || !uploadFileIncomeProof || !uploadFileTaxReturn"
+                    [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"
+                    (click)="onSave()">{{l('Finish')}}</button>
             </div>
         </div>
     </div>
