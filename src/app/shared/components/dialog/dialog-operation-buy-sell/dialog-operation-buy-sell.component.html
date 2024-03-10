@@ -88,7 +88,7 @@
                                 mode="decimal"
                                 locale="en-US"
                                 [minFractionDigits]="0"
-                                [maxFractionDigits]="9"
+                                [maxFractionDigits]="8"
                                 [min]="0"
                                 (onInput)="amountCryptoPurchaseOnChange($event)"
                                 required
@@ -148,7 +148,10 @@
             <div class="ae-selectinput__grid">
                 <div class="ae-selectinput__grid--title flex align-items-center justify-content-between">
                     <label class="ae-text-dark ae-text-default">{{ l('SellAction') }}</label>
-                    <div class="d-flex justify-content-center" *ngIf="!cryptoBalanceLoaded">
+                    <div
+                        class="d-flex justify-content-center"
+                        *ngIf="!cryptoBalanceLoaded && selectedCryptoCurrency != undefined"
+                    >
                         <div class="spinner-border text-gray-400 spinner-small" role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
@@ -231,7 +234,7 @@
                                 mode="decimal"
                                 locale="en-US"
                                 [minFractionDigits]="0"
-                                [maxFractionDigits]="9"
+                                [maxFractionDigits]="8"
                                 [min]="0"
                                 (onInput)="amountCryptoSaleOnChange($event)"
                                 required

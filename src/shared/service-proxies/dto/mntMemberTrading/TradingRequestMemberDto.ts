@@ -9,8 +9,8 @@ export class TradingRequestMemberDto implements ITradingRequestMemberDto {
     amount: number | undefined;
     fee: number | undefined;
     feeAmount: number | undefined;
-    subCost: number | undefined;
-    cost: number | undefined;
+    subTotal: number | undefined;
+    total: number | undefined;
     creationTime: string | undefined;
     status: RequestStatus | undefined;
 
@@ -40,8 +40,8 @@ export class TradingRequestMemberDto implements ITradingRequestMemberDto {
             this.amount = _data['amount'];
             this.fee = _data['fee'];
             this.feeAmount = _data['feeAmount'];
-            this.subCost = _data['subCost'];
-            this.cost = _data['cost'];
+            this.subTotal = _data['subTotal'];
+            this.total = _data['total'];
             this.creationTime = _data['creationTime'];
             this.status = _data['status'];
         }
@@ -56,8 +56,8 @@ export class TradingRequestMemberDto implements ITradingRequestMemberDto {
         data['amount'] = this.amount;
         data['fee'] = this.fee;
         data['feeAmount'] = this.feeAmount;
-        data['subCost'] = this.subCost;
-        data['cost'] = this.cost;
+        data['subTotal'] = this.subTotal;
+        data['total'] = this.total;
         data['creationTime'] = this.creationTime;
         data['status'] = this.status;
         return data;

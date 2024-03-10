@@ -53,8 +53,9 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   amountSaleCommision = 0;
   comissionPurchase = 0;
   comissionSale = 0;
-  cryptoBalanceLoaded = false;
+  cryptoBalanceLoaded: boolean;
   fiatBalanceLoaded = false;
+  requestType: RequestType;
 
   constructor(
     injector: Injector,
@@ -68,7 +69,9 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   ) {
     super(injector);
     this.activeIndex = config.data?.activeIndex;
+    this.requestType = config.data?.requestType;
     this.activeCryptoCurrencyId = config.data?.activeCryptoCurrencyId;
+    this.cryptoBalanceLoaded = false;
     this.purchaseForm = this._buildPurchaseForm();
     this.saleForm = this._buildSaleForm();
   }
@@ -114,7 +117,7 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   }
 
   loadCryptoAssets() {
-    this._serviceTradingProxy.getAllCryptoCurrenciesForSelect().subscribe((result) => {
+    this._serviceTradingProxy.getAllCryptoCurrenciesForSelect(this.requestType).subscribe((result) => {
       this.cryptoAssets = result.items;
       this.cryptoAssetIdPurchaseControl.enable();
       this.cryptoAssetIdSaleControl.enable();

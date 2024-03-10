@@ -34,7 +34,10 @@
                 </div>
             </div>
             <div class="ae-balance__secondary">
-                <div class="ae-balance__item flex align-items-center one" (click)="showDialogBuySell(0)">
+                <div
+                    class="ae-balance__item flex align-items-center one"
+                    (click)="showDialogBuySell(0, tradingRequest.Purchase)"
+                >
                     <div class="ae-item__icon ae-bg-primary flex align-items-center justify-content-center">
                         <i class="pi pi-plus"></i>
                     </div>
@@ -61,7 +64,10 @@
                         <p class="fw-semibold">{{ 'MakeDeposit' | localize }}</p>
                     </div>
                 </div>
-                <div class="ae-balance__item flex align-items-center two" (click)="showDialogBuySell(1)">
+                <div
+                    class="ae-balance__item flex align-items-center two"
+                    (click)="showDialogBuySell(1, tradingRequest.Sale)"
+                >
                     <div class="ae-item__icon ae-bg-primary flex align-items-center justify-content-center">
                         <i class="pi pi-minus"></i>
                     </div>
@@ -119,7 +125,9 @@
                             ></p-tabMenu>
                         </div>
                         <div class="ae-tabs__container" *ngIf="activeItem.label == 'Mercado'">
-                            <trading-market-grid (selectRecord)="showDialogBuySell(0, $event)"></trading-market-grid>
+                            <trading-market-grid
+                                (selectRecord)="showDialogBuySell(0, tradingRequest.Purchase, $event)"
+                            ></trading-market-grid>
                         </div>
                         <div class="ae-tabs__container" *ngIf="activeItem.label == 'Portafolio'">
                             <trading-portfolio></trading-portfolio>
@@ -345,7 +353,7 @@
         <div class="ae-card__container">
             <div class="ae-card__container--title flex align-items-center justify-content-between">
                 <h2 class="font-bold ae-text-dark">{{ 'TradingSliderTitile' | localize }}</h2>
-                <a class="fw-bold ae-text-gris-dark" (click)="onActiveMenuItem(1)">{{ 'ViewMore' | localize }}</a>
+                <a class="fw-bold ae-text-gris-dark" (click)="onActiveMenuItem(0)">{{ 'ViewMore' | localize }}</a>
             </div>
             <trading-market-slider></trading-market-slider>
         </div>
@@ -356,7 +364,7 @@
             <div class="ae-operation__line" (click)="showDialogOperations()">
                 <span class="ae-item__line"></span>
             </div>
-            <div class="ae-balance__item" (click)="showDialogBuySell(0)">
+            <div class="ae-balance__item" (click)="showDialogBuySell(0, tradingRequest.Purchase)">
                 <div class="ae-item__icon ae-bg-primary flex align-items-center justify-content-center">
                     <i class="pi pi-plus"></i>
                 </div>
@@ -364,7 +372,7 @@
                     <p class="fw-semibold">{{ 'PurchaseContinue' | localize }}</p>
                 </div>
             </div>
-            <div class="ae-balance__item" (click)="showDialogBuySell(1)">
+            <div class="ae-balance__item" (click)="showDialogBuySell(1, tradingRequest.Sale)">
                 <div class="ae-item__icon ae-bg-primary flex align-items-center justify-content-center">
                     <i class="pi pi-minus"></i>
                 </div>

@@ -72,7 +72,17 @@
                         {{ l(fiatStatus[record.request.status]) }}
                     </td>
                     <td class="text-center">
+                        <div
+                            class="d-flex justify-content-center"
+                            *ngIf="openDialog && record.request.id === selectRecordId"
+                        >
+                            <div class="spinner-border text-gray-400 spinner-small" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <span class="ms-2 mt-0 ae-text-gris-dark ae-text-small">{{ l('Loading') }}</span>
+                        </div>
                         <i
+                            *ngIf="!openDialog && record.request.id !== selectRecordId"
                             class="pi pi-search ae-cursor-pointer"
                             tooltip="{{ 'View' | localize }}"
                             (click)="selectRow(record.request)"

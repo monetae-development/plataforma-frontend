@@ -1,5 +1,5 @@
 import { CommonModule, Location } from '@angular/common';
-import { Component, EventEmitter, Injector, OnInit } from '@angular/core';
+import { Component, EventEmitter, Injector, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -45,6 +45,7 @@ import { environment } from 'environments/environment';
   providers: [MessageService]
 })
 export class DialogOperationDepositWithdrawComponent extends AppComponentBase implements OnInit {
+  @ViewChild('economicInfoProofIncome') economicInfoProofIncome: FileUpload;
 
   outAccept = new EventEmitter();
 
@@ -68,11 +69,11 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
   activeIndex: Number = 0;
   isStepOne: Boolean = true;
 
-  uploadUrl: string;
   uploadedOperationProof: any[] = [];
 
   destinationAccount: string;
   uploadFileDepositReceipt = false;
+  uploadFile: any;
 
   platformBankAccount: any;
   messageUploadFileOperationProof = '';
@@ -97,6 +98,7 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
   ) {
     super(injector);
     this.activeIndex = config.data?.activeIndex;
+    this.uploadFile = { 'type': undefined, 'fileName': undefined, 'fileSize': undefined };
   }
 
   ngOnInit() {
@@ -229,22 +231,22 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
     });
   }
 
-  onUploadFile(event, recordFiles): void {
+  onClearUploadFile() {
+    this.economicInfoProofIncome.clear();
+    this.uploadFileDepositReceipt = false;
+  }
+
+  onUploadFile(event): void {
     for (const file of event.files) {
-      if (file.size > this.maxFileSize) {
-        this.messageUploadFileOperationProof = `El tamaño máximo permitido para la carga de archivos es de ${this.maxFileSize}`;
-        return;
-      }
-      if (recordFiles) {
-        const fileParameter: FileParameter = {
-          data: file,
-          fileName: file.name
-        };
-        this._mntMemberFilesServiceProxy.uploadDepositReceipt(fileParameter).subscribe((result) => {
-          this.fileGuid = result.fileGuid;
-          this.uploadFileDepositReceipt = true;
-        });
-      }
+      this.uploadFile = { 'fileName': file.name, 'fileSize': file.size };
+      const fileParameter: FileParameter = {
+        data: file,
+        fileName: file.name
+      };
+      this._mntMemberFilesServiceProxy.uploadDepositReceipt(fileParameter).subscribe((result) => {
+        this.fileGuid = result.fileGuid;
+        this.uploadFileDepositReceipt = true;
+      });
     }
   }
 

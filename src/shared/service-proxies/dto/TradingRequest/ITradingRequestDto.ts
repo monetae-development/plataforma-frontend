@@ -10,7 +10,7 @@ export interface ITradingRequestDto {
     type: RequestType;
     price: number;
     amount: number;
-    cost: number;
+    total: number;
     status: RequestStatus;
     folio: string;
     tradingCryptoCurrencyId: number;

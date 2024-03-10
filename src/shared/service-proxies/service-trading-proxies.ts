@@ -15,6 +15,7 @@ import { PRGetAllMntMemberTradingForViewDto } from './dto/mntMemberTrading/PRGet
 import { PRGetAllMntMemberTradingPortfolioForViewDto } from './dto/mntMemberTrading/PRGetAllMntMemberTradingPortfolioForViewDto';
 import { PRGetAllMemberCryptoBalanceForMenuOutput } from './dto/mntMemberTrading/PRGetAllMemberCryptoBalanceForMenuOutput';
 import { GetMemberDetailRequestDto } from './dto/mntMemberTrading/GetMemberDetailRequestDto';
+import { RequestType } from './enum/MemberTrading/RequestType.enum';
 
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
@@ -365,8 +366,9 @@ export class ServiceTradingProxy {
         return _observableOf(null as any);
     }
 
-    getAllCryptoCurrenciesForSelect(): Observable<PagedResultDtoGetAllCryptoCurrencies> {
-        let url_ = this.baseUrl + '/api/services/app/MntMemberTrading/GetAllCryptoCurrenciesForSelect';
+    getAllCryptoCurrenciesForSelect(requestType: RequestType): Observable<PagedResultDtoGetAllCryptoCurrencies> {
+        let url_ = this.baseUrl + '/api/services/app/MntMemberTrading/GetAllCryptoCurrenciesForSelect?';
+        url_ += 'requestType=' + encodeURIComponent('' + requestType);
         url_ = url_.replace(/[?&]$/, '');
 
         let options_: any = {

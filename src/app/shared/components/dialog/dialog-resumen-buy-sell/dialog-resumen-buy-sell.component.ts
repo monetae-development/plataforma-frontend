@@ -20,12 +20,12 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 })
 export class DialogResumenBuySellComponent extends AppComponentBase implements OnInit {
 
-  title: string = '';
-  titleAction: string = '';
+  title = '';
+  titleAction = '';
   resumenSend: any;
-  amountPrice: number = 0;
-  amountCommision: number = 0;
-  amountTotal: number = 0;
+  amountPrice = 0;
+  amountCommision = 0;
+  amountTotal = 0;
   type: RequestType;
   dateNow: Date = new Date();
   sending = false;
@@ -37,9 +37,8 @@ export class DialogResumenBuySellComponent extends AppComponentBase implements O
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
     private _serviceTradingProxy: ServiceTradingProxy,
-  ) { 
+  ) {
     super(injector);
-    console.log(config.data);
     this.title = config.data.title;
     this.titleAction = config.data.titleAction;
     this.resumenSend = config.data.resumenSend;
@@ -47,10 +46,6 @@ export class DialogResumenBuySellComponent extends AppComponentBase implements O
     this.type = config.data.type;
     this.amountCommision = config.data.amountCommision;
     this.amountTotal = this.resumenSend.amount + this.amountCommision;
-  }
-
-  ngOnInit() {
-    console.log(this.resumenSend);
   }
 
   get dateTime() {
@@ -65,10 +60,14 @@ export class DialogResumenBuySellComponent extends AppComponentBase implements O
     const minutes = this.dateNow.getMinutes();
     const seconds = this.dateNow.getSeconds();
     const ampm = hour >= 12 ? 'pm' : 'am';
-    return  `${day} ${month} ${year}`;
+    return `${day} ${month} ${year}`;
   }
 
-  onCancel(){
+  ngOnInit() {
+    console.log(this.resumenSend);
+  }
+
+  onCancel() {
     this.ref.close();
   }
 

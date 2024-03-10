@@ -181,6 +181,10 @@
                                         >
                                             {{ l('Actions') }}
                                         </th>
+                                        <th style="width: 50px" pSortableColumn="userFk.id">
+                                            {{ l('Id') }}
+                                            <p-sortIcon field="userId"></p-sortIcon>
+                                        </th>
                                         <th style="width: 150px" pSortableColumn="userFk.name">
                                             {{ l('Name') }}
                                             <p-sortIcon field="userName"></p-sortIcon>
@@ -245,6 +249,15 @@
                                                 </ul>
                                             </div>
                                         </td>
+                                        <td style="width: 50px">
+                                            <span class="badge text-bg-secondary">
+                                                {{ 'UserId' | localize }} : {{ record.mntMember.userId }}
+                                            </span>
+                                            <br />
+                                            <span class="badge text-bg-secondary">
+                                                {{ 'P-NId' | localize }} : {{ record.mntMember.id }}
+                                            </span>
+                                        </td>
                                         <td style="width: 150px">
                                             {{ record.userName }}
                                         </td>
@@ -258,7 +271,16 @@
                                             {{ record.userPhoneNumber }}
                                         </td>
                                         <td style="width: 150px">
-                                            {{ l(memberStatus[record.status]) }}
+                                            <span
+                                                class="badge"
+                                                [class.text-bg-secondary]="record.status === memberStatus.Register"
+                                                [class.text-bg-warning]="record.status === memberStatus.Pending"
+                                                [class.text-bg-success]="record.status === memberStatus.Approved"
+                                                [class.text-bg-danger]="record.status === memberStatus.Refused"
+                                                [class.text-white]="record.status === memberStatus.Refused"
+                                            >
+                                                {{ l(memberStatus[record.status]) }}
+                                            </span>
                                         </td>
                                         <td style="width: 150px">
                                             <span *ngIf="record.mntMember.dayOfBirth">

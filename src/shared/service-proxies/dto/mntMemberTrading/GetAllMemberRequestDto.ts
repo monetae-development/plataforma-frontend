@@ -1,12 +1,12 @@
-import { RequestType } from "@shared/service-proxies/enum/MemberTrading/RequestType.enum";
-import { IGetAllMemberRequestDto } from "./IGetAllMemberRequestDto";
-import { RequestStatus } from "@shared/service-proxies/enum/Trading/RequestStatus.enum";
+import { RequestType } from '@shared/service-proxies/enum/MemberTrading/RequestType.enum';
+import { IGetAllMemberRequestDto } from './IGetAllMemberRequestDto';
+import { RequestStatus } from '@shared/service-proxies/enum/Trading/RequestStatus.enum';
 
 export class GetAllMemberRequestDto implements IGetAllMemberRequestDto {
     folio: string;
     type: RequestType;
     amount: number;
-    cost: number;
+    total: number;
     creationTime: string;
     status: RequestStatus;
     id: number;
@@ -33,7 +33,7 @@ export class GetAllMemberRequestDto implements IGetAllMemberRequestDto {
             this.folio = _data['folio'];
             this.type = _data['type'];
             this.amount = _data['amount'];
-            this.cost = _data['cost'];
+            this.total = _data['total'];
             this.creationTime = _data['creationTime'];
             this.status = _data['status'];
             this.id = _data['id'];
@@ -44,7 +44,7 @@ export class GetAllMemberRequestDto implements IGetAllMemberRequestDto {
         data['folio'] = this.folio;
         data['type'] = this.type;
         data['amount'] = this.amount;
-        data['cost'] = this.cost;
+        data['total'] = this.total;
         data['creationTime'] = this.creationTime;
         data['status'] = this.status;
         data['id'] = this.id;

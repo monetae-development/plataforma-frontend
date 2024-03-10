@@ -248,17 +248,19 @@
                     <div class="ae-upload">
                         <label>Adjuntar comprobante de operación</label>
                         <p-fileUpload
+                            #economicInfoProofIncome
                             id="economicInfoProofIncome"
                             name="economicInfoProofIncome"
                             accept="image/*,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-fontobject,application/pdf"
-                            maxFileSize="10000000"
-                            fileLimit="1"
-                            [url]="uploadUrl"
-                            (onSelect)="onUploadFile($event, uploadedOperationProof)"
+                            [maxFileSize]="maxFileSize"
+                            [multiple]="false"
+                            (onSelect)="onUploadFile($event)"
                             (onRemove)="onRemoveFile()"
                             (onBeforeSend)="onBeforeSend($event)"
                             [showUploadButton]="false"
                             [showCancelButton]="false"
+                            invalidFileSizeMessageDetail="{{ l('ErrorFileMemberUploadLimit') }}: {0}"
+                            [class.upload-completed]="uploadFileDepositReceipt"
                         >
                             <ng-template pTemplate="toolbar">
                                 <div class="ae-upload__header">
@@ -267,9 +269,22 @@
                                 </div>
                             </ng-template>
                         </p-fileUpload>
-                        <span *ngIf="messageUploadFileOperationProof" class="error-message">
-                            {{ messageUploadFileOperationProof }}
-                        </span>
+                        <div
+                            *ngIf="uploadFileDepositReceipt"
+                            class="fileupload-file-info d-flex justify-content-between px-10 mt-10"
+                        >
+                            <span class="pt-2">{{ uploadFile.fileName }}</span>
+                            <span class="pt-2" *ngIf="uploadFile.fileSize != ''">{{ uploadFile.fileSize }} KB</span>
+                            <button
+                                class="btn btn-info btn-sm btn-only-icon btn-style-secondary"
+                                (click)="onClearUploadFile()"
+                            >
+                                <i class="fa fa-close"></i>
+                            </button>
+                        </div>
+                        <div *ngIf="!uploadFileDepositReceipt" class="fw-bold error-message text-danger">
+                            {{ l('RequiredFileError') }}
+                        </div>
                     </div>
                     <p class="ae-text-small ae-text-gris">
                         El depósito puede tardar hasta 24 horas hábiles dependiendo de los tiempos de los bancos.

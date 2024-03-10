@@ -242,7 +242,7 @@
                                                 <p-sortIcon field="otcRequest.amount"></p-sortIcon>
                                             </th>
                                             <th style="width: 100px" pSortableColumn="cost">
-                                                {{ l('Cost') }}
+                                                {{ l('Total') }}
                                                 <p-sortIcon field="otcRequest.cost"></p-sortIcon>
                                             </th>
                                             <th style="width: 130px" pSortableColumn="status">
@@ -308,15 +308,15 @@
                                                 </span>
                                             </td>
                                             <td style="width: 100px">
+                                                {{ record.request.price | currency : 'USD' : 'symbol' : '1.2' : 'en' }}
+                                            </td>
+                                            <td style="width: 100px">
+                                                {{ record.request.amount | number : '1.0-8' : 'en' }}
+                                            </td>
+                                            <td style="width: 100px">
                                                 {{
-                                                    record.request.price | currency : 'USD' : 'symbol' : '1.2-5' : 'en'
+                                                    record.request.total | currency : 'USD' : 'symbol' : '1.2-8' : 'en'
                                                 }}
-                                            </td>
-                                            <td style="width: 100px">
-                                                {{ record.request.amount | number : '1.0-6' : 'en' }}
-                                            </td>
-                                            <td style="width: 100px">
-                                                {{ record.request.cost | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}
                                             </td>
                                             <td style="width: 130px">
                                                 <span class="badge text-bg-secondary">

@@ -59,10 +59,10 @@
                         {{ l(requestType[record.request.type]) }}
                     </td>
                     <td class="ae-text-gris-dark ae-text-default">
-                        {{ record.request.amount | number : '1.0-6' : 'en' }}
+                        {{ record.request.amount | number : '1.0-8' : 'en' }}
                     </td>
                     <td class="ae-text-gris-dark ae-text-default">
-                        {{ record.request.cost | currency : 'USD' : 'symbol' : '1.2-5' : 'en' }}
+                        {{ record.request.total | currency : 'USD' : 'symbol' : '1.2-8' : 'en' }}
                     </td>
                     <td class="ae-text-gris-dark ae-text-default">
                         {{ getDateTimeFormat(record.request.creationTime) }}
@@ -75,7 +75,17 @@
                         {{ l(requestStatus[record.request.status]) }}
                     </td>
                     <td class="text-center">
+                        <div
+                            class="d-flex justify-content-center"
+                            *ngIf="openDialog && record.request.id === selectRecordId"
+                        >
+                            <div class="spinner-border text-gray-400 spinner-small" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <span class="ms-2 mt-0 ae-text-gris-dark ae-text-small">{{ l('Loading') }}</span>
+                        </div>
                         <i
+                            *ngIf="!openDialog && record.request.id !== selectRecordId"
                             class="pi pi-search ae-cursor-pointer"
                             tooltip="{{ 'View' | localize }}"
                             (click)="selectRow(record.request)"

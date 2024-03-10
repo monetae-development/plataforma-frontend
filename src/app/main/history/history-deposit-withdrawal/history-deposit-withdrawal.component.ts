@@ -15,8 +15,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'history-deposit-withdrawal',
-  templateUrl: './history-deposit-withdrawal.component.html',
-  styleUrls: ['./history-deposit-withdrawal.component.css']
+  templateUrl: './history-deposit-withdrawal.component.html'
 })
 export class HistoryDepositWithdrawalComponent extends AppComponentBase implements OnInit {
 
@@ -27,6 +26,8 @@ export class HistoryDepositWithdrawalComponent extends AppComponentBase implemen
   typeFilter: number = undefined;
   requestType = FiatType;
   fiatStatus = FiatStatus;
+  selectRecordId: number;
+  openDialog: boolean;
 
   primengTableHelper = new PrimengTableHelper();
 
@@ -67,28 +68,30 @@ export class HistoryDepositWithdrawalComponent extends AppComponentBase implemen
       });
   }
 
-  getDateFormat(input: string,): string {
+  getDateFormat(input: string): string {
     const parsedDate = DateTime.fromISO(input);
     return parsedDate.toFormat('dd/MM/yyyy');
   }
 
-  getTimeFormat(input: string,): string {
+  getTimeFormat(input: string): string {
     const parsedDate = DateTime.fromISO(input);
     return parsedDate.toFormat('HH:mm:ss');
   }
 
   selectRow(data) {
+    this.selectRecordId = data.id;
     this.getMemberDetailRequest(data);
   }
 
   private getMemberDetailRequest(data) {
-    this._serviceMembersProxy
-      .getMemberDetailRequest(
-        data.id
-      )
-      .subscribe(result => {
-        this.openDialogDetailDepositWithdraw(result, data.type)
+    if (!this.openDialog) {
+      this.openDialog = true;
+      this._serviceMembersProxy.getMemberDetailRequest(data.id).subscribe(result => {
+        this.openDialogDetailDepositWithdraw(result, data.type);
+        this.openDialog = false;
+        this.selectRecordId = -1;
       });
+    }
   }
 
   private openDialogDetailDepositWithdraw(dataDetail, type): void {

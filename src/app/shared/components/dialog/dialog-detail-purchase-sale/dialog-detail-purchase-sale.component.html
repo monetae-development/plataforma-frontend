@@ -28,7 +28,7 @@
             </div>
             <div class="ae-content">
                 <span class="ae-text-gris-network ae-text-default w-full">
-                    {{ detailHistory.price | currency : 'USD' : 'symbol-narrow' : '1.2' : 'en' }}
+                    {{ detailHistory.price | currency : 'USD' : 'symbol-narrow' : '1.2-8' : 'en' }}
                 </span>
             </div>
         </div>
@@ -38,7 +38,7 @@
             </div>
             <div class="ae-content">
                 <span class="ae-text-gris-dark ae-text-default w-full">
-                    {{ detailHistory.amount | number : '1.0-6' : 'en' }} {{ detailHistory.key }}
+                    {{ detailHistory.amount | number : '1.0-8' : 'en' }} {{ detailHistory.key }}
                 </span>
             </div>
         </div>
@@ -48,7 +48,7 @@
             </div>
             <div class="ae-content">
                 <span class="ae-text-gris-dark ae-text-default w-full">
-                    {{ detailHistory.cost | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }}
+                    {{ detailHistory.subTotal | currency : 'USD' : 'symbol-narrow' : '1.2-8' : 'en' }}
                 </span>
             </div>
         </div>
@@ -58,7 +58,7 @@
             </div>
             <div class="ae-content">
                 <span class="ae-text-gris-dark ae-text-default w-full">
-                    {{ detailHistory.feeAmount | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en' }}
+                    {{ detailHistory.feeAmount | currency : 'USD' : 'symbol-narrow' : '1.2-8' : 'en' }}
                 </span>
             </div>
         </div>
@@ -68,10 +68,7 @@
             </div>
             <div class="ae-content">
                 <span class="ae-text-gris-dark ae-text-default fw-bold w-full">
-                    {{
-                        detailHistory.cost + detailHistory.feeAmount
-                            | currency : 'USD' : 'symbol-narrow' : '1.2-5' : 'en'
-                    }}
+                    {{ detailHistory.total | currency : 'USD' : 'symbol-narrow' : '1.2-8' : 'en' }}
                 </span>
             </div>
         </div>

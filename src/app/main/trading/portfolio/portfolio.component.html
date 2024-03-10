@@ -1,16 +1,27 @@
 <div class="ae-table" [class.ae-table--overflow]="primengTableHelper.totalRecordsCount != 0">
     <div class="primeng-datatable-container col-12" [busyIf]="primengTableHelper.isLoading">
-        <p-table #dataTable [value]="primengTableHelper.records"
-            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}" [paginator]="false" [scrollable]="true"
-            ScrollWidth="100%" [responsive]="primengTableHelper.isResponsive"
-            [resizableColumns]="primengTableHelper.resizableColumns" [globalFilterFields]="['name', 'amount', 'total']">
+        <p-table
+            #dataTable
+            [value]="primengTableHelper.records"
+            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+            [paginator]="false"
+            [scrollable]="true"
+            ScrollWidth="100%"
+            [responsive]="primengTableHelper.isResponsive"
+            [resizableColumns]="primengTableHelper.resizableColumns"
+            [globalFilterFields]="['name', 'amount', 'total']"
+        >
             <ng-template pTemplate="caption">
                 <div class="ae-table__title--column flex align-items-center justify-content-end mb-4">
                     <h6 class="ae-text-dark ae-text-medium fw-bold m-0">{{ l('PortfolioTitleDescription') }}</h6>
                     <span class="p-input-icon-right ml-auto">
                         <i class="pi pi-search"></i>
-                        <input pInputText type="text" (input)="dataTable.filterGlobal($event.target.value, 'contains')"
-                            placeholder="" />
+                        <input
+                            pInputText
+                            type="text"
+                            (input)="dataTable.filterGlobal($event.target.value, 'contains')"
+                            placeholder=""
+                        />
                     </span>
                 </div>
             </ng-template>
@@ -29,13 +40,21 @@
                     </th>
                     <th>
                         {{ l('TotalPercentAmount') }}
-                        <p-columnFilter type="number" field="totalPercent" display="none"
-                            class="d-none"></p-columnFilter>
+                        <p-columnFilter
+                            type="number"
+                            field="totalPercent"
+                            display="none"
+                            class="d-none"
+                        ></p-columnFilter>
                     </th>
                     <th>
                         {{ l('TotalPercenProfit') }}
-                        <p-columnFilter type="number" field="totalProfit" display="none"
-                            class="d-none"></p-columnFilter>
+                        <p-columnFilter
+                            type="number"
+                            field="totalProfit"
+                            display="none"
+                            class="d-none"
+                        ></p-columnFilter>
                     </th>
                     <th>
                         {{ l('Quantity') }}
@@ -55,8 +74,11 @@
                     <td>
                         <div class="flex align-items-center">
                             <div class="mr-4">
-                                <img src="/assets/crypto-icons/{{ record.key | lowercase }}.png"
-                                    class="crypto-icon-table" alt="{{ record.key }}" />
+                                <img
+                                    src="/assets/crypto-icons/{{ record.key | lowercase }}.png"
+                                    class="crypto-icon-table"
+                                    alt="{{ record.key }}"
+                                />
                             </div>
                             <div class="ae-text__coin">
                                 <p class="m-0 ae-text-dark ae-text-default">{{ record.name }}</p>
@@ -73,8 +95,10 @@
                         </ng-template>
                     </td>
                     <td>
-                        <span [class.text-success]="record.changePct24Hour > 0"
-                            [class.text-danger]="record.changePct24Hour < 0">
+                        <span
+                            [class.text-success]="record.changePct24Hour > 0"
+                            [class.text-danger]="record.changePct24Hour < 0"
+                        >
                             <span *ngIf="record.changePct24Hour > 0">
                                 +{{ record.changePct24Hour | number : '1.2' : 'en' }}%
                             </span>
@@ -83,20 +107,24 @@
                             </span>
                         </span>
                     </td>
-                    <td class="ae-text-gris-dark ae-text-default">{{ record.totalPercent| number : '1.1-2' : 'en' }}%
-                    </td>
-                    <td class="ae-text-gris-dark ae-text-default">{{ record.profitPercent| number : '1.1-2' : 'en' }}%
+                    <td class="ae-text-gris-dark ae-text-default">
+                        {{ record.totalPercent | number : '1.1-2' : 'en' }}%
                     </td>
                     <td class="ae-text-gris-dark ae-text-default">
-                        {{ record.amount | number : '1.1-2' : 'en' }}
+                        {{ record.profitPercent | number : '1.1-2' : 'en' }}%
                     </td>
                     <td class="ae-text-gris-dark ae-text-default">
-                        {{ record.totalUSD | currency : 'USD' : 'symbol' : '1.1-2' : 'en' }}
+                        {{ record.amount | number : '1.0-8' : 'en' }}
+                    </td>
+                    <td class="ae-text-gris-dark ae-text-default">
+                        {{ record.totalUSD | currency : 'USD' : 'symbol' : '1.2-8' : 'en' }}
                     </td>
                     <td class="text-center">
                         <div class="flex align-items-center justify-content-center">
-                            <i class="pi pi-ellipsis-v ae-cursor-pointer"
-                                (click)="selectedRecord = record.tradingCryptoCurrencyId; menu.toggle($event)"></i>
+                            <i
+                                class="pi pi-ellipsis-v ae-cursor-pointer"
+                                (click)="selectedRecord = record.tradingCryptoCurrencyId; menu.toggle($event)"
+                            ></i>
                             <p-menu #menu [model]="itemsMenu" [popup]="true" class="ae-menuoptions"></p-menu>
                         </div>
                     </td>
@@ -106,12 +134,18 @@
         <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
             {{ l('NoData') }}
         </div>
-        <div class="ae-paginator primeng-paging-container flex align-items-center justify-content-center"
+        <div
+            class="ae-paginator primeng-paging-container flex align-items-center justify-content-center"
             [class.ae-paginator--top]="primengTableHelper.totalRecordsCount != 0"
-            hidden="{{ primengTableHelper.totalRecordsCount == 0 }}">
-            <p-paginator [rows]="primengTableHelper.defaultRecordsCountPerPage" #paginator
+            hidden="{{ primengTableHelper.totalRecordsCount == 0 }}"
+        >
+            <p-paginator
+                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                #paginator
                 (onPageChange)="getAllMemberPortfolioRequests($event)"
-                [totalRecords]="primengTableHelper.totalRecordsCount" [showCurrentPageReport]="false"></p-paginator>
+                [totalRecords]="primengTableHelper.totalRecordsCount"
+                [showCurrentPageReport]="false"
+            ></p-paginator>
         </div>
     </div>
 </div>

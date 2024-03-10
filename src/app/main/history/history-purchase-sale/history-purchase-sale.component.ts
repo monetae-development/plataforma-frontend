@@ -15,8 +15,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'history-purchase-sale',
-  templateUrl: './history-purchase-sale.component.html',
-  styleUrls: ['./history-purchase-sale.component.css']
+  templateUrl: './history-purchase-sale.component.html'
 })
 export class HistoryPurchaseSaleComponent extends AppComponentBase implements OnInit {
 
@@ -26,6 +25,8 @@ export class HistoryPurchaseSaleComponent extends AppComponentBase implements On
   filter = '';
   requestType = RequestType;
   requestStatus = RequestStatus;
+  selectRecordId: number;
+  openDialog: boolean;
 
   primengTableHelper = new PrimengTableHelper();
 
@@ -35,6 +36,7 @@ export class HistoryPurchaseSaleComponent extends AppComponentBase implements On
     public _dialogService: DialogService,
   ) {
     super(injector);
+    this.openDialog = false;
   }
 
   ngOnInit() {
@@ -44,45 +46,44 @@ export class HistoryPurchaseSaleComponent extends AppComponentBase implements On
   getAllMemberRequests(event?: LazyLoadEvent): void {
     if (this.primengTableHelper.shouldResetPaging(event)) {
       this.paginator.changePage(0);
-
       if (this.primengTableHelper.records && this.primengTableHelper.records.length > 0) {
         return;
       }
     }
     this.primengTableHelper.showLoadingIndicator();
-    this._serviceTradingProxy
-      .getAllMemberRequests(
-        this.filter,
-        this.primengTableHelper.getSorting(this.dataTable),
-        this.primengTableHelper.getSkipCount(this.paginator, event),
-        this.primengTableHelper.getMaxResultCount(this.paginator, event)
-      )
+    this._serviceTradingProxy.getAllMemberRequests(
+      this.filter,
+      this.primengTableHelper.getSorting(this.dataTable),
+      this.primengTableHelper.getSkipCount(this.paginator, event),
+      this.primengTableHelper.getMaxResultCount(this.paginator, event)
+    )
       .pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator()))
       .subscribe(result => {
-        console.log(result);
         this.primengTableHelper.totalRecordsCount = result.totalCount;
         this.primengTableHelper.records = result.items;
         this.primengTableHelper.hideLoadingIndicator();
       });
   }
 
-  getDateTimeFormat(input: string,): string {
+  getDateTimeFormat(input: string): string {
     const parsedDate = DateTime.fromISO(input);
     return parsedDate.toFormat('dd/MM/yy');
   }
 
   selectRow(data) {
+    this.selectRecordId = data.id;
     this.getMemberDetailRequest(data);
   }
 
   private getMemberDetailRequest(data) {
-    this._serviceTradingProxy
-      .getMemberDetailRequest(
-        data.id
-      )
-      .subscribe(result => {
+    if (!this.openDialog) {
+      this.openDialog = true;
+      this._serviceTradingProxy.getMemberDetailRequest(data.id).subscribe(result => {
         this.openDialogDetailPurchaseSale(result.tradingRequestMemberDto, data.type);
+        this.openDialog = false;
+        this.selectRecordId = -1;
       });
+    }
   }
 
   private openDialogDetailPurchaseSale(dataDetail, type): void {

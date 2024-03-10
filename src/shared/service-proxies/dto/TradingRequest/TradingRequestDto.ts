@@ -11,7 +11,7 @@ export class TradingRequestDto implements ITradingRequestDto {
     type!: RequestType;
     price!: number;
     amount!: number;
-    cost!: number;
+    total!: number;
     status!: RequestStatus;
     folio!: string;
     tradingCryptoCurrencyId!: number;
@@ -45,7 +45,7 @@ export class TradingRequestDto implements ITradingRequestDto {
             this.type = _data['type'];
             this.price = _data['price'];
             this.amount = _data['amount'];
-            this.cost = _data['cost'];
+            this.total = _data['total'];
             this.status = _data['status'];
             this.folio = _data['folio'];
             this.tradingCryptoCurrencyId = _data['tradingCryptoCurrencyId'];
@@ -67,7 +67,7 @@ export class TradingRequestDto implements ITradingRequestDto {
         data['type'] = this.type;
         data['price'] = this.price;
         data['amount'] = this.amount;
-        data['cost'] = this.cost;
+        data['total'] = this.total;
         data['status'] = this.status;
         data['folio'] = this.folio;
         data['tradingCryptoCurrencyId'] = this.tradingCryptoCurrencyId;

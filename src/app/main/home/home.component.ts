@@ -26,6 +26,7 @@ import { MemberStatus } from '@shared/service-proxies/enum/Members/MemberStatus.
 import { DialogDefaultComponent } from '@app/shared/components/dialog/dialog-default/dialog-default.component';
 import { MemberType } from '@shared/service-proxies/enum/Members/MemberType.enum';
 import { MenuModule } from 'primeng/menu';
+import { RequestType as TradingRequest } from '@shared/service-proxies/enum/Trading/RequestType.enum';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -66,6 +67,7 @@ export class HomeComponent extends AppComponentBase implements OnInit, AfterView
   wrapperHeight = 0;
   wrapperMobileTopPosition: string;
   runInterval = false;
+  tradingRequest = TradingRequest;
 
   constructor(
     injector: Injector,
@@ -145,10 +147,10 @@ export class HomeComponent extends AppComponentBase implements OnInit, AfterView
     this.amount = 0;
     this.currency = '';
     this.menuItems = [
-      { label: this.l('Investments') },
       { label: this.l('Market') },
       { label: this.l('Portfolio') },
-      { label: this.l('Historic') }
+      { label: this.l('Historic') },
+      { label: this.l('Investments') }
     ];
 
     this.menuItemsHistory = [
@@ -208,7 +210,7 @@ export class HomeComponent extends AppComponentBase implements OnInit, AfterView
     ];
   }
 
-  showDialogBuySell(index: number, cryptoCurrencyId?: number) {
+  showDialogBuySell(index: number, tradingRequest: TradingRequest, cryptoCurrencyId?: number) {
     if (this.statusMember === MemberStatus.Register) {
       this.openMessageDialogVerifyAccount();
     } else if (this.statusMember === MemberStatus.Pending || this.statusMember === MemberStatus.Review) {
@@ -223,7 +225,8 @@ export class HomeComponent extends AppComponentBase implements OnInit, AfterView
         styleClass: 'ae-dialog ae-dialog--operations ae-dialog--sm',
         data: {
           activeIndex: index,
-          activeCryptoCurrencyId: cryptoCurrencyId
+          activeCryptoCurrencyId: cryptoCurrencyId,
+          requestType: tradingRequest
         },
       });
       const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);
@@ -340,7 +343,7 @@ export class HomeComponent extends AppComponentBase implements OnInit, AfterView
           this.showDialogDepositWithdraw(0);
           break;
         case 'history-fiat':
-          this.activeItem = this.menuItems[3];
+          this.activeItem = this.menuItems[2];
           this.activeItemHistory = this.menuItemsHistory[1];
           break;
       }
