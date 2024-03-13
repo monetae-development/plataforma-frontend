@@ -12,9 +12,9 @@ import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 
 import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
-
 import { DateTime, Duration } from "luxon";
 import { Helpers } from './service-helpers';
+import { GetAllVaultAssetsForQRMenuDto } from './dto/Transactions/GetAllVaultAssetsForQRMenuDto';
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
@@ -37519,6 +37519,7 @@ export interface IGetCatTransactionTypeForViewDto {
 export class GetCurrentLoginInformationsOutput implements IGetCurrentLoginInformationsOutput {
     user!: UserLoginInfoDto;
     role!: UserLoginRoleDto;
+    cryptoAddresses: GetAllVaultAssetsForQRMenuDto[];
     impersonatorUser!: UserLoginInfoDto;
     tenant!: TenantLoginInfoDto;
     impersonatorTenant!: TenantLoginInfoDto;
@@ -37538,6 +37539,12 @@ export class GetCurrentLoginInformationsOutput implements IGetCurrentLoginInform
         if (_data) {
             this.user = _data["user"] ? UserLoginInfoDto.fromJS(_data["user"]) : <any>undefined;
             this.role = _data["role"] ? UserLoginRoleDto.fromJS(_data["role"]) : <any>undefined;
+            if (Array.isArray(_data['cryptoAddresses'])) {
+                this.cryptoAddresses = [] as any;
+                for (let item of _data['cryptoAddresses']) {
+                    this.cryptoAddresses?.push(GetAllVaultAssetsForQRMenuDto.fromJS(item));
+                }
+            }
             this.impersonatorUser = _data["impersonatorUser"] ? UserLoginInfoDto.fromJS(_data["impersonatorUser"]) : <any>undefined;
             this.tenant = _data["tenant"] ? TenantLoginInfoDto.fromJS(_data["tenant"]) : <any>undefined;
             this.impersonatorTenant = _data["impersonatorTenant"] ? TenantLoginInfoDto.fromJS(_data["impersonatorTenant"]) : <any>undefined;
@@ -37557,6 +37564,12 @@ export class GetCurrentLoginInformationsOutput implements IGetCurrentLoginInform
         data = typeof data === 'object' ? data : {};
         data["user"] = this.user ? this.user.toJSON() : <any>undefined;
         data["role"] = this.role ? this.role.toJSON() : <any>undefined;
+        if (Array.isArray(this.cryptoAddresses)) {
+            data['cryptoAddresses'] = [];
+            for (let item of this.cryptoAddresses) {
+                data['cryptoAddresses'].push(item.toJSON());
+            }
+        }
         data["impersonatorUser"] = this.impersonatorUser ? this.impersonatorUser.toJSON() : <any>undefined;
         data["tenant"] = this.tenant ? this.tenant.toJSON() : <any>undefined;
         data["impersonatorTenant"] = this.impersonatorTenant ? this.impersonatorTenant.toJSON() : <any>undefined;
@@ -37569,6 +37582,7 @@ export class GetCurrentLoginInformationsOutput implements IGetCurrentLoginInform
 export interface IGetCurrentLoginInformationsOutput {
     user: UserLoginInfoDto;
     role: UserLoginRoleDto;
+    cryptoAddresses: GetAllVaultAssetsForQRMenuDto[];
     impersonatorUser: UserLoginInfoDto;
     tenant: TenantLoginInfoDto;
     impersonatorTenant: TenantLoginInfoDto;

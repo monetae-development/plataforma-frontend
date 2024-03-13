@@ -79,7 +79,7 @@ export class MySettingsModalComponent extends AppComponentBase implements OnInit
             this.isPhoneNumberConfirmed = result.isPhoneNumberConfirmed;
             this.savedPhoneNumber = result.phoneNumber;
         });
-        console.log('TEST');
+
         this._serviceCommonProxy.getSelectOptions('MntMemberDataComplements/GetAllCountryPhoneCodesForSelect', null).subscribe((result) => {
             this.personalDataPhones = result.items;
             this.flags = [];

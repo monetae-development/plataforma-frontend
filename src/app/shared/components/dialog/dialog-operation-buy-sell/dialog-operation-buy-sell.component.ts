@@ -69,7 +69,11 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
   ) {
     super(injector);
     this.activeIndex = config.data?.activeIndex;
-    this.requestType = config.data?.requestType;
+    if (this.activeIndex === 0) {
+      this.requestType = RequestType.Purchase;
+    } else {
+      this.requestType = RequestType.Sale;
+    }
     this.activeCryptoCurrencyId = config.data?.activeCryptoCurrencyId;
     this.cryptoBalanceLoaded = false;
     this.purchaseForm = this._buildPurchaseForm();
@@ -268,6 +272,11 @@ export class DialogOperationBuySellComponent extends AppComponentBase implements
         this.activeIndex = i;
         break;
       }
+    }
+    if (this.activeIndex === 0) {
+      this.requestType = RequestType.Purchase;
+    } else {
+      this.requestType = RequestType.Sale;
     }
   }
 

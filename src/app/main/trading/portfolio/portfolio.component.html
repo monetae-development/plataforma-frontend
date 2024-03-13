@@ -123,7 +123,7 @@
                         <div class="flex align-items-center justify-content-center">
                             <i
                                 class="pi pi-ellipsis-v ae-cursor-pointer"
-                                (click)="selectedRecord = record.tradingCryptoCurrencyId; menu.toggle($event)"
+                                (click)="selectedRecord = record; menu.toggle($event)"
                             ></i>
                             <p-menu #menu [model]="itemsMenu" [popup]="true" class="ae-menuoptions"></p-menu>
                         </div>

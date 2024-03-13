@@ -60,25 +60,59 @@
             </div>
         </div>
 
-        <!-- QR Wallet 
-        <div class="separator my-2"></div>
-        <div class="pt-4 pb-4">
+        <!-- QR Wallet -->
+        <div class="separator my-2" *ngIf="menuItemsCryptoAddresses != undefined"></div>
+
+        <p-menu
+            #menuCryptoAddresses
+            id="menuCryptoAddresses"
+            [model]="menuItemsCryptoAddresses"
+            [popup]="true"
+            (onShow)="onShowMenu($event)"
+            (onHide)="onHiddenMenu($event)"
+            [class.show-menu]="isShowMenu"
+            [class.hide-menu]="!isShowMenu"
+        ></p-menu>
+
+        <div class="menu-item px-12 d-flex justify-content-between" *ngIf="menuItemsCryptoAddresses != undefined">
+            <div class="d-flex align-items-center">
+                <span class="menu-icon mr-3">
+                    <img
+                        src="/assets/crypto-icons/{{ cryptoAddressSelected.label | lowercase }}.png"
+                        class="crypto-icon-table"
+                        alt="{{ cryptoAddressSelected.label }}"
+                    />
+                </span>
+                <span class="menu-title">
+                    {{ cryptoAddressSelected.name }}
+                </span>
+                <span class="ae-text-default ae-text-dark fw-normal ms-2">
+                    {{ cryptoAddressSelected.label }}
+                </span>
+            </div>
+
+            <span>
+                <i class="btn m-0 p-0 fa fa-angle-down" (click)="menuCryptoAddresses.toggle($event)"></i>
+            </span>
+        </div>
+        <div class="pt-4 pb-4" *ngIf="menuItemsCryptoAddresses != undefined">
             <div class="text-center">
-                <img src="/assets/qr_wallet.png" class="w-30 mb-3" />
+                <img
+                    src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{
+                        cryptoAddressSelected.address
+                    }}"
+                    class="w-30 mb-3"
+                />
             </div>
             <div class="text-center flex align-items-center justify-content-center">
-                <a
-                    href="https://mumbai.polygonscan.com/address/0x0dE463E70a2007B614D6f02674602a38D628E619"
-                    target="_blank"
-                    class="ae-text-gris-dark ae-text-default mr-3 fw-normal"
-                >
-                    pgLekNV9oqDAfACG...MfGbKJ
-                </a>
-                <div class="ae-menu--icon">
+                <span target="_blank" class="ae-text-gris-dark ae-text-default mr-3 fw-normal short-cryptoAddress">
+                    {{ cryptoAddressSelected.address }}
+                </span>
+                <a class="ae-menu--icon" href="javascript:;" (click)="copyAddress(cryptoAddressSelected.address)">
                     <i class="pi pi-copy ae-text-default ae-text-dark"></i>
-                </div>
+                </a>
             </div>
-        </div>-->
+        </div>
         <div class="separator my-2"></div>
         <!-- Back to My Account -->
         <div *ngIf="isImpersonatedLogin" class="menu-item px-5" id="UserProfileBackToMyAccountButton">

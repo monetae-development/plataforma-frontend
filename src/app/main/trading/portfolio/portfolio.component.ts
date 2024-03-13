@@ -12,6 +12,7 @@ import { RequestStatus } from '@shared/service-proxies/enum/Trading/RequestStatu
 import { ServiceMembersProxy } from '@shared/service-proxies/service-members-proxies';
 import { SessionServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ServiceTradingProxy } from '@shared/service-proxies/service-trading-proxies';
+import { GetTradingRequestsForPortfolioDto } from '@shared/service-proxies/dto/mntMemberTrading/GetTradingRequestsForPortfolioDto';
 import { DateTime } from 'luxon';
 import { LazyLoadEvent, MenuItem } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -36,7 +37,7 @@ export class TradingPortfolioComponent extends AppComponentBase implements OnIni
   total = 6;
   items: any = [];
   statusMember: number;
-  selectedRecord: number;
+  selectedRecord: GetTradingRequestsForPortfolioDto;
 
   primengTableHelper = new PrimengTableHelper();
 
@@ -98,7 +99,7 @@ export class TradingPortfolioComponent extends AppComponentBase implements OnIni
     return parsedDate.toFormat('dd/MM/yy');
   }
 
-  showDialogBuySell(index: number, cryptoCurrencyId?: number) {
+  showDialogBuySell(index: number, record: GetTradingRequestsForPortfolioDto) {
     if (this.statusMember === MemberStatus.Register) {
       this.openMessageDialogVerifyAccount();
     } else if (this.statusMember === MemberStatus.Pending || this.statusMember === MemberStatus.Review) {
@@ -113,7 +114,7 @@ export class TradingPortfolioComponent extends AppComponentBase implements OnIni
         styleClass: 'ae-dialog ae-dialog--operations ae-dialog--sm',
         data: {
           activeIndex: index,
-          activeCryptoCurrencyId: cryptoCurrencyId
+          activeCryptoCurrencyId: record.tradingCryptoCurrencyId
         },
       });
       const dialogRef = this._dialogService.dialogComponentRefMap.get(ref);

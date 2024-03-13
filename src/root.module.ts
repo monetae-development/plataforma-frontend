@@ -26,6 +26,7 @@ import { API_BASE_URL as API_BASE_URL_MEMBERS } from '@shared/service-proxies/se
 import { API_BASE_URL as API_BASE_URL_TRADING } from '@shared/service-proxies/service-trading-proxies';
 import { API_BASE_URL as API_BASE_URL_OTC } from '@shared/service-proxies/service-otc-proxies';
 import { API_BASE_URL as API_BASE_URL_TRADING_REQUEST } from '@shared/service-proxies/service-trading-requests-proxies';
+import { API_BASE_URL as API_BASE_URL_TRANSACTIONS } from '@shared/service-proxies/service-transaction-proxies';
 import { API_BASE_URL as API_BASE_URL_SETTINGS_PLATFORM } from '@shared/service-proxies/service-settings-platform-proxies';
 import { ServiceProxyModule } from '@shared/service-proxies/service-proxy.module';
 import * as localForage from 'localforage';
@@ -285,6 +286,7 @@ function handleLogoutRequest(authService: AppAuthService) {
         { provide: API_BASE_URL_TRADING, useFactory: getRemoteServiceBaseUrl },
         { provide: API_BASE_URL_OTC, useFactory: getRemoteServiceBaseUrl },
         { provide: API_BASE_URL_TRADING_REQUEST, useFactory: getRemoteServiceBaseUrl },
+        { provide: API_BASE_URL_TRANSACTIONS, useFactory: getRemoteServiceBaseUrl },
         { provide: API_BASE_URL_SETTINGS_PLATFORM, useFactory: getRemoteServiceBaseUrl },
         {
             provide: APP_INITIALIZER,

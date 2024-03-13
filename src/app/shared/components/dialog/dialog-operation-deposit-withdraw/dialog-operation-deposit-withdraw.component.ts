@@ -186,8 +186,6 @@ export class DialogOperationDepositWithdrawComponent extends AppComponentBase im
   saveDeposit(): void {
     this.saving = true;
     this.fiatDeposit.fileGuid = this.fileGuid;
-    console.log(this.fileGuid);
-    console.log(this.fiatDeposit);
     this._serviceMemberProxy.createFiatDepositByMember(this.fiatDeposit)
       .pipe(finalize(() => {
         this.saving = false;

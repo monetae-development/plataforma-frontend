@@ -1,256 +1,224 @@
 <div class="ae-tabs">
-  <p-tabMenu
-      [model]="menuItems"
-      [activeItem]="activeItem"
-      (activeItemChange)="onActiveItemChange($event)"
-  ></p-tabMenu>
+    <p-tabMenu
+        [model]="menuItems"
+        [activeItem]="activeItem"
+        (activeItemChange)="onActiveItemChange($event)"
+    ></p-tabMenu>
 </div>
 <div class="ae-tabs__container" *ngIf="activeItem.label == 'Enviar'">
-  <div class="ae-tabs__container--content">
-    <p class="ae-text-dark ae-text-default">Registre la siguiente información para realizar una solicitud de envió.</p>
-    <form [formGroup]="sendForm">
-      <div class="ae-select">
-        <label>{{ l('Seleccionar activo') }}</label>
-        <p-dropdown
-            [options]="cryptoAssets"
-            optionLabel="label"
-            [formControl]="cryptoAssetIdControl"
-            placeholder="{{ l('SelectTreeDots') }}"
-            [showClear]="true"
-            [filter]="true"
-            (onChange)="onChangeCurrencySend($event)"
-            required
+    <div class="ae-tabs__container--content">
+        <p class="ae-text-dark ae-text-default">
+            Registre la siguiente información para realizar una solicitud de envió.
+        </p>
+        <form [formGroup]="sendForm">
+            <div class="ae-select">
+                <label>{{ l('Seleccionar activo') }}</label>
+                <p-dropdown
+                    [options]="cryptoAssets"
+                    optionLabel="label"
+                    [formControl]="cryptoAssetIdControl"
+                    placeholder="{{ l('SelectTreeDots') }}"
+                    [showClear]="true"
+                    (onChange)="onChangeCurrencySend($event)"
+                    required
+                >
+                    <ng-template pTemplate="selectedItem">
+                        <div class="flex align-items-center" *ngIf="cryptoAssetIdControl">
+                            <div class="mr-3">
+                                <img
+                                    src="/assets/crypto-icons/{{
+                                        cryptoAssetIdControl.value?.subtitle.toLowerCase()
+                                    }}.png"
+                                    style="width: 28px"
+                                />
+                            </div>
+                            <div class="flex align-items-center">
+                                <span class="mr-2 ae-text-dark ae-text-default fw-semibold">
+                                    {{ cryptoAssetIdControl.value?.label }}
+                                </span>
+                                <span class="ae-text-gris-dark ae-text-default fw-semibold">
+                                    {{ cryptoAssetIdControl.value?.subtitle }}
+                                </span>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-coin pTemplate="item">
+                        <div class="d-flex align-items-center">
+                            <div class="mr-3">
+                                <img
+                                    src="/assets/crypto-icons/{{ coin.subtitle.toLowerCase() }}.png"
+                                    style="width: 28px"
+                                />
+                            </div>
+                            <div class="flex flex-column">
+                                <span class="ae-text-dark ae-text-default fw-semibold">{{ coin.label }}</span>
+                                <span class="ae-text-gris-dark ae-text-default">{{ coin.subtitle }}</span>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+            <div class="ae-input">
+                <label htmlFor="address">{{ l('Enviar a / Direccion de wallet') }}</label>
+                <input
+                    id="address"
+                    name="address"
+                    type="text"
+                    class="form-control m-input"
+                    pInputText
+                    [formControl]="addressControl"
+                />
+            </div>
+            <div class="ae-select">
+                <label>{{ l('Seleccionar red') }}</label>
+                <p-dropdown
+                    [options]="blockchainNetworks"
+                    optionLabel="label"
+                    [formControl]="blockchainNetworkIdControl"
+                    placeholder="{{ l('SelectTreeDots') }}"
+                    [showClear]="true"
+                    required
+                ></p-dropdown>
+            </div>
+            <div class="ae-inputnumber">
+                <label htmlFor="amount">{{ l('Ingresar cantidad') }}</label>
+                <div class="ae-inputnumber__group">
+                    <div class="ae-inputnumber__coin flex align-items-center" *ngIf="coinSubtitle">
+                        <span class="ae-text-light">{{ coinSubtitle }}</span>
+                    </div>
+                    <p-inputNumber
+                        [ngClass]="{ 'p-inputNumber--space': coinSubtitle }"
+                        name="amount"
+                        [formControl]="amountControl"
+                        inputmode="decimal"
+                        mode="decimal"
+                        locale="en-US"
+                        [minFractionDigits]="0"
+                        [maxFractionDigits]="9"
+                        [min]="0"
+                        (onInput)="amountOnChange($event)"
+                        required
+                    ></p-inputNumber>
+                    <div class="ae-inputnumber__max flex align-items-center" (click)="setMaxAmount()">
+                        <span class="mr-3 ae-text-gris ae-text-default">MAX</span>
+                        <i class="pi pi-arrow-right-arrow-left ae-text-gris"></i>
+                    </div>
+                </div>
+                <small class="ae-text-gris-dark ae-text-small">{{ l('Saldo disponible:') }} {{ amount }}</small>
+            </div>
+        </form>
+        <small class="block ae-text-gris-dark ae-text-small fw-normal">
+            Por favor, asegúrate de elegir la criptomoneda y red correcta al realizar una transacción.
+        </small>
+        <small class="block ae-text-gris-dark ae-text-small fw-normal">
+            Si envías criptomonedas a una dirección equivocada, podrías perder tus activos.
+        </small>
+    </div>
+    <div class="ae-tabs__container--actions">
+        <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
+        <button
+            type="button"
+            class="ae-button ae-button--component ae-button--primary"
+            [disabled]="sendForm.invalid"
+            (click)="onContinue()"
         >
-            <ng-template pTemplate="selectedItem">
-                <div class="flex align-items-center" *ngIf="cryptoAssetIdControl">
-                    <div class="mr-3">
-                        <img
-                          src="/assets/crypto-icons/{{ cryptoAssetIdControl.value?.subtitle.toLowerCase() }}.png" 
-                          style="width: 28px"
-                        />
-                    </div>
-                    <div class="flex align-items-center">
-                        <span class="mr-2 ae-text-dark ae-text-default fw-semibold">{{ cryptoAssetIdControl.value?.label }}</span>
-                        <span class=" ae-text-gris-dark ae-text-default fw-semibold">{{ cryptoAssetIdControl.value?.subtitle }}</span>
-                    </div>
-                </div>
-            </ng-template>
-            <ng-template let-coin pTemplate="item">
-                <div class="d-flex align-items-center">
-                    <div class="mr-3">
-                        <img 
-                          src="/assets/crypto-icons/{{ coin.subtitle.toLowerCase() }}.png" 
-                          style="width: 28px"/>
-                    </div>
-                    <div class="flex flex-column">
-                        <span class="ae-text-dark ae-text-default fw-semibold">{{ coin.label }}</span>
-                        <span class="ae-text-gris-dark ae-text-default">{{ coin.subtitle }}</span>
-                    </div>
-                </div>
-            </ng-template>
-        </p-dropdown>
-      </div>
-      <div class="ae-input">
-        <label htmlFor="address">{{ l('Enviar a / Direccion de wallet') }}</label>
-        <input 
-          id="address" 
-          name="address" 
-          type="text" 
-          class="form-control m-input" 
-          pInputText
-          [formControl]="addressControl"
-        />
-      </div>
-      <div class="ae-select">
-        <label>{{ l('Seleccionar red') }}</label>
-        <p-dropdown
-            [options]="blockchainNetwortks"
-            optionLabel="label"
-            [formControl]="blockchainNetworkIdControl"
-            placeholder="{{ l('SelectTreeDots') }}"
-            [showClear]="true"
-            [filter]="true"
-            required
-        >
-            <ng-template pTemplate="selectedItem">
-                <div class="flex align-items-center" *ngIf="blockchainNetworkIdControl">
-                    <div class="mr-3">
-                        <img
-                          src="/assets/crypto-icons/{{ blockchainNetworkIdControl.value?.subtitle.toLowerCase() }}.png" 
-                          style="width: 28px"
-                        />
-                    </div>
-                    <div class="flex align-items-center">
-                      <span class="mr-2 ae-text-dark ae-text-default fw-semibold">{{ blockchainNetworkIdControl.value?.label }}</span>
-                      <span class=" ae-text-gris-dark ae-text-default fw-semibold">{{ blockchainNetworkIdControl.value?.subtitle }}</span>
-                    </div>
-                </div>
-            </ng-template>
-            <ng-template let-coin pTemplate="item">
-                <div class="flex align-items-center">
-                    <div class="mr-3">
-                        <img 
-                          src="/assets/crypto-icons/{{ coin.subtitle.toLowerCase() }}.png" 
-                          style="width: 28px"/>
-                    </div>
-                    <div class="flex flex-column">
-                      <span class="ae-text-dark ae-text-default">{{ coin.label }}</span>
-                      <span class="ae-text-gris-dark ae-text-default">{{ coin.subtitle }}</span>
-                    </div>
-                </div>
-            </ng-template>
-        </p-dropdown>
-      </div>
-      <div class="ae-inputnumber">
-        <label htmlFor="amount">{{ l('Ingresar cantidad') }}</label>
-        <div class="ae-inputnumber__group">
-          <div class="ae-inputnumber__coin flex align-items-center" *ngIf="coinSubtitle">
-            <span class="ae-text-light">{{ coinSubtitle }}</span>
-          </div>
-          <p-inputNumber
-            [ngClass]="{'p-inputNumber--space' : coinSubtitle}"
-            name="amount"
-            [formControl]="amountControl"
-            inputmode="decimal"
-            mode="decimal"
-            locale="en-US"
-            [minFractionDigits]="0"
-            [maxFractionDigits]="9"
-            [min]="0"
-            (onInput)="amountOnChange($event)"
-            required
-          >
-          </p-inputNumber>
-          <div class="ae-inputnumber__max flex align-items-center" (click)="setMaxAmount()">
-            <span class="mr-3 ae-text-gris ae-text-default">MAX</span>
-            <i class="pi pi-arrow-right-arrow-left ae-text-gris"></i>
-          </div>
-        </div>
-        <small class="ae-text-gris-dark ae-text-small">{{ l('Saldo disponible:') }} {{ amount }} </small>
-      </div>
-    </form>
-    <small class="block ae-text-gris-dark ae-text-small fw-normal">Por favor, asegúrate de elegir la criptomoneda y red correcta al realizar una transacción.</small>
-    <small class="block ae-text-gris-dark ae-text-small fw-normal">Si envías criptomonedas a una dirección equivocada, podrías perder tus activos.</small>
-  </div>
-  <div class="ae-tabs__container--actions">
-    <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
-    <button
-      type="button"
-      class="ae-button ae-button--component ae-button--primary" 
-      [disabled]="sendForm.invalid" 
-      (click)="onContinue()">
-      Continuar
-    </button>
-  </div>
+            Continuar
+        </button>
+    </div>
 </div>
 <div class="ae-tabs__container" *ngIf="activeItem.label == 'Recibir'">
-  <div class="ae-tabs__container--content">
-    <p class="ae-text-dark ae-text-default">Registre la siguiente información para realizar una solicitud de recibida.</p>
-    <form [formGroup]="receiveForm">
-      <div class="ae-select">
-        <label>{{ l('Seleccionar activo') }}</label>
-        <p-dropdown
-            [options]="cryptoAssets"
-            optionLabel="label"
-            [formControl]="cryptoAssetIdReceiveControl"
-            placeholder="{{ l('SelectTreeDots') }}"
-            [showClear]="true"
-            [filter]="true"
-            (onChange)="onChangeCurrency($event)"
-            required
-        >
-            <ng-template pTemplate="selectedItem">
-                <div class="flex align-items-center" *ngIf="cryptoAssetIdReceiveControl">
-                    <div class="mr-3">
-                        <img
-                          src="/assets/crypto-icons/{{ cryptoAssetIdReceiveControl.value?.subtitle.toLowerCase() }}.png" 
-                          style="width: 28px"
-                        />
-                    </div>
-                    <div class="flex align-items-center">
-                        <span class="mr-2 ae-text-dark ae-text-default fw-semibold">{{ cryptoAssetIdReceiveControl.value?.label }}</span>
-                        <span class=" ae-text-gris-dark ae-text-default fw-semibold">{{ cryptoAssetIdReceiveControl.value?.subtitle }}</span>
-                    </div>
-                </div>
-            </ng-template>
-            <ng-template let-coin pTemplate="item">
-                <div class="d-flex align-items-center">
-                    <div class="mr-3">
-                        <img 
-                          src="/assets/crypto-icons/{{ coin.subtitle.toLowerCase() }}.png" 
-                          style="width: 28px"/>
-                    </div>
-                    <div class="flex flex-column">
-                        <span class="ae-text-dark ae-text-default fw-semibold">{{ coin.label }}</span>
-                        <span class="ae-text-gris-dark ae-text-default">{{ coin.subtitle }}</span>
-                    </div>
-                </div>
-            </ng-template>
-        </p-dropdown>
-      </div>
-      <div class="ae-select">
-        <label>{{ l('Seleccionar red') }}</label>
-        <p-dropdown
-            [options]="blockchainNetwortks"
-            optionLabel="label"
-            [formControl]="blockchainNetworkIdReceiveControl"
-            placeholder="{{ l('SelectTreeDots') }}"
-            [showClear]="true"
-            [filter]="true"
-            (onChange)="onChangeCurrency($event)"
-            required
-        >
-            <ng-template pTemplate="selectedItem">
-                <div class="flex align-items-center" *ngIf="blockchainNetworkIdReceiveControl">
-                    <div class="mr-3">
-                        <img
-                          src="/assets/crypto-icons/{{ blockchainNetworkIdReceiveControl.value?.subtitle.toLowerCase() }}.png" 
-                          style="width: 28px"
-                        />
-                    </div>
-                    <div class="flex align-items-center">
-                      <span class="mr-2 ae-text-dark ae-text-default fw-semibold">{{ blockchainNetworkIdReceiveControl.value?.label }}</span>
-                      <span class=" ae-text-gris-dark ae-text-default fw-semibold">{{ blockchainNetworkIdReceiveControl.value?.subtitle }}</span>
-                    </div>
-                </div>
-            </ng-template>
-            <ng-template let-coin pTemplate="item">
-                <div class="flex align-items-center">
-                    <div class="mr-3">
-                        <img 
-                          src="/assets/crypto-icons/{{ coin.subtitle.toLowerCase() }}.png" 
-                          style="width: 28px"/>
-                    </div>
-                    <div class="flex flex-column">
-                      <span class="ae-text-dark ae-text-default">{{ coin.label }}</span>
-                      <span class="ae-text-gris-dark ae-text-default">{{ coin.subtitle }}</span>
-                    </div>
-                </div>
-            </ng-template>
-        </p-dropdown>
-        <div class="ae-qr" *ngIf="address">
-          <div class="ae-qr__image">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data={{ address }}" alt="Monetae">
-          </div>
-          <div class="ae-qr__text flex align-items-center">
-            <p class="ae-text-default ae-text-gris-dark m-0 fw-normal">{{ address }}</p>
-            <div class="ae-icon flex align-items-center justify-content-center" (click)="copyAddress()">
-              <i class="pi pi-copy ae-text-default ae-text-dark"></i>
+    <div class="ae-tabs__container--content">
+        <p class="ae-text-dark ae-text-default">
+            Registre la siguiente información para realizar una solicitud de recibida.
+        </p>
+        <form [formGroup]="receiveForm">
+            <div class="ae-select">
+                <label>{{ l('Seleccionar activo') }}</label>
+                <p-dropdown
+                    [options]="cryptoAssets"
+                    optionLabel="label"
+                    [formControl]="cryptoAssetIdReceiveControl"
+                    placeholder="{{ l('SelectTreeDots') }}"
+                    [showClear]="true"
+                    [filter]="true"
+                    (onChange)="onChangeCurrency($event)"
+                    required
+                >
+                    <ng-template pTemplate="selectedItem">
+                        <div class="flex align-items-center" *ngIf="cryptoAssetIdReceiveControl">
+                            <div class="mr-3">
+                                <img
+                                    src="/assets/crypto-icons/{{
+                                        cryptoAssetIdReceiveControl.value?.subtitle.toLowerCase()
+                                    }}.png"
+                                    style="width: 28px"
+                                />
+                            </div>
+                            <div class="flex align-items-center">
+                                <span class="mr-2 ae-text-dark ae-text-default fw-semibold">
+                                    {{ cryptoAssetIdReceiveControl.value?.label }}
+                                </span>
+                                <span class="ae-text-gris-dark ae-text-default fw-semibold">
+                                    {{ cryptoAssetIdReceiveControl.value?.subtitle }}
+                                </span>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-coin pTemplate="item">
+                        <div class="d-flex align-items-center">
+                            <div class="mr-3">
+                                <img
+                                    src="/assets/crypto-icons/{{ coin.subtitle.toLowerCase() }}.png"
+                                    style="width: 28px"
+                                />
+                            </div>
+                            <div class="flex flex-column">
+                                <span class="ae-text-dark ae-text-default fw-semibold">{{ coin.label }}</span>
+                                <span class="ae-text-gris-dark ae-text-default">{{ coin.subtitle }}</span>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
             </div>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
-  <div class="ae-tabs__container--actions mt-10">
-    <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
-    <button 
-      type="button"
-      *ngIf="actionsReceive" 
-      class="ae-button ae-button--component ae-button--primary" 
-      [disabled]="receiveForm.invalid || isDisabled" 
-      (click)="onReceive()">
-      Generar QR
-    </button>
-  </div>
+            <div class="ae-select">
+                <label>{{ l('Seleccionar red') }}</label>
+                <p-dropdown
+                    [options]="blockchainNetworks"
+                    optionLabel="label"
+                    [formControl]="blockchainNetworkIdReceiveControl"
+                    placeholder="{{ l('SelectTreeDots') }}"
+                    [showClear]="true"
+                    [filter]="true"
+                    (onChange)="onChangeCurrency($event)"
+                    required
+                ></p-dropdown>
+                <div class="ae-qr" *ngIf="address">
+                    <div class="ae-qr__image">
+                        <img
+                            src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data={{ address }}"
+                            alt="Monetae"
+                        />
+                    </div>
+                    <div class="ae-qr__text flex align-items-center">
+                        <p class="ae-text-default ae-text-gris-dark m-0 fw-normal">{{ address }}</p>
+                        <div class="ae-icon flex align-items-center justify-content-center" (click)="copyAddress()">
+                            <i class="pi pi-copy ae-text-default ae-text-dark"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="ae-tabs__container--actions mt-10">
+        <p-button label="Cancelar" class="ae-button ae-button--default" (click)="onCancel()"></p-button>
+        <button
+            type="button"
+            *ngIf="actionsReceive"
+            class="ae-button ae-button--component ae-button--primary"
+            [disabled]="receiveForm.invalid || isDisabled"
+            (click)="onReceive()"
+        >
+            Generar QR
+        </button>
+    </div>
 </div>

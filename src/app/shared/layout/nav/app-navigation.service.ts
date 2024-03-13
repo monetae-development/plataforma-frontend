@@ -15,10 +15,10 @@ export class AppNavigationService {
     getMenu(): AppMenu {
         return new AppMenu('MainMenu', 'MainMenu', [
             new AppMenuItem('Home', 'Pages.Tenant.Dashboard', 'flaticon-line-graph', '/app/main/dashboard'),
-            new AppMenuItem('MyBankAccounts', 'Pages.MntMemberBankAccounts', 'fas fa-wallet', '/app/main/members/mntMemberBankAccounts'),
-            new AppMenuItem('OTCTradingTitle', 'Pages.OTCTrading', 'fa fa-exchange', '/app/main/otc/trading'),
-            new AppMenuItem('MntMemberDataComplements', 'Pages.MntMemberDataComplements', 'far fa-address-card', '/app/main/members/mntMemberDataComplements'),
-            new AppMenuItem('MntMemberFiat', 'Pages.MntMemberFiat', 'fa fa-coins', '/app/main/members/mntMemberFiat'),
+            //new AppMenuItem('MyBankAccounts', 'Pages.MntMemberBankAccounts', 'fas fa-wallet', '/app/main/members/mntMemberBankAccounts'),
+            //new AppMenuItem('OTCTradingTitle', 'Pages.OTCTrading', 'fa fa-exchange', '/app/main/otc/trading'),
+            //new AppMenuItem('MntMemberDataComplements', 'Pages.MntMemberDataComplements', 'far fa-address-card', '/app/main/members/mntMemberDataComplements'),
+            //new AppMenuItem('MntMemberFiat', 'Pages.MntMemberFiat', 'fa fa-coins', '/app/main/members/mntMemberFiat'),
             new AppMenuItem(
                 'Dashboard',
                 'Pages.Administration.Host.Dashboard',

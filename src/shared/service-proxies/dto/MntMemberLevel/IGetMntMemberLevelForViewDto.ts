@@ -7,5 +7,8 @@ export interface IGetMntMemberLevelForViewDto {
     fiatWithdrawalMax: number | undefined;
     tradingPurchaseFee: number | undefined;
     tradingSaleFee: number | undefined;
+    transactionSendFee: number | undefined;
+    transactionSendMin: number | undefined;
+    transactionSendMax: number | undefined;
     default: boolean;
 }

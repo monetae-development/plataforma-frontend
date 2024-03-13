@@ -155,6 +155,80 @@
                 </div>
             </div>
         </p-tabPanel>
+        <p-tabPanel>
+            <ng-template pTemplate="header">
+                <span>{{ l('Sending') }}</span>
+            </ng-template>
+            <div class="row">
+                <h6 class="mb-4">{{ l('MemberPerson') }}</h6>
+                <div class="col-xl-6">
+                    <div class="form-group mb-10">
+                        <div class="input-group">
+                            <label class="input-group-text" id="inputGroup-sizing-default">
+                                {{ l('TransactionSendFee') }}
+                            </label>
+                            <p-inputNumber
+                                #transactionSendFee="ngModel"
+                                name="transactionSendFee"
+                                class="form-control"
+                                [(ngModel)]="levels.level1.transactionSendFee"
+                                mode="decimal"
+                                locale="en-US"
+                                [minFractionDigits]="0"
+                                [maxFractionDigits]="2"
+                                [min]="0"
+                                required
+                            ></p-inputNumber>
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <validation-messages [formCtrl]="transactionSendFee"></validation-messages>
+                    </div>
+
+                    <div class="form-group mb-10">
+                        <div class="input-group">
+                            <label class="input-group-text" id="inputGroup-sizing-default">
+                                {{ l('TransactionSendMin') }}
+                            </label>
+                            <p-inputNumber
+                                #transactionSendMin="ngModel"
+                                name="transactionSendMin"
+                                class="form-control"
+                                [(ngModel)]="levels.level1.transactionSendMin"
+                                mode="decimal"
+                                locale="en-US"
+                                [minFractionDigits]="0"
+                                [maxFractionDigits]="2"
+                                [min]="0"
+                                required
+                            ></p-inputNumber>
+                            <span class="input-group-text">USD</span>
+                        </div>
+                        <validation-messages [formCtrl]="transactionSendMin"></validation-messages>
+                    </div>
+                    <div class="form-group mb-10">
+                        <div class="input-group">
+                            <label class="input-group-text" id="inputGroup-sizing-default">
+                                {{ l('TransactionSendMax') }}
+                            </label>
+                            <p-inputNumber
+                                #transactionSendMax="ngModel"
+                                name="transactionSendMax"
+                                class="form-control"
+                                [(ngModel)]="levels.level1.transactionSendMax"
+                                mode="decimal"
+                                locale="en-US"
+                                [minFractionDigits]="0"
+                                [maxFractionDigits]="2"
+                                [min]="0"
+                                required
+                            ></p-inputNumber>
+                            <span class="input-group-text">USD</span>
+                        </div>
+                        <validation-messages [formCtrl]="transactionSendMax"></validation-messages>
+                    </div>
+                </div>
+            </div>
+        </p-tabPanel>
     </p-tabView>
     <div class="row justify-content-end mt-5">
         <div class="col-2">

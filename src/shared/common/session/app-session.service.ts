@@ -9,11 +9,13 @@ import {
     UserLoginRoleDto,
     UiCustomizationSettingsDto,
 } from '@shared/service-proxies/service-proxies';
+import { GetAllVaultAssetsForQRMenuDto } from '@shared/service-proxies/dto/Transactions/GetAllVaultAssetsForQRMenuDto';
 
 @Injectable()
 export class AppSessionService {
     private _user: UserLoginInfoDto;
     private _role: UserLoginRoleDto;
+    private _cryptoAddresses: GetAllVaultAssetsForQRMenuDto[];
     private _impersonatorUser: UserLoginInfoDto;
     private _tenant: TenantLoginInfoDto;
     private _impersonatorTenant: TenantLoginInfoDto;
@@ -39,6 +41,10 @@ export class AppSessionService {
 
     get hasClientRole(): boolean {
         return this._role.hasClientRole;
+    }
+
+    get cryptoCurrencies() {
+        return this._cryptoAddresses;
     }
 
     get isOnlyClientRole(): boolean {
@@ -95,6 +101,7 @@ export class AppSessionService {
                         this._application = result.application;
                         this._user = result.user;
                         this._role = result.role;
+                        this._cryptoAddresses = result.cryptoAddresses;
                         this._tenant = result.tenant;
                         this._theme = result.theme;
                         this._impersonatorTenant = result.impersonatorTenant;

@@ -60,6 +60,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { ActiveDelegatedUsersComboComponent } from './shared/layout/topbar/active-delegated-users-combo.component';
 import { DefaultLogoComponent } from './shared/layout/themes/default/default-logo.component';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { MenuModule } from 'primeng/menu';
 
 // Metronic
 import {
@@ -90,7 +91,7 @@ import { AddFriendModalComponent } from './shared/layout/chat/add-friend-modal.c
 import { AddFromDifferentTenantModalComponent } from './shared/layout/chat/add-from-different-tenant-modal.component';
 import { FriendsLookupTableComponent } from './shared/layout/chat/friends-lookup-table.component';
 
-export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
+export const options: Partial<null | IConfig> | (() => Partial<IConfig>) = null;
 @NgModule({
     declarations: [
         AppComponent,
@@ -187,10 +188,11 @@ export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
         AppBsModalModule,
         SubheaderModule,
         ChangeProfilePictureModalModule,
-        NgxMaskModule.forRoot()
+        NgxMaskModule.forRoot(),
+        MenuModule
     ]
 })
-export class AppModule {}
+export class AppModule { }
 
 function appInitializerFactory() {
     return () => {

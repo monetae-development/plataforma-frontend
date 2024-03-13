@@ -48796,6 +48796,24 @@ i.socialmedia-projects{
   top: -1000px !important;
 }
 
+#menuCryptoAddresses.show-menu .p-menu-overlay{
+  position: absolute !important;
+  left: 192px !important;
+  top: 114px !important;
+}
+
+#menuCryptoAddresses.hide-menu .p-menu-overlay{
+  position: absolute !important;
+  top: -1000px !important;
+}
+
+.short-cryptoAddress {
+  width: 230px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .spinner-small{
   height: 16px;
   width: 16px;

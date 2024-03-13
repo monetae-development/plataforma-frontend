@@ -8,6 +8,7 @@ import { API_BASE_URL as API_BASE_URL_COMMON } from '@shared/service-proxies/ser
 import { API_BASE_URL as API_BASE_URL_MEMBERS } from '@shared/service-proxies/service-members-proxies';
 import { API_BASE_URL as API_BASE_URL_OTC } from '@shared/service-proxies/service-otc-proxies';
 import { API_BASE_URL as API_BASE_URL_TRADING_REQUEST } from '@shared/service-proxies/service-trading-requests-proxies';
+import { API_BASE_URL as API_BASE_URL_TRANSACTIONS } from '@shared/service-proxies/service-transaction-proxies';
 import { API_BASE_URL as API_BASE_URL_SETTINGS_PLATFORM } from '@shared/service-proxies/service-settings-platform-proxies';
 import { RootModule } from '../root.module';
 import { AppComponent } from './app.component';
@@ -32,6 +33,7 @@ describe('App: Plataforma', () => {
                 { provide: API_BASE_URL_MEMBERS, useValue: getRemoteServiceBaseUrl() },
                 { provide: API_BASE_URL_OTC, useValue: getRemoteServiceBaseUrl() },
                 { provide: API_BASE_URL_TRADING_REQUEST, useValue: getRemoteServiceBaseUrl() },
+                { provide: API_BASE_URL_TRANSACTIONS, useValue: getRemoteServiceBaseUrl() },
                 { provide: API_BASE_URL_SETTINGS_PLATFORM, useValue: getRemoteServiceBaseUrl() },
                 { provide: APP_BASE_HREF, useValue: '/' },
                 { provide: LOCALE_ID, useValue: 'en' },
