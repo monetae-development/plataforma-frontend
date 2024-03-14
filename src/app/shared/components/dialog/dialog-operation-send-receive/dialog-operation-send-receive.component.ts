@@ -3,6 +3,7 @@ import { Component, EventEmitter, Injector, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { CreateMntMemberWalletDto, MntMemberWalletServiceProxy, MntSettingsServiceProxy } from '@shared/service-proxies/service-proxies';
+import { ServiceTradingProxy } from '@shared/service-proxies/service-trading-proxies';
 import { ServiceTransactionProxy } from '@shared/service-proxies/service-transaction-proxies';
 import { GetAllCryptoCurrenciesForSelectDto } from '@shared/service-proxies/dto/Transactions/GetAllCryptoCurrenciesForSelectDto';
 import { GetSelectDto } from '@shared/service-proxies/dto/Common/SelectInput/GetSelectDto';
@@ -57,6 +58,7 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
     injector: Injector,
     private fb: FormBuilder,
     private _serviceTransactionProxy: ServiceTransactionProxy,
+    private _serviceTradingProxy: ServiceTradingProxy,
     private _mntMemberWalletServiceProxy: MntMemberWalletServiceProxy,
     private _mntSettingsServiceProxy: MntSettingsServiceProxy,
     public ref: DynamicDialogRef,
@@ -99,7 +101,6 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
     ];
     this.activeItem = this.menuItems[Number(this.activeIndex)];
     this.loadCryptoAssets();
-    //this.loadBalance();
     this.loadWalletSettings();
   }
 
@@ -115,7 +116,6 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
   loadBlockchainNetworks(item: GetAllCryptoCurrenciesForSelectDto) {
     for (let i = 0; i < this.cryptoCurrencies.length; i++) {
       if (item.value === this.cryptoCurrencies[i].value) {
-        console.log(item.value);
         this.blockchainNetworks = this.cryptoCurrencies[i].blockchainNetworks;
         this.blockchainNetworkIdControl.enable();
         this.blockchainNetworkIdReceiveControl.enable();
@@ -123,20 +123,12 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
         break;
       }
     }
-    /*this._mntMemberWalletServiceProxy.getBlockchainNetwortksForSelect()
-      .subscribe((result) => {
-        this.blockchainNetwortks = result.items;
-        this.blockchainNetworkIdControl.enable();
-        this.blockchainNetworkIdReceiveControl.enable();
-        this.isDisabled = false;
-      });*/
   }
 
-  loadBalance() {
-    this._mntMemberWalletServiceProxy.getBalance()
-      .subscribe((result) => {
-        this.amount = result.amount;
-      });
+  loadBalance(cryptoCurrencyId: number) {
+    this._serviceTradingProxy.getCryptoBalance(cryptoCurrencyId).subscribe((result) => {
+      this.amount = result.amount;
+    });
   }
 
   loadWalletSettings() {
@@ -153,6 +145,7 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
     }
     this.coinSubtitle = event.value.subtitle;
     this.loadBlockchainNetworks(event.value);
+    this.loadBalance(event.value.tradingCryptoCurrencyId);
   }
 
 
