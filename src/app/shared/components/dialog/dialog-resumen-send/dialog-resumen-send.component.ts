@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Injector, OnInit } from '@angular/core';
 import { AppSharedModule } from '@app/shared/app-shared.module';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { CreateMntMemberWalletDto, MntMemberWalletServiceProxy } from '@shared/service-proxies/service-proxies';
+import { ServiceTransactionProxy } from '@shared/service-proxies/service-transaction-proxies';
+import { GetEstimateNetworkFeeRequestInput } from '@shared/service-proxies/dto/Transactions/GetEstimateNetworkFeeRequestInput';
+import { CreateMntMemberTransaction } from '@shared/service-proxies/dto/mntMemberTransaction/CreateMntMemberTransaction';
 import { ButtonModule } from 'primeng/button';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
@@ -18,64 +20,93 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 export class DialogResumenSendComponent extends AppComponentBase implements OnInit {
 
   resumenSend: any;
-  amountCommision: number = 0;
-  amountTotal: number = 0;
+  amountTransactionSendFee = 0;
+  amountTotal = 0;
   dateNow: Date = new Date();
   sending = false;
-
   outAccept = new EventEmitter();
+  networkFeeLoaded: boolean;
+  isLoadedNetworkFee: boolean;
+  networkFee: number;
+
+  networkFeeRequest: GetEstimateNetworkFeeRequestInput;
 
   constructor(
     injector: Injector,
-    private _mntMemberWalletServiceProxy: MntMemberWalletServiceProxy,
+    private _serviceTransactionProxy: ServiceTransactionProxy,
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig
-  ) { 
+  ) {
     super(injector);
     this.resumenSend = config.data.resumenSend;
-    this.amountCommision = config.data.amountCommision;
-    this.amountTotal = this.resumenSend.amount + this.amountCommision;
+    this.amountTransactionSendFee = config.data.amountTransactionSendFee;
+    this.amountTotal = this.resumenSend.amount + this.amountTransactionSendFee;
+    this.networkFeeRequest = new GetEstimateNetworkFeeRequestInput();
+    this.networkFeeRequest.assetId = this.resumenSend.cryptoAssetId.assetId;
+    this.networkFeeRequest.address = this.resumenSend.address;
+    this.networkFeeRequest.amount = this.amountTotal;
+    this.networkFeeLoaded = false;
   }
 
-  ngOnInit() {
-    console.log(this.resumenSend);
+  get dateTime() {
+    this.dateNow = new Date();
+    return this.dateNow;
   }
-
-  get dateTime() { return this.dateNow.toLocaleDateString("en")}
-  get hourTime() { return this.dateNow.toTimeString().slice(0, 8) }
-  get shortAddress(){
+  get shortAddress() {
     const originalAdress = this.resumenSend.address;
     const strStart = originalAdress.slice(0, 12);
     const strEnd = originalAdress.slice(-6);
     if (originalAdress.length <= 20) {
       return originalAdress;
     }
-    return strStart + "...." + strEnd;
+    return strStart + '....' + strEnd;
   }
 
-  onCancel(){
+
+  ngOnInit() {
+    //console.log(this.resumenSend);
+    this.socketio.getTransactionSendFee(this.appSession.user.userHash).subscribe((data: any) => {
+      this.networkFeeLoaded = true;
+      this.isLoadedNetworkFee = data.isLoadedFee;
+      this.networkFee = data.fee;
+      if (this.isLoadedNetworkFee) {
+        this.amountTotal = this.amountTotal + this.networkFee;
+      }
+    });
+
+    this._serviceTransactionProxy.getNetworkFeeRequest(
+      this.networkFeeRequest.assetId,
+      this.networkFeeRequest.amount,
+      this.networkFeeRequest.address,
+      this.networkFeeRequest.tag
+    ).subscribe((data: any) => {
+
+    });
+  }
+
+  onCancel() {
     this.ref.close();
   }
 
   onRequestSend(): void {
     this.sending = true;
-    const receiveBody = new CreateMntMemberWalletDto();
-    receiveBody.cryptoAssetId = this.resumenSend.cryptoAssetId.value;
-    receiveBody.address = this.resumenSend.address;
-    receiveBody.blockchainNetworkId = this.resumenSend.blockchainNetworkId.value;
-    receiveBody.amount = this.resumenSend.amount;
-    this._mntMemberWalletServiceProxy.create(receiveBody)
-      .subscribe({
-        next: (response) => {
-          this.sending = false;
-          this.outAccept.emit(true);
-          this.ref.close();
-        },
-        error: (err) => {
-          this.ref.close();
-          this.sending = false;
-        }
-      });
+    const request = new CreateMntMemberTransaction();
+    request.address = this.resumenSend.address;
+    request.tag = this.resumenSend.tag;
+    request.web3CryptoCurrencyId = this.resumenSend.cryptoAssetId.value;
+    request.blockchainNetworkId = this.resumenSend.blockchainNetworkId.value;
+    request.networkFee = this.networkFee;
+    request.amount = this.resumenSend.amount;
+    this._serviceTransactionProxy.create(request).subscribe({
+      next: (response) => {
+        this.sending = false;
+        this.outAccept.emit(true);
+        this.ref.close();
+      },
+      error: (err) => {
+        this.ref.close();
+        this.sending = false;
+      }
+    });
   }
-
 }

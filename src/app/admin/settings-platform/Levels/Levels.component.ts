@@ -4,7 +4,6 @@ import { finalize } from 'rxjs/operators';
 import { SettingsPlatformServiceProxy } from '@shared/service-proxies/service-settings-platform-proxies';
 import { GetAllMntMemberLevelForViewDto } from '@shared/service-proxies/dto/MntMemberLevel/GetAllMntMemberLevelForViewDto';
 import { GetMntMemberLevelForViewDto } from '@shared/service-proxies/dto/MntMemberLevel/GetMntMemberLevelForViewDto';
-
 @Component({
   selector: 'levels-settings',
   templateUrl: './Levels.component.html'

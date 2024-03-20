@@ -6,12 +6,18 @@
     <div class="ae-resumen__title flex align-items-center justify-content-center">
         <img
             class="mr-3"
-            src="/assets/crypto-icons/{{ resumenSend.cryptoAssetId.subtitle.toLowerCase() }}.png" 
+            src="/assets/crypto-icons/{{ resumenSend.cryptoAssetId.subtitle.toLowerCase() }}.png"
             style="width: 30px"
         />
-        <p class="m-0 ae-text-dark ae-text-default fw-bold">{{ amountTotal}}</p>
+        <p class="m-0 ae-text-dark ae-text-default fw-bold">{{ amountTotal }}</p>
     </div>
-    <div class="ae-table__resumen">
+    <div class="d-flex justify-content-center my-5" *ngIf="!networkFeeLoaded">
+        <div class="spinner-border text-gray-400 spinner-small" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <span class="ms-2 mt-0 ae-text-gris-dark">{{ l('Calculated') }}...</span>
+    </div>
+    <div class="ae-table__resumen" *ngIf="networkFeeLoaded">
         <div class="ae-resumen__item flex align-items-center justify-content-between">
             <div class="ae-description">
                 <p class="ae-text-dark ae-text-default w-full">Dirección a enviar</p>
@@ -25,7 +31,9 @@
                 <p class="ae-text-dark ae-text-default w-full">Red</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-gris-dark ae-text-default w-full">{{ resumenSend.blockchainNetworkId.label }}</span>
+                <span class="ae-text-gris-dark ae-text-default w-full">
+                    {{ resumenSend.blockchainNetworkId.label }}
+                </span>
             </div>
         </div>
         <div class="ae-resumen__item flex align-items-center justify-content-between">
@@ -33,8 +41,9 @@
                 <p class="ae-text-dark ae-text-default w-full">Fecha y hora</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-gris-dark ae-text-default w-full">{{ dateTime }}</span>
-                <span class="ae-text-gris-dark ae-text-default w-full">{{ hourTime }}</span>
+                <span class="ae-text-gris-dark ae-text-default w-full">
+                    {{ dateTime | date : 'dd/MM/yyyy HH:mm:ss' }}
+                </span>
             </div>
         </div>
         <div class="ae-resumen__item flex align-items-center justify-content-between">
@@ -42,7 +51,9 @@
                 <p class="ae-text-dark ae-text-default w-full">Total de envio</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-gris-dark ae-text-default w-full">{{ resumenSend.amount }} {{ resumenSend.cryptoAssetId.subtitle }}</span>
+                <span class="ae-text-gris-dark ae-text-default w-full">
+                    {{ resumenSend.amount }} {{ resumenSend.cryptoAssetId.subtitle }}
+                </span>
             </div>
         </div>
         <div class="ae-resumen__item flex align-items-center justify-content-between">
@@ -50,19 +61,40 @@
                 <p class="ae-text-dark ae-text-default w-full">Comisión</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-gris-dark ae-text-default w-full">{{ amountCommision }} {{ resumenSend.cryptoAssetId.subtitle }}</span>
-            </div>            
+                <span class="ae-text-gris-dark ae-text-default w-full">
+                    {{ amountTransactionSendFee | number : '1.0-8' : 'en' }} {{ resumenSend.cryptoAssetId.subtitle }}
+                </span>
+            </div>
         </div>
+
+        <div class="ae-resumen__item flex align-items-center justify-content-between" *ngIf="isLoadedNetworkFee">
+            <div class="ae-description">
+                <p class="ae-text-dark ae-text-default w-full">{{ l('NetworkFee') }}</p>
+            </div>
+            <div class="ae-content">
+                <span class="ae-text-gris-dark ae-text-default w-full">
+                    {{ networkFee | number : '1.0-8' : 'en' }} {{ resumenSend.cryptoAssetId.subtitle }}
+                </span>
+            </div>
+        </div>
+
         <div class="ae-resumen__item flex align-items-center justify-content-between">
             <div class="ae-description">
                 <p class="ae-text-dark ae-text-default w-full">Total</p>
             </div>
             <div class="ae-content">
-                <span class="ae-text-primary ae-text-default w-full">{{ amountTotal}} {{ resumenSend.cryptoAssetId.subtitle }}</span>
+                <span class="ae-text-primary ae-text-default w-full">
+                    {{ amountTotal }} {{ resumenSend.cryptoAssetId.subtitle }}
+                </span>
             </div>
         </div>
     </div>
 </div>
 <div class="ae-dialog__actions">
-    <p-button class="ae-button ae-button--primary w-full" label="Solicitar Envio" [disabled]="sending" (click)="onRequestSend()"></p-button>
+    <p-button
+        class="ae-button ae-button--primary w-full"
+        label="Solicitar Envio"
+        [disabled]="sending"
+        (click)="onRequestSend()"
+    ></p-button>
 </div>

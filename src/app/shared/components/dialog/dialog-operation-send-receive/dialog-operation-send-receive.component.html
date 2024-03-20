@@ -104,7 +104,18 @@
                         <i class="pi pi-arrow-right-arrow-left ae-text-gris"></i>
                     </div>
                 </div>
-                <small class="ae-text-gris-dark ae-text-small">{{ l('Saldo disponible:') }} {{ amount }}</small>
+                <div
+                    class="d-flex justify-content-center"
+                    *ngIf="!cryptoBalanceLoaded && selectedCryptoCurrency != undefined"
+                >
+                    <div class="spinner-border text-gray-400 spinner-small" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <span class="ms-2 mt-0 ae-text-gris-dark ae-text-small">{{ l('LoadingBalance') }}...</span>
+                </div>
+                <small class="ae-text-gris-dark ae-text-small" *ngIf="cryptoBalanceLoaded">
+                    {{ l('Saldo disponible:') }} {{ amount | number : '1.0-8' : 'en' }}
+                </small>
             </div>
         </form>
         <small class="block ae-text-gris-dark ae-text-small fw-normal">
@@ -215,7 +226,7 @@
             type="button"
             *ngIf="actionsReceive"
             class="ae-button ae-button--component ae-button--primary"
-            [disabled]="receiveForm.invalid || isDisabled"
+            [disabled]="receiveForm.invalid || isDisabled || !cryptoBalanceLoaded"
             (click)="onReceive()"
         >
             Generar QR

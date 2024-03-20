@@ -10,6 +10,8 @@ import { GetOTCSettingsDto } from './dto/SettingsPlatform/GetOTCSettingsDto';
 import { OTCSettingsDto } from './dto/SettingsPlatform/OTCSettingsDto';
 import { GetAllMntMemberLevelForViewDto } from './dto/MntMemberLevel/GetAllMntMemberLevelForViewDto';
 import { GetMntMemberLevelTradingForViewDto } from './dto/MntMemberLevel/GetMntMemberLevelTradingForViewDto';
+import { PRGetAllCryptoCurrencyFeeTransactionForSelectDto } from './dto/MntMemberCryptoCurrencyFee/PRGetAllCryptoCurrencyFeeTransactionForSelectDto';
+import { EditCryptoCurrencyFeeTransactionInput } from './dto/MntMemberCryptoCurrencyFee/EditCryptoCurrencyFeeTransactionInput';
 import { DateTime, Duration } from 'luxon';
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
@@ -402,6 +404,124 @@ export class SettingsPlatformServiceProxy {
     }
 
     protected processUpdateLevelTradingSettings(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) {
+            for (let key of response.headers.keys()) {
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        if (status === 200) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getAllCryptoCurrencyFeeTransaction(): Observable<PRGetAllCryptoCurrencyFeeTransactionForSelectDto> {
+        let url_ = this.baseUrl + '/api/services/app/PlatformSettings/GetCryptoCurrencyFeeTransactionForSelect';
+        url_ = url_.replace(/[?&]$/, '');
+
+        let options_: any = {
+            observe: 'response',
+            responseType: 'blob',
+            headers: new HttpHeaders({
+                Accept: 'text/plain'
+            })
+        };
+
+        return this.http
+            .request('get', url_, options_)
+            .pipe(
+                _observableMergeMap((response_: any) => {
+                    return this.processGetAllCryptoCurrencyFeeTransaction(response_);
+                })
+            )
+            .pipe(
+                _observableCatch((response_: any) => {
+                    if (response_ instanceof HttpResponseBase) {
+                        try {
+                            return this.processGetAllCryptoCurrencyFeeTransaction(response_ as any);
+                        } catch (e) {
+                            return _observableThrow(e) as any as Observable<PRGetAllCryptoCurrencyFeeTransactionForSelectDto>;
+                        }
+                    } else {
+                        return _observableThrow(response_) as any as Observable<PRGetAllCryptoCurrencyFeeTransactionForSelectDto>;
+                    }
+                })
+            );
+    }
+
+    protected processGetAllCryptoCurrencyFeeTransaction(response: HttpResponseBase): Observable<PRGetAllCryptoCurrencyFeeTransactionForSelectDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) {
+            for (let key of response.headers.keys()) {
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        if (status === 200) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result200: any = null;
+                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = PRGetAllCryptoCurrencyFeeTransactionForSelectDto.fromJS(resultData200);
+                return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return Helpers.blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => Helpers.throwException('An unexpected server error occurred.', status, _responseText, _headers)));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional)
+     * @return Success
+     */
+    updateCryptoCurrencyFeeTransaction(body: EditCryptoCurrencyFeeTransactionInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + '/api/services/app/PlatformSettings/UpdateCryptoCurrencyFeeTransaction';
+        url_ = url_.replace(/[?&]$/, '');
+
+        const content_ = JSON.stringify(body);
+
+        let options_: any = {
+            body: content_,
+            observe: 'response',
+            responseType: 'blob',
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json-patch+json',
+            })
+        };
+
+        return this.http.request('put', url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processUpdateCryptoCurrencyFeeTransaction(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateCryptoCurrencyFeeTransaction(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else {
+                return _observableThrow(response_) as any as Observable<void>;
+            }
+        }));
+    }
+
+    protected processUpdateCryptoCurrencyFeeTransaction(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :

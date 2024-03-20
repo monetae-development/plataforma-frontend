@@ -36,7 +36,7 @@ export class TradingMarketSliderComponent extends AppComponentBase implements On
     });
 
     this.socket.on('connect', () => {
-      console.log('Conected to Websocket:' + this.socket.id);
+      //console.log('Conected to Websocket:' + this.socket.id);
     });
 
     this.socket.on('OTC:COINSQUOTE', (response: any) => {

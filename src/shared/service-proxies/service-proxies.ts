@@ -29132,7 +29132,7 @@ export class MntMemberWalletServiceProxy {
      * @return Success
      */
     create(body: CreateMntMemberWalletDto | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/MntMemberWallet/Create";
+        let url_ = this.baseUrl + "/api/services/app/MntMemberTransaction/Create";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -32732,7 +32732,7 @@ export interface ICreateOrEditMntMemberDataComplementDto {
 }
 
 export class CreateMntMemberWalletDto implements ICreateMntMemberWalletDto {
-    cryptoAssetId!: number | undefined;
+    assetId!: number | undefined;
     address!: string | undefined;
     blockchainNetworkId!: number | undefined;
     amount!: number | undefined;
@@ -32748,7 +32748,7 @@ export class CreateMntMemberWalletDto implements ICreateMntMemberWalletDto {
 
     init(_data?: any) {
         if (_data) {
-            this.cryptoAssetId = _data["cryptoAssetId"];
+            this.assetId = _data["assetId"];
             this.address = _data["address"];
             this.blockchainNetworkId = _data["blockchainNetworkId"];
             this.amount = _data["amount"];
@@ -32764,7 +32764,7 @@ export class CreateMntMemberWalletDto implements ICreateMntMemberWalletDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["cryptoAssetId"] = this.cryptoAssetId;
+        data["assetId"] = this.assetId;
         data["address"] = this.address;
         data["blockchainNetworkId"] = this.blockchainNetworkId;
         data["amount"] = this.amount;
@@ -32773,7 +32773,7 @@ export class CreateMntMemberWalletDto implements ICreateMntMemberWalletDto {
 }
 
 export interface ICreateMntMemberWalletDto {
-    cryptoAssetId: number | undefined;
+    assetId: number | undefined;
     address: string | undefined;
     blockchainNetworkId: number | undefined;
     amount: number | undefined;
@@ -52672,6 +52672,7 @@ export class UserLoginInfoDto implements IUserLoginInfoDto {
     name!: string | undefined;
     surname!: string | undefined;
     userName!: string | undefined;
+    userHash!: string | undefined;
     emailAddress!: string | undefined;
     profilePictureId!: string | undefined;
     id!: number;
@@ -52690,6 +52691,7 @@ export class UserLoginInfoDto implements IUserLoginInfoDto {
             this.name = _data["name"];
             this.surname = _data["surname"];
             this.userName = _data["userName"];
+            this.userHash = _data['userHash'];
             this.emailAddress = _data["emailAddress"];
             this.profilePictureId = _data["profilePictureId"];
             this.id = _data["id"];
@@ -52708,6 +52710,7 @@ export class UserLoginInfoDto implements IUserLoginInfoDto {
         data["name"] = this.name;
         data["surname"] = this.surname;
         data["userName"] = this.userName;
+        data['userHash'] = this.userHash;
         data["emailAddress"] = this.emailAddress;
         data["profilePictureId"] = this.profilePictureId;
         data["id"] = this.id;
@@ -52719,6 +52722,7 @@ export interface IUserLoginInfoDto {
     name: string | undefined;
     surname: string | undefined;
     userName: string | undefined;
+    userHash: string | undefined;
     emailAddress: string | undefined;
     profilePictureId: string | undefined;
     id: number;

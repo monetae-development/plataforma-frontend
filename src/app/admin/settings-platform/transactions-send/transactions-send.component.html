@@ -1,0 +1,138 @@
+<div class="row">
+    <form #transactionsSendForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+        <h6 class="mb-4">{{ l('MemberPerson') }}</h6>
+
+        <div class="col-xl-6">
+            <div class="ae-select mt-5 mb-10">
+                <label>{{ l('Seleccionar activo') }}</label>
+                <p-dropdown
+                    #cryptoCurrency
+                    id="cryptoCurrency"
+                    name="cryptoCurrency"
+                    [options]="cryptoCurrenciesOptions"
+                    [(ngModel)]="cryptoCurrencyValue"
+                    placeholder="{{ 'Select' | localize }}"
+                    (onChange)="onChangeCurrency($event)"
+                    required
+                >
+                    <ng-template pTemplate="selectedItem">
+                        <div class="flex align-items-center" *ngIf="cryptoCurrencyValue">
+                            <div class="mr-3">
+                                <img
+                                    src="/assets/crypto-icons/{{
+                                        cryptoCurrencies[cryptoCurrencyValue].subtitle.toLowerCase()
+                                    }}.png"
+                                    style="width: 28px"
+                                />
+                            </div>
+                            <div class="flex align-items-center">
+                                <span class="mr-2 ae-text-dark ae-text-default fw-semibold">
+                                    {{ cryptoCurrencies[cryptoCurrencyValue].label }}
+                                </span>
+                                <span class="ae-text-gris-dark ae-text-default fw-semibold">
+                                    {{ cryptoCurrencies[cryptoCurrencyValue].subtitle }}
+                                </span>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-cryptoCurrency pTemplate="item">
+                        <div class="d-flex align-items-center">
+                            <div class="mr-3">
+                                <img
+                                    src="/assets/crypto-icons/{{ cryptoCurrency.subtitle.toLowerCase() }}.png"
+                                    style="width: 28px"
+                                />
+                            </div>
+                            <div class="flex flex-column">
+                                <span class="ae-text-dark ae-text-default fw-semibold">{{ cryptoCurrency.label }}</span>
+                                <span class="ae-text-gris-dark ae-text-default">{{ cryptoCurrency.subtitle }}</span>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+
+            <div class="form-group mb-10">
+                <div class="input-group">
+                    <label class="input-group-text" id="inputGroup-sizing-default">
+                        {{ l('TransactionSendFee') }}
+                    </label>
+                    <p-inputNumber
+                        #transactionSendFee="ngModel"
+                        name="transactionSendFee"
+                        class="form-control"
+                        [(ngModel)]="cryptoCurrencySelected.transactionSendFee"
+                        [disabled]="cryptoCurrencySelected == undefined"
+                        mode="decimal"
+                        locale="en-US"
+                        [minFractionDigits]="0"
+                        [maxFractionDigits]="2"
+                        [min]="0"
+                        [max]="60"
+                        required
+                    ></p-inputNumber>
+                    <span class="input-group-text">%</span>
+                </div>
+                <validation-messages [formCtrl]="transactionSendFee"></validation-messages>
+            </div>
+
+            <div class="form-group mb-10">
+                <div class="input-group">
+                    <label class="input-group-text" id="inputGroup-sizing-default">
+                        {{ l('TransactionSendMin') }}
+                    </label>
+                    <p-inputNumber
+                        #transactionSendMin="ngModel"
+                        name="transactionSendMin"
+                        class="form-control"
+                        [(ngModel)]="cryptoCurrencySelected.transactionSendMin"
+                        [disabled]="cryptoCurrencySelected == undefined"
+                        mode="decimal"
+                        locale="en-US"
+                        [minFractionDigits]="0"
+                        [maxFractionDigits]="8"
+                        [min]="0"
+                        required
+                    ></p-inputNumber>
+                    <span class="input-group-text">{{ cryptoCurrencySelected.subtitle }}</span>
+                </div>
+                <validation-messages [formCtrl]="transactionSendMin"></validation-messages>
+            </div>
+            <div class="form-group mb-10">
+                <div class="input-group">
+                    <label class="input-group-text" id="inputGroup-sizing-default">
+                        {{ l('TransactionSendMax') }}
+                    </label>
+                    <p-inputNumber
+                        #transactionSendMax="ngModel"
+                        name="transactionSendMax"
+                        class="form-control"
+                        [(ngModel)]="cryptoCurrencySelected.transactionSendMax"
+                        [disabled]="cryptoCurrencySelected == undefined"
+                        mode="decimal"
+                        locale="en-US"
+                        [minFractionDigits]="0"
+                        [maxFractionDigits]="8"
+                        [min]="0"
+                        required
+                    ></p-inputNumber>
+                    <span class="input-group-text">{{ cryptoCurrencySelected.subtitle }}</span>
+                </div>
+                <validation-messages [formCtrl]="transactionSendMax"></validation-messages>
+            </div>
+        </div>
+        <div class="row justify-content-end mt-5">
+            <div class="col-2">
+                <button
+                    type="submit"
+                    class="btn btn-primary float-end"
+                    [disabled]="!transactionsSendForm.form.valid"
+                    [buttonBusy]="saving"
+                    [busyText]="l('SavingWithThreeDot')"
+                >
+                    <span>{{ l('Save') }}</span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

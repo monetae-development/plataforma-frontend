@@ -42,7 +42,7 @@ export class TradingMarketGridComponent extends AppComponentBase implements OnIn
     });
 
     this.socket.on('connect', () => {
-      console.log('Conected to Websocket:' + this.socket.id);
+      //console.log('Conected to Websocket:' + this.socket.id);
     });
 
     this.socket.on('OTC:COINSQUOTE', (response: any) => {

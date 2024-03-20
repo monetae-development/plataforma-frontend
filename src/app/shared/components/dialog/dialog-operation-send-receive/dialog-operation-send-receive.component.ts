@@ -41,13 +41,15 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
   cryptoAssets: SelectItem[] = undefined;
   blockchainNetworks: SelectItem[];
   cryptoCurrencies: GetAllCryptoCurrenciesForSelectDto[];
+  selectedCryptoCurrency: GetAllCryptoCurrenciesForSelectDto;
   amount = 0;
-  amountCommision = 0;
-  comission = 0;
+  amountTransactionSendFee = 0;
+  transaciontSendFee = 0;
   coinId = 0;
   BlockchainNetworkId = 0;
   address = '';
   coinSubtitle = '';
+  cryptoBalanceLoaded: boolean;
   actionsReceive = true;
   isDisabled = true;
 
@@ -69,6 +71,7 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
     this.activeIndex = config.data?.activeIndex;
     this.sendForm = this._buildSendForm();
     this.receiveForm = this._buildReceiveForm();
+    this.cryptoBalanceLoaded = false;
   }
 
   get cryptoAssetIdControl() {
@@ -101,7 +104,7 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
     ];
     this.activeItem = this.menuItems[Number(this.activeIndex)];
     this.loadCryptoAssets();
-    this.loadWalletSettings();
+    this.loadTransactionSendFee();
   }
 
   loadCryptoAssets() {
@@ -125,27 +128,30 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
     }
   }
 
-  loadBalance(cryptoCurrencyId: number) {
-    this._serviceTradingProxy.getCryptoBalance(cryptoCurrencyId).subscribe((result) => {
+  loadBalance(cryptoCurrency: GetAllCryptoCurrenciesForSelectDto) {
+    this.selectedCryptoCurrency = cryptoCurrency;
+    this._serviceTradingProxy.getCryptoBalance(cryptoCurrency.tradingCryptoCurrencyId).subscribe((result) => {
       this.amount = result.amount;
+      this.cryptoBalanceLoaded = true;
     });
   }
 
-  loadWalletSettings() {
-    this._mntSettingsServiceProxy.getWalletSettings()
+  loadTransactionSendFee() {
+    this._serviceTransactionProxy.getCryptoCurrencyTransactionSendFee()
       .subscribe((result) => {
-        this.comission = result.sendFee;
+        this.transaciontSendFee = result.transactionSendFee;
       });
   }
 
   onChangeCurrencySend(event: any) {
+    this.cryptoBalanceLoaded = false;
     if (event.value == null) {
       this.coinSubtitle = null;
       return;
     }
     this.coinSubtitle = event.value.subtitle;
     this.loadBlockchainNetworks(event.value);
-    this.loadBalance(event.value.tradingCryptoCurrencyId);
+    this.loadBalance(event.value);
   }
 
 
@@ -156,7 +162,7 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
 
   amountOnChange(event: any) {
     if (event.value == null) {
-      this.amountCommision = null;
+      this.amountTransactionSendFee = null;
       return;
     }
     this.amountControl.setValue(event.value);
@@ -165,9 +171,9 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
 
   calculateCost() {
     if (this.amount) {
-      this.amountCommision = (this.amountControl.value * this.comission) / 100;
+      this.amountTransactionSendFee = (this.amountControl.value * this.transaciontSendFee) / 100;
     } else {
-      this.amountCommision = undefined;
+      this.amountTransactionSendFee = undefined;
     }
   }
 
@@ -181,7 +187,7 @@ export class DialogOperationSendReceiveComponent extends AppComponentBase implem
       styleClass: 'ae-dialog ae-dialog--sm',
       data: {
         resumenSend: this.sendForm.value,
-        amountCommision: this.amountCommision
+        amountTransactionSendFee: this.amountTransactionSendFee
       }
     });
     const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);

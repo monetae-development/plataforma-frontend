@@ -41,6 +41,12 @@
                                         </ng-template>
                                         <levels-settings></levels-settings>
                                     </p-tabPanel>
+                                    <p-tabPanel>
+                                        <ng-template pTemplate="header">
+                                            <span>{{ l('Sending') }}</span>
+                                        </ng-template>
+                                        <platform-settings-transactions-send></platform-settings-transactions-send>
+                                    </p-tabPanel>
                                 </p-tabView>
                             </div>
                         </div>

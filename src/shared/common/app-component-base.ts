@@ -11,6 +11,7 @@ import { Component, Injector, OnDestroy } from '@angular/core';
 import { AppConsts } from '@shared/AppConsts';
 import { AppUrlService } from '@shared/common/nav/app-url.service';
 import { AppSessionService } from '@shared/common/session/app-session.service';
+import { SocketioService } from './websocket/socketio.service';
 import { AppUiCustomizationService } from '@shared/common/ui/app-ui-customization.service';
 import { PrimengTableHelper } from 'shared/helpers/PrimengTableHelper';
 import { UiCustomizationSettingsDto } from '@shared/service-proxies/service-proxies';
@@ -37,6 +38,7 @@ export abstract class AppComponentBase implements OnDestroy {
     message: MessageService;
     multiTenancy: AbpMultiTenancyService;
     appSession: AppSessionService;
+    socketio: SocketioService;
     primengTableHelper: PrimengTableHelper;
     ui: AppUiCustomizationService;
     appUrlService: AppUrlService;
@@ -54,6 +56,7 @@ export abstract class AppComponentBase implements OnDestroy {
         this.message = injector.get(MessageService);
         this.multiTenancy = injector.get(AbpMultiTenancyService);
         this.appSession = injector.get(AppSessionService);
+        this.socketio = injector.get(SocketioService);
         this.ui = injector.get(AppUiCustomizationService);
         this.appUrlService = injector.get(AppUrlService);
         this.primengTableHelper = new PrimengTableHelper();
