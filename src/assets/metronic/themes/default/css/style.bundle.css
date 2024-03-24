@@ -26678,6 +26678,7 @@ ul.form-text.text-danger {
   --kt-gray-700-rgb: 94, 98, 120;
   --kt-gray-800-rgb: 63, 66, 84;
   --kt-gray-900-rgb: 24, 28, 50;
+  --kt-gray-primary:#F4F4F4;
   --kt-white: #ffffff;
   --kt-light: #f5f8fa;
   --kt-primary: #00CED1;
@@ -27034,6 +27035,7 @@ ul.form-text.text-danger {
   --kt-gray-700-rgb: 146, 146, 159;
   --kt-gray-800-rgb: 205, 205, 222;
   --kt-gray-900-rgb: 255, 255, 255;
+  --kt-gray-primary:#F4F4F4;
   --kt-dark: #FFFFFF;
   --kt-light: #2B2B40;
   --kt-secondary: #323248;
@@ -43999,6 +44001,10 @@ label.rating-label:hover ~ .rating-label > i, label.rating-label:hover ~ .rating
 
 .bg-gray-900i {
   background-color: var(--kt-gray-900) !important;
+}
+
+.bg-gray-primary{
+  background-color: var(--kt-gray-primary) !important;
 }
 
 .bg-opacity-0 {

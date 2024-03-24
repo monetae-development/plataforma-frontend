@@ -5,6 +5,10 @@ import { AppCommonModule } from '@app/shared/common/app-common.module';
 import { LogoutComponent } from './components/logout/logout.component';
 import { HomeComponent } from './home/home.component';
 
+import { CompanyKycComponent } from './companies/kyc/kyc.component';
+import { KYCCompanyTypeComponent } from './companies/kyc/components/form-step-0/kycCompanyType.component';
+import { KYCCompanyInfoComponent } from './companies/kyc/components/01-PersonShareholder/kycCompanyInfo/kycCompanyInfo.component';
+
 import { ProjectsComponent } from './projects/projects.component';
 import { ProjectTemplateComponent } from './projects/project-template/project-template.component';
 import { ProjectsInvestComponent } from './projects/components/invest/invest.component';
@@ -219,6 +223,10 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
 	declarations: [
 		LogoutComponent,
 		HomeComponent,
+
+		CompanyKycComponent,
+		KYCCompanyTypeComponent,
+		KYCCompanyInfoComponent,
 
 		ProjectsComponent,
 		ProjectTemplateComponent,

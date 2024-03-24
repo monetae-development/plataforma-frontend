@@ -35,6 +35,7 @@ import { CatStatesComponent } from './catalogs/catStates/catStates.component';
 import { CatCountriesComponent } from './catalogs/catCountries/catCountries.component';
 import { ProjectTemplateComponent } from './projects/project-template/project-template.component';
 import { LogoutComponent } from './components/logout/logout.component';
+import { CompanyKycComponent } from './companies/kyc/kyc.component';
 
 @NgModule({
     imports: [
@@ -69,6 +70,7 @@ import { LogoutComponent } from './components/logout/logout.component';
                     { path: 'catalogs/catSourceFoundses', component: CatSourceFoundsesComponent, data: { permission: 'Pages.CatSourceFoundses' } },
                     { path: 'members/mntMemberAddresses', component: MntMemberAddressesComponent, data: { permission: 'Pages.MntMemberAddresses' } },
                     { path: 'members/mntMembers', component: MntMembersComponent, data: { permission: 'Pages.MntMembers' } },
+                    { path: 'company/kyc', component: CompanyKycComponent, data: { permission: 'Pages.CompanyKyc' } },
                     { path: 'catalogs/catIdentityTypes', component: CatIdentityTypesComponent, data: { permission: 'Pages.CatIdentityTypes' } },
                     { path: 'catalogs/catActivityEconomics', component: CatActivityEconomicsComponent, data: { permission: 'Pages.CatActivityEconomics' } },
                     { path: 'catalogs/catActivityEconomicCategories', component: CatActivityEconomicCategoriesComponent, data: { permission: 'Pages.CatActivityEconomicCategories' } },

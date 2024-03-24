@@ -1,0 +1,59 @@
+<div class="ae-container__kyc ae-container--sm" [class.mt-4]="feedback != undefined || feedback != null">
+    <div class="ae-container__header">
+        <div class="ae-header__title mb-5">
+            <h2 class="ae-text-dark ae-text-xlarge m-0">{{ 'TitleCompanyKYC' | localize }}</h2>
+        </div>
+        <div class="ae-header__content">
+            <p class="ae-text-default ae-text-black">{{ 'InstruccionsCompanyKYC' | localize }}</p>
+        </div>
+    </div>
+    <div class="ae-container__content">
+        <form [formGroup]="companyTypeForm">
+            <div class="ae-select mb-10">
+                <label>{{ 'CompanyType' | localize }} *</label>
+                <div class="formgroup-control">
+                    <p-dropdown
+                        #companyType
+                        formControlName="companyType"
+                        [(ngModel)]="companyTypeSelected"
+                        [options]="companyTypes"
+                        [disabled]="companyTypes == undefined"
+                        placeholder="{{ 'SelectTreeDots' | localize }}"
+                        [showClear]="true"
+                    ></p-dropdown>
+                    <div class="spin-validation">
+                        <spinSuccess
+                            *ngIf="
+                                companyTypeForm.controls['companyType'].valid &&
+                                companyTypeForm.controls['companyType'].dirty
+                            "
+                        ></spinSuccess>
+                        <spinError
+                            *ngIf="
+                                !companyTypeForm.controls['companyType'].valid &&
+                                companyTypeForm.controls['companyType'].dirty
+                            "
+                        ></spinError>
+                    </div>
+                </div>
+                <div class="alert bg-gray-primary mt-5 ae-text-gris">
+                    <p>
+                        <span class="text-black">{{ 'PersonShareholder' | localize }}:</span>
+                        {{ 'PersonShareholderDesc' | localize }}
+                    </p>
+                    <p>
+                        <span class="text-black">{{ 'CompanyShareholder' | localize }}:</span>
+                        {{ 'CompanyShareholderDesc' | localize }}
+                    </p>
+                </div>
+            </div>
+        </form>
+        <p class="ae-text-default ae-text-gris-dark mb-8" [innerHTML]="l('CompanyTimeToCompleteDesc')"></p>
+        <div class="ae-steps__verify" [innerHTML]="l('CompanyStepsDesc')"></div>
+    </div>
+    <div class="ae-container__actions">
+        <button type="button" class="btn btn-primary w-100" (click)="save()" [disabled]="!companyTypeForm.valid">
+            {{ l('Next2') }}
+        </button>
+    </div>
+</div>

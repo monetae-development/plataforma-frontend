@@ -1,0 +1,276 @@
+<div class="ae-container__kyc ae-container--md" [class.mt-4]="feedback != undefined || feedback != null">
+    <div class="ae-container__header">
+        <div class="ae-header__title flex align-items-center justify-content-between">
+            <div class="ae-text flex align-items-center">
+                <i class="pi pi-arrow-left ae-text-dark ae-text-medium mr-5" (click)="backStep()"></i>
+                <h2 class="ae-text-dark ae-text-xlarge m-0">{{ 'CompanyInfoTitle' | localize }}</h2>
+            </div>
+            <div class="ae-steps">
+                <h2 class="ae-text-dark ae-text-xlarge m-0">1/10</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="ae-container__content">
+        <form [formGroup]="companyInfoForm">
+            <div class="ae-form__grid">
+                <div class="ae-input">
+                    <label>{{ 'LegalName' | localize }} *</label>
+                    <div class="formgroup-control">
+                        <input
+                            type="text"
+                            #legalName
+                            formControlName="legalName"
+                            [(ngModel)]="companyInfoDto.legalName"
+                            placeholder="{{ 'LegalName' | localize }}"
+                            class="form-control"
+                            minlength="3"
+                            maxlength="64"
+                        />
+                        <div class="spin-validation">
+                            <spinSuccess
+                                *ngIf="
+                                    companyInfoForm.controls['legalName'].valid &&
+                                    companyInfoForm.controls['legalName'].dirty
+                                "
+                            ></spinSuccess>
+                            <spinError
+                                *ngIf="
+                                    !companyInfoForm.controls['legalName'].valid &&
+                                    companyInfoForm.controls['legalName'].dirty
+                                "
+                            ></spinError>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ae-input">
+                    <label>{{ 'CommercialName' | localize }} *</label>
+                    <div class="formgroup-control">
+                        <input
+                            type="text"
+                            #commercialName
+                            formControlName="commercialName"
+                            [(ngModel)]="companyInfoDto.commercialName"
+                            placeholder="{{ 'CompanyName' | localize }}"
+                            class="form-control"
+                            minlength="3"
+                            maxlength="64"
+                            pattern="^(?!\s)(.*\S)?(?<!\s)$"
+                        />
+                        <div class="spin-validation">
+                            <spinSuccess
+                                *ngIf="
+                                    companyInfoForm.controls['commercialName'].valid &&
+                                    companyInfoForm.controls['commercialName'].dirty
+                                "
+                            ></spinSuccess>
+                            <spinError
+                                *ngIf="
+                                    !companyInfoForm.controls['commercialName'].valid &&
+                                    companyInfoForm.controls['commercialName'].dirty
+                                "
+                            ></spinError>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ae-input">
+                    <label>{{ 'NIT' | localize }} *</label>
+                    <div class="formgroup-control">
+                        <input
+                            type="text"
+                            #nit
+                            formControlName="nit"
+                            [(ngModel)]="companyInfoDto.nit"
+                            placeholder="{{ 'NITAbr' | localize }}"
+                            class="form-control"
+                            minlength="3"
+                            maxlength="64"
+                            pattern="^(?!\s)(.*\S)?(?<!\s)$"
+                        />
+                        <div class="spin-validation">
+                            <spinSuccess
+                                *ngIf="companyInfoForm.controls['nit'].valid && companyInfoForm.controls['nit'].dirty"
+                            ></spinSuccess>
+                            <spinError
+                                *ngIf="!companyInfoForm.controls['nit'].valid && companyInfoForm.controls['nit'].dirty"
+                            ></spinError>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ae-input">
+                    <label>{{ 'FiscalNoId' | localize }} *</label>
+                    <div class="formgroup-control">
+                        <input
+                            type="text"
+                            #fiscalNoId
+                            formControlName="fiscalNoId"
+                            [(ngModel)]="companyInfoDto.fiscalNoId"
+                            placeholder="{{ 'TradeNoId' | localize }}"
+                            class="form-control"
+                            minlength="3"
+                            maxlength="64"
+                            pattern="^(?!\s)(.*\S)?(?<!\s)$"
+                        />
+                        <div class="spin-validation">
+                            <spinSuccess
+                                *ngIf="
+                                    companyInfoForm.controls['fiscalNoId'].valid &&
+                                    companyInfoForm.controls['fiscalNoId'].dirty
+                                "
+                            ></spinSuccess>
+                            <spinError
+                                *ngIf="
+                                    !companyInfoForm.controls['fiscalNoId'].valid &&
+                                    companyInfoForm.controls['fiscalNoId'].dirty
+                                "
+                            ></spinError>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ae-select">
+                    <label>{{ l('FiscalConstitutionCountry') }} *</label>
+                    <div class="formgroup-control">
+                        <p-dropdown
+                            #fiscalConstitutionCountry
+                            formControlName="fiscalConstitutionCountry"
+                            [(ngModel)]="companyInfoDto.fiscalConstitutionCountryId"
+                            [options]="countries"
+                            placeholder="{{ 'SelectAnItemDropdown' | localize }}"
+                            [showClear]="true"
+                            [filter]="true"
+                        ></p-dropdown>
+                        <div class="spin-validation">
+                            <spinSuccess
+                                *ngIf="
+                                    companyInfoForm.controls['fiscalConstitutionCountry'].valid &&
+                                    companyInfoForm.controls['fiscalConstitutionCountry'].dirty
+                                "
+                            ></spinSuccess>
+                            <spinError
+                                *ngIf="
+                                    !companyInfoForm.controls['fiscalConstitutionCountry'].valid &&
+                                    companyInfoForm.controls['fiscalConstitutionCountry'].dirty
+                                "
+                            ></spinError>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ae-calendar">
+                    <label>{{ 'FiscalConstitutionDate' | localize }} *</label>
+                    <div class="formgroup-control">
+                        <p-calendar
+                            #fiscalConstitutionDate
+                            formControlName="fiscalConstitutionDate"
+                            placeholder="05/11/1955"
+                            [(ngModel)]="companyInfoDto.fiscalConstitutionDate"
+                            dateFormat="dd/mm/yy"
+                            [showIcon]="true"
+                            required
+                        ></p-calendar>
+                        <div class="spin-validation">
+                            <spinSuccess
+                                *ngIf="
+                                    companyInfoForm.controls['fiscalConstitutionDate'].valid &&
+                                    companyInfoForm.controls['fiscalConstitutionDate'].dirty
+                                "
+                            ></spinSuccess>
+                            <spinError
+                                *ngIf="
+                                    !companyInfoForm.controls['fiscalConstitutionDate'].valid &&
+                                    companyInfoForm.controls['fiscalConstitutionDate'].dirty
+                                "
+                            ></spinError>
+                        </div>
+                        <div
+                            *ngIf="
+                                !companyInfoForm.controls['fiscalConstitutionDate'].valid &&
+                                companyInfoForm.controls['fiscalConstitutionDate'].dirty
+                            "
+                        ></div>
+                    </div>
+                </div>
+
+                <div class="ae-selectinput">
+                    <label>{{ 'Phone1' | localize }} *</label>
+                    <div class="flex align-items-start">
+                        <p-dropdown
+                            #phone1CodeId
+                            formControlName="phone1CodeId"
+                            [(ngModel)]="companyInfoDto.phone1CodeId"
+                            [options]="phoneCodes"
+                            placeholder="{{ 'SelectAnItemDropdown' | localize }}"
+                            [filter]="true"
+                        >
+                            <ng-template pTemplate="selectedItem">
+                                <div class="d-flex align-items-center" *ngIf="companyInfoDto.phone1CodeId">
+                                    <div>
+                                        <img
+                                            src="/assets/flags/{{
+                                                phoneCodeFlags[companyInfoDto.phone1CodeId].subtitle
+                                            }}.png"
+                                            style="height: 14px"
+                                        />
+                                    </div>
+                                    <div class="ms-2">
+                                        {{ phoneCodeFlags[companyInfoDto.phone1CodeId].label }}
+                                    </div>
+                                </div>
+                            </ng-template>
+
+                            <ng-template let-flag pTemplate="item">
+                                <div class="d-flex align-items-center">
+                                    <div>
+                                        <img
+                                            src="/assets/flags/{{ phoneCodeFlags[flag.value].subtitle }}.png"
+                                            style="height: 14px"
+                                        />
+                                    </div>
+                                    <div class="ms-2">
+                                        {{ phoneCodeFlags[flag.value].label }}
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </p-dropdown>
+                        <div class="formgroup-control">
+                            <input
+                                type="text"
+                                #phone1
+                                formControlName="phone1"
+                                [(ngModel)]="companyInfoDto.phone1"
+                                placeholder="929552746"
+                                class="form-control"
+                                minlength="6"
+                                maxlength="10"
+                                mask="0*"
+                            />
+                            <div class="spin-validation">
+                                <spinSuccess
+                                    *ngIf="
+                                        companyInfoForm.controls['phone1'].valid &&
+                                        companyInfoForm.controls['phone1'].dirty
+                                    "
+                                ></spinSuccess>
+                                <spinError
+                                    *ngIf="
+                                        !companyInfoForm.controls['phone1'].valid &&
+                                        companyInfoForm.controls['phone1'].dirty
+                                    "
+                                ></spinError>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="ae-container__actions">
+        <button type="button" class="btn btn-primary w-100" (click)="save()">
+            {{ l('Next2') }}
+        </button>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+<div [@routerTransition]>
+    <div>
+        <div
+            *ngIf="companyStatus == _companyStatus.Refused && feedback != null"
+            class="ae-container__kyc ae-container--sm alert alert-info mt-4"
+            [innerHTML]="l('KycRequestRefusedFeedbackTitle') + feedback"
+        ></div>
+
+        <kyc-companyType-form
+            #kycCompanyType
+            id="kycCompanyType"
+            [companyTypeSelected]="companyTypeSelected"
+            (onComplete)="companyTypeStepComplete($event)"
+            *ngIf="stepCompanyType"
+        ></kyc-companyType-form>
+
+        <kyc-companyInfo-form
+            #kycCompanyInfo
+            id="kycCompanyInfo"
+            [companyInfoDto]="companyInfoDto"
+            [countries]="countries"
+            [phoneCodes]="phoneCodes"
+            [phoneCodeFlags]="phoneCodeFlags"
+            (onComplete)="companyInfoStepComplete($event)"
+            (onSetData)="companyInfoSetData($event)"
+            (onBack)="goStep(0)"
+            *ngIf="stepPSCompanyInfo"
+        ></kyc-companyInfo-form>
+    </div>
+</div>
