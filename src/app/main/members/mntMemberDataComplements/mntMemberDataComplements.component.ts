@@ -72,6 +72,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     @ViewChild('economicInfoExpectedTransactions') economicInfoExpectedTransactions: Input;
     @ViewChild('economicInfoFileIncomeProof') economicInfoFileIncomeProof: FileUpload;
     @ViewChild('economicInfoFileTaxReturn') economicInfoFileTaxReturn: FileUpload;
+    @ViewChild('economicInfoFileTaxRecord') economicInfoFileTaxRecord: FileUpload;
     @ViewChild('pep') pep: RadioButton;
 
     residenceDataCountries: SelectItem[];
@@ -105,6 +106,8 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
     uploadFileIdentityBack: boolean;
     uploadFileIncomeProof: boolean;
     uploadFileTaxReturn: boolean;
+    uploadFileTaxRecord: boolean;
+    uploadFileLegalOriginFounds: boolean;
     maxFileSize = environment.uploadMaxFileSize;
 
     minDate: Date;
@@ -121,6 +124,7 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         'memberPhone': new FormControl('', Validators.required),
         'memberNationality': new FormControl('', Validators.required),
         'memberDayOfBirth': new FormControl('', [Validators.required, this.validateAge]),
+        'memberWebsite': new FormControl(''),
     });
     addressForm = this._formBuilder.group({
         'addressStreet': new FormControl('', Validators.required),
@@ -141,14 +145,22 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         'economicInfoIncome': new FormControl('', [Validators.required, Validators.pattern(this.pattern_numbers)]),
         'economicInfoSourceFounds': new FormControl('', Validators.required),
         'economicInfoExpectedTransactions': new FormControl('', Validators.required),
-    }, { validator: this.fileValidator('UploadIncomeProof', 'UploadTaxReturn') });
+        'economicInfoHaveExtraIncome': new FormControl('', Validators.required),
+        'economicInfoExtraIncomeDetails': new FormControl('', Validators.required),
+        'economicInfoExtraIncomeAmount': new FormControl('', Validators.required),
+        'economicInfoYearlySalesAmount': new FormControl('', Validators.required),
+        'economicInfoPreviousSalesAmount': new FormControl('', Validators.required),
+    }, { validator: this.fileValidator('UploadIncomeProof', 'UploadTaxReturn', 'UploadLegalOriginFounds') });
     pepForm = this._formBuilder.group({
         'pep': new FormControl('', Validators.required),
+        'swornDeclaration': new FormControl('', Validators.required),
     });
 
     checkSessionAndComplemented = false;
     completed = false;
     isPep: boolean;
+    isSwornDeclaration = false;
+    ishaveExtraIncome: boolean;
     saving = false;
     isValid = false;
     isClientRole = false;
@@ -188,15 +200,29 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         super(injector);
         this.minDate = new Date();
         this.uploadedFiles = [];
+
+        this.economicInfoForm.get('economicInfoHaveExtraIncome').valueChanges.subscribe((value) => {
+            if (value) {
+                this.economicInfoForm.get('economicInfoExtraIncomeDetails').setValidators([Validators.required]);
+                this.economicInfoForm.get('economicInfoExtraIncomeAmount').setValidators([Validators.required]);
+            } else {
+                this.economicInfoForm.get('economicInfoExtraIncomeDetails').clearValidators();
+                this.economicInfoForm.get('economicInfoExtraIncomeAmount').clearValidators();
+            }
+            this.economicInfoForm.get('economicInfoExtraIncomeDetails').updateValueAndValidity();
+            this.economicInfoForm.get('economicInfoExtraIncomeAmount').updateValueAndValidity();
+        });
     }
 
-    fileValidator(file1: string, file2?: string) {
+    fileValidator(file1: string, file2?: string, file3?: string) {
         return (formGroup: FormGroup) => {
             if (file1 === 'UploadAddressFileProof' && this.uploadFileAddressProof) {
                 return null;
             } else if ((file1 === 'UploadIdentityFront' && this.uploadFileIdentityFront) && (file2 === 'UploadIdentityBack' && this.uploadFileIdentityBack)) {
                 return null;
-            } else if ((file1 === 'UploadIncomeProof' && this.uploadFileIncomeProof) && (file2 === 'UploadTaxReturn' && this.uploadFileTaxReturn)) {
+            } else if ((file1 === 'UploadIncomeProof' && this.uploadFileIncomeProof)
+                && (file2 === 'UploadTaxReturn' && this.uploadFileTaxReturn)
+                && (file3 === 'LegalOriginFounds' && this.uploadFileLegalOriginFounds)) {
                 return null;
             } else {
                 return { externalConditionInvalid: true };
@@ -300,6 +326,8 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
                 this.uploadFileIdentityBack = false;
                 this.uploadFileIncomeProof = false;
                 this.uploadFileTaxReturn = false;
+                this.uploadFileTaxRecord = false;
+                this.uploadFileLegalOriginFounds = false;
             }
         });
     }
@@ -327,6 +355,17 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
             this.uploadedFiles['UploadIncomeProof'] = { 'fileName': this.getFile(this._fileType.IncomeProof).originalName, 'fileSize': '' };
             this.uploadFileTaxReturn = true;
             this.uploadedFiles['UploadTaxReturn'] = { 'fileName': this.getFile(this._fileType.TaxReturn).originalName, 'fileSize': '' };
+
+            if (this.getFile(this._fileType.TaxRecord).file !== undefined) {
+                this.uploadFileTaxRecord = true;
+                this.uploadedFiles['UploadTaxRecord'] = { 'fileName': this.getFile(this._fileType.TaxRecord).originalName, 'fileSize': '' };
+            }
+
+            if (this.getFile(this._fileType.LegalOriginFounds).file !== undefined) {
+                this.uploadFileLegalOriginFounds = true;
+                this.uploadedFiles['UploadLegalOriginFounds'] = { 'fileName': this.getFile(this._fileType.LegalOriginFounds).originalName, 'fileSize': '' };
+            }
+
             this.isModeEdit = true;
         });
     }
@@ -370,6 +409,17 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
         this.economicInfoFileTaxReturn.clear();
         this.uploadFileTaxReturn = false;
     }
+
+    onClearUploadFileTaxRecord() {
+        this.economicInfoFileTaxRecord.clear();
+        this.uploadFileTaxRecord = false;
+    }
+
+    onClearUploadFileLegalOriginFounds() {
+        this.economicInfoFileTaxRecord.clear();
+        this.uploadFileLegalOriginFounds = false;
+    }
+
     // upload event
     onUploadFile(event, typeUpload: string): void {
         for (const file of event.currentFiles) {
@@ -409,6 +459,16 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
                     this.uploadedFiles['UploadTaxReturn'] = uploadFile;
                     this.economicInfoForm.updateValueAndValidity();
                 });
+            } else if (typeUpload === 'UploadTaxRecord') {
+                this._mntMemberFilesServiceProxy.uploadTaxRecord(fileParameter).subscribe((result) => {
+                    this.uploadFileTaxRecord = true;
+                    this.uploadedFiles['UploadTaxRecord'] = uploadFile;
+                });
+            } else if (typeUpload === 'UploadLegalOriginFounds') {
+                this._mntMemberFilesServiceProxy.uploadLegalOriginFounds(fileParameter).subscribe((result) => {
+                    this.uploadFileLegalOriginFounds = true;
+                    this.uploadedFiles['UploadLegalOriginFounds'] = uploadFile;
+                });
             }
         }
     }
@@ -424,6 +484,10 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
             this.uploadFileIncomeProof = false;
         } else if (typeUpload === 'UploadTaxReturn') {
             this.uploadFileTaxReturn = false;
+        } else if (typeUpload === 'UploadTaxRecord') {
+            this.uploadFileTaxRecord = false;
+        } else if (typeUpload === 'UploadLegalOriginFounds') {
+            this.uploadFileLegalOriginFounds = false;
         }
     }
 
@@ -641,6 +705,13 @@ export class MntMemberDataComplementsComponent extends AppComponentBase implemen
                 this.l('dayNameMin7')],
             weekHeader: this.l('PrimeNGWeekHeader'),
         });
+    }
+
+    private validateSwornDeclaration(control) {
+        if (control.value == null || control.value === '') {
+            return null;
+        }
+        return control.value;
     }
 
     private validateAge(control) {

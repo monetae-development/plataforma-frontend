@@ -35676,6 +35676,11 @@ code:not([class*=language-]) {
   margin-left: -78px;
 }
 
+.formgroup-control:has(p-inputNumber) p-inputNumber span input{
+  height: 38px;
+  padding-right: 45px;
+}
+
 .formgroup-control .feedback-error{
   margin-top: -20px;
 }

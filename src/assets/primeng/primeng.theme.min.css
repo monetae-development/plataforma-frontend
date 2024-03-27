@@ -5,21 +5,25 @@
   color: #000;
   background: #E9ECEF;
 }
+
 [data-theme="light"] .p-dropdown,
+p-inputnumber span input.p-inputtext,
 p-inputnumber.form-control span input,
 p-chips .p-chips.p-component ul {
-  border-color: #E9ECEF;
+  border-color: #CED4DA;
   opacity: 1;
 }
 p-chips .p-chips.p-component ul.p-chips-multiple-container {
-  border-color: #E9ECEF !important;
+  border-color: #CED4DA !important;
 }
 [data-theme="light"] .p-dropdown:hover,
 p-chips .p-chips.p-component ul.p-inputtext:hover,
 p-chips .p-chips.p-component ul.p-inputtext:focus,
+p-inputnumber span input.p-inputtext:hover,
+p-inputnumber span input.p-inputtext:focus,
 p-inputnumber.form-control span input:hover,
 p-inputnumber.form-control span input:focus {
-  border-color: #B5B5C3 !important;
+  border-color: #CED4DA !important;
 }
 [data-theme="light"] .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
   background: #E9ECEF;
@@ -36,15 +40,14 @@ p-inputnumber.form-control span input:focus {
 .p-dropdown:not(.p-disabled).p-focus {
   box-shadow: none;
 }
-.input-group p-inputnumber.form-control {
-  padding: 0px;
-  border: 0px;
-}
-.input-group p-inputnumber.form-control span,
-.input-group p-inputnumber.form-control span input {
+
+p-inputnumber,
+p-inputnumber span,
+p-inputnumber span input {
   width: 100%;
 }
-p-inputnumber.form-control.ng-dirty.ng-invalid {
+
+p-inputnumber.ng-dirty.ng-invalid {
   border: 0;
 }
 .input-group p-inputnumber .p-disabled,
@@ -95,8 +98,8 @@ p-chips .p-chips.p-component ul.p-inputtext {
 }
 
 .p-inputtext:enabled:focus{
-  border-color: #00CED1;
-  box-shadow: inset 0 0 0 1px #00CED1, inset 0 0 0 1px #00CED1, inset 0 0 0 1px #00CED1, inset 0 0 0 1px #00CED1;
+  border-color: #CED4DA;
+  box-shadow: none;
 }
 
 p-messages .p-message-wrapper{

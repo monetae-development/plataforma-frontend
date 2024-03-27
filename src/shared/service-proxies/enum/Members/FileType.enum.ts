@@ -6,4 +6,6 @@ export enum FileType {
     IncomeProof = 4,
     TaxReturn = 5,
     DepositReceipt = 6,
+    TaxRecord = 7,
+    LegalOriginFounds = 8
 }

@@ -16396,6 +16396,116 @@ export class MntMemberFilesServiceProxy {
      * @param file (optional) 
      * @return Success
      */
+    uploadTaxRecord(file: FileParameter | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/MntMemberFiles/UploadTaxRecord";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (file === null || file === undefined)
+            throw new Error("The parameter 'file' cannot be null.");
+        else
+            content_.append("file", file.data, file.fileName ? file.fileName : "file");
+
+        let options_: any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processUploadTaxRecord(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUploadTaxRecord(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUploadTaxRecord(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); } }
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param file (optional) 
+     * @return Success
+     */
+    uploadLegalOriginFounds(file: FileParameter | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/MntMemberFiles/UploadLegalOriginFounds";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (file === null || file === undefined)
+            throw new Error("The parameter 'file' cannot be null.");
+        else
+            content_.append("file", file.data, file.fileName ? file.fileName : "file");
+
+        let options_: any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processUploadLegalOriginFounds(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUploadLegalOriginFounds(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUploadLegalOriginFounds(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); } }
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param file (optional) 
+     * @return Success
+     */
     uploadDepositReceipt(file: FileParameter | undefined): Observable<UploadDepositReceiptDto> {
         let url_ = this.baseUrl + "/api/services/app/MntMemberFiles/UploadDepositReceipt";
         url_ = url_.replace(/[?&]$/, "");
@@ -32502,6 +32612,10 @@ export class CreateOrEditMntEconomicInfoDto implements ICreateOrEditMntEconomicI
     taxReturn!: string | undefined;
     catProfessionId!: number;
     catSourceFoundsId!: number;
+    extraIncomeDetails!: string | undefined;
+    extraIncomeAmount!: number | undefined;
+    yearlySalesAmount!: number | undefined;
+    previousSalesAmount!: number | undefined;
     mntMemberId!: number;
     id!: number | undefined;
 
@@ -32555,6 +32669,10 @@ export interface ICreateOrEditMntEconomicInfoDto {
     taxReturn: string | undefined;
     catProfessionId: number;
     catSourceFoundsId: number;
+    extraIncomeDetails: string | undefined;
+    extraIncomeAmount: number | undefined;
+    yearlySalesAmount: number | undefined;
+    previousSalesAmount: number | undefined;
     mntMemberId: number;
     id: number | undefined;
 }
@@ -32782,6 +32900,7 @@ export interface ICreateMntMemberWalletDto {
 export class CreateOrEditMntMemberDto implements ICreateOrEditMntMemberDto {
     name!: string | undefined;
     surname!: string | undefined;
+    website!: string | undefined;
     phoneCodeId!: number | undefined;
     phone!: string | undefined;
     dayOfBirth!: DateTime | undefined;
@@ -32805,6 +32924,7 @@ export class CreateOrEditMntMemberDto implements ICreateOrEditMntMemberDto {
         if (_data) {
             this.name = _data["name"];
             this.surname = _data["surname"];
+            this.website = _data["website"];
             this.phoneCodeId = _data["phoneCodeId"];
             this.phone = _data["phone"];
             this.dayOfBirth = _data["dayOfBirth"] ? DateTime.fromISO(_data["dayOfBirth"].toString()) : <any>undefined;
@@ -32828,6 +32948,7 @@ export class CreateOrEditMntMemberDto implements ICreateOrEditMntMemberDto {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
         data["surname"] = this.surname;
+        data["website"] = this.website;
         data["phoneCodeId"] = this.phoneCodeId;
         data["phone"] = this.phone;
         data["dayOfBirth"] = this.dayOfBirth ? this.dayOfBirth.toString() : <any>undefined;
@@ -32844,6 +32965,7 @@ export class CreateOrEditMntMemberDto implements ICreateOrEditMntMemberDto {
 export interface ICreateOrEditMntMemberDto {
     name: string | undefined;
     surname: string | undefined;
+    website: string | undefined;
     phoneCodeId: number | undefined;
     phone: string | undefined;
     dayOfBirth: DateTime | undefined;
